@@ -21,6 +21,10 @@ Route::get('/', [PublicBlogController::class, 'home'])->name('home');
 Route::view('/tentang', 'tentang')->name('tentang');
 Route::view('/temukan-kami', 'temukan-kami')->name('temukan');
 
+// Destinasi Detail Pages
+Route::view('/destinasi/pantai-karang-jahe', 'destinations.pantai-karang-jahe')->name('destinasi.pantai-karang-jahe');
+Route::view('/destinasi/situs-perahu-kuno', 'destinations.situs-perahu-kuno')->name('destinasi.situs-perahu-kuno');
+
 // Blog Publik
 Route::prefix('blog')->name('blog.')->group(function () {
     Route::get('/', [PublicBlogController::class, 'index'])->name('index');

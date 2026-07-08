@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="bg-white py-20 px-6">
-    <div class="max-w-5xl mx-auto">
-        <h1 class="text-4xl font-bold text-sky-700 mb-6 text-center">{{ $video->title }}</h1>
+<section class="bg-transparent pt-32 pb-20 px-6">
+    <div class="max-w-5xl mx-auto bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-slate-100">
+        <h1 class="text-4xl font-heading text-sky-700 mb-6 text-center">{{ $video->title }}</h1>
         
         <div class="mb-8 flex justify-center">
             <iframe width="100%" height="480" src="{{ $video->video_url }}" 

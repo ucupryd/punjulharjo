@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="bg-white py-20 px-6">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-bold text-sky-700 mb-4">{{ $blog->title }}</h1>
+<section class="bg-transparent pt-32 pb-20 px-6">
+    <div class="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-slate-100">
+        <h1 class="text-4xl font-heading text-sky-700 mb-4">{{ $blog->title }}</h1>
         <p class="text-gray-500 mb-6">
             Dipublikasikan pada {{ $blog->created_at->format('d M Y') }} 
             oleh <strong>{{ $blog->author->name ?? 'Admin' }}</strong>

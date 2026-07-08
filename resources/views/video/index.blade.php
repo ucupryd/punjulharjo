@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="bg-white py-20 px-6">
+<section class="bg-transparent pt-32 pb-20 px-6">
     <div class="max-w-6xl mx-auto text-center">
-        <h1 class="text-4xl font-bold text-sky-600 mb-12">Kumpulan Video Wisata</h1>
+        <h1 class="text-4xl font-heading text-sky-600 mb-12">Kumpulan Video Wisata</h1>
 
         @if($videos->count())
             <div class="grid md:grid-cols-3 gap-10">
                 @foreach($videos as $video)
-                    <div class="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition duration-300">
+                    <div class="bg-white/80 backdrop-blur-sm shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition duration-300 border border-slate-100">
                         @if($video->thumbnail)
                             <img src="{{ asset('storage/' . $video->thumbnail) }}" 
                                  alt="{{ $video->title }}" 
@@ -18,7 +18,7 @@
                         @endif
 
                         <div class="p-6 text-left">
-                            <h3 class="text-xl font-semibold text-sky-600 mb-2 line-clamp-2">
+                            <h3 class="text-xl font-heading text-sky-600 mb-2 line-clamp-2">
                                 {{ $video->title }}
                             </h3>
                             <p class="text-gray-600 text-sm mb-4 line-clamp-3">
