@@ -16,32 +16,36 @@
         </div>
 
         @if($blogs->count() > 0)
-            <div class="grid md:grid-cols-3 gap-10">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-10">
                 @foreach ($blogs as $blog)
-                    <div class="bg-white shadow-sm rounded-none overflow-hidden hover:shadow transition duration-300 border border-slate-200 relative group">
-                        @if($blog->image)
-                            <img src="{{ Storage::url($blog->image) }}" 
-                                 alt="{{ $blog->title }}" 
-                                 class="w-full h-52 object-cover">
-                        @else
-                            <img src="https://via.placeholder.com/400x250?text=Desa+Punjulharjo" 
-                                 class="w-full h-52 object-cover">
-                        @endif
-                        <div class="p-6 text-left">
-                            <h3 class="text-xl font-heading text-sky-600 mb-2">{{ $blog->title }}</h3>
-                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-                                {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 100) }}
-                            </p>
+                    <div class="bg-white shadow-sm rounded-none overflow-hidden hover:shadow transition duration-300 border border-slate-200 relative group flex flex-col justify-between">
+                        <div>
+                            @if($blog->image)
+                                <img src="{{ Storage::url($blog->image) }}" 
+                                     alt="{{ $blog->title }}" 
+                                     class="w-full h-32 md:h-52 object-cover">
+                            @else
+                                <img src="https://via.placeholder.com/400x250?text=Desa+Punjulharjo" 
+                                     class="w-full h-32 md:h-52 object-cover">
+                            @endif
+                            <div class="p-3 md:p-6 text-left">
+                                <h3 class="text-sm md:text-xl font-heading text-sky-600 mb-1 md:mb-2 line-clamp-1" title="{{ $blog->title }}">{{ $blog->title }}</h3>
+                                <p class="text-gray-600 text-xs md:text-sm mb-2 md:mb-4 line-clamp-2 md:line-clamp-3">
+                                    {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 100) }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-3 pt-0 md:p-6 md:pt-0 text-left">
                             <a href="{{ route('blog.show', $blog->slug) }}" 
-                               class="inline-block text-sky-500 hover:text-sky-700 font-medium transition">
+                               class="inline-block text-sky-500 hover:text-sky-700 text-xs md:text-base font-medium transition">
                                 Baca Selengkapnya →
                             </a>
                         </div>
                         @auth
                             <!-- Floating Edit Button on Card Hover -->
-                            <div class="absolute top-4 right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute top-2 right-2 md:top-4 md:right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <button onclick="openEditBlogModal(event, {{ json_encode($blog) }})" 
-                                        class="bg-white/90 hover:bg-white text-slate-800 p-2.5 rounded-none shadow-sm border border-white/20 flex items-center justify-center">
+                                        class="bg-white/90 hover:bg-white text-slate-800 p-2 md:p-2.5 rounded-none shadow-sm border border-white/20 flex items-center justify-center">
                                     <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
                                 </button>
                             </div>

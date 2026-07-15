@@ -51,15 +51,15 @@
         </div>
 
         @if($ebooks->isNotEmpty() || Auth::check())
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-4 justify-items-center">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 py-4 justify-items-center">
                 @auth
                     <div onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
-                         class="group border-2 border-dashed border-brand-muted hover:border-brand-accent rounded-none flex flex-col items-center justify-center p-8 w-full max-w-[340px] min-h-[385px] cursor-pointer bg-white/50 hover:bg-brand-muted/10 shadow-sm hover:shadow transition-all duration-300 text-center">
-                        <div class="w-16 h-16 rounded-none bg-brand-muted/20 group-hover:bg-brand-accent/20 flex items-center justify-center mb-4 transition duration-300">
-                            <i class="fa-solid fa-plus text-2xl text-brand-muted group-hover:text-brand-dark"></i>
+                          class="group border-2 border-dashed border-brand-muted hover:border-brand-accent rounded-none flex flex-col items-center justify-center p-4 md:p-8 w-full max-w-[340px] min-h-[220px] md:min-h-[385px] cursor-pointer bg-white/50 hover:bg-brand-muted/10 shadow-sm hover:shadow transition-all duration-300 text-center">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-none bg-brand-muted/20 group-hover:bg-brand-accent/20 flex items-center justify-center mb-2 md:mb-4 transition duration-300">
+                            <i class="fa-solid fa-plus text-xl md:text-2xl text-brand-muted group-hover:text-brand-dark"></i>
                         </div>
-                        <span class="text-sm font-semibold text-brand-dark font-sans">Tambah Ebook Baru</span>
-                        <p class="text-xs text-slate-400 mt-2 font-sans max-w-[200px]">Upload file PDF buku panduan baru untuk dipublikasikan</p>
+                        <span class="text-xs md:text-sm font-semibold text-brand-dark font-sans">Tambah Ebook</span>
+                        <p class="text-[10px] md:text-xs text-slate-400 mt-1 md:mt-2 font-sans max-w-[150px] md:max-w-[200px]">Upload PDF buku panduan baru</p>
                     </div>
                 @endauth
 
@@ -300,9 +300,8 @@
                 }
             }
         @endphp
-
         @if($videos->count())
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
                 @foreach($videos as $video)
                     @php
                         $videoId = getYoutubeId($video->video_url);
@@ -319,18 +318,18 @@
                                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                             
                             <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <div class="w-14 h-14 rounded-full bg-sky-600 text-white flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-all duration-300">
-                                    <i class="fa-solid fa-play text-xl ml-1"></i>
+                                <div class="w-10 h-10 md:w-14 md:h-14 rounded-full bg-sky-600 text-white flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-all duration-300">
+                                    <i class="fa-solid fa-play text-xs md:text-xl ml-1"></i>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="p-5 text-left">
-                            <h3 class="text-base font-bold text-slate-800 group-hover:text-sky-600 transition duration-300 line-clamp-2 font-sans leading-snug">
+                        
+                        <div class="p-3 md:p-5 text-left">
+                            <h3 class="text-xs md:text-base font-bold text-slate-800 group-hover:text-sky-600 transition duration-300 line-clamp-2 font-sans leading-snug">
                                 {{ $video->title }}
                             </h3>
                             @if($video->description)
-                                <p class="text-xs text-slate-400 mt-2 line-clamp-2">{{ $video->description }}</p>
+                                <p class="text-[10px] md:text-xs text-slate-400 mt-1 md:mt-2 line-clamp-2">{{ $video->description }}</p>
                             @endif
                         </div>
 
@@ -562,11 +561,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         .main {
-            width: 16.5em;
+            width: 100%;
             background-color: #1b2230;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 0px;
-            padding: 1em;
+            padding: 0.75em;
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -576,6 +575,12 @@
             transition: all 0.3s ease-in-out;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+        @media (min-width: 768px) {
+            .main {
+                width: 16.5em;
+                padding: 1em;
+            }
+        }
         .main:hover {
             transform: translateY(-5px);
             background-color: #21293a;
@@ -584,7 +589,7 @@
         }
         .card {
             width: 100%;
-            height: 10em;
+            height: 7em;
             background-color: #749db2;
             border-radius: 0px;
             transition: all 0.3s ease-in-out;
@@ -593,6 +598,11 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .card {
+                height: 10em;
+            }
         }
         .card_content {
             width: 100%;
@@ -636,8 +646,15 @@
             fill: #0d355e;
         }
         .data {
-            margin-top: 1em;
+            margin-top: 0.5em;
             width: 100%;
+        }
+        @media (min-width: 768px) {
+            .data {
+                margin-top: 1em;
+            }
+        }
+        .data {
             display: flex;
             gap: 1em;
         }
@@ -660,13 +677,19 @@
             font-size: 0.7em;
         }
         .btns {
-            margin-top: 1em;
+            margin-top: 0.5em;
             display: flex;
-            gap: 1em;
+            gap: 0.5em;
             width: 100%;
             font-size: 0.7em;
             font-weight: 700;
             color: #94a3b8;
+        }
+        @media (min-width: 768px) {
+            .btns {
+                margin-top: 1em;
+                gap: 1em;
+            }
         }
         .likes, .comments, .views {
             display: flex;

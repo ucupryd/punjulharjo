@@ -159,7 +159,7 @@
 
         <div class="relative z-10 max-w-4xl mx-auto pt-16 pb-16">
             <!-- Main Title in THE LAST TRUNKS Font -->
-            <h1 id="hero-title" class="text-4xl md:text-5xl lg:text-6xl font-heading text-white mb-6 tracking-wide drop-shadow-xl min-h-[2em] md:min-h-[1.2em]"></h1>
+            <h1 id="hero-title" class="text-3xl md:text-5xl lg:text-6xl font-heading text-white mb-6 tracking-wide drop-shadow-xl min-h-[2em] md:min-h-[1.2em]"></h1>
             
             <!-- Subtitle in Poppins Font -->
             <p class="text-sm md:text-base lg:text-lg text-slate-100 font-sans max-w-2xl mx-auto leading-relaxed drop-shadow-md mb-10 opacity-90">
@@ -191,16 +191,16 @@
 
 
     <!-- SECTION B: About Us (Tentang Desa) -->
-    <section id="tentang" class="bg-transparent py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
+    <section id="tentang" class="bg-transparent py-12 md:py-32 px-4 md:px-12 relative overflow-hidden">
         <div class="max-w-6xl mx-auto">
-            <div class="grid lg:grid-cols-12 gap-16 items-center">
+            <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
                 <!-- Text Block Left with custom radio tabs -->
                 <div class="lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-brand-muted/10 text-brand-dark text-sm font-semibold uppercase tracking-wider border border-brand-muted/20">
                         <i class="fa-solid fa-feather-pointed"></i> Sekilas Profil
                     </div>
                     
-                    <h2 class="text-4xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
+                    <h2 class="text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Tentang Desa Wisata
                     </h2>
                     
@@ -220,7 +220,7 @@
 
                     <!-- Tab Contents Panel -->
                     <div id="tab-content-1" class="tab-content-panel space-y-4 animate-fade-in">
-                        <p class="text-gray-600 font-sans text-base md:text-lg leading-relaxed text-justify">
+                        <p class="text-gray-600 font-sans text-sm md:text-lg leading-relaxed text-justify">
                             Desa Punjulharjo merupakan salah satu desa pesisir yang terletak di Kabupaten Rembang, Jawa Tengah. Secara geografis, Punjulharjo berada di kawasan pesisir utara Jawa yang memiliki hubungan erat dengan kehidupan bahari. Letaknya yang berada di wilayah pantai menjadikan desa ini memiliki sumber daya alam yang khas. Keindahan pantainya, kekayaan sejarah maritimnya, serta kehidupan masyarakat pesisir yang masih kuat dengan nilai kebersamaan menjadikan Punjulharjo sebagai desa yang memiliki daya tarik tersendiri.
                         </p>
                     </div>
@@ -257,7 +257,7 @@
                     </div>
 
                     <div id="tab-content-3" class="tab-content-panel hidden space-y-4 animate-fade-in">
-                        <p class="text-gray-600 font-sans text-base md:text-lg leading-relaxed text-justify">
+                        <p class="text-gray-600 font-sans text-sm md:text-lg leading-relaxed text-justify">
                             Punjulharjo menyajikan perpaduan wisata alam pantai yang mempesona dan wisata sejarah maritim Nusantara:
                         </p>
                         <div class="grid grid-cols-2 gap-4">
@@ -341,13 +341,13 @@
 
 
     <!-- SECTION D: Aesthetic Photo Gallery -->
-    <section class="bg-white py-16 px-6">
+    <section class="bg-white py-10 md:py-16 px-4 md:px-6">
         <div class="max-w-6xl mx-auto relative">
             <div class="text-center space-y-4">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
                     <i class="fa-regular fa-images"></i> Galeri Visual
                 </div>
-                <h2 class="text-4xl md:text-5xl font-heading text-gray-900 tracking-wide">
+                <h2 class="text-2xl md:text-5xl font-heading text-gray-900 tracking-wide">
                     Potret Punjulharjo
                 </h2>
                 <p class="text-gray-500 font-sans max-w-xl mx-auto">
@@ -368,17 +368,17 @@
 
     @php
         $gridClasses = [
-            'col-span-1 row-span-2 col-start-1 row-start-1',
-            'col-span-1 row-span-2 col-start-1 row-start-3',
-            'col-span-1 row-span-1 col-start-2 row-start-1',
-            'col-span-1 row-span-1 col-start-2 row-start-2',
-            'col-span-2 row-span-2 col-start-3 row-start-1',
-            'col-span-3 row-span-2 col-start-2 row-start-3',
+            'col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-1',
+            'col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-3',
+            'col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-1',
+            'col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-2',
+            'col-span-2 row-span-1 md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-1',
+            'col-span-2 row-span-1 md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-3',
         ];
     @endphp
 
     <section x-data="{ activePhoto: null }" class="relative">
-        <div class="w-full h-[100vh] grid grid-cols-4 grid-rows-4 gap-0 overflow-hidden bg-black">
+        <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black">
             @foreach(array_slice($galleryItems, 0, 6) as $index => $item)
                 @php
                     $imageUrl = str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']);
@@ -553,13 +553,13 @@
 
 
     <!-- SECTION E: Culture & Community (Kehidupan Budaya) -->
-    <section class="bg-brand-muted/10 py-24 md:py-32 px-6 md:px-12 relative">
+    <section class="bg-brand-muted/10 py-12 md:py-32 px-4 md:px-12 relative">
         <!-- Subtle background shapes -->
         <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-brand-light/10 rounded-full blur-3xl z-0"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-dark/10 rounded-full blur-3xl z-0"></div>
 
         <div class="max-w-6xl mx-auto relative z-10">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                 <!-- Photo Card Left -->
                 <div class="order-2 lg:order-1 relative">
                     <div class="absolute -inset-4 bg-gradient-to-br from-brand-light/10 to-brand-dark/10 rounded-[3rem] blur-xl z-0"></div>
@@ -611,11 +611,11 @@
                         <i class="fa-solid fa-people-group"></i> Harmoni Sosial
                     </div>
                     
-                    <h2 class="text-4xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
+                    <h2 class="text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Kehidupan Budaya & Tradisi
                     </h2>
                     
-                    <p class="text-slate-600 font-sans text-base md:text-lg leading-relaxed text-justify">
+                    <p class="text-slate-600 font-sans text-sm md:text-lg leading-relaxed text-justify">
                         Masyarakat Desa Punjulharjo dikenal memiliki kehidupan sosial yang erat dengan semangat gotong royong. Sebagai desa pesisir, warga setempat terbiasa hidup berdampingan dengan alam. Aktivitas masyarakat mencerminkan adaptasi terhadap lingkungan pantai, sementara budaya lokal dan tradisi tetap dijaga sebagai bagian dari identitas desa yang kuat.
                     </p>
                 </div>
@@ -626,7 +626,7 @@
 
 
     <!-- SECTION EEE: 3D Coverflow Experience (Sorotan Aktivitas Desa) -->
-    <section class="bg-transparent pt-24 pb-36 md:pt-32 md:pb-44 px-6 md:px-12 relative overflow-hidden" style="padding-bottom: 220px !important;">
+    <section class="bg-transparent pt-12 pb-24 md:pt-32 md:pb-44 px-4 md:px-12 relative overflow-hidden" style="padding-bottom: 220px !important;">
         <!-- Background shapes matching the design system -->
         <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-sky-200/10 rounded-full blur-3xl z-0"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-200/10 rounded-full blur-3xl z-0"></div>
@@ -637,10 +637,10 @@
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
                     <i class="fa-solid fa-compass"></i> Sorotan Pengalaman
                 </div>
-                <h2 class="text-4xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
+                <h2 class="text-2xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
                     Jelajahi Aktivitas Punjulharjo
                 </h2>
-                <p class="text-gray-600 font-sans text-base md:text-lg">
+                <p class="text-gray-600 font-sans text-sm md:text-lg">
                     Klik kartu di kanan/kiri untuk memutar dan memfokuskan petualangan seru yang dapat Anda nikmati di desa kami.
                 </p>
                 @auth
@@ -658,7 +658,7 @@
             <div class="coverflow-viewport">
                 @foreach($carouselItems as $item)
                     <!-- Card -->
-                    <div class="coverflow-card rounded-xl overflow-hidden shadow bg-slate-900 border border-white/10 flex flex-col justify-end p-6 md:p-8 select-none relative group/card">
+                    <div class="coverflow-card rounded-xl overflow-hidden shadow bg-slate-900 border border-white/10 flex flex-col justify-end p-5 md:p-8 select-none relative group/card">
                         <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']) }}" alt="{{ $item['title'] }}" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0" />
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none"></div>
                         <div class="relative z-20 text-left space-y-2 pointer-events-none">
@@ -864,7 +864,7 @@
 
 
     <!-- SECTION F: Final Call-to-Action (CTA) -->
-    <section class="relative py-28 md:py-36 px-6 text-center text-white overflow-hidden bg-slate-900">
+    <section class="relative py-16 md:py-36 px-4 md:px-6 text-center text-white overflow-hidden bg-slate-900">
         <!-- Scenic Background Image with Dark/Gradient Overlay -->
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 transition-transform duration-[10000ms] hover:scale-105"
              style="background-image: url('{{ asset($heroBg) }}');">
@@ -872,18 +872,18 @@
         <div class="absolute inset-0 bg-gradient-to-b from-indigo-950/80 via-slate-900/90 to-indigo-950/95"></div>
 
         <div class="relative z-10 max-w-4xl mx-auto space-y-8">
-            <h2 class="text-4xl md:text-6xl font-heading tracking-wide">
+            <h2 class="text-2xl md:text-6xl font-heading tracking-wide">
                 Mulai Kunjungan Anda
             </h2>
             
-            <p class="text-slate-200 font-sans text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            <p class="text-slate-200 font-sans text-sm md:text-xl leading-relaxed max-w-2xl mx-auto">
                 Dengan potensi alam, sejarah, budaya, dan partisipasi masyarakat yang kuat, Punjulharjo layak diperkenalkan lebih luas sebagai desa wisata yang memiliki keindahan, pengetahuan, dan nilai kehidupan yang lengkap.
             </p>
             
             <div class="pt-4">
                 <a href="#kontak-peta" 
                    onclick="document.querySelector('footer').scrollIntoView({ behavior: 'smooth' }); return false;"
-                   class="inline-flex items-center justify-center bg-white text-indigo-900 font-bold px-8 py-4 rounded-none text-lg shadow hover:shadow-white/10 transition duration-300 transform hover:-translate-y-1">
+                   class="inline-flex items-center justify-center bg-white text-indigo-900 font-bold px-6 py-3 md:px-8 md:py-4 rounded-none text-sm md:text-lg shadow hover:shadow-white/10 transition duration-300 transform hover:-translate-y-1">
                     Lihat Peta Lokasi
                     <i class="fa-solid fa-map-location-dot ml-3"></i>
                 </a>

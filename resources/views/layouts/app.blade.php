@@ -76,57 +76,101 @@
                     @scroll.window="scrolled = !isHome || window.pageYOffset > 50"
                     :class="scrolled ? 'bg-white shadow-md text-brand-dark' : 'bg-transparent text-white'"
                     class="fixed top-0 left-0 w-full z-[999] transition-all duration-300">
-                <nav class="max-w-7xl mx-auto py-4 px-6 flex justify-between items-center transition duration-300">
-                    <!-- Left (Branding) -->
-                    <a href="/" class="flex items-center hover:opacity-90 transition duration-300 mr-2">
-                        <img src="{{ asset('images/Lambang_Kabupaten_Rembang.webp') }}" class="w-9 h-9 object-contain shrink-0 mr-2.5" alt="Logo Rembang">
-                        <div class="flex flex-col text-left">
-                            <span class="font-bold text-sm leading-tight">Desa Wisata Punjulharjo</span>
-                            <span class="text-[10px] font-sans leading-none mt-0.5 opacity-75">Kec. Rembang, Kab. Rembang</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Desktop Navigation Links (Centered/Right-aligned) -->
-                    <ul class="relative hidden md:flex items-center px-1.5 py-0.5 rounded-lg select-none"
-                        @mouseleave="hoverIndex = null">
-                        
-                        <!-- The Sliding Background Pill (slidebar) -->
-                        <div class="absolute h-[calc(100%-8px)] w-[82px] rounded-md z-0"
-                             :class="scrolled ? 'bg-gray-300/50' : 'bg-white/20'"
-                             :style="'transform: translateX(' + ((hoverIndex !== null ? hoverIndex : activeIndex) * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'"></div>
+                <nav class="max-w-7xl mx-auto py-3 md:py-4 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 transition duration-300">
+                    <!-- Top Row (Branding & Mobile Buttons) -->
+                    <div class="w-full md:w-auto flex justify-between items-center shrink-0">
+                        <!-- Left (Branding) -->
+                        <a href="/" class="flex items-center hover:opacity-90 transition duration-300 mr-2 shrink-0">
+                            <img src="{{ asset('images/Lambang_Kabupaten_Rembang.webp') }}" class="w-8 h-8 md:w-9 md:h-9 object-contain shrink-0 mr-2" alt="Logo Rembang">
+                            <div class="flex flex-col text-left">
+                                <span class="font-bold text-xs md:text-sm leading-tight">Desa Wisata Punjulharjo</span>
+                                <span class="text-[9px] md:text-[10px] font-sans leading-none mt-0.5 opacity-75">Kec. Rembang, Kab. Rembang</span>
+                            </div>
+                        </a>
 
-                        <!-- The Sliding Bar (bar) -->
-                        <div class="absolute h-full w-[82px] z-0 pointer-events-none"
-                             :style="'transform: translateX(' + (activeIndex * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'">
-                             <div class="absolute top-0 left-0 w-full h-[3px] rounded-b-full bg-current"></div>
-                             <div class="absolute bottom-0 left-0 w-full h-[3px] rounded-t-full bg-current"></div>
-                        </div>
+                        <!-- Mobile Action Buttons (Visible only on Mobile next to brand) -->
+                        <div class="flex md:hidden items-center space-x-2 shrink-0">
+                            @auth
+                                <!-- Link to Testimonial Moderation Panel -->
+                                <a href="{{ route('admin.testimoni.index') }}" 
+                                   class="bg-slate-800 hover:bg-slate-700 text-white px-2 py-1.5 rounded-none text-[10px] font-bold shadow-sm transition duration-300">
+                                    <i class="fa-solid fa-comments"></i>
+                                </a>
 
-                        <!-- Links -->
-                        <li @mouseenter="hoverIndex = 0" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
-                            <a href="{{ route('home') }}" class="block py-2 text-xs font-semibold text-current">Beranda</a>
-                        </li>
-                        <li @mouseenter="hoverIndex = 1" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
-                            <a href="{{ route('tentang') }}" class="block py-2 text-xs font-semibold text-current">Tentang</a>
-                        </li>
-                        <li @mouseenter="hoverIndex = 2" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
-                            <a href="{{ route('destinasi') }}" class="block py-2 text-xs font-semibold text-current">Destinasi</a>
-                        </li>
-                        <li @mouseenter="hoverIndex = 3" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
-                            <a href="{{ route('pustaka') }}" class="block py-2 text-xs font-semibold text-current">Pustaka</a>
-                        </li>
-                        <li @mouseenter="hoverIndex = 4" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
-                            <a href="{{ route('blog.index') }}" class="block py-2 text-xs font-semibold text-current">Blog</a>
-                        </li>
-                        <li @mouseenter="hoverIndex = 5" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
-                            <a href="{{ route('temukan') }}" class="block py-2 text-xs font-semibold text-current">Lokasi</a>
-                        </li>
-                        <li @mouseenter="hoverIndex = 6" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
-                            <a href="{{ route('testimoni.index') }}" class="block py-2 text-xs font-semibold text-current">Kesan</a>
-                        </li>
-                    </ul>
+                                <!-- Toggle Button for Contact Messages Modal -->
+                                <button onclick="document.getElementById('messages-modal').classList.remove('hidden')" 
+                                        class="bg-slate-800 hover:bg-slate-700 text-white px-2 py-1.5 rounded-none text-[10px] font-bold shadow-sm transition duration-300 relative">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    @php
+                                        $unreadMessages = \App\Models\ContactMessage::where('is_read', false)->count();
+                                    @endphp
+                                    @if($unreadMessages > 0)
+                                        <span class="absolute -top-1 -right-1 bg-red-600 text-white font-extrabold text-[8px] h-3.5 w-3.5 rounded-full flex items-center justify-center animate-pulse border border-white">
+                                            {{ $unreadMessages }}
+                                        </span>
+                                    @endif
+                                </button>
+
+                                <!-- Form Logout Admin -->
+                                <form action="{{ route('logout') }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="bg-red-600 hover:bg-red-700 text-white px-2 py-1.5 rounded-none text-[10px] font-bold shadow-sm transition duration-300">
+                                        Logout
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}" class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-2.5 py-1.5 rounded-none text-[10px] font-bold shadow-sm transition duration-300" title="Login Admin">
+                                    <i class="fa-solid fa-right-to-bracket text-[11px]"></i>
+                                </a>
+                            @endauth
+                        </div>
+                    </div>
+
+                    <!-- Navigation Links Container (Pill Navbar) -->
+                    <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full md:max-w-none md:overflow-visible flex justify-center py-1 md:py-0">
+                        <ul class="relative flex items-center px-1 py-0.5 rounded-lg select-none"
+                            @mouseleave="hoverIndex = null">
+                            
+                            <!-- The Sliding Background Pill (slidebar) -->
+                            <div class="absolute h-[calc(100%-8px)] w-[58px] md:w-[82px] rounded-md z-0"
+                                 :class="scrolled ? 'bg-gray-300/50' : 'bg-white/20'"
+                                 :style="'transform: translateX(' + ((hoverIndex !== null ? hoverIndex : activeIndex) * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'"></div>
+
+                            <!-- The Sliding Bar (bar) -->
+                            <div class="absolute h-full w-[58px] md:w-[82px] z-0 pointer-events-none"
+                                 :style="'transform: translateX(' + (activeIndex * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'">
+                                 <div class="absolute top-0 left-0 w-full h-[3px] rounded-b-full bg-current"></div>
+                                 <div class="absolute bottom-0 left-0 w-full h-[3px] rounded-t-full bg-current"></div>
+                             </div>
+
+                            <!-- Links -->
+                            <li @mouseenter="hoverIndex = 0" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('home') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Beranda</a>
+                            </li>
+                            <li @mouseenter="hoverIndex = 1" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('tentang') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Tentang</a>
+                            </li>
+                            <li @mouseenter="hoverIndex = 2" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('destinasi') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Destinasi</a>
+                            </li>
+                            <li @mouseenter="hoverIndex = 3" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('pustaka') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Pustaka</a>
+                            </li>
+                            <li @mouseenter="hoverIndex = 4" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('blog.index') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Blog</a>
+                            </li>
+                            <li @mouseenter="hoverIndex = 5" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('temukan') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Lokasi</a>
+                            </li>
+                            <li @mouseenter="hoverIndex = 6" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('testimoni.index') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Kesan</a>
+                            </li>
+                        </ul>
+                    </div>
                     
-                    <div class="flex items-center space-x-4">
+                    <!-- Desktop Actions (Hidden on Mobile) -->
+                    <div class="hidden md:flex items-center space-x-4 shrink-0">
                         @auth
                             <!-- Link to Testimonial Moderation Panel -->
                             <a href="{{ route('admin.testimoni.index') }}" 
@@ -136,20 +180,28 @@
 
                             <!-- Toggle Button for Contact Messages Modal -->
                             <button onclick="document.getElementById('messages-modal').classList.remove('hidden')" 
-                                    class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-none text-xs font-semibold shadow-sm transition duration-300">
-                                <i class="fa-solid fa-envelope"></i> Pesan
+                                    class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-none text-xs font-semibold shadow-sm transition duration-300 relative">
+                                <i class="fa-solid fa-envelope mr-1.5"></i> Pesan
+                                @php
+                                    $unreadMessages = \App\Models\ContactMessage::where('is_read', false)->count();
+                                @endphp
+                                @if($unreadMessages > 0)
+                                    <span class="absolute -top-2 -right-2 bg-red-600 text-white font-extrabold text-[10px] h-5 w-5 rounded-full flex items-center justify-center animate-pulse border border-white">
+                                        {{ $unreadMessages }}
+                                    </span>
+                                @endif
                             </button>
-                            
+
                             <!-- Form Logout Admin -->
                             <form action="{{ route('logout') }}" method="POST" class="inline">
                                 @csrf
                                 <button type="submit" 
                                         class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition duration-300">
-                                    Logout
+                                    Logout Admin
                                 </button>
                             </form>
                         @else
-                            <a href="{{ route('login') }}" class="hidden sm:inline-block bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition-colors duration-300">
+                            <a href="{{ route('login') }}" class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition-colors duration-300">
                                 Login Admin
                             </a>
                         @endauth
@@ -252,7 +304,7 @@
 
             <!-- Footer -->
             <footer class="bg-white border-t border-gray-200">
-                <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-12 text-sm text-gray-600">
+                <div class="max-w-7xl mx-auto px-4 py-8 md:px-6 md:py-16 grid md:grid-cols-3 gap-8 md:gap-12 text-sm text-gray-600">
                     <div class="space-y-4">
                         <h3 class="font-extrabold text-lg text-gray-900">Desa Wisata Punjulharjo</h3>
                         <div class="space-y-2 font-sans text-xs">

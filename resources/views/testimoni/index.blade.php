@@ -21,61 +21,61 @@
     </section>
 
     <!-- STATISTICS & CHARTS SECTION -->
-    <section class="py-16 px-6 max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section class="py-10 md:py-16 px-4 md:px-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
             <!-- Radial Bar: Satisfaction Rating -->
-            <div class="bg-white border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+            <div class="bg-white border border-slate-200 shadow-sm p-3 md:p-6 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-slate-800 font-bold text-lg mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-check text-emerald-500"></i> Indeks Kepuasan
+                    <h3 class="text-slate-800 font-bold text-xs md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-xs md:text-base"></i> Indeks Kepuasan
                     </h3>
-                    <p class="text-xs text-slate-500">Persentase pengunjung yang memberikan rating bintang 5</p>
+                    <p class="text-[9px] md:text-xs text-slate-500 leading-tight">Persentase pengunjung yang memberikan rating bintang 5</p>
                 </div>
-                <div class="my-4 flex items-center justify-center">
+                <div class="my-2 md:my-4 flex items-center justify-center">
                     <div id="radialSatisfactionChart" class="w-full"></div>
                 </div>
-                <div class="border-t border-slate-100 pt-3 text-center">
-                    <span class="text-3xl font-extrabold text-brand-dark">{{ $averageRating }}</span>
-                    <span class="text-slate-400 font-bold text-sm">/ 5.0 Rata-rata Rating</span>
+                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center">
+                    <span class="text-xl md:text-3xl font-extrabold text-brand-dark">{{ $averageRating }}</span>
+                    <span class="text-slate-400 font-bold text-[9px] md:text-sm">/ 5.0 Rata-rata Rating</span>
                 </div>
             </div>
 
             <!-- Donut Chart: Favorite Destination -->
-            <div class="bg-white border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+            <div class="bg-white border border-slate-200 shadow-sm p-3 md:p-6 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-slate-800 font-bold text-lg mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-umbrella-beach text-sky-500"></i> Destinasi Terpopuler
+                    <h3 class="text-slate-800 font-bold text-xs md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
+                        <i class="fa-solid fa-umbrella-beach text-sky-500 text-xs md:text-base"></i> Destinasi Terpopuler
                     </h3>
-                    <p class="text-xs text-slate-500">Pembagian sebaran pilihan tempat wisata favorit hari ini</p>
+                    <p class="text-[9px] md:text-xs text-slate-500 leading-tight">Pembagian sebaran pilihan tempat wisata favorit hari ini</p>
                 </div>
-                <div class="my-4 flex items-center justify-center">
+                <div class="my-2 md:my-4 flex items-center justify-center">
                     <div id="donutDestinationChart" class="w-full"></div>
                 </div>
-                <div class="border-t border-slate-100 pt-3 text-center">
-                    <span class="text-xs font-semibold text-slate-500">Diupdate otomatis berdasarkan data masuk</span>
+                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center">
+                    <span class="text-[9px] md:text-xs font-semibold text-slate-400">Diupdate otomatis berdasarkan data masuk</span>
                 </div>
             </div>
 
             <!-- Static Quick Stats / Call To Action Card -->
-            <div class="bg-gradient-to-br from-brand-light to-brand-dark text-white p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
+            <div class="col-span-2 lg:col-span-1 bg-gradient-to-br from-brand-light to-brand-dark text-white p-5 md:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-white/10 rounded-full blur-2xl"></div>
                 <div>
-                    <h3 class="font-bold text-xl mb-2 text-brand-accent flex items-center gap-2">
+                    <h3 class="font-bold text-lg md:text-xl mb-1.5 md:mb-2 text-brand-accent flex items-center gap-2">
                         <i class="fa-solid fa-quote-left"></i> Total Partisipan
                     </h3>
-                    <p class="text-sm text-slate-200 leading-relaxed">
-                        Senyum, tawa, dan ulasan Anda sangat berarti bagi pengembangan kualitas layanan pariwisata Desa Punjulharjo.
+                    <p class="text-xs md:text-sm text-slate-200 leading-relaxed">
+                        Senyum, tawa, dan ulasan Anda sangat berarti bagi pengembangan pariwisata Desa Punjulharjo.
                     </p>
                 </div>
-                <div class="my-6">
-                    <div class="text-5xl font-black text-white tracking-tight">{{ $totalTestimonials }}</div>
-                    <div class="text-xs text-brand-accent font-bold uppercase tracking-widest mt-1">Ulasan Pengunjung Terverifikasi</div>
+                <div class="my-4 md:my-6">
+                    <div class="text-3xl md:text-5xl font-black text-white tracking-tight">{{ $totalTestimonials }}</div>
+                    <div class="text-[10px] md:text-xs text-brand-accent font-bold uppercase tracking-widest mt-1">Ulasan Pengunjung Terverifikasi</div>
                 </div>
-                <div class="border-t border-white/20 pt-4 flex items-center gap-4">
-                    <i class="fa-solid fa-qrcode text-4xl text-white/90"></i>
+                <div class="border-t border-white/20 pt-3 md:pt-4 flex items-center gap-3 md:gap-4">
+                    <i class="fa-solid fa-qrcode text-3xl md:text-4xl text-white/90"></i>
                     <div>
                         <span class="text-xs font-bold block">Pindai Barcode di Lokasi!</span>
-                        <span class="text-[10px] text-slate-200 block">Kirim ulasan instan langsung lewat kamera HP</span>
+                        <span class="text-[9px] md:text-[10px] text-slate-200 block">Kirim ulasan instan lewat kamera HP</span>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@
             </div>
         @else
             <!-- Responsive Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
                 @foreach($testimonials as $item)
                     <!-- Testimonial Card Design -->
                     <div class="bg-white border {{ !$item->is_approved ? 'border-amber-400 bg-amber-50/20' : 'border-slate-200' }} shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300 group overflow-hidden relative">
@@ -114,7 +114,7 @@
                         <!-- Top Image Section -->
                         <div class="aspect-square w-full relative overflow-hidden bg-slate-100">
                             @if(!$item->is_approved)
-                                <span class="absolute top-3 left-3 bg-amber-500 text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 shadow-sm rounded-sm z-10 flex items-center gap-1">
+                                <span class="absolute top-2 left-2 md:top-3 md:left-3 bg-amber-500 text-white text-[8px] md:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 md:px-2 md:py-0.5 shadow-sm rounded-sm z-10 flex items-center gap-0.5 md:gap-1">
                                     <i class="fa-solid fa-clock-rotate-left"></i> PENDING
                                 </span>
                             @endif
@@ -125,21 +125,21 @@
                                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-brand-light/10 text-brand-light">
-                                    <i class="fa-solid fa-user text-5xl"></i>
+                                    <i class="fa-solid fa-user text-3xl md:text-5xl"></i>
                                 </div>
                             @endif
 
                             <!-- Favorite Destination Badge -->
-                            <span class="absolute bottom-3 left-3 bg-brand-dark/95 text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="absolute bottom-2 left-2 md:bottom-3 md:left-3 bg-brand-dark/95 text-white text-[8px] md:text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1 flex items-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-location-dot text-brand-accent"></i> {{ $item->favorite_destination }}
                             </span>
                         </div>
 
                         <!-- Card Content Section -->
-                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                        <div class="p-3 md:p-5 flex-grow flex flex-col justify-between space-y-2 md:space-y-4">
                             <div>
                                 <!-- Star Rating Display -->
-                                <div class="text-brand-accent text-xs flex gap-0.5 mb-2">
+                                <div class="text-brand-accent text-[9px] md:text-xs flex gap-0.5 mb-1 md:mb-2">
                                     @for($i = 1; $i <= 5; $i++)
                                         @if($i <= $item->rating)
                                             <i class="fa-solid fa-star"></i>
@@ -150,40 +150,40 @@
                                 </div>
 
                                 <!-- One Word Highlight -->
-                                <h4 class="text-brand-dark font-extrabold text-sm md:text-base font-sans tracking-wide leading-snug line-clamp-1 mb-2">
+                                <h4 class="text-brand-dark font-extrabold text-xs md:text-base font-sans tracking-wide leading-snug line-clamp-1 mb-1 md:mb-2">
                                     "{{ $item->one_word }}"
                                 </h4>
 
                                 <!-- Paragraph Kesan -->
-                                <p class="text-slate-600 font-sans text-xs md:text-sm leading-relaxed text-justify line-clamp-4">
+                                <p class="text-slate-600 font-sans text-[10px] md:text-sm leading-relaxed text-justify line-clamp-3 md:line-clamp-4">
                                     {{ $item->review }}
                                 </p>
                             </div>
 
                             <!-- Bottom Identity Info -->
-                            <div class="border-t border-slate-100 pt-3 flex items-center justify-between text-[11px] text-slate-400 font-sans">
+                            <div class="border-t border-slate-100 pt-2 md:pt-3 flex items-center justify-between text-[9px] md:text-[11px] text-slate-400 font-sans">
                                 <div>
-                                    <span class="font-bold text-slate-700 block text-xs">{{ $item->name }}</span>
+                                    <span class="font-bold text-slate-700 block text-[10px] md:text-xs">{{ $item->name }}</span>
                                     <span>Asal: {{ $item->origin_city }}</span>
                                 </div>
-                                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-none text-[9px] font-medium">
+                                <span class="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded-none text-[8px] md:text-[9px] font-medium shrink-0 ml-1">
                                     {{ $item->companion }}
                                 </span>
                             </div>
 
                             @auth
                                 <!-- Action Buttons for Admin on Card -->
-                                <div class="border-t border-slate-100 pt-3 flex gap-2 no-print">
+                                <div class="border-t border-slate-100 pt-2 md:pt-3 flex gap-1.5 md:gap-2 no-print">
                                     <!-- Toggle Approve Button -->
                                     <form action="{{ route('admin.testimoni.approve', $item->id) }}" method="POST" class="w-full">
                                         @csrf
                                         @method('PATCH')
                                         @if($item->is_approved)
-                                            <button type="submit" class="w-full text-center bg-slate-200 hover:bg-slate-300 text-slate-700 py-1.5 px-2 text-[10px] font-bold uppercase transition" title="Tangguhkan Testimoni">
+                                            <button type="submit" class="w-full text-center bg-slate-200 hover:bg-slate-300 text-slate-700 py-1 md:py-1.5 px-1.5 md:px-2 text-[8px] md:text-[10px] font-bold uppercase transition" title="Tangguhkan Testimoni">
                                                 Tangguhkan
                                             </button>
                                         @else
-                                            <button type="submit" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 text-[10px] font-bold uppercase transition" title="Setujui Testimoni">
+                                            <button type="submit" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white py-1 md:py-1.5 px-1.5 md:px-2 text-[8px] md:text-[10px] font-bold uppercase transition" title="Setujui Testimoni">
                                                 Setujui
                                             </button>
                                         @endif
@@ -193,7 +193,7 @@
                                     <form action="{{ route('admin.testimoni.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus ulasan ini?')" class="shrink-0">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="bg-red-50 hover:bg-red-100 border border-red-100 text-red-600 p-1.5 text-xs transition flex items-center justify-center h-[28px] w-[28px]" title="Hapus Ulasan">
+                                        <button type="submit" class="bg-red-50 hover:bg-red-100 border border-red-100 text-red-600 p-1 md:p-1.5 text-[10px] md:text-xs transition flex items-center justify-center h-[24px] w-[24px] md:h-[28px] md:w-[28px]" title="Hapus Ulasan">
                                             <i class="fa-solid fa-trash-can"></i>
                                         </button>
                                     </form>
@@ -217,7 +217,7 @@
         const satisfPercent = {{ $fiveStarPercentage }};
         const radialOptions = {
             chart: {
-                height: 240,
+                height: window.innerWidth < 768 ? 160 : 240,
                 type: 'radialBar',
             },
             series: [satisfPercent],
@@ -225,11 +225,11 @@
             plotOptions: {
                 radialBar: {
                     hollow: {
-                        size: '70%',
+                        size: window.innerWidth < 768 ? '55%' : '70%',
                     },
                     dataLabels: {
                         name: {
-                            show: true,
+                            show: window.innerWidth >= 768,
                             color: '#475569',
                             fontSize: '11px',
                             fontWeight: 600,
@@ -238,9 +238,9 @@
                         value: {
                             show: true,
                             color: '#0d355e',
-                            fontSize: '32px',
+                            fontSize: window.innerWidth < 768 ? '18px' : '32px',
                             fontWeight: 800,
-                            offsetY: 8,
+                            offsetY: window.innerWidth < 768 ? 5 : 8,
                             formatter: function (val) {
                                 return val + "%";
                             }
@@ -263,22 +263,30 @@
 
         const donutOptions = {
             chart: {
-                height: 250,
+                height: window.innerWidth < 768 ? 180 : 250,
                 type: 'donut',
             },
             series: destValues,
             labels: destKeys,
             colors: ['#0d355e', '#749db2', '#fab831', '#acb6bd'], // Palette Warna Brand
             legend: {
+                show: true,
                 position: 'bottom',
-                fontSize: '11px',
+                fontSize: window.innerWidth < 768 ? '8px' : '11px',
                 fontFamily: 'Inter, sans-serif',
                 labels: {
                     colors: '#475569'
+                },
+                itemMargin: {
+                    horizontal: window.innerWidth < 768 ? 2 : 5,
+                    vertical: window.innerWidth < 768 ? 1 : 2
                 }
             },
             dataLabels: {
                 enabled: true,
+                style: {
+                    fontSize: window.innerWidth < 768 ? '9px' : '12px'
+                },
                 formatter: function (val) {
                     return Math.round(val) + "%";
                 }
