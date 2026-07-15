@@ -128,7 +128,7 @@
                     </div>
 
                     <!-- Navigation Links Container (Pill Navbar) -->
-                    <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide max-w-full md:max-w-none md:overflow-visible flex justify-center py-1 md:py-0">
+                    <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible flex justify-start md:justify-center py-1 md:py-0 px-2 md:px-0">
                         <ul class="relative flex items-center px-1 py-0.5 rounded-lg select-none"
                             @mouseleave="hoverIndex = null">
                             

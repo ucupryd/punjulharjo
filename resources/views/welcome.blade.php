@@ -178,7 +178,7 @@
         
         <!-- Multi-layered Aesthetic Wave Divider -->
         <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10">
-            <svg class="relative block w-full h-[145px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <svg class="relative block w-full h-[60px] md:h-[145px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <!-- Layer 1: Back Wave (Translucent Brand-Light) - Tall wave -->
                 <path d="M0,10 C150,40,350,0,600,25 C850,50,1050,15,1200,20 L1200,120 L0,120 Z" fill="rgba(116, 157, 178, 0.45)"></path>
                 <!-- Layer 2: Middle Wave (Translucent Brand-Dark) - Tall wave -->
@@ -191,28 +191,28 @@
 
 
     <!-- SECTION B: About Us (Tentang Desa) -->
-    <section id="tentang" class="bg-transparent py-12 md:py-32 px-4 md:px-12 relative overflow-hidden">
+    <section id="tentang" class="bg-transparent py-8 md:py-32 px-4 md:px-12 relative overflow-hidden">
         <div class="max-w-6xl mx-auto">
-            <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+            <div class="grid lg:grid-cols-12 gap-6 md:gap-8 lg:gap-16 items-center">
                 <!-- Text Block Left with custom radio tabs -->
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-brand-muted/10 text-brand-dark text-sm font-semibold uppercase tracking-wider border border-brand-muted/20">
+                <div class="lg:col-span-7 space-y-4 md:space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 rounded-none bg-brand-muted/10 text-brand-dark text-xs md:text-sm font-semibold uppercase tracking-wider border border-brand-muted/20">
                         <i class="fa-solid fa-feather-pointed"></i> Sekilas Profil
                     </div>
                     
-                    <h2 class="text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
+                    <h2 class="text-xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Tentang Desa Wisata
                     </h2>
                     
                     <!-- Radio tab switcher layout -->
-                    <div class="radio-tabs-wrapper">
+                    <div class="radio-tabs-wrapper [--w-label:95px] md:[--w-label:120px]">
                         <div class="wrap">
                             <input checked type="radio" id="rd-1" name="radio" class="rd-1" hidden />
-                            <label for="rd-1" class="label" style="--index: 0;"><span>Profil Desa</span></label>
+                            <label for="rd-1" class="label text-[11px] md:text-sm py-2.5 px-2 md:py-3 md:px-4" style="--index: 0;"><span>Profil Desa</span></label>
                             <input type="radio" id="rd-2" name="radio" class="rd-2" hidden />
-                            <label for="rd-2" class="label" style="--index: 1;"><span>Visi & Misi</span></label>
+                            <label for="rd-2" class="label text-[11px] md:text-sm py-2.5 px-2 md:py-3 md:px-4" style="--index: 1;"><span>Visi & Misi</span></label>
                             <input type="radio" id="rd-3" name="radio" class="rd-3" hidden />
-                            <label for="rd-3" class="label" style="--index: 2;"><span>Potensi</span></label>
+                            <label for="rd-3" class="label text-[11px] md:text-sm py-2.5 px-2 md:py-3 md:px-4" style="--index: 2;"><span>Potensi</span></label>
                             <div class="bar"></div>
                             <div class="slidebar"></div>
                         </div>
@@ -347,7 +347,7 @@
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
                     <i class="fa-regular fa-images"></i> Galeri Visual
                 </div>
-                <h2 class="text-2xl md:text-5xl font-heading text-gray-900 tracking-wide">
+                <h2 class="text-xl md:text-5xl font-heading text-gray-900 tracking-wide">
                     Potret Punjulharjo
                 </h2>
                 <p class="text-gray-500 font-sans max-w-xl mx-auto">
@@ -611,7 +611,7 @@
                         <i class="fa-solid fa-people-group"></i> Harmoni Sosial
                     </div>
                     
-                    <h2 class="text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
+                    <h2 class="text-xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Kehidupan Budaya & Tradisi
                     </h2>
                     
@@ -637,7 +637,7 @@
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
                     <i class="fa-solid fa-compass"></i> Sorotan Pengalaman
                 </div>
-                <h2 class="text-2xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
+                <h2 class="text-xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
                     Jelajahi Aktivitas Punjulharjo
                 </h2>
                 <p class="text-gray-600 font-sans text-sm md:text-lg">
