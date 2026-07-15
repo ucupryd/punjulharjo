@@ -33,12 +33,7 @@
         }
 
         .page-frame-inner {
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25)), 
-                url("{{ asset('images/beach-bg.png') }}") !important;
-            background-size: cover !important;
-            background-position: center !important;
-            background-attachment: scroll !important;
+            background-color: #ffffff !important;
         }
     </style>
 
@@ -46,56 +41,128 @@
     
     <!-- FontAwesome (icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    @stack('styles')
 </head>
 
-<body class="bg-[#edf2f7] min-h-screen antialiased">
+<body class="bg-white min-h-screen antialiased">
 
-    <!-- Page Frame Wrapper (creates the premium white rounded border aesthetic) -->
+    <!-- Page Frame Wrapper (Clean corporate theme) -->
     <div class="page-frame-container">
-        <div class="page-frame-inner">
+        <div class="page-frame-inner bg-white">
 
-            <!-- Navbar -->
-            <div class="fixed top-6 left-0 w-full z-50 px-4 md:px-12">
-                <nav class="glass-nav shadow-lg rounded-xl max-w-6xl mx-auto py-3 px-6 flex justify-between items-center transition duration-300">
-                    <a href="/" class="text-xl font-extrabold bg-gradient-to-r from-sky-400 via-sky-100 to-white bg-clip-text text-transparent hover:scale-105 transition duration-300">
-                        Desa Punjulharjo
+            <!-- Navbar (Full-width fixed top header) -->
+            @php
+                $activeIndex = 0;
+                if (request()->is('tentang')) {
+                    $activeIndex = 1;
+                } elseif (request()->is('destinasi*')) {
+                    $activeIndex = 2;
+                } elseif (request()->is('pustaka*')) {
+                    $activeIndex = 3;
+                } elseif (request()->is('blog*')) {
+                    $activeIndex = 4;
+                } elseif (request()->is('temukan*')) {
+                    $activeIndex = 5;
+                } elseif (request()->is('testimoni*')) {
+                    $activeIndex = 6;
+                }
+            @endphp
+            <header x-data="{ hoverIndex: null, activeIndex: {{ $activeIndex }}, isHome: {{ request()->is('/') ? 'true' : 'false' }}, scrolled: false }"
+                    x-init="scrolled = !isHome || window.pageYOffset > 50"
+                    @scroll.window="scrolled = !isHome || window.pageYOffset > 50"
+                    :class="scrolled ? 'bg-white shadow-md text-brand-dark' : 'bg-transparent text-white'"
+                    class="fixed top-0 left-0 w-full z-[999] transition-all duration-300">
+                <nav class="max-w-7xl mx-auto py-4 px-6 flex justify-between items-center transition duration-300">
+                    <!-- Left (Branding) -->
+                    <a href="/" class="flex items-center hover:opacity-90 transition duration-300 mr-2">
+                        <img src="{{ asset('images/Lambang_Kabupaten_Rembang.webp') }}" class="w-9 h-9 object-contain shrink-0 mr-2.5" alt="Logo Rembang">
+                        <div class="flex flex-col text-left">
+                            <span class="font-bold text-sm leading-tight">Desa Wisata Punjulharjo</span>
+                            <span class="text-[10px] font-sans leading-none mt-0.5 opacity-75">Kec. Rembang, Kab. Rembang</span>
+                        </div>
                     </a>
                     
-                    <!-- Desktop Navigation Sliding Tabs Switcher -->
-                    <div class="hidden md:block nav-radio-tabs-wrapper">
-                        <div class="nav-wrap">
-                            <input type="radio" id="nav-rd-1" name="nav-radio" class="nav-rd-1" {{ Route::is('home') ? 'checked' : '' }} hidden />
-                            <a href="{{ route('home') }}" class="nav-label"><span>Beranda</span></a>
-                            
-                            <input type="radio" id="nav-rd-2" name="nav-radio" class="nav-rd-2" {{ Route::is('tentang') ? 'checked' : '' }} hidden />
-                            <a href="{{ route('tentang') }}" class="nav-label"><span>Tentang</span></a>
-                            
-                            <input type="radio" id="nav-rd-3" name="nav-radio" class="nav-rd-3" {{ Route::is('video.*') ? 'checked' : '' }} hidden />
-                            <a href="{{ route('video.index') }}" class="nav-label"><span>Video</span></a>
-                            
-                            <input type="radio" id="nav-rd-4" name="nav-radio" class="nav-rd-4" {{ Route::is('blog.*') ? 'checked' : '' }} hidden />
-                            <a href="{{ route('blog.index') }}" class="nav-label"><span>Blog</span></a>
-                            
-                            <input type="radio" id="nav-rd-5" name="nav-radio" class="nav-rd-5" {{ Route::is('temukan') ? 'checked' : '' }} hidden />
-                            <a href="{{ route('temukan') }}" class="nav-label"><span>Temukan Kami</span></a>
-                            
-                            <div class="nav-bar"></div>
-                            <div class="nav-slidebar"></div>
+                    <!-- Desktop Navigation Links (Centered/Right-aligned) -->
+                    <ul class="relative hidden md:flex items-center px-1.5 py-0.5 rounded-lg select-none"
+                        @mouseleave="hoverIndex = null">
+                        
+                        <!-- The Sliding Background Pill (slidebar) -->
+                        <div class="absolute h-[calc(100%-8px)] w-[82px] rounded-md z-0"
+                             :class="scrolled ? 'bg-gray-300/50' : 'bg-white/20'"
+                             :style="'transform: translateX(' + ((hoverIndex !== null ? hoverIndex : activeIndex) * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'"></div>
+
+                        <!-- The Sliding Bar (bar) -->
+                        <div class="absolute h-full w-[82px] z-0 pointer-events-none"
+                             :style="'transform: translateX(' + (activeIndex * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'">
+                             <div class="absolute top-0 left-0 w-full h-[3px] rounded-b-full bg-current"></div>
+                             <div class="absolute bottom-0 left-0 w-full h-[3px] rounded-t-full bg-current"></div>
                         </div>
-                    </div>
+
+                        <!-- Links -->
+                        <li @mouseenter="hoverIndex = 0" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
+                            <a href="{{ route('home') }}" class="block py-2 text-xs font-semibold text-current">Beranda</a>
+                        </li>
+                        <li @mouseenter="hoverIndex = 1" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
+                            <a href="{{ route('tentang') }}" class="block py-2 text-xs font-semibold text-current">Tentang</a>
+                        </li>
+                        <li @mouseenter="hoverIndex = 2" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
+                            <a href="{{ route('destinasi') }}" class="block py-2 text-xs font-semibold text-current">Destinasi</a>
+                        </li>
+                        <li @mouseenter="hoverIndex = 3" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
+                            <a href="{{ route('pustaka') }}" class="block py-2 text-xs font-semibold text-current">Pustaka</a>
+                        </li>
+                        <li @mouseenter="hoverIndex = 4" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
+                            <a href="{{ route('blog.index') }}" class="block py-2 text-xs font-semibold text-current">Blog</a>
+                        </li>
+                        <li @mouseenter="hoverIndex = 5" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
+                            <a href="{{ route('temukan') }}" class="block py-2 text-xs font-semibold text-current">Lokasi</a>
+                        </li>
+                        <li @mouseenter="hoverIndex = 6" @mouseleave="hoverIndex = null" class="relative z-10 w-[82px] text-center">
+                            <a href="{{ route('testimoni.index') }}" class="block py-2 text-xs font-semibold text-current">Kesan</a>
+                        </li>
+                    </ul>
                     
                     <div class="flex items-center space-x-4">
-                        <a href="{{ route('login') }}" class="hidden sm:inline-block bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white px-5 py-2 rounded-full text-sm font-semibold shadow-md transition duration-300 transform hover:scale-105">
-                            Login Admin
-                        </a>
+                        @auth
+                            <!-- Link to Testimonial Moderation Panel -->
+                            <a href="{{ route('admin.testimoni.index') }}" 
+                               class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-none text-xs font-semibold shadow-sm transition duration-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-comments"></i> Moderasi
+                            </a>
+
+                            <!-- Toggle Button for Contact Messages Modal -->
+                            <button onclick="document.getElementById('messages-modal').classList.remove('hidden')" 
+                                    class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-none text-xs font-semibold shadow-sm transition duration-300">
+                                <i class="fa-solid fa-envelope"></i> Pesan
+                            </button>
+                            
+                            <!-- Form Logout Admin -->
+                            <form action="{{ route('logout') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" 
+                                        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition duration-300">
+                                    Logout
+                                </button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="hidden sm:inline-block bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition-colors duration-300">
+                                Login Admin
+                            </a>
+                        @endauth
                         
                         <!-- Hamburger Menu Button -->
-                        <button id="mobile-menu-toggle" class="md:hidden text-slate-700 hover:text-sky-600 focus:outline-none" aria-label="Toggle Menu">
+                        <button id="mobile-menu-toggle" 
+                                class="md:hidden focus:outline-none transition-colors duration-300"
+                                aria-label="Toggle Menu">
                             <i class="fa-solid fa-bars text-xl"></i>
-                        </</button>
+                        </button>
                     </div>
                 </nav>
-            </div>
+            </header>
 
             <!-- Mobile Navigation Drawer -->
             <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-md transition-opacity duration-300 flex justify-end">
@@ -110,56 +177,126 @@
                         <div class="flex flex-col space-y-4 mt-8 font-medium">
                             <a href="/" class="text-slate-700 hover:text-sky-600 text-lg transition">Beranda</a>
                             <a href="{{ route('tentang') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Tentang</a>
-                            <a href="{{ route('video.index') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Video</a>
+                            <a href="{{ route('destinasi') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Destinasi</a>
+                            <a href="{{ route('pustaka') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Pustaka</a>
                             <a href="{{ route('blog.index') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Blog</a>
-                            <a href="{{ route('temukan') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Temukan Kami</a>
+                            <a href="{{ route('temukan') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Lokasi</a>
+                            <a href="{{ route('testimoni.index') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Kesan Pengunjung</a>
                         </div>
                     </div>
-                    <div class="pt-6 border-t">
-                        <a href="{{ route('login') }}" class="block text-center bg-gradient-to-r from-sky-500 to-indigo-500 text-white py-3 rounded-full font-semibold shadow-md">
-                            Login Admin
-                        </a>
+                    <div class="pt-6 border-t space-y-3">
+                        @auth
+                            <a href="{{ route('admin.testimoni.index') }}" 
+                               class="block w-full text-center bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-none font-semibold shadow">
+                                Moderasi Testimoni
+                            </a>
+                            <button onclick="document.getElementById('messages-modal').classList.remove('hidden')" 
+                                    class="block w-full text-center bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-none font-semibold shadow">
+                                Pesan
+                            </button>
+                            <form action="{{ route('logout') }}" method="POST" class="block w-full">
+                                @csrf
+                                <button type="submit" class="block w-full text-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-none font-semibold shadow">
+                                    Logout
+                                </button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="block text-center bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-none font-semibold shadow">
+                                Login Admin
+                            </a>
+                        @endauth
                     </div>
                 </div>
             </div>
 
             <!-- Main Content -->
             <main class="flex-grow">
+                <!-- Global Alerts (Floating Toast) -->
+                @if(session('success') || $errors->any())
+                    <div class="fixed top-28 right-6 z-[9999] max-w-md w-full space-y-3 pointer-events-auto">
+                        @if(session('success'))
+                            <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 shadow-lg flex items-center justify-between font-sans text-sm" role="alert" x-data="{ show: true }" x-show="show">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                                    <span>{{ session('success') }}</span>
+                                </div>
+                                <button type="button" @click="show = false" class="text-emerald-500 hover:text-emerald-700 transition ml-4">
+                                    <i class="fa-solid fa-xmark text-sm"></i>
+                                </button>
+                            </div>
+                        @endif
+
+                        @if($errors->any())
+                            <div class="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 shadow-lg flex flex-col font-sans text-sm" role="alert" x-data="{ show: true }" x-show="show">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2 font-semibold">
+                                        <i class="fa-solid fa-circle-exclamation text-rose-600"></i>
+                                        <span>Terdapat beberapa kesalahan:</span>
+                                    </div>
+                                    <button type="button" @click="show = false" class="text-rose-500 hover:text-rose-700 transition">
+                                        <i class="fa-solid fa-xmark text-sm"></i>
+                                    </button>
+                                </div>
+                                <ul class="list-disc list-inside space-y-1 text-xs opacity-90 pl-1">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
                 @yield('content')
             </main>
 
             <!-- Footer -->
-            <footer class="bg-slate-50 border-t border-slate-100">
-                <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-12 text-sm text-slate-600">
+            <footer class="bg-white border-t border-gray-200">
+                <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-12 text-sm text-gray-600">
                     <div class="space-y-4">
-                        <h3 class="font-extrabold text-lg text-slate-800">Desa Wisata Punjulharjo</h3>
-                        <p class="leading-relaxed">📍 8C57+JW8, Jetakbelah, Punjulharjo, Kec. Rembang, Kabupaten Rembang, Jawa Tengah 59219</p>
-                        <div class="flex space-x-4 pt-2">
-                            <a href="https://facebook.com" target="_blank" class="w-8 h-8 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-600 hover:text-white transition duration-300"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="https://instagram.com" target="_blank" class="w-8 h-8 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-600 hover:text-white transition duration-300"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="https://youtube.com" target="_blank" class="w-8 h-8 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-600 hover:text-white transition duration-300"><i class="fa-brands fa-youtube"></i></a>
+                        <h3 class="font-extrabold text-lg text-gray-900">Desa Wisata Punjulharjo</h3>
+                        <div class="space-y-2 font-sans text-xs">
+                            <p class="leading-relaxed">
+                                <strong class="text-gray-700 font-semibold">Alamat Desa Wisata:</strong><br>
+                                📍 <a href="https://maps.app.goo.gl/jhFMynBy4wUFiuCA7" target="_blank" class="hover:text-sky-600 transition">Punjulharjo, Kec. Rembang, Kabupaten Rembang, Jawa Tengah 59219</a>
+                            </p>
+                        </div>
+                        <div class="flex space-x-3 pt-2">
+                            <a href="https://www.instagram.com/desawisatapunjulharjo/" target="_blank" 
+                               class="w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-[#e1306c] hover:text-white transition-all duration-300 shadow-sm" 
+                               title="Instagram">
+                                <i class="fa-brands fa-instagram text-base"></i>
+                            </a>
+                            <a href="https://www.youtube.com/@desawisatapunjulharjo9639" target="_blank" 
+                               class="w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-[#ff0000] hover:text-white transition-all duration-300 shadow-sm" 
+                               title="YouTube">
+                                <i class="fa-brands fa-youtube text-base"></i>
+                            </a>
+                            <a href="https://www.tiktok.com/@desawisata.punjul" target="_blank" 
+                               class="w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 shadow-sm" 
+                               title="TikTok">
+                                <i class="fa-brands fa-tiktok text-base"></i>
+                            </a>
                         </div>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-800 text-base mb-4">Navigasi Halaman</h3>
+                        <h3 class="font-bold text-gray-900 text-base mb-4">Navigasi Halaman</h3>
                         <ul class="space-y-3 font-medium">
                             <li><a href="/" class="hover:text-sky-600 transition">Beranda</a></li>
                             <li><a href="{{ route('tentang') }}" class="hover:text-sky-600 transition">Tentang Kami</a></li>
                             <li><a href="{{ route('video.index') }}" class="hover:text-sky-600 transition">Galeri Video</a></li>
                             <li><a href="{{ route('blog.index') }}" class="hover:text-sky-600 transition">Artikel & Blog</a></li>
-                            <li><a href="{{ route('temukan') }}" class="hover:text-sky-600 transition">Hubungi & Temukan Kami</a></li>
+                            <li><a href="{{ route('temukan') }}" class="hover:text-sky-600 transition">Hubungi & Lokasi Kami</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-800 text-base mb-4">Peta Lokasi</h3>
-                        <div class="rounded-2xl overflow-hidden shadow-md border border-slate-100">
-                            <iframe src="https://www.google.com/maps?q=Punjulharjo,Rembang&output=embed" width="100%" height="150"
-                                class="border-none">
-                            </iframe>
+                        <h3 class="font-bold text-gray-900 text-base mb-4">Peta Lokasi</h3>
+                        <div class="rounded-none overflow-hidden shadow border border-gray-200">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15855.531271081694!2d111.3857503757342!3d-6.685363393311915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e774775d710fa53%3A0xe54d6ea6a6c221a9!2sPunjulharjo%2C%20Kec.%20Rembang%2C%20Kabupaten%20Rembang%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1720680000000!5m2!1sid!2sid" width="100%" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="border-none"></iframe>
                         </div>
                     </div>
                 </div>
-                <div class="text-center text-slate-400 py-6 border-t border-slate-100 text-xs">
+                <div class="text-center text-gray-400 py-6 border-t border-gray-200 text-xs">
                     © {{ date('Y') }} Desa Wisata Punjulharjo. Semua hak dilindungi.
                 </div>
             </footer>
@@ -196,6 +333,62 @@
             });
         });
     </script>
+
+    @auth
+        <!-- Messages Modal -->
+        <div id="messages-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-none shadow max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-slate-100 transform transition-all">
+                <!-- Modal Header -->
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-inbox text-sky-600 text-xl"></i>
+                        <h3 class="text-xl font-heading text-slate-800">Pesan Masuk (Hubungi Kami)</h3>
+                    </div>
+                    <button onclick="document.getElementById('messages-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                        <i class="fa-solid fa-xmark text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="p-6 overflow-y-auto space-y-4 flex-grow max-h-[60vh] bg-slate-50">
+                    @php
+                        $contactMessages = \App\Models\ContactMessage::latest()->take(30)->get();
+                    @endphp
+
+                    @if($contactMessages->count() > 0)
+                        @foreach($contactMessages as $msg)
+                            <div class="bg-white p-5 rounded-none border border-slate-100 shadow-sm space-y-3">
+                                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-100 pb-2">
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800 text-sm sm:text-base">{{ $msg->name }}</h4>
+                                        <p class="text-xs text-sky-600">{{ $msg->email }}</p>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 bg-slate-50 px-2 py-1 rounded-none">
+                                        {{ $msg->created_at->format('d M Y, H:i') }}
+                                    </span>
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-600 whitespace-pre-line leading-relaxed font-sans">{{ $msg->message }}</p>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="text-center py-12 text-slate-400 font-sans">
+                            <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
+                            <p>Belum ada pesan masuk.</p>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+                    <button onclick="document.getElementById('messages-modal').classList.add('hidden')" 
+                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-5 py-2 rounded-none text-sm transition">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endauth
+    @stack('scripts')
 </body>
 
 </html>

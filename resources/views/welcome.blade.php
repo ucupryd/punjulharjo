@@ -2,59 +2,189 @@
 
 @section('content')
     @php
-        // Fetch hero background image from SiteSetting dynamically, with default fallback set to the original scenic background photo
-        $heroBg = \App\Models\SiteSetting::getValue('hero_background', 'storage/hero/9qTbqw7WY7alzKqM8aK4duA1mPisHBiavO5ARCGB.jpg');
+        $heroBg = \App\Models\SiteSetting::getValue('hero_background');
+        $heroBgUrl = $heroBg 
+            ? (str_starts_with($heroBg, 'http') || str_contains($heroBg, 'storage/') ? asset($heroBg) : Storage::url($heroBg)) 
+            : asset('storage/hero/9qTbqw7WY7alzKqM8aK4duA1mPisHBiavO5ARCGB.jpg');
+
+        // Fetch Carousel Items from SiteSetting or fallback to default
+        $carouselItemsJson = \App\Models\SiteSetting::getValue('carousel_items');
+        $carouselItems = $carouselItemsJson ? json_decode($carouselItemsJson, true) : [
+            [
+                'id' => 1,
+                'image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+                'title' => 'Susur Pantai Karang Jahe',
+                'description' => 'Menikmati segarnya hembusan angin laut di bawah keteduhan ribuan cemara laut yang berjejer rapi.'
+            ],
+            [
+                'id' => 2,
+                'image' => 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
+                'title' => 'Eksplorasi Perahu Abad ke-7',
+                'description' => 'Melihat langsung mahakarya arkeologis kapal kayu tertua di nusantara bukti peradaban bahari.'
+            ],
+            [
+                'id' => 3,
+                'image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+                'title' => 'Wisata Mangrove & Tambak',
+                'description' => 'Menyusuri jalur trekking hutan bakau hijau dan edukasi budidaya garam lokal masyarakat.'
+            ],
+            [
+                'id' => 4,
+                'image' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+                'title' => 'Festival Budaya Pesisir',
+                'description' => 'Menyaksikan pagelaran tari tradisional dan sedekah laut tahunan khas warga pesisir.'
+            ],
+            [
+                'id' => 5,
+                'image' => 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=800&q=80',
+                'title' => 'Kuliner Seafood & Khas Rembang',
+                'description' => 'Menikmati masakan laut segar bumbu rempah tradisi di warung makan tepi pantai.'
+            ]
+        ];
+
+        // Fetch Gallery Items from SiteSetting or fallback to default
+        $galleryItemsJson = \App\Models\SiteSetting::getValue('gallery_items');
+        $galleryItems = $galleryItemsJson ? json_decode($galleryItemsJson, true) : [
+            [
+                'id' => 1,
+                'image' => 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=600&q=80',
+                'title' => 'Pesona Pantai',
+                'aspect_class' => 'aspect-[3/4] md:row-span-2'
+            ],
+            [
+                'id' => 2,
+                'image' => 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1000&q=80',
+                'title' => 'Kehidupan Pantai',
+                'aspect_class' => 'aspect-[4/3] md:col-span-2'
+            ],
+            [
+                'id' => 3,
+                'image' => 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
+                'title' => 'Bahari Tradisional',
+                'aspect_class' => 'aspect-square'
+            ],
+            [
+                'id' => 4,
+                'image' => 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80',
+                'title' => 'Sunset Pesisir',
+                'aspect_class' => 'aspect-square'
+            ],
+            [
+                'id' => 5,
+                'image' => 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=600&q=80',
+                'title' => 'Ekosistem Pantai',
+                'aspect_class' => 'aspect-[4/3]'
+            ],
+            [
+                'id' => 6,
+                'image' => 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1000&q=80',
+                'title' => 'Aktivitas Gotong Royong',
+                'aspect_class' => 'aspect-[16/9] md:col-span-2'
+            ]
+        ];
     @endphp
 
     <!-- SECTION A: Hero Section -->
-    <section class="relative w-full min-h-[92vh] flex flex-col justify-center items-center text-center px-6 overflow-hidden bg-transparent">
-        <!-- Edge-to-edge Background Image with darkened overlay -->
-        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10000ms] hover:scale-105"
-             style="background-image: url('{{ asset($heroBg) }}');">
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/80"></div>
+    <section class="relative w-full h-[115vh] flex flex-col justify-center items-center text-center px-6 overflow-hidden bg-transparent">
+        @auth
+            <!-- Floating Edit Button for Hero Background -->
+            <div class="absolute top-28 right-8 z-30">
+                <button onclick="document.getElementById('edit-hero-modal').classList.remove('hidden')" 
+                        class="bg-white/80 hover:bg-white text-slate-800 px-4 py-2.5 rounded-none shadow border border-white/20 transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
+                    <i class="fa-solid fa-pencil text-sky-600"></i> Edit Background Hero
+                </button>
+            </div>
 
-        <div class="relative z-10 max-w-4xl mx-auto mt-32 md:mt-40 pb-20">
+            <!-- Edit Hero Modal -->
+            <div id="edit-hero-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 text-left transform transition-all">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                        <h3 class="text-lg font-heading text-slate-800">Edit Background Hero</h3>
+                        <button type="button" onclick="document.getElementById('edit-hero-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    <form action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih Foto atau Video Latar Belakang Baru</label>
+                                <input type="file" name="hero_background" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP, MP4, WEBM, MOV, OGG. Ukuran maks: 10MB.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                            <button type="button" onclick="document.getElementById('edit-hero-modal').classList.add('hidden')" 
+                                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                Batal
+                            </button>
+                            <button type="submit" 
+                                    class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                Simpan Perubahan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endauth
+        <!-- Edge-to-edge Background Video/Image with darkened overlay -->
+        @php
+            $isVideo = false;
+            $videoType = 'video/mp4';
+            $lowerUrl = Str::lower($heroBgUrl);
+            if (Str::endsWith($lowerUrl, '.mp4')) {
+                $isVideo = true;
+                $videoType = 'video/mp4';
+            } elseif (Str::endsWith($lowerUrl, '.webm')) {
+                $isVideo = true;
+                $videoType = 'video/webm';
+            } elseif (Str::endsWith($lowerUrl, '.mov') || Str::endsWith($lowerUrl, '.qt')) {
+                $isVideo = true;
+                $videoType = 'video/quicktime';
+            } elseif (Str::endsWith($lowerUrl, '.ogg')) {
+                $isVideo = true;
+                $videoType = 'video/ogg';
+            }
+        @endphp
+
+        @if($isVideo)
+            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+                <source src="{{ $heroBgUrl }}" type="{{ $videoType }}">
+            </video>
+        @else
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10000ms] hover:scale-105"
+                 style="background-image: url('{{ $heroBgUrl }}');">
+            </div>
+        @endif
+
+        <div class="relative z-10 max-w-4xl mx-auto pt-16 pb-16">
             <!-- Main Title in THE LAST TRUNKS Font -->
-            <h1 id="hero-title" class="text-5xl md:text-7xl lg:text-8xl font-heading text-white mb-6 tracking-wide drop-shadow-xl min-h-[2em] md:min-h-[1.2em]"></h1>
+            <h1 id="hero-title" class="text-4xl md:text-5xl lg:text-6xl font-heading text-white mb-6 tracking-wide drop-shadow-xl min-h-[2em] md:min-h-[1.2em]"></h1>
             
             <!-- Subtitle in Poppins Font -->
-            <p class="text-lg md:text-xl lg:text-2xl text-slate-100 font-sans max-w-3xl mx-auto leading-relaxed drop-shadow-md mb-12 opacity-90">
+            <p class="text-sm md:text-base lg:text-lg text-slate-100 font-sans max-w-2xl mx-auto leading-relaxed drop-shadow-md mb-10 opacity-90">
                 Memadukan potensi wisata alam, wisata sejarah, dan wisata edukasi dalam satu kawasan yang saling melengkapi.
             </p>
             
             <!-- CTA Button Jelajahi Desa -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <a href="#tentang" 
-                   class="inline-flex items-center justify-center bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 text-white font-semibold px-8 py-4 rounded-full text-lg shadow-lg hover:shadow-sky-500/30 transition duration-300 transform hover:-translate-y-1 hover:scale-105">
+                   class="inline-flex items-center justify-center bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark transition-colors font-semibold px-6 py-3 text-sm rounded-none shadow duration-300 transform hover:-translate-x-1 hover:scale-105">
                     Jelajahi Desa
-                    <i class="fa-solid fa-arrow-down ml-3 text-sm animate-bounce"></i>
+                    <i class="fa-solid fa-arrow-down ml-3 text-xs animate-bounce"></i>
                 </a>
-            </div>
-
-            <!-- Floating Translucent Badges (from the design guide) -->
-            <div class="mt-12 flex flex-wrap gap-4 justify-center opacity-80">
-                <span class="glass-panel px-5 py-2.5 rounded-full text-slate-800 text-sm font-semibold flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-gem text-amber-500 text-xs"></i> Wisata Alam
-                </span>
-                <span class="glass-panel px-5 py-2.5 rounded-full text-slate-800 text-sm font-semibold flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-gem text-amber-500 text-xs"></i> Wisata Sejarah
-                </span>
-                <span class="glass-panel px-5 py-2.5 rounded-full text-slate-800 text-sm font-semibold flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-gem text-amber-500 text-xs"></i> Wisata Edukasi
-                </span>
             </div>
         </div>
         
         <!-- Multi-layered Aesthetic Wave Divider -->
         <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10">
-            <svg class="relative block w-full h-[80px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <!-- Layer 1: Back Wave (Translucent Sky-Blue) -->
-                <path d="M0,90 C320,130,420,40,740,70 C1040,95,1120,60,1200,80 L1200,120 L0,120 Z" fill="rgba(14, 165, 233, 0.2)"></path>
-                <!-- Layer 2: Middle Wave (Translucent White) -->
-                <path d="M0,60 C240,90,380,30,700,60 C1000,85,1080,45,1200,55 L1200,120 L0,120 Z" fill="rgba(255, 255, 255, 0.35)"></path>
-                <!-- Layer 3: Front Wave (Translucent White/Cream) -->
-                <path d="M0,30 C150,60,350,10,600,40 C850,70,1050,30,1200,40 L1200,120 L0,120 Z" fill="rgba(255, 255, 255, 0.5)"></path>
+            <svg class="relative block w-full h-[145px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <!-- Layer 1: Back Wave (Translucent Brand-Light) - Tall wave -->
+                <path d="M0,10 C150,40,350,0,600,25 C850,50,1050,15,1200,20 L1200,120 L0,120 Z" fill="rgba(116, 157, 178, 0.45)"></path>
+                <!-- Layer 2: Middle Wave (Translucent Brand-Dark) - Tall wave -->
+                <path d="M0,40 C240,60,380,30,700,50 C1000,70,1080,40,1200,45 L1200,120 L0,120 Z" fill="rgba(13, 53, 94, 0.35)"></path>
+                <!-- Layer 3: Front Wave (Solid White) - Tall wave, blends with content below -->
+                <path d="M0,70 C320,90,420,55,740,70 C1040,85,1120,65,1200,75 L1200,120 L0,120 Z" fill="#ffffff"></path>
             </svg>
         </div>
     </section>
@@ -66,11 +196,11 @@
             <div class="grid lg:grid-cols-12 gap-16 items-center">
                 <!-- Text Block Left with custom radio tabs -->
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-brand-muted/10 text-brand-dark text-sm font-semibold uppercase tracking-wider border border-brand-muted/20">
                         <i class="fa-solid fa-feather-pointed"></i> Sekilas Profil
                     </div>
                     
-                    <h2 class="text-4xl md:text-5xl font-heading text-slate-800 tracking-wide leading-tight">
+                    <h2 class="text-4xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Tentang Desa Wisata
                     </h2>
                     
@@ -90,13 +220,13 @@
 
                     <!-- Tab Contents Panel -->
                     <div id="tab-content-1" class="tab-content-panel space-y-4 animate-fade-in">
-                        <p class="text-slate-600 font-sans text-base md:text-lg leading-relaxed text-justify">
+                        <p class="text-gray-600 font-sans text-base md:text-lg leading-relaxed text-justify">
                             Desa Punjulharjo merupakan salah satu desa pesisir yang terletak di Kabupaten Rembang, Jawa Tengah. Secara geografis, Punjulharjo berada di kawasan pesisir utara Jawa yang memiliki hubungan erat dengan kehidupan bahari. Letaknya yang berada di wilayah pantai menjadikan desa ini memiliki sumber daya alam yang khas. Keindahan pantainya, kekayaan sejarah maritimnya, serta kehidupan masyarakat pesisir yang masih kuat dengan nilai kebersamaan menjadikan Punjulharjo sebagai desa yang memiliki daya tarik tersendiri.
                         </p>
                     </div>
                     
                     <div id="tab-content-2" class="tab-content-panel hidden space-y-4 animate-fade-in">
-                        <div class="p-5 bg-sky-50/50 backdrop-blur-sm rounded-2xl border border-sky-100">
+                        <div class="p-5 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
                             <h4 class="font-bold text-sky-700 mb-2 flex items-center gap-2">
                                 <svg class="w-5 h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0z" />
@@ -104,11 +234,11 @@
                                 </svg>
                                 Visi
                             </h4>
-                            <p class="text-slate-700 text-sm md:text-base leading-relaxed">
+                            <p class="text-gray-700 text-sm md:text-base leading-relaxed">
                                 Menjadi desa wisata unggulan berbasis budaya dan kearifan lokal yang berkelanjutan, serta menjadi inspirasi bagi pengembangan desa wisata lainnya di Indonesia.
                             </p>
                         </div>
-                        <div class="p-5 bg-indigo-50/50 backdrop-blur-sm rounded-2xl border border-indigo-100">
+                        <div class="p-5 bg-indigo-50/50 backdrop-blur-sm rounded-none border border-indigo-100">
                             <h4 class="font-bold text-indigo-700 mb-2 flex items-center gap-2">
                                 <svg class="w-5 h-5 text-indigo-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="10" />
@@ -117,7 +247,7 @@
                                 </svg>
                                 Misi
                             </h4>
-                            <ul class="list-disc list-inside text-slate-700 text-sm md:text-base leading-relaxed space-y-1">
+                            <ul class="list-disc list-inside text-gray-700 text-sm md:text-base leading-relaxed space-y-1">
                                 <li>Melestarikan warisan budaya dan sejarah desa.</li>
                                 <li>Mendorong partisipasi masyarakat dalam pengelolaan wisata.</li>
                                 <li>Mengembangkan potensi ekonomi kreatif berbasis wisata.</li>
@@ -127,12 +257,12 @@
                     </div>
 
                     <div id="tab-content-3" class="tab-content-panel hidden space-y-4 animate-fade-in">
-                        <p class="text-slate-600 font-sans text-base md:text-lg leading-relaxed text-justify">
+                        <p class="text-gray-600 font-sans text-base md:text-lg leading-relaxed text-justify">
                             Punjulharjo menyajikan perpaduan wisata alam pantai yang mempesona dan wisata sejarah maritim Nusantara:
                         </p>
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="p-4 bg-sky-50/50 backdrop-blur-sm rounded-2xl border border-sky-100">
-                                <span class="font-bold text-slate-800 text-sm md:text-base flex items-center gap-2">
+                            <div class="p-4 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
+                                <span class="font-bold text-gray-800 text-sm md:text-base flex items-center gap-2">
                                     <svg class="w-5 h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M22 12h-20a10 10 0 0 1 20 0Z" />
                                         <path d="M12 12v10" />
@@ -140,10 +270,10 @@
                                     </svg>
                                     Pantai Karang Jahe
                                 </span>
-                                <p class="text-xs text-slate-500 mt-1">Hamparan pasir putih bersih & ribuan pohon cemara yang rindang.</p>
+                                <p class="text-xs text-gray-500 mt-1">Hamparan pasir putih bersih & ribuan pohon cemara yang rindang.</p>
                             </div>
-                            <div class="p-4 bg-sky-50/50 backdrop-blur-sm rounded-2xl border border-sky-100">
-                                <span class="font-bold text-slate-800 text-sm md:text-base flex items-center gap-2">
+                            <div class="p-4 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
+                                <span class="font-bold text-gray-800 text-sm md:text-base flex items-center gap-2">
                                     <svg class="w-5 h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="5" r="3" />
                                         <path d="M12 22V8" />
@@ -151,7 +281,7 @@
                                     </svg>
                                     Situs Perahu Kuno
                                 </span>
-                                <p class="text-xs text-slate-500 mt-1">Bukti arkeologis pelayaran Nusantara dari abad ke-7 Masehi.</p>
+                                <p class="text-xs text-gray-500 mt-1">Bukti arkeologis pelayaran Nusantara dari abad ke-7 Masehi.</p>
                             </div>
                         </div>
                     </div>
@@ -159,10 +289,19 @@
                 
                 <!-- Graphic/Photo Block Right -->
                 <div class="lg:col-span-5 relative">
-                    <!-- Background aesthetic soft blob shape -->
-                    <div class="absolute -inset-4 bg-gradient-to-tr from-sky-400/20 to-indigo-400/20 rounded-[3rem] blur-2xl z-0"></div>
+                    <!-- Background aesthetic soft blob shape (Removed/Reset) -->
+                    <div class="absolute -inset-4 bg-transparent z-0"></div>
                     
-                    <div class="cyber-card-container aspect-[4/3] w-full relative z-10">
+                    <div class="cyber-card-container aspect-[4/3] w-full relative z-10 group">
+                        @auth
+                            <!-- Floating Edit Button on Card Hover - Placed on top layer outside the 3D trackers -->
+                            <div class="absolute top-4 right-4 z-[50] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
+                                <button type="button" onclick="event.stopPropagation(); document.getElementById('edit-about-modal').classList.remove('hidden')" 
+                                        class="bg-white/95 hover:bg-white text-slate-800 p-2.5 rounded-md shadow-md border border-slate-200/50 flex items-center justify-center">
+                                    <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                </button>
+                            </div>
+                        @endauth
                         <div class="cyber-card-canvas">
                             <!-- 25 Hover Trackers -->
                             <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div>
@@ -172,14 +311,20 @@
                             <div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
                             
                             <!-- The Card -->
-                            <div class="cyber-3d-card relative overflow-hidden rounded-[2.5rem] shadow-2xl bg-slate-100 w-full h-full cursor-pointer select-none">
+                            <div class="cyber-3d-card relative overflow-hidden rounded-none shadow bg-slate-100 w-full h-full cursor-pointer select-none">
                                 <div class="card-glare"></div>
                                 <div class="glowing-elements">
                                     <div class="glow-1"></div>
                                     <div class="glow-2"></div>
                                     <div class="glow-3"></div>
                                 </div>
-                                <img src="https://images.unsplash.com/photo-1540805513758-2943743a4e2b?auto=format&fit=crop&w=800&q=80" 
+                                @php
+                                    $aboutImg = \App\Models\SiteSetting::getValue('about_image');
+                                    $aboutImgUrl = $aboutImg 
+                                        ? (str_starts_with($aboutImg, 'http') ? $aboutImg : Storage::url($aboutImg)) 
+                                        : 'https://images.unsplash.com/photo-1540805513758-2943743a4e2b?auto=format&fit=crop&w=800&q=80';
+                                @endphp
+                                <img src="{{ $aboutImgUrl }}" 
                                      alt="Desa Pesisir Punjulharjo" 
                                      class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent"></div>
@@ -192,249 +337,243 @@
     </section>
 
 
-    <!-- SECTION C: Top Destinations (Destinasi Unggulan) -->
-    <section class="bg-transparent py-24 md:py-32 px-6 md:px-12 relative">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center space-y-4 mb-16">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-map-location-dot"></i> Eksplorasi Wisata
-                </div>
-                <h2 class="text-4xl md:text-5xl font-heading text-slate-800 tracking-wide">
-                    Destinasi Unggulan
-                </h2>
-                <p class="text-slate-500 font-sans max-w-xl mx-auto">
-                    Kunjungi tempat wisata favorit di Punjulharjo yang memiliki daya tarik tersendiri bagi wisatawan.
-                </p>
-            </div>
 
-            <!-- Destinasi Grid Layout with no harsh borders -->
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- Card 1: Pantai Karang Jahe -->
-                <a href="{{ route('destinasi.pantai-karang-jahe') }}" class="group relative bg-white rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between h-full transform hover:-translate-y-2">
-                    <div class="overflow-hidden aspect-[16/10] relative">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" 
-                             alt="Pantai Karang Jahe" 
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        
-                        <!-- Floating Glassmorphic Tag -->
-                        <span class="absolute top-4 left-4 glass-panel px-4 py-1.5 rounded-full text-slate-800 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5 text-sky-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 12h-20a10 10 0 0 1 20 0Z" />
-                                <path d="M12 12v10" />
-                                <path d="M12 21a2 2 0 0 0 2-2" />
-                            </svg>
-                            Wisata Pantai
-                        </span>
-                    </div>
-                    
-                    <div class="p-8 space-y-4 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-2xl font-bold text-slate-800 font-sans group-hover:text-sky-600 transition duration-300 flex items-center justify-between">
-                                Pantai Karang Jahe
-                                <i class="fa-solid fa-arrow-right text-sky-500 text-lg opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"></i>
-                            </h3>
-                            <p class="text-slate-600 font-sans text-sm md:text-base leading-relaxed text-justify mt-3">
-                                Pantai Karang Jahe merupakan salah satu destinasi wisata paling dikenal di Desa Punjulharjo. Menghadirkan suasana rekreasi yang nyaman dengan panorama pesisir yang menenangkan, hamparan pasir putih yang lembut, dan air laut yang relatif tenang. Nama Karang Jahe sendiri berasal dari bentuk karang-karang kecil di kawasan pantai yang dianggap menyerupai jahe.
-                            </p>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Card 2: Situs Perahu Kuno -->
-                <a href="{{ route('destinasi.situs-perahu-kuno') }}" class="group relative bg-white rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between h-full transform hover:-translate-y-2">
-                    <div class="overflow-hidden aspect-[16/10] relative">
-                        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80" 
-                             alt="Situs Perahu Kuno" 
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                        
-                        <!-- Floating Glassmorphic Tag -->
-                        <span class="absolute top-4 left-4 glass-panel px-4 py-1.5 rounded-full text-slate-800 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="5" r="3" />
-                                <path d="M12 22V8" />
-                                <path d="M5 12H2a10 10 0 0 0 20 0h-3" />
-                            </svg>
-                            Wisata Sejarah
-                        </span>
-                    </div>
-                    
-                    <div class="p-8 space-y-4 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-2xl font-bold text-slate-800 font-sans group-hover:text-sky-600 transition duration-300 flex items-center justify-between">
-                                Situs Perahu Kuno
-                                <i class="fa-solid fa-arrow-right text-indigo-500 text-lg opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"></i>
-                            </h3>
-                            <p class="text-slate-600 font-sans text-sm md:text-base leading-relaxed text-justify mt-3">
-                                Selain pantai, Punjulharjo juga memiliki Situs Perahu Kuno yang diperkirakan berasal dari abad ke-7 Masehi. Situs ini menyimpan nilai sejarah tinggi sebagai peninggalan arkeologis yang sangat penting bagi pemahaman sejarah maritim Indonesia, menjadi bukti bahwa masyarakat Nusantara telah memiliki kemampuan pelayaran yang maju sejak berabad-abad lalu.
-                            </p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
 
 
     <!-- SECTION D: Aesthetic Photo Gallery -->
-    <section class="bg-transparent py-24 md:py-32 px-6 md:px-12">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center space-y-4 mb-16">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider">
+    <section class="bg-white py-16 px-6">
+        <div class="max-w-6xl mx-auto relative">
+            <div class="text-center space-y-4">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
                     <i class="fa-regular fa-images"></i> Galeri Visual
                 </div>
-                <h2 class="text-4xl md:text-5xl font-heading text-slate-800 tracking-wide">
+                <h2 class="text-4xl md:text-5xl font-heading text-gray-900 tracking-wide">
                     Potret Punjulharjo
                 </h2>
-                <p class="text-slate-500 font-sans max-w-xl mx-auto">
+                <p class="text-gray-500 font-sans max-w-xl mx-auto">
                     Koleksi sudut-sudut keindahan alam, budaya, dan momen di sepanjang pesisir pantai desa kami.
                 </p>
             </div>
-
-            <!-- Asymmetric Grid Gallery with rounded borders and hover zoom animation -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <!-- Img 1: Tall -->
-                <div class="cyber-card-container aspect-[3/4] md:row-span-2 relative group">
-                    <div class="cyber-card-canvas">
-                        <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div><div class="tracker tr-6"></div><div class="tracker tr-7"></div><div class="tracker tr-8"></div><div class="tracker tr-9"></div><div class="tracker tr-10"></div><div class="tracker tr-11"></div><div class="tracker tr-12"></div><div class="tracker tr-13"></div><div class="tracker tr-14"></div><div class="tracker tr-15"></div><div class="tracker tr-16"></div><div class="tracker tr-17"></div><div class="tracker tr-18"></div><div class="tracker tr-19"></div><div class="tracker tr-20"></div><div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
-                        <div class="cyber-3d-card relative overflow-hidden rounded-3xl shadow-md cursor-pointer w-full h-full select-none">
-                            <div class="card-glare"></div>
-                            <div class="glowing-elements">
-                                <div class="glow-1"></div>
-                                <div class="glow-2"></div>
-                                <div class="glow-3"></div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=600&q=80" 
-                                 alt="Keindahan Alam" 
-                                 class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 z-10 pointer-events-none">
-                                <span class="text-white font-medium text-lg">Pesona Pantai</span>
-                            </div>
-                        </div>
-                    </div>
+            @auth
+                <!-- Floating Add Button for Gallery -->
+                <div class="absolute top-0 right-0">
+                    <button onclick="document.getElementById('add-gallery-modal').classList.remove('hidden')" 
+                            class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-none shadow transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
+                        <i class="fa-solid fa-plus"></i> Tambah Foto
+                    </button>
                 </div>
+            @endauth
+        </div>
+    </section>
 
-                <!-- Img 2: Wide -->
-                <div class="cyber-card-container aspect-[4/3] md:col-span-2 relative group">
-                    <div class="cyber-card-canvas">
-                        <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div><div class="tracker tr-6"></div><div class="tracker tr-7"></div><div class="tracker tr-8"></div><div class="tracker tr-9"></div><div class="tracker tr-10"></div><div class="tracker tr-11"></div><div class="tracker tr-12"></div><div class="tracker tr-13"></div><div class="tracker tr-14"></div><div class="tracker tr-15"></div><div class="tracker tr-16"></div><div class="tracker tr-17"></div><div class="tracker tr-18"></div><div class="tracker tr-19"></div><div class="tracker tr-20"></div><div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
-                        <div class="cyber-3d-card relative overflow-hidden rounded-3xl shadow-md cursor-pointer w-full h-full select-none">
-                            <div class="card-glare"></div>
-                            <div class="glowing-elements">
-                                <div class="glow-1"></div>
-                                <div class="glow-2"></div>
-                                <div class="glow-3"></div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1000&q=80" 
-                                 alt="Kehidupan Bahari" 
-                                 class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 z-10 pointer-events-none">
-                                <span class="text-white font-medium text-lg">Kehidupan Pantai</span>
-                            </div>
-                        </div>
+    @php
+        $gridClasses = [
+            'col-span-1 row-span-2 col-start-1 row-start-1',
+            'col-span-1 row-span-2 col-start-1 row-start-3',
+            'col-span-1 row-span-1 col-start-2 row-start-1',
+            'col-span-1 row-span-1 col-start-2 row-start-2',
+            'col-span-2 row-span-2 col-start-3 row-start-1',
+            'col-span-3 row-span-2 col-start-2 row-start-3',
+        ];
+    @endphp
+
+    <section x-data="{ activePhoto: null }" class="relative">
+        <div class="w-full h-[100vh] grid grid-cols-4 grid-rows-4 gap-0 overflow-hidden bg-black">
+            @foreach(array_slice($galleryItems, 0, 6) as $index => $item)
+                @php
+                    $imageUrl = str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']);
+                @endphp
+                <div @click="activePhoto = '{{ $imageUrl }}'" 
+                     class="relative w-full h-full group {{ $gridClasses[$index] ?? 'hidden' }} overflow-hidden cursor-pointer">
+                    <img src="{{ $imageUrl }}" 
+                         alt="{{ $item['title'] }}" 
+                         class="absolute inset-0 w-full h-full object-cover rounded-none">
+                    
+                    <!-- Flat Title Overlay on Hover -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none z-10">
+                        <span class="text-white font-medium text-lg leading-tight">{{ $item['title'] }}</span>
                     </div>
+
+                    @auth
+                        <!-- Floating Edit Button on top of everything -->
+                        <div class="absolute top-4 right-4 z-[50] pointer-events-auto">
+                            <button onclick="openEditGalleryModal(event, {{ json_encode($item) }})" 
+                                    class="bg-white/95 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                                <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                            </button>
+                        </div>
+                    @endauth
                 </div>
+            @endforeach
+        </div>
 
-                <!-- Img 3 -->
-                <div class="cyber-card-container aspect-square relative group">
-                    <div class="cyber-card-canvas">
-                        <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div><div class="tracker tr-6"></div><div class="tracker tr-7"></div><div class="tracker tr-8"></div><div class="tracker tr-9"></div><div class="tracker tr-10"></div><div class="tracker tr-11"></div><div class="tracker tr-12"></div><div class="tracker tr-13"></div><div class="tracker tr-14"></div><div class="tracker tr-15"></div><div class="tracker tr-16"></div><div class="tracker tr-17"></div><div class="tracker tr-18"></div><div class="tracker tr-19"></div><div class="tracker tr-20"></div><div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
-                        <div class="cyber-3d-card relative overflow-hidden rounded-3xl shadow-md cursor-pointer w-full h-full select-none">
-                            <div class="card-glare"></div>
-                            <div class="glowing-elements">
-                                <div class="glow-1"></div>
-                                <div class="glow-2"></div>
-                                <div class="glow-3"></div>
+        <!-- Photo Lightbox Modal -->
+        <div x-show="activePhoto" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 p-4"
+             @click="activePhoto = null"
+             style="display: none;"
+             x-cloak>
+            <button class="absolute top-6 right-6 text-white/70 hover:text-white transition text-3xl focus:outline-none" @click="activePhoto = null">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img :src="activePhoto" class="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-none border border-white/10" @click.stop>
+        </div>
+    </section>
+
+        @auth
+            <!-- Add Gallery Modal -->
+            <div id="add-gallery-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                        <h3 class="text-lg font-heading text-slate-800">Tambah Foto Galeri</h3>
+                        <button type="button" onclick="document.getElementById('add-gallery-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    <form action="{{ route('admin.gallery.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">File Foto</label>
+                                <input type="file" name="image" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
                             </div>
-                            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" 
-                                 alt="Perahu Nelayan" 
-                                 class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 z-10 pointer-events-none">
-                                <span class="text-white font-medium text-lg">Bahari Tradisional</span>
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Foto</label>
+                                <input type="text" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Contoh: Sunset di Karang Jahe" required>
+                            </div>
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ukuran / Layout Grid</label>
+                                <select name="aspect_class" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                    <option value="aspect-square">Square (1:1)</option>
+                                    <option value="aspect-[3/4] md:row-span-2">Tall Vertical (Potrait)</option>
+                                    <option value="aspect-[4/3] md:col-span-2">Wide Horizontal (Landscape)</option>
+                                    <option value="aspect-[16/9] md:col-span-2">Wide Cinema (Panoramik)</option>
+                                    <option value="aspect-[4/3]">Medium Rectangle</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Img 4 -->
-                <div class="cyber-card-container aspect-square relative group">
-                    <div class="cyber-card-canvas">
-                        <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div><div class="tracker tr-6"></div><div class="tracker tr-7"></div><div class="tracker tr-8"></div><div class="tracker tr-9"></div><div class="tracker tr-10"></div><div class="tracker tr-11"></div><div class="tracker tr-12"></div><div class="tracker tr-13"></div><div class="tracker tr-14"></div><div class="tracker tr-15"></div><div class="tracker tr-16"></div><div class="tracker tr-17"></div><div class="tracker tr-18"></div><div class="tracker tr-19"></div><div class="tracker tr-20"></div><div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
-                        <div class="cyber-3d-card relative overflow-hidden rounded-3xl shadow-md cursor-pointer w-full h-full select-none">
-                            <div class="card-glare"></div>
-                            <div class="glowing-elements">
-                                <div class="glow-1"></div>
-                                <div class="glow-2"></div>
-                                <div class="glow-3"></div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80" 
-                                 alt="Sunset Punjulharjo" 
-                                 class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 z-10 pointer-events-none">
-                                <span class="text-white font-medium text-lg">Sunset Pesisir</span>
-                            </div>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                            <button type="button" onclick="document.getElementById('add-gallery-modal').classList.add('hidden')" 
+                                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                Batal
+                            </button>
+                            <button type="submit" 
+                                    class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                Tambah
+                            </button>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Img 5 -->
-                <div class="cyber-card-container aspect-[4/3] relative group">
-                    <div class="cyber-card-canvas">
-                        <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div><div class="tracker tr-6"></div><div class="tracker tr-7"></div><div class="tracker tr-8"></div><div class="tracker tr-9"></div><div class="tracker tr-10"></div><div class="tracker tr-11"></div><div class="tracker tr-12"></div><div class="tracker tr-13"></div><div class="tracker tr-14"></div><div class="tracker tr-15"></div><div class="tracker tr-16"></div><div class="tracker tr-17"></div><div class="tracker tr-18"></div><div class="tracker tr-19"></div><div class="tracker tr-20"></div><div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
-                        <div class="cyber-3d-card relative overflow-hidden rounded-3xl shadow-md cursor-pointer w-full h-full select-none">
-                            <div class="card-glare"></div>
-                            <div class="glowing-elements">
-                                <div class="glow-1"></div>
-                                <div class="glow-2"></div>
-                                <div class="glow-3"></div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=600&q=80" 
-                                 alt="Ekosistem Laut" 
-                                 class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 z-10 pointer-events-none">
-                                <span class="text-white font-medium text-lg">Ekosistem Pantai</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Img 6: Wide -->
-                <div class="cyber-card-container aspect-[16/9] group md:col-span-2 relative">
-                    <div class="cyber-card-canvas">
-                        <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div><div class="tracker tr-6"></div><div class="tracker tr-7"></div><div class="tracker tr-8"></div><div class="tracker tr-9"></div><div class="tracker tr-10"></div><div class="tracker tr-11"></div><div class="tracker tr-12"></div><div class="tracker tr-13"></div><div class="tracker tr-14"></div><div class="tracker tr-15"></div><div class="tracker tr-16"></div><div class="tracker tr-17"></div><div class="tracker tr-18"></div><div class="tracker tr-19"></div><div class="tracker tr-20"></div><div class="tracker tr-21"></div><div class="tracker tr-22"></div><div class="tracker tr-23"></div><div class="tracker tr-24"></div><div class="tracker tr-25"></div>
-                        <div class="cyber-3d-card relative overflow-hidden rounded-3xl shadow-md cursor-pointer w-full h-full select-none">
-                            <div class="card-glare"></div>
-                            <div class="glowing-elements">
-                                <div class="glow-1"></div>
-                                <div class="glow-2"></div>
-                                <div class="glow-3"></div>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1000&q=80" 
-                                 alt="Masyarakat Gotong Royong" 
-                                 class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6 z-10 pointer-events-none">
-                                <span class="text-white font-medium text-lg">Aktivitas Gotong Royong</span>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
-        </div>
+
+            <!-- Edit Gallery Modal -->
+            <div id="edit-gallery-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                        <h3 class="text-lg font-heading text-slate-800">Edit Foto Galeri</h3>
+                        <button type="button" onclick="document.getElementById('edit-gallery-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="edit-gallery-form" action="" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti Foto (opsional)</label>
+                                <input type="file" name="image" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Foto</label>
+                                <input type="text" id="edit-gallery-title" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                            </div>
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ukuran / Layout Grid</label>
+                                <select id="edit-gallery-aspect" name="aspect_class" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                    <option value="aspect-square">Square (1:1)</option>
+                                    <option value="aspect-[3/4] md:row-span-2">Tall Vertical (Potrait)</option>
+                                    <option value="aspect-[4/3] md:col-span-2">Wide Horizontal (Landscape)</option>
+                                    <option value="aspect-[16/9] md:col-span-2">Wide Cinema (Panoramik)</option>
+                                    <option value="aspect-[4/3]">Medium Rectangle</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between">
+                            <button type="button" onclick="confirmDeleteGallery()"
+                                    class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-none text-sm transition">
+                                Hapus
+                            </button>
+                            
+                            <div class="flex gap-2">
+                                <button type="button" onclick="document.getElementById('edit-gallery-modal').classList.add('hidden')" 
+                                        class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                    Batal
+                                </button>
+                                <button type="submit" 
+                                        class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                    Simpan
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form id="delete-gallery-form" action="" method="POST" class="hidden">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                function openEditGalleryModal(e, item) {
+                    e.stopPropagation();
+                    const modal = document.getElementById('edit-gallery-modal');
+                    modal.querySelector('#edit-gallery-form').action = '/admin/gallery/' + item.id;
+                    modal.querySelector('#edit-gallery-title').value = item.title;
+                    modal.querySelector('#edit-gallery-aspect').value = item.aspect_class;
+                    modal.querySelector('#delete-gallery-form').action = '/admin/gallery/' + item.id;
+                    modal.classList.remove('hidden');
+                }
+
+                function confirmDeleteGallery() {
+                    if (confirm('Apakah Anda yakin ingin menghapus foto galeri ini?')) {
+                        document.getElementById('delete-gallery-form').submit();
+                    }
+                }
+            </script>
+        @endauth
     </section>
 
 
     <!-- SECTION E: Culture & Community (Kehidupan Budaya) -->
-    <section class="bg-slate-50/40 backdrop-blur-[2px] py-24 md:py-32 px-6 md:px-12 relative">
+    <section class="bg-brand-muted/10 py-24 md:py-32 px-6 md:px-12 relative">
         <!-- Subtle background shapes -->
-        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-indigo-200/20 rounded-full blur-3xl z-0"></div>
-        <div class="absolute bottom-0 right-0 w-96 h-96 bg-sky-200/20 rounded-full blur-3xl z-0"></div>
+        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-brand-light/10 rounded-full blur-3xl z-0"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-dark/10 rounded-full blur-3xl z-0"></div>
 
         <div class="max-w-6xl mx-auto relative z-10">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <!-- Photo Card Left -->
                 <div class="order-2 lg:order-1 relative">
-                    <div class="absolute -inset-4 bg-gradient-to-br from-indigo-500/10 to-sky-500/10 rounded-[3rem] blur-xl z-0"></div>
+                    <div class="absolute -inset-4 bg-gradient-to-br from-brand-light/10 to-brand-dark/10 rounded-[3rem] blur-xl z-0"></div>
                     
-                    <div class="cyber-card-container aspect-[4/3] w-full relative z-10">
+                    <div class="cyber-card-container aspect-[4/3] w-full relative z-10 group">
+                        @auth
+                            <!-- Floating Edit Button on Card Hover - Placed on top layer outside the 3D trackers -->
+                            <div class="absolute top-4 right-4 z-[50] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
+                                <button type="button" onclick="event.stopPropagation(); document.getElementById('edit-culture-modal').classList.remove('hidden')" 
+                                        class="bg-white/95 hover:bg-white text-slate-800 p-2.5 rounded-md shadow-md border border-slate-200/50 flex items-center justify-center">
+                                    <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                </button>
+                            </div>
+                        @endauth
                         <div class="cyber-card-canvas">
                             <!-- 25 Hover Trackers -->
                             <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div>
@@ -451,7 +590,13 @@
                                     <div class="glow-2"></div>
                                     <div class="glow-3"></div>
                                 </div>
-                                <img src="https://images.unsplash.com/photo-1540805513758-2943743a4e2b?auto=format&fit=crop&w=800&q=80" 
+                                @php
+                                    $cultureImg = \App\Models\SiteSetting::getValue('culture_image');
+                                    $cultureImgUrl = $cultureImg 
+                                        ? (str_starts_with($cultureImg, 'http') ? $cultureImg : Storage::url($cultureImg)) 
+                                        : 'https://images.unsplash.com/photo-1540805513758-2943743a4e2b?auto=format&fit=crop&w=800&q=80';
+                                @endphp
+                                <img src="{{ $cultureImgUrl }}" 
                                      alt="Budaya Desa Punjulharjo" 
                                      class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent"></div>
@@ -462,11 +607,11 @@
 
                 <!-- Text Block Right -->
                 <div class="order-1 lg:order-2 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 text-indigo-600 text-sm font-semibold uppercase tracking-wider">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-brand-muted/10 text-brand-dark text-sm font-semibold uppercase tracking-wider border border-brand-muted/20">
                         <i class="fa-solid fa-people-group"></i> Harmoni Sosial
                     </div>
                     
-                    <h2 class="text-4xl md:text-5xl font-heading text-slate-800 tracking-wide leading-tight">
+                    <h2 class="text-4xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Kehidupan Budaya & Tradisi
                     </h2>
                     
@@ -479,270 +624,243 @@
     </section>
 
 
-    <!-- SECTION EE: Interactive Flipbook (Buku Panduan Desa) -->
-    <section class="bg-transparent py-24 md:py-32 px-6 md:px-12 relative">
-        <!-- Background decorative elements matching design guide -->
-        <div class="absolute top-0 right-0 w-96 h-96 bg-sky-200/10 rounded-full blur-3xl z-0"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-indigo-200/10 rounded-full blur-3xl z-0"></div>
-
-        <div class="max-w-6xl mx-auto relative z-10">
-            <!-- Header -->
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-book-open"></i> E-Book Panduan
-                </div>
-                <h2 class="text-4xl md:text-5xl font-heading text-slate-800 tracking-wide leading-tight">
-                    Buku Panduan Desa Wisata
-                </h2>
-                <p class="text-slate-600 font-sans text-base md:text-lg max-w-2xl mx-auto">
-                    Buka lembaran interaktif di bawah ini untuk menjelajahi potensi keindahan alam, sejarah nusantara, dan kebudayaan di Desa Wisata Punjulharjo.
-                </p>
-            </div>
-
-            <!-- Flipbook Component Container -->
-            <div class="flipbook-container">
-                <div class="flipbook-viewport mb-6">
-                    <div id="flipbook" class="flipbook-wrapper">
-                        <!-- PAGE 1: COVER -->
-                        <div class="flipbook-page cover-page select-none flex flex-col justify-between items-center text-center border-4 border-amber-500/30 rounded-lg p-8 h-full" data-density="hard">
-                            <div class="w-full flex justify-between items-center border-b border-white/10 pb-4">
-                                <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Desa Punjulharjo</span>
-                                <i class="fa-solid fa-dharmachakra text-amber-400 text-lg"></i>
-                            </div>
-                            <div class="my-auto space-y-6">
-                                <div class="w-20 h-20 mx-auto rounded-full bg-white/10 flex items-center justify-center border border-white/20 shadow-inner">
-                                    <i class="fa-solid fa-map text-amber-400 text-3xl"></i>
-                                </div>
-                                <h3 class="text-3xl md:text-4xl font-heading text-white tracking-wider leading-snug drop-shadow-lg">
-                                    BUKU PANDUAN<br>WISATA
-                                </h3>
-                                <p class="text-sm font-sans text-slate-300 max-w-xs mx-auto leading-relaxed uppercase tracking-wider">
-                                    Panduan Lengkap Penjelajahan Alam, Sejarah & Budaya
-                                </p>
-                            </div>
-                            <div class="w-full border-t border-white/10 pt-4 flex flex-col items-center">
-                                <span class="text-[10px] uppercase tracking-widest text-slate-400">Edisi Eksklusif</span>
-                                <div class="text-amber-400/90 mt-1 flex gap-0.5 justify-center">
-                                    <i class="fa-solid fa-star text-[10px]"></i>
-                                    <i class="fa-solid fa-star text-[10px]"></i>
-                                    <i class="fa-solid fa-star text-[10px]"></i>
-                                    <i class="fa-solid fa-star text-[10px]"></i>
-                                    <i class="fa-solid fa-star text-[10px]"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PAGE 2: WELCOME & CONTENTS -->
-                        <div class="flipbook-page select-none">
-                            <div class="flex flex-col justify-between h-full">
-                                <div>
-                                    <h4 class="text-xs font-bold text-sky-600 uppercase tracking-widest mb-2">Kata Pengantar</h4>
-                                    <h3 class="text-2xl font-heading text-slate-800 mb-6">Selamat Datang</h3>
-                                    <div class="space-y-4 text-sm text-slate-600 leading-relaxed text-justify">
-                                        <p>
-                                            Selamat datang di Desa Wisata Punjulharjo, Kabupaten Rembang. Buku panduan praktis ini dirancang untuk memudahkan Anda menjelajahi keindahan alam, menelusuri sejarah bahari nusantara, dan merasakan kehangatan budaya masyarakat pesisir kami.
-                                        </p>
-                                        <p>
-                                            Kami berharap setiap lembar informasi di dalam e-book interaktif ini dapat menginspirasi dan membantu Anda merencanakan kunjungan yang tak terlupakan.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center border-t border-slate-100 pt-4 mt-6">
-                                    <span class="text-xs text-slate-400">Daftar Isi & Sambutan</span>
-                                    <span class="text-xs font-semibold text-slate-400">Hal. 1</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PAGE 3: PANTAI KARANG JAHE -->
-                        <div class="flipbook-page select-none">
-                            <div class="flex flex-col justify-between h-full">
-                                <div>
-                                    <h4 class="text-xs font-bold text-sky-600 uppercase tracking-widest mb-2">Wisata Alam</h4>
-                                    <h3 class="text-2xl font-heading text-slate-800 mb-4">Pantai Karang Jahe</h3>
-                                    <div class="rounded-xl overflow-hidden shadow-sm border border-slate-100 aspect-video mb-4 bg-slate-100">
-                                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=85" alt="Pantai Karang Jahe" class="w-full h-full object-cover">
-                                    </div>
-                                    <p class="text-sm text-slate-600 leading-relaxed text-justify">
-                                        Menawarkan hamparan pasir putih bersih yang membentang luas di sepanjang garis pantai utara Jawa, dihiasi ribuan pohon cemara laut yang rindang. Destinasi wisata keluarga yang teduh dan menenangkan.
-                                    </p>
-                                </div>
-                                <div class="flex justify-between items-center border-t border-slate-100 pt-4 mt-6">
-                                    <span class="text-xs text-slate-400">Pesona Bahari</span>
-                                    <span class="text-xs font-semibold text-slate-400">Hal. 2</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PAGE 4: SITUS PERAHU KUNO -->
-                        <div class="flipbook-page select-none">
-                            <div class="flex flex-col justify-between h-full">
-                                <div>
-                                    <h4 class="text-xs font-bold text-sky-600 uppercase tracking-widest mb-2">Wisata Sejarah</h4>
-                                    <h3 class="text-2xl font-heading text-slate-800 mb-4">Situs Perahu Kuno</h3>
-                                    <div class="rounded-xl overflow-hidden shadow-sm border border-slate-100 aspect-video mb-4 bg-slate-100">
-                                        <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?auto=format&fit=crop&w=400&q=85" alt="Situs Perahu Kuno" class="w-full h-full object-cover">
-                                    </div>
-                                    <p class="text-sm text-slate-600 leading-relaxed text-justify">
-                                        Penemuan arkeologi luar biasa berupa perahu kayu utuh dari abad ke-7 Masehi. Situs purbakala ini menjadi bukti nyata majunya teknologi perkapalan dan sejarah kemaritiman perdagangan nusantara.
-                                    </p>
-                                </div>
-                                <div class="flex justify-between items-center border-t border-slate-100 pt-4 mt-6">
-                                    <span class="text-xs text-slate-400">Warisan Maritim</span>
-                                    <span class="text-xs font-semibold text-slate-400">Hal. 3</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PAGE 5: KERAJINAN BATIK TULIS -->
-                        <div class="flipbook-page select-none">
-                            <div class="flex flex-col justify-between h-full">
-                                <div>
-                                    <h4 class="text-xs font-bold text-sky-600 uppercase tracking-widest mb-2">Wisata Edukasi</h4>
-                                    <h3 class="text-2xl font-heading text-slate-800 mb-4">Batik Canting Punjulharjo</h3>
-                                    <div class="rounded-xl overflow-hidden shadow-sm border border-slate-100 aspect-video mb-4 bg-slate-100">
-                                        <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=85" alt="Batik Tulis" class="w-full h-full object-cover">
-                                    </div>
-                                    <p class="text-sm text-slate-600 leading-relaxed text-justify">
-                                        Melihat langsung dan belajar seni membatik tulis tradisional canting dengan motif pesisiran yang unik. Aktivitas edukatif ini memberdayakan pengrajin wanita desa dan melestarikan budaya bangsa.
-                                    </p>
-                                </div>
-                                <div class="flex justify-between items-center border-t border-slate-100 pt-4 mt-6">
-                                    <span class="text-xs text-slate-400">Kreativitas Lokal</span>
-                                    <span class="text-xs font-semibold text-slate-400">Hal. 4</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PAGE 6: BACK COVER -->
-                        <div class="flipbook-page back-page select-none flex flex-col justify-between items-center text-center border-4 border-amber-500/30 rounded-lg p-8 h-full" data-density="hard">
-                            <div class="w-full flex justify-between items-center border-b border-white/10 pb-4">
-                                <i class="fa-solid fa-dharmachakra text-amber-400 text-lg"></i>
-                                <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Sampai Jumpa</span>
-                            </div>
-                            <div class="my-auto space-y-4">
-                                <h3 class="text-2xl font-heading text-white tracking-wider">
-                                    KUNJUNGI KAMI
-                                </h3>
-                                <p class="text-xs text-slate-300 max-w-xs mx-auto leading-relaxed">
-                                    Mulai petualangan Anda hari ini dan rasakan pengalaman unik di setiap jengkal Desa Wisata Punjulharjo.
-                                </p>
-                                <div class="text-[10px] text-amber-300 font-mono tracking-wider space-y-1 bg-white/5 py-3 px-4 rounded-xl border border-white/10">
-                                    <div>Email: info@desapunjulharjo.id</div>
-                                    <div>Instagram: @wisatapunjulharjo</div>
-                                    <div>Web: desapunjulharjo.id</div>
-                                </div>
-                            </div>
-                            <div class="w-full border-t border-white/10 pt-4 flex flex-col items-center">
-                                <span class="text-[10px] uppercase tracking-widest text-slate-400">Copyright © {{ date('Y') }}</span>
-                                <span class="text-[9px] text-slate-500 mt-1">Desa Wisata Punjulharjo. All Rights Reserved.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation Controls -->
-                <div class="mt-8 flex items-center gap-6 z-10">
-                    <button id="btn-prev" class="w-12 h-12 rounded-full bg-white hover:bg-sky-500 hover:text-white text-slate-700 shadow-md border border-slate-100 flex items-center justify-center transition-all duration-300 transform hover:-translate-x-1 hover:scale-105 active:scale-95 focus:outline-none" aria-label="Halaman Sebelumnya">
-                        <i class="fa-solid fa-chevron-left text-lg"></i>
-                    </button>
-                    
-                    <span id="page-indicator" class="glass-panel px-6 py-2.5 rounded-full text-slate-700 font-semibold text-sm shadow-sm border border-slate-200">
-                        Sampul Depan
-                    </span>
-                    
-                    <button id="btn-next" class="w-12 h-12 rounded-full bg-white hover:bg-sky-500 hover:text-white text-slate-700 shadow-md border border-slate-100 flex items-center justify-center transition-all duration-300 transform hover:translate-x-1 hover:scale-105 active:scale-95 focus:outline-none" aria-label="Halaman Berikutnya">
-                        <i class="fa-solid fa-chevron-right text-lg"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
 
     <!-- SECTION EEE: 3D Coverflow Experience (Sorotan Aktivitas Desa) -->
-    <section class="bg-transparent py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
+    <section class="bg-transparent pt-24 pb-36 md:pt-32 md:pb-44 px-6 md:px-12 relative overflow-hidden" style="padding-bottom: 220px !important;">
         <!-- Background shapes matching the design system -->
         <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-sky-200/10 rounded-full blur-3xl z-0"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-200/10 rounded-full blur-3xl z-0"></div>
 
         <div class="max-w-6xl mx-auto relative z-10 text-center">
             <!-- Header -->
-            <div class="space-y-4 mb-16 max-w-3xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider">
+            <div class="space-y-4 mb-16 max-w-3xl mx-auto relative">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
                     <i class="fa-solid fa-compass"></i> Sorotan Pengalaman
                 </div>
-                <h2 class="text-4xl md:text-5xl font-heading text-slate-800 tracking-wide leading-tight">
+                <h2 class="text-4xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
                     Jelajahi Aktivitas Punjulharjo
                 </h2>
-                <p class="text-slate-600 font-sans text-base md:text-lg">
+                <p class="text-gray-600 font-sans text-base md:text-lg">
                     Klik kartu di kanan/kiri untuk memutar dan memfokuskan petualangan seru yang dapat Anda nikmati di desa kami.
                 </p>
+                @auth
+                    <!-- Floating Add Button for Carousel -->
+                    <div class="absolute top-0 right-0">
+                        <button onclick="document.getElementById('add-carousel-modal').classList.remove('hidden')" 
+                                class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-none shadow transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
+                            <i class="fa-solid fa-plus"></i> Tambah Aktivitas
+                        </button>
+                    </div>
+                @endauth
             </div>
 
             <!-- Viewport for 3D Carousel -->
             <div class="coverflow-viewport">
-                <!-- Card 1 -->
-                <div class="coverflow-card rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-white/10 flex flex-col justify-end p-6 md:p-8 select-none active">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Pantai Karang Jahe" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none"></div>
-                    <div class="relative z-20 text-left space-y-2 pointer-events-none">
-                        <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">Susur Pantai Karang Jahe</h4>
-                        <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">Menikmati segarnya hembusan angin laut di bawah keteduhan ribuan cemara laut yang berjejer rapi.</p>
+                @foreach($carouselItems as $item)
+                    <!-- Card -->
+                    <div class="coverflow-card rounded-xl overflow-hidden shadow bg-slate-900 border border-white/10 flex flex-col justify-end p-6 md:p-8 select-none relative group/card">
+                        <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']) }}" alt="{{ $item['title'] }}" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none"></div>
+                        <div class="relative z-20 text-left space-y-2 pointer-events-none">
+                            <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">{{ $item['title'] }}</h4>
+                            <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">{{ $item['description'] }}</p>
+                        </div>
+                        @auth
+                            <!-- Floating Edit Button on Card Hover -->
+                            <div class="absolute top-4 right-4 z-30 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                                <button onclick="openEditCarouselModal(event, {{ json_encode($item) }})" 
+                                        class="bg-white/90 hover:bg-white text-slate-800 p-2.5 rounded-none shadow border border-white/20 flex items-center justify-center">
+                                    <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                </button>
+                            </div>
+                        @endauth
                     </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="coverflow-card rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-white/10 flex flex-col justify-end p-6 md:p-8 select-none right">
-                    <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80" alt="Situs Perahu Kuno" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none"></div>
-                    <div class="relative z-20 text-left space-y-2 pointer-events-none">
-                        <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">Eksplorasi Perahu Abad ke-7</h4>
-                        <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">Melihat langsung mahakarya arkeologis kapal kayu tertua di nusantara bukti peradaban bahari.</p>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="coverflow-card rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-white/10 flex flex-col justify-end p-6 md:p-8 select-none hidden-right">
-                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80" alt="Ekowisata Mangrove" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none"></div>
-                    <div class="relative z-20 text-left space-y-2 pointer-events-none">
-                        <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">Wisata Mangrove & Tambak</h4>
-                        <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">Menyusuri jalur trekking hutan bakau hijau dan edukasi budidaya garam lokal masyarakat.</p>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="coverflow-card rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-white/10 flex flex-col justify-end p-6 md:p-8 select-none hidden-right">
-                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80" alt="Festival Seni Budaya" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none"></div>
-                    <div class="relative z-20 text-left space-y-2 pointer-events-none">
-                        <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">Festival Budaya Pesisir</h4>
-                        <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">Menyaksikan pagelaran tari tradisional dan sedekah laut tahunan khas warga pesisir.</p>
-                    </div>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="coverflow-card rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-white/10 flex flex-col justify-end p-6 md:p-8 select-none left">
-                    <img src="https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=800&q=80" alt="Kuliner Seafood" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none"></div>
-                    <div class="relative z-20 text-left space-y-2 pointer-events-none">
-                        <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">Kuliner Seafood & Khas Rembang</h4>
-                        <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">Menikmati masakan laut segar bumbu rempah tradisi di warung makan tepi pantai.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
 
             <!-- Bullet indicators -->
-            <div class="mt-8 flex justify-center items-center gap-2" id="coverflow-dots">
-                <button class="h-2 rounded-full transition-all duration-300 bg-sky-500 w-6" aria-label="Slide 1"></button>
-                <button class="h-2 rounded-full transition-all duration-300 bg-slate-300 w-2" aria-label="Slide 2"></button>
-                <button class="h-2 rounded-full transition-all duration-300 bg-slate-300 w-2" aria-label="Slide 3"></button>
-                <button class="h-2 rounded-full transition-all duration-300 bg-slate-300 w-2" aria-label="Slide 4"></button>
-                <button class="h-2 rounded-full transition-all duration-300 bg-slate-300 w-2" aria-label="Slide 5"></button>
+            <div class="mt-8 flex justify-center items-center gap-2" id="coverflow-dots" style="margin-bottom: 120px !important;">
+                @foreach($carouselItems as $index => $item)
+                    <button class="h-2 transition-all duration-300 {{ $index === 0 ? 'bg-sky-500 w-6' : 'bg-slate-300 w-2' }}" aria-label="Slide {{ $index + 1 }}"></button>
+                @endforeach
             </div>
         </div>
-    </section>
+
+        @auth
+            <!-- Add Carousel Modal -->
+            <div id="add-carousel-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                        <h3 class="text-lg font-heading text-slate-800">Tambah Aktivitas Carousel</h3>
+                        <button type="button" onclick="document.getElementById('add-carousel-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    <form action="{{ route('admin.carousel.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Foto Aktivitas</label>
+                                <input type="file" name="image" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                            </div>
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Aktivitas</label>
+                                <input type="text" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Contoh: Susur Pantai" required>
+                            </div>
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi Ringkas</label>
+                                <textarea name="description" rows="3" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Deskripsi aktivitas..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                            <button type="button" onclick="document.getElementById('add-carousel-modal').classList.add('hidden')" 
+                                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                Batal
+                            </button>
+                            <button type="submit" 
+                                    class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                Tambah
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit About Image Modal -->
+            <div id="edit-about-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                        <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Foto Tentang Desa</h3>
+                        <button type="button" onclick="document.getElementById('edit-about-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    <form action="{{ route('admin.about-image.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti Foto</label>
+                                <input type="file" name="about_image" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                <p class="text-xs text-slate-400 mt-1">Hanya format gambar (jpg, jpeg, png, webp) maks 5MB.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                            <button type="button" onclick="document.getElementById('edit-about-modal').classList.add('hidden')" 
+                                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                Batal
+                            </button>
+                            <button type="submit" 
+                                    class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark transition-colors font-semibold px-5 py-2 rounded-none text-sm shadow">
+                                Simpan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Culture Image Modal -->
+            <div id="edit-culture-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                        <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Foto Kehidupan Budaya</h3>
+                        <button type="button" onclick="document.getElementById('edit-culture-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    <form action="{{ route('admin.culture-image.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti Foto</label>
+                                <input type="file" name="culture_image" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                <p class="text-xs text-slate-400 mt-1">Hanya format gambar (jpg, jpeg, png, webp) maks 5MB.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                            <button type="button" onclick="document.getElementById('edit-culture-modal').classList.add('hidden')" 
+                                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                Batal
+                            </button>
+                            <button type="submit" 
+                                    class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark transition-colors font-semibold px-5 py-2 rounded-none text-sm shadow">
+                                Simpan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Carousel Modal -->
+            <div id="edit-carousel-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                        <h3 class="text-lg font-heading text-slate-800">Edit Aktivitas Carousel</h3>
+                        <button type="button" onclick="document.getElementById('edit-carousel-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="edit-carousel-form" action="" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti Foto (opsional)</label>
+                                <input type="file" name="image" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Aktivitas</label>
+                                <input type="text" id="edit-title" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                            </div>
+                            <div>
+                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi Ringkas</label>
+                                <textarea id="edit-description" name="description" rows="3" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required></textarea>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between">
+                            <button type="button" onclick="confirmDeleteCarousel()"
+                                    class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-none text-sm transition">
+                                Hapus
+                            </button>
+                            
+                            <div class="flex gap-2">
+                                <button type="button" onclick="document.getElementById('edit-carousel-modal').classList.add('hidden')" 
+                                        class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                    Batal
+                                </button>
+                                <button type="submit" 
+                                        class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                    Simpan
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form id="delete-carousel-form" action="" method="POST" class="hidden">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                function openEditCarouselModal(e, item) {
+                    e.stopPropagation();
+                    const modal = document.getElementById('edit-carousel-modal');
+                    modal.querySelector('#edit-carousel-form').action = '/admin/carousel/' + item.id;
+                    modal.querySelector('#edit-title').value = item.title;
+                    modal.querySelector('#edit-description').value = item.description;
+                    modal.querySelector('#delete-carousel-form').action = '/admin/carousel/' + item.id;
+                    modal.classList.remove('hidden');
+                }
+
+                function confirmDeleteCarousel() {
+                    if (confirm('Apakah Anda yakin ingin menghapus aktivitas carousel ini?')) {
+                        document.getElementById('delete-carousel-form').submit();
+                    }
+                }
+            </script>
+        @endauth
 
 
     <!-- SECTION F: Final Call-to-Action (CTA) -->
@@ -765,7 +883,7 @@
             <div class="pt-4">
                 <a href="#kontak-peta" 
                    onclick="document.querySelector('footer').scrollIntoView({ behavior: 'smooth' }); return false;"
-                   class="inline-flex items-center justify-center bg-white text-indigo-900 font-bold px-8 py-4 rounded-full text-lg shadow-lg hover:shadow-white/20 transition duration-300 transform hover:-translate-y-1 hover:scale-105">
+                   class="inline-flex items-center justify-center bg-white text-indigo-900 font-bold px-8 py-4 rounded-none text-lg shadow hover:shadow-white/10 transition duration-300 transform hover:-translate-y-1">
                     Lihat Peta Lokasi
                     <i class="fa-solid fa-map-location-dot ml-3"></i>
                 </a>
@@ -773,10 +891,10 @@
         </div>
     </section>
 
-    <!-- Load page-flip library from jsdelivr CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+
 
     <!-- Scripts for Tentang Desa Wisata custom radio tabs & StPageFlip Interactive Book -->
+    @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Radio Tabs Content Switching
@@ -810,72 +928,7 @@
                 rd3.addEventListener('change', updateTabs);
             }
 
-            // Interactive 3D Flipbook Initialization
-            const flipContainer = document.getElementById('flipbook');
-            if (flipContainer && typeof St !== 'undefined') {
-                const pageFlip = new St.PageFlip(flipContainer, {
-                    width: 550, // Base page width
-                    height: 580, // Base page height (shorter to fit viewport heights and prevent bottom cut-offs)
-                    size: "stretch",
-                    minWidth: 280,
-                    maxWidth: 1000,
-                    minHeight: 295,
-                    maxHeight: 1050,
-                    maxShadowOpacity: 0.35,
-                    showCover: true,
-                    mobileScrollSupport: false, // Prevent page scrolling during drags on touch screens
-                    usePortrait: true
-                });
 
-                // Load pages from elements inside the wrapper
-                pageFlip.loadFromHTML(document.querySelectorAll('.flipbook-page'));
-
-                const btnPrev = document.getElementById('btn-prev');
-                const btnNext = document.getElementById('btn-next');
-                const pageIndicator = document.getElementById('page-indicator');
-
-                // Dynamic page indicator labeling based on orientation
-                function updateIndicator() {
-                    const total = pageFlip.getPageCount();
-                    const current = pageFlip.getCurrentPageIndex();
-                    
-                    if (pageFlip.getOrientation() === 'portrait') {
-                        if (current === 0) {
-                            pageIndicator.textContent = "Sampul Depan";
-                        } else if (current === total - 1) {
-                            pageIndicator.textContent = "Sampul Belakang";
-                        } else {
-                            pageIndicator.textContent = `Halaman ${current} dari ${total - 2}`;
-                        }
-                    } else {
-                        if (current === 0) {
-                            pageIndicator.textContent = "Sampul Depan";
-                        } else if (current === total - 1 || current === total - 2) {
-                            pageIndicator.textContent = "Sampul Belakang";
-                        } else {
-                            const leftPage = current;
-                            const rightPage = current + 1;
-                            pageIndicator.textContent = `Halaman ${leftPage} & ${rightPage}`;
-                        }
-                    }
-                }
-
-                // Attach navigation listeners
-                btnPrev.addEventListener('click', () => pageFlip.flipPrev());
-                btnNext.addEventListener('click', () => pageFlip.flipNext());
-
-                // Page flips listeners
-                pageFlip.on('flip', () => {
-                    updateIndicator();
-                });
-
-                pageFlip.on('changeOrientation', () => {
-                    updateIndicator();
-                });
-
-                // Initial load indicator sync
-                setTimeout(updateIndicator, 150);
-            }
 
             // ==========================================================================
             // 3D Coverflow Experience Carousel Logic
@@ -966,8 +1019,13 @@
                 function typeText() {
                     if (index < text.length) {
                         const char = text.charAt(index);
-                        const charNode = document.createTextNode(char);
-                        heroTitle.insertBefore(charNode, cursorSpan);
+                        if (char === ' ') {
+                            const br = document.createElement('br');
+                            heroTitle.insertBefore(br, cursorSpan);
+                        } else {
+                            const charNode = document.createTextNode(char);
+                            heroTitle.insertBefore(charNode, cursorSpan);
+                        }
                         index++;
                         setTimeout(typeText, 75); // Speed: 75ms per character
                     } else {
@@ -982,4 +1040,5 @@
             }
         });
     </script>
+    @endpush
 @endsection

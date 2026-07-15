@@ -3,12 +3,15 @@
 @section('content')
     <!-- Hero Section -->
     @php
-        $heroBg = \App\Models\SiteSetting::getValue('hero_background', asset('images/hero-bg.jpg'));
+        $heroBg = \App\Models\SiteSetting::getValue('hero_background');
+        $heroBgUrl = $heroBg 
+            ? (str_starts_with($heroBg, 'http') || str_contains($heroBg, 'storage/') ? asset($heroBg) : Storage::url($heroBg)) 
+            : asset('images/hero-bg.jpg');
     @endphp
 
     <section class="relative text-center min-h-[60vh] flex flex-col justify-center items-center bg-transparent">
         <div class="absolute inset-0 bg-center bg-cover bg-no-repeat"
-             style="background-image: url('{{ asset($heroBg) }}');">
+             style="background-image: url('{{ $heroBgUrl }}');">
         </div>
         <div class="absolute inset-0 bg-slate-950/40"></div>
 
@@ -47,14 +50,14 @@
             </p>
 
             <div class="grid md:grid-cols-2 gap-10 mt-10">
-                <div class="p-6 bg-sky-50/50 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition text-left border border-sky-100">
+                <div class="p-6 bg-white rounded-none shadow-sm hover:shadow transition text-left border border-sky-100">
                     <h3 class="text-2xl font-heading mb-3 text-sky-600">🌿 Visi</h3>
                     <p class="text-gray-700 leading-relaxed">
                         Menjadi desa wisata unggulan berbasis budaya dan kearifan lokal yang berkelanjutan,
                         serta menjadi inspirasi bagi pengembangan desa wisata lainnya di Indonesia.
                     </p>
                 </div>
-                <div class="p-6 bg-sky-50/50 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition text-left border border-sky-100">
+                <div class="p-6 bg-white rounded-none shadow-sm hover:shadow transition text-left border border-sky-100">
                     <h3 class="text-2xl font-semibold mb-3 text-sky-600">🎯 Misi</h3>
                     <ul class="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
                         <li>Melestarikan warisan budaya dan sejarah desa.</li>
@@ -72,27 +75,27 @@
         <div class="max-w-6xl mx-auto text-center">
             <h2 class="text-3xl md:text-4xl font-heading text-sky-600 mb-12">Potensi Wisata Unggulan</h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition p-6 border border-slate-100">
+                <div class="bg-white rounded-none shadow-sm hover:shadow transition p-6 border border-slate-200">
                     <img src="{{ asset('images/perahu-kuno.jpg') }}" alt="Situs Perahu Kuno"
-                        class="rounded-lg mb-4 w-full h-52 object-cover">
+                        class="rounded-none mb-4 w-full h-52 object-cover">
                     <h3 class="text-xl font-semibold mb-2 text-sky-600">Situs Perahu Kuno</h3>
                     <p class="text-gray-700 text-sm leading-relaxed">
                         Situs bersejarah peninggalan maritim masa lampau, memberikan wawasan unik tentang
                         perjalanan sejarah perdagangan dan pelayaran di Nusantara.
                     </p>
                 </div>
-                <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition p-6 border border-slate-100">
+                <div class="bg-white rounded-none shadow-sm hover:shadow transition p-6 border border-slate-200">
                     <img src="{{ asset('images/karang-jahe.jpg') }}" alt="Pantai Karang Jahe"
-                        class="rounded-lg mb-4 w-full h-52 object-cover">
+                        class="rounded-none mb-4 w-full h-52 object-cover">
                     <h3 class="text-xl font-heading mb-2 text-sky-600">Pantai Karang Jahe</h3>
                     <p class="text-gray-700 text-sm leading-relaxed">
                         Pantai eksotis dengan pasir putih lembut dan ombak tenang, cocok untuk wisata keluarga dan menikmati
                         matahari terbenam.
                     </p>
                 </div>
-                <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition p-6 border border-slate-100">
+                <div class="bg-white rounded-none shadow-sm hover:shadow transition p-6 border border-slate-200">
                     <img src="{{ asset('images/kesenian-lokal.jpg') }}" alt="Kesenian Lokal"
-                        class="rounded-lg mb-4 w-full h-52 object-cover">
+                        class="rounded-none mb-4 w-full h-52 object-cover">
                     <h3 class="text-xl font-heading mb-2 text-sky-600">Kesenian & Budaya</h3>
                     <p class="text-gray-700 text-sm leading-relaxed">
                         Ragam kesenian seperti tayub, karawitan, dan batik khas Punjulharjo memperkaya pengalaman wisata
@@ -113,21 +116,21 @@
             </p>
 
             <div class="grid md:grid-cols-3 gap-10 mt-10">
-                <div class="p-6 bg-sky-50/50 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition border border-sky-100">
+                <div class="p-6 bg-white rounded-none shadow-sm hover:shadow transition border border-sky-100">
                     <img src="{{ asset('images/team1.jpg') }}" alt="Kepala Desa"
-                        class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                        class="w-32 h-32 rounded-none mx-auto mb-4 object-cover">
                     <h3 class="text-xl font-semibold">Kepala Desa</h3>
                     <p class="text-gray-600 text-sm">Memimpin dan mengarahkan seluruh kegiatan pengembangan wisata.</p>
                 </div>
-                <div class="p-6 bg-sky-50/50 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition border border-sky-100">
+                <div class="p-6 bg-white rounded-none shadow-sm hover:shadow transition border border-sky-100">
                     <img src="{{ asset('images/team2.jpg') }}" alt="Koordinator Wisata"
-                        class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                        class="w-32 h-32 rounded-none mx-auto mb-4 object-cover">
                     <h3 class="text-xl font-semibold">Koordinator Wisata</h3>
                     <p class="text-gray-600 text-sm">Mengelola kegiatan promosi, event, dan pelayanan wisata.</p>
                 </div>
-                <div class="p-6 bg-sky-50/50 backdrop-blur-sm rounded-xl shadow hover:shadow-lg transition border border-sky-100">
+                <div class="p-6 bg-white rounded-none shadow-sm hover:shadow transition border border-sky-100">
                     <img src="{{ asset('images/team3.jpg') }}" alt="Tim KKN"
-                        class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                        class="w-32 h-32 rounded-none mx-auto mb-4 object-cover">
                     <h3 class="text-xl font-semibold">Tim KKN-T Undip Unisvet</h3>
                     <p class="text-gray-600 text-sm">Berperan dalam inovasi digital, promosi, dan pembangunan berkelanjutan.
                     </p>

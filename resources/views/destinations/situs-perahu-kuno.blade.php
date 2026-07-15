@@ -10,7 +10,7 @@
         <div class="absolute inset-0 bg-slate-950/60"></div>
 
         <div class="relative z-10 px-6 mt-20 max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/20 backdrop-blur-sm text-indigo-300 text-sm font-semibold uppercase tracking-wider mb-4 border border-indigo-400/20">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-indigo-500/20 backdrop-blur-sm text-indigo-300 text-sm font-semibold uppercase tracking-wider mb-4 border border-indigo-400/20">
                 <i class="fa-solid fa-anchor"></i> Cagar Budaya & Sejarah
             </div>
             <h1 class="text-5xl md:text-7xl font-heading text-white mb-6 drop-shadow-lg leading-tight">
@@ -42,7 +42,7 @@
             </div>
 
             <!-- Content Grid/Card -->
-            <div class="bg-slate-50/50 backdrop-blur-sm p-8 md:p-12 rounded-[2rem] border border-slate-100 shadow-xl space-y-8">
+            <div class="bg-white p-8 md:p-12 rounded-none border border-slate-200 shadow-sm space-y-8">
                 <div class="prose prose-slate max-w-none space-y-6 text-slate-700 leading-relaxed text-justify">
                     <h2 class="text-3xl font-heading text-slate-800 mb-6 border-b pb-4">
                         Tentang Situs Perahu Kuno Punjulharjo
@@ -51,12 +51,27 @@
                         Situs Perahu Kuno Punjulharjo merupakan sebuah cagar budaya nasional bernilai sejarah tinggi yang terletak di Desa Punjulharjo, Rembang. Situs arkeologi ini pertama kali ditemukan oleh warga setempat secara tidak sengaja pada bulan Juli tahun 2008 saat tengah menggali tanah untuk pembuatan tambak garam.
                     </p>
                     <p class="text-base md:text-lg">
-                        Setelah diteliti oleh tim ahli purbakala dan arkeologi nasional maupun internasional, perahu kayu kuno utuh ini diprediksi berasal dari **abad ke-7 Masehi** (sekitar tahun 660-780 M). Temuan ini sangat menggemparkan dunia arkeologi karena perahu kuno ini dinobatkan sebagai perahu kayu tertua di nusantara yang ditemukan dalam kondisi bentuk struktur fisik kayu yang masih sangat utuh dan relatif lengkap.
+                        Setelah diteliti oleh tim ahli purbakala and arkeologi nasional maupun internasional, perahu kayu kuno utuh ini diprediksi berasal dari **abad ke-7 Masehi** (sekitar tahun 660-780 M). Temuan ini sangat menggemparkan dunia arkeologi karena perahu kuno ini dinobatkan sebagai perahu kayu tertua di nusantara yang ditemukan dalam kondisi bentuk struktur fisik kayu yang masih sangat utuh dan relatif lengkap.
                     </p>
                     <p class="text-base md:text-lg">
                         Secara konstruksi, perahu ini dibuat menggunakan teknik papan ikat kuping pengikat (*sewed plank and lash-lug technology*) yang merupakan ciri khas teknologi pembuatan kapal kuno khas bangsa Nusantara (Asia Tenggara) pada masa itu, sebelum kedatangan pengaruh bangsa barat. Penemuan ini menjadi bukti nyata yang tidak terbantahkan bahwa nenek moyang bangsa Indonesia telah memiliki kecakapan navigasi laut dan kemampuan kemaritiman niaga yang sangat maju sejak berabad-abad lalu.
                     </p>
                 </div>
+            </div>
+
+            <!-- Lokasi Map Card -->
+            <div class="bg-white p-8 md:p-12 rounded-none border border-slate-200 shadow-sm space-y-6">
+                <h3 class="text-2xl font-heading text-slate-800 border-b pb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-indigo-600"></i> Lokasi Situs Perahu Kuno
+                </h3>
+                <div class="w-full aspect-video md:h-96">
+                    <iframe src="https://maps.google.com/maps?q=Situs%20Perahu%20Kuno%20Punjulharjo%20Rembang&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-none"></iframe>
+                </div>
+                <p class="text-sm text-slate-500 font-sans flex items-center gap-2 mt-4">
+                    <i class="fa-solid fa-location-dot text-indigo-500"></i>
+                    <a href="https://maps.app.goo.gl/8EWdaGPWj1ngEgvL7" target="_blank" class="hover:text-sky-600 transition">8C45+PCH, Jetakbelah, Punjulharjo, Kec. Rembang, Kabupaten Rembang, Jawa Tengah 59219</a>
+                </p>
             </div>
         </div>
     </section>

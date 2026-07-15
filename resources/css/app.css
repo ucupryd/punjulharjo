@@ -22,10 +22,11 @@ body {
 }
 
 .glass-nav {
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(152, 158, 172, 0.45);
+  /* translucent slate gray */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* Page Frame styling */
@@ -126,6 +127,7 @@ body {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
 }
 
 .wrap input[class*="rd-"]:checked+label {
@@ -300,6 +302,7 @@ body {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
 }
 
 .nav-wrap input[class*="nav-rd-"]:checked+.nav-label {

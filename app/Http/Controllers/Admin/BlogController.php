@@ -7,6 +7,7 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -31,7 +32,14 @@ class BlogController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('blog-images', 'public');
+            $file = $request->file('image');
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $targetDir = public_path('storage/blog-images');
+            if (!\Illuminate\Support\Facades\File::exists($targetDir)) {
+                \Illuminate\Support\Facades\File::makeDirectory($targetDir, 0755, true);
+            }
+            $file->move($targetDir, $fileName);
+            $validated['image'] = 'blog-images/' . $fileName;
         }
 
         $validated['user_id'] = Auth::id();
@@ -39,7 +47,7 @@ class BlogController extends Controller
 
         Blog::create($validated);
 
-        return redirect()->route('admin.blog.index')->with('success', 'Artikel berhasil ditambahkan!');
+        return back()->with('success', 'Artikel berhasil ditambahkan!');
     }
 
     public function edit(Blog $blog)
@@ -57,18 +65,31 @@ class BlogController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('blog-images', 'public');
+            if ($blog->image) {
+                Storage::disk('public_direct')->delete($blog->image);
+            }
+            $file = $request->file('image');
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $targetDir = public_path('storage/blog-images');
+            if (!\Illuminate\Support\Facades\File::exists($targetDir)) {
+                \Illuminate\Support\Facades\File::makeDirectory($targetDir, 0755, true);
+            }
+            $file->move($targetDir, $fileName);
+            $validated['image'] = 'blog-images/' . $fileName;
         }
 
         $validated['slug'] = Str::slug($request->title);
         $blog->update($validated);
 
-        return redirect()->route('admin.blog.index')->with('success', 'Artikel berhasil diperbarui!');
+        return back()->with('success', 'Artikel berhasil diperbarui!');
     }
 
     public function destroy(Blog $blog)
     {
+        if ($blog->image) {
+            Storage::disk('public_direct')->delete($blog->image);
+        }
         $blog->delete();
-        return redirect()->route('admin.blog.index')->with('success', 'Artikel berhasil dihapus!');
+        return back()->with('success', 'Artikel berhasil dihapus!');
     }
 }

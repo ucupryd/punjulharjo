@@ -7,6 +7,7 @@ use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
@@ -27,19 +28,14 @@ class VideoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'video_url' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
-
-        if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('video-thumbnails', 'public');
-        }
 
         $validated['user_id'] = Auth::id();
         $validated['slug'] = Str::slug($request->title);
 
         Video::create($validated);
 
-        return redirect()->route('admin.video.index')->with('success', 'Video berhasil ditambahkan!');
+        return back()->with('success', 'Video berhasil ditambahkan!');
     }
 
     public function edit(Video $video)
@@ -53,22 +49,20 @@ class VideoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'video_url' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
-
-        if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('video-thumbnails', 'public');
-        }
 
         $validated['slug'] = Str::slug($request->title);
         $video->update($validated);
 
-        return redirect()->route('admin.video.index')->with('success', 'Video berhasil diperbarui!');
+        return back()->with('success', 'Video berhasil diperbarui!');
     }
 
     public function destroy(Video $video)
     {
+        if ($video->thumbnail) {
+            Storage::disk('public_direct')->delete($video->thumbnail);
+        }
         $video->delete();
-        return redirect()->route('admin.video.index')->with('success', 'Video berhasil dihapus!');
+        return back()->with('success', 'Video berhasil dihapus!');
     }
 }
