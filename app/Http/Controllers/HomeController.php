@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Ebook;
 use App\Models\Video;
 
+use App\Models\Blog;
+
 class HomeController extends Controller
 {
     public function index()
@@ -17,7 +19,8 @@ class HomeController extends Controller
     {
         $ebooks = Ebook::latest()->get();
         $videos = Video::latest()->get();
-        return view('pustaka.index', compact('ebooks', 'videos'));
+        $blogs = Blog::latest()->get();
+        return view('pustaka.index', compact('ebooks', 'videos', 'blogs'));
     }
 
     public function destinasi()

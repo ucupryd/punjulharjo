@@ -61,14 +61,12 @@
                     $activeIndex = 1;
                 } elseif (request()->is('destinasi*')) {
                     $activeIndex = 2;
-                } elseif (request()->is('pustaka*')) {
+                } elseif (request()->is('pustaka*') || request()->is('blog*')) {
                     $activeIndex = 3;
-                } elseif (request()->is('blog*')) {
-                    $activeIndex = 4;
                 } elseif (request()->is('temukan*')) {
-                    $activeIndex = 5;
+                    $activeIndex = 4;
                 } elseif (request()->is('testimoni*')) {
-                    $activeIndex = 6;
+                    $activeIndex = 5;
                 }
             @endphp
             <header x-data="{ hoverIndex: null, activeIndex: {{ $activeIndex }}, isHome: {{ request()->is('/') ? 'true' : 'false' }}, scrolled: false }"
@@ -128,7 +126,7 @@
                     </div>
 
                     <!-- Navigation Links Container (Pill Navbar) -->
-                    <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible flex justify-start md:justify-center py-1 md:py-0 px-2 md:px-0">
+                    <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible flex justify-center py-1 md:py-0 px-2 md:px-0">
                         <ul class="relative flex items-center px-1 py-0.5 rounded-lg select-none"
                             @mouseleave="hoverIndex = null">
                             
@@ -158,12 +156,9 @@
                                 <a href="{{ route('pustaka') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Pustaka</a>
                             </li>
                             <li @mouseenter="hoverIndex = 4" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('blog.index') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Blog</a>
-                            </li>
-                            <li @mouseenter="hoverIndex = 5" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
                                 <a href="{{ route('temukan') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Lokasi</a>
                             </li>
-                            <li @mouseenter="hoverIndex = 6" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                            <li @mouseenter="hoverIndex = 5" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
                                 <a href="{{ route('testimoni.index') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Kesan</a>
                             </li>
                         </ul>

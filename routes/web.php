@@ -40,7 +40,7 @@ Route::view('/destinasi/situs-perahu-kuno', 'destinations.situs-perahu-kuno')->n
 
 // Blog Publik
 Route::prefix('blog')->name('blog.')->group(function () {
-    Route::get('/', [PublicBlogController::class, 'index'])->name('index');
+    Route::redirect('/', '/pustaka')->name('index');
     Route::get('/{slug}', [PublicBlogController::class, 'show'])->name('show');
 });
 
