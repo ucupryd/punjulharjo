@@ -17,8 +17,8 @@
     </section>
 
     <!-- Navigation Tabs -->
-    <div class="max-w-6xl mx-auto px-4 md:px-6 mt-8 md:mt-12 flex justify-start md:justify-center overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar">
-        <div class="inline-flex p-1.5 bg-white shadow-sm border border-slate-200 gap-1.5 rounded-none w-full sm:w-auto shrink-0">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 mt-8 md:mt-12 flex overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar">
+        <div class="inline-flex p-1.5 bg-white shadow-sm border border-slate-200 gap-1.5 rounded-none min-w-max shrink-0 mx-auto">
             <button @click="activeTab = 'ebook'" 
                     :class="activeTab === 'ebook' ? 'bg-brand-dark text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'"
                     class="px-4 py-2 md:px-6 md:py-2.5 text-xs md:text-sm font-semibold transition flex items-center gap-2 grow justify-center">
@@ -426,11 +426,11 @@
 
 @if($ebooks->isNotEmpty() || Auth::check())
     <!-- Fullscreen Backdrop Modal for Flipbook Viewer -->
-    <div id="ebook-fullscreen-modal" class="hidden fixed inset-0 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md" style="z-index: 999999 !important;">
+    <div id="ebook-fullscreen-modal" class="hidden fixed inset-0 flex items-center justify-center bg-black/90 backdrop-blur-md" style="z-index: 999999 !important;">
         <div class="absolute inset-0 bg-transparent" onclick="closeEbookModal()"></div>
-        <div class="relative w-11/12 max-w-7xl h-[88vh] flex flex-col items-center justify-center z-10" style="z-index: 1000000 !important;">
-            <button onclick="closeEbookModal()" class="absolute -top-14 right-0 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border border-white/10 focus:outline-none" style="z-index: 1000001 !important;">
-                <i class="fa-solid fa-xmark text-2xl"></i>
+        <div class="relative w-full h-full md:w-11/12 md:max-w-7xl md:h-[88vh] flex flex-col items-center justify-center z-10" style="z-index: 1000000 !important;">
+            <button onclick="closeEbookModal()" class="absolute top-4 right-4 text-white hover:text-white bg-black/60 hover:bg-black/80 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-md border border-white/20 focus:outline-none z-[1000002]" style="z-index: 1000002 !important;">
+                <i class="fa-solid fa-xmark text-xl"></i>
             </button>
             <div id="df-modal-flipbook" class="w-full h-full bg-transparent"></div>
         </div>
@@ -905,13 +905,18 @@
             background-color: #ffffff;
             color: #1e293b;
             box-shadow: inset 3px 0 20px rgba(0, 0, 0, 0.08);
-            padding: 2.5rem;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
             box-sizing: border-box;
             border-right: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        @media (min-width: 768px) {
+            .flipbook-page {
+                padding: 2.5rem;
+            }
         }
         .flipbook-page p { color: #475569; }
         .cover-page, .back-page {

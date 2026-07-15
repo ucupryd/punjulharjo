@@ -69,9 +69,16 @@ body {
   --muted: #2563eb;
   /* active pill background (blue accent) */
   --round: 10px;
-  --p-x: 8px;
+  --p-x: 6px;
   --p-y: 4px;
-  --w-label: 120px;
+  --w-label: 90px;
+}
+
+@media (min-width: 768px) {
+  .radio-tabs-wrapper {
+    --p-x: 8px;
+    --w-label: 120px;
+  }
 }
 
 .wrap {
@@ -101,12 +108,12 @@ body {
 .label {
   cursor: pointer;
   outline: none;
-  font-size: 0.875rem;
+  font-size: 11px;
   letter-spacing: initial;
   font-weight: 500;
   color: var(--color-secondary);
   background: transparent;
-  padding: 12px 16px;
+  padding: 8px 6px;
   width: var(--w-label);
   min-width: var(--w-label);
   text-decoration: none;
@@ -120,6 +127,13 @@ body {
   position: relative;
   z-index: 2;
   -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .label {
+    font-size: 0.875rem;
+    padding: 12px 16px;
+  }
 }
 
 .label span {
