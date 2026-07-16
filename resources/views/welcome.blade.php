@@ -659,9 +659,9 @@
                 @foreach($carouselItems as $item)
                     <!-- Card -->
                     <div class="coverflow-card rounded-xl overflow-hidden shadow bg-slate-900 border border-white/10 flex flex-col justify-end p-5 md:p-8 select-none relative group/card">
-                        <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']) }}" alt="{{ $item['title'] }}" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none"></div>
-                        <div class="relative z-20 text-left space-y-2 pointer-events-none">
+                        <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']) }}" alt="{{ $item['title'] }}" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0 transition-transform duration-700 group-hover/card:scale-105" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-20 text-left space-y-2 pointer-events-none opacity-0 translate-y-3 group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-500">
                             <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">{{ $item['title'] }}</h4>
                             <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">{{ $item['description'] }}</p>
                         </div>
