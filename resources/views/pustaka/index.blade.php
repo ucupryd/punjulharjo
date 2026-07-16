@@ -22,17 +22,17 @@
             <button @click="activeTab = 'ebook'" 
                     :class="activeTab === 'ebook' ? 'bg-brand-dark text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'"
                     class="px-4 py-2 md:px-6 md:py-2.5 text-xs md:text-sm font-semibold transition flex items-center gap-2 grow justify-center">
-                <i class="fa-solid fa-book-open"></i> E-Book Panduan
+                <i class="fa-solid fa-book-open"></i> <span class="hidden sm:inline">E-Book Panduan</span>
             </button>
             <button @click="activeTab = 'video'" 
                     :class="activeTab === 'video' ? 'bg-brand-dark text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'"
                     class="px-4 py-2 md:px-6 md:py-2.5 text-xs md:text-sm font-semibold transition flex items-center gap-2 grow justify-center">
-                <i class="fa-solid fa-circle-play"></i> Video Dokumentasi
+                <i class="fa-solid fa-circle-play"></i> <span class="hidden sm:inline">Video Dokumentasi</span>
             </button>
             <button @click="activeTab = 'blog'" 
                     :class="activeTab === 'blog' ? 'bg-brand-dark text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'"
                     class="px-4 py-2 md:px-6 md:py-2.5 text-xs md:text-sm font-semibold transition flex items-center gap-2 grow justify-center">
-                <i class="fa-solid fa-newspaper"></i> Artikel & Blog
+                <i class="fa-solid fa-newspaper"></i> <span class="hidden sm:inline">Artikel & Blog</span>
             </button>
         </div>
     </div>
