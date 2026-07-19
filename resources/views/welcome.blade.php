@@ -1007,7 +1007,7 @@
             // ==========================================================================
             const heroTitle = document.getElementById('hero-title');
             if (heroTitle) {
-                const text = "Wonderful Punjulharjo";
+                const text = "Wonderful UCUP";
                 heroTitle.innerHTML = "";
                 let index = 0;
                 
