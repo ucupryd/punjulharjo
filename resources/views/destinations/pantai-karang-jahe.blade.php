@@ -236,7 +236,7 @@
 
                         <div class="p-3 bg-sky-50/50 border border-sky-100 rounded-none text-[10px] text-slate-600 flex gap-2">
                             <i class="fa-solid fa-circle-exclamation text-sky-600 shrink-0 mt-0.5" aria-hidden="true"></i>
-                            <span>Akses jalan telah diperlebar; lokasi mudah ditemukan via GPS. Koordinat: <strong>-6.691075, 111.414719</strong>.</span>
+                            <span>Akses jalan telah diperlebar; lokasi mudah ditemukan via GPS. Koordinat: <strong>-6.685415, 111.413725 (Pantai Karang Jahe)</strong>.</span>
                         </div>
                     </div>
                 </div>
@@ -244,11 +244,11 @@
                 <!-- Google Maps Right -->
                 <div class="lg:col-span-7 space-y-3">
                     <div class="w-full aspect-video rounded-none overflow-hidden border border-slate-200 shadow-sm bg-white p-1">
-                        <iframe src="https://maps.google.com/maps?q=-6.691075,%20111.414719&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                        <iframe src="https://maps.google.com/maps?q=Pantai%20Karang%20Jahe%2C%20Punjulharjo%2C%20Rembang&t=&z=16&ie=UTF8&iwloc=&output=embed" 
                                 width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="border-none w-full h-full"></iframe>
                     </div>
                     <div class="flex justify-end">
-                        <a href="https://www.google.com/maps/search/?api=1&query=-6.691075,111.414719" 
+                        <a href="https://www.google.com/maps/search/?api=1&query=Pantai+Karang+Jahe,+Punjulharjo,+Rembang" 
                            target="_blank" 
                            class="w-full sm:w-auto inline-flex items-center justify-center bg-brand-dark hover:bg-slate-800 text-white font-semibold px-4 py-2 text-[10px] md:text-xs shadow min-h-[40px] md:min-h-[44px]"
                            aria-label="Buka Rute Pantai Karang Jahe di Google Maps">

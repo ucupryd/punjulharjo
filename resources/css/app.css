@@ -1,3 +1,5 @@
+@import './components/fixed-image-section.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

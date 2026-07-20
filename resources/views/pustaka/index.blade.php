@@ -1,7 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div x-data="{ activeTab: 'ebook' }" class="pt-24 bg-slate-100 min-h-screen font-sans">
+<div x-data="{ 
+    activeTab: '{{ request('tab', 'ebook') }}',
+    init() {
+        if (window.location.hash) {
+            const hash = window.location.hash.substring(1);
+            if (['ebook', 'video', 'blog'].includes(hash)) {
+                this.activeTab = hash;
+            }
+        }
+    }
+}" class="pt-24 bg-slate-100 min-h-screen font-sans">
     
     <!-- Hero / Header Section -->
     <section class="py-12 bg-gradient-to-r from-brand-dark to-slate-900 text-white px-6">
@@ -15,27 +25,6 @@
             </p>
         </div>
     </section>
-
-    <!-- Navigation Tabs -->
-    <div class="max-w-6xl mx-auto px-4 md:px-6 mt-8 md:mt-12 flex overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar">
-        <div class="inline-flex p-1.5 bg-white shadow-sm border border-slate-200 gap-1.5 rounded-none min-w-max shrink-0 mx-auto">
-            <button @click="activeTab = 'ebook'" 
-                    :class="activeTab === 'ebook' ? 'bg-brand-dark text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'"
-                    class="px-4 py-2 md:px-6 md:py-2.5 text-xs md:text-sm font-semibold transition flex items-center gap-2 grow justify-center">
-                <i class="fa-solid fa-book-open"></i> <span class="hidden sm:inline">E-Book Panduan</span>
-            </button>
-            <button @click="activeTab = 'video'" 
-                    :class="activeTab === 'video' ? 'bg-brand-dark text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'"
-                    class="px-4 py-2 md:px-6 md:py-2.5 text-xs md:text-sm font-semibold transition flex items-center gap-2 grow justify-center">
-                <i class="fa-solid fa-circle-play"></i> <span class="hidden sm:inline">Video Dokumentasi</span>
-            </button>
-            <button @click="activeTab = 'blog'" 
-                    :class="activeTab === 'blog' ? 'bg-brand-dark text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'"
-                    class="px-4 py-2 md:px-6 md:py-2.5 text-xs md:text-sm font-semibold transition flex items-center gap-2 grow justify-center">
-                <i class="fa-solid fa-newspaper"></i> <span class="hidden sm:inline">Artikel & Blog</span>
-            </button>
-        </div>
-    </div>
 
     <!-- E-BOOK TAB PANEL -->
     <div x-show="activeTab === 'ebook'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" class="max-w-6xl mx-auto px-6 py-12">

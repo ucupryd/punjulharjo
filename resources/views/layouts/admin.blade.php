@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Desa Wisata Punjulharjo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     @vite('resources/css/app.css')
 </head>
 
@@ -38,6 +41,14 @@
                 <a href="{{ route('admin.pesan.index') }}"
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/pesan*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     💬 Pesan Masuk
+                </a>
+                <a href="{{ route('admin.adopsi.index') }}"
+                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/adopsi*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
+                    🌲 Adopsi Cemara
+                </a>
+                <a href="{{ route('admin.moderasi.index') }}"
+                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/moderasi*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
+                    🛡️ Moderasi Gabungan
                 </a>
             </nav>
         </div>
