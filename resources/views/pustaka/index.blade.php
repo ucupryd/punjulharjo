@@ -32,7 +32,7 @@
             <h2 class="text-3xl font-heading text-brand-dark">Buku Panduan Desa Wisata</h2>
             <p class="text-slate-500 text-sm">Buka lembaran interaktif di bawah ini untuk menjelajahi potensi keindahan alam, sejarah nusantara, dan kebudayaan di Desa Wisata Punjulharjo.</p>
             
-            @auth
+            @if(Auth::check() && Auth::user()->isAdmin())
                 @if($ebooks->isEmpty())
                     <div class="mt-4">
                         <button onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
@@ -41,12 +41,12 @@
                         </button>
                     </div>
                 @endif
-            @endauth
+            @endif
         </div>
 
-        @if($ebooks->isNotEmpty() || Auth::check())
+        @if($ebooks->isNotEmpty() || (Auth::check() && Auth::user()->isAdmin()))
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 py-4 justify-items-center">
-                @auth
+                @if(Auth::check() && Auth::user()->isAdmin())
                     <div onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
                           class="group border-2 border-dashed border-brand-muted hover:border-brand-accent rounded-none flex flex-col items-center justify-center p-4 md:p-8 w-full max-w-[340px] min-h-[220px] md:min-h-[385px] cursor-pointer bg-white/50 hover:bg-brand-muted/10 shadow-sm hover:shadow transition-all duration-300 text-center">
                         <div class="w-12 h-12 md:w-16 md:h-16 rounded-none bg-brand-muted/20 group-hover:bg-brand-accent/20 flex items-center justify-center mb-2 md:mb-4 transition duration-300">
@@ -55,13 +55,13 @@
                         <span class="text-xs md:text-sm font-semibold text-brand-dark font-sans">Tambah Ebook</span>
                         <p class="text-[10px] md:text-xs text-slate-400 mt-1 md:mt-2 font-sans max-w-[150px] md:max-w-[200px]">Upload PDF buku panduan baru</p>
                     </div>
-                @endauth
+                @endif
 
                 @if($ebooks->isNotEmpty())
                     @foreach($ebooks as $ebook)
                         <div class="w-full max-w-[340px] flex justify-center animate-fade-in">
                             <div class="main relative w-full" onclick="openEbookModal('{{ Storage::url($ebook->pdf_path) }}')">
-                                @auth
+                                @if(Auth::check() && Auth::user()->isAdmin())
                                     <div class="absolute top-3 right-3 z-30 flex gap-2" onclick="event.stopPropagation();">
                                         <button onclick="openEditEbookModal({{ json_encode($ebook) }})" 
                                                 class="bg-white/90 hover:bg-white text-slate-700 w-8 h-8 rounded-none shadow-sm flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Ebook">
@@ -76,7 +76,7 @@
                                             </button>
                                         </form>
                                     </div>
-                                @endauth
+                                @endif
 
                                 <div class="card">
                                     <div class="fl">
@@ -276,14 +276,14 @@
                 <h2 class="text-3xl font-heading text-brand-dark">Kumpulan Video Wisata</h2>
                 <p class="text-slate-500 text-sm">Saksikan ragam keindahan dokumentasi video pariwisata Desa Punjulharjo.</p>
             </div>
-            @auth
+            @if(Auth::check() && Auth::user()->isAdmin())
                 <div class="mt-4 md:mt-0">
                     <button onclick="document.getElementById('add-video-modal').classList.remove('hidden')" 
                             class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold">
                         <i class="fa-solid fa-plus"></i> Tambah Video
                     </button>
                 </div>
-            @endauth
+            @endif
         </div>
 
         @php
@@ -327,14 +327,14 @@
                             @endif
                         </div>
 
-                        @auth
+                        @if(Auth::check() && Auth::user()->isAdmin())
                             <div class="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <button onclick="openEditVideoModal(event, {{ json_encode($video) }})" 
                                         class="bg-white/90 hover:bg-white text-slate-800 p-2 rounded-none shadow border border-white/20 flex items-center justify-center">
                                     <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
                                 </button>
                             </div>
-                        @endauth
+                        @endif
                     </a>
                 @endforeach
             </div>
@@ -353,14 +353,14 @@
                 <h2 class="text-3xl font-heading text-brand-dark">Artikel & Berita Desa</h2>
                 <p class="text-slate-500 text-sm">Temukan artikel menarik seputar kegiatan, budaya, dan pengumuman Desa Wisata Punjulharjo.</p>
             </div>
-            @auth
+            @if(Auth::check() && Auth::user()->isAdmin())
                 <div class="mt-4 md:mt-0">
                     <button onclick="document.getElementById('add-blog-modal').classList.remove('hidden')" 
                             class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold">
                         <i class="fa-solid fa-plus"></i> Tambah Artikel
                     </button>
                 </div>
-            @endauth
+            @endif
         </div>
 
         @if($blogs->count() > 0)
@@ -389,7 +389,7 @@
                                  Baca Selengkapnya →
                              </a>
                          </div>
-                         @auth
+                         @if(Auth::check() && Auth::user()->isAdmin())
                              <!-- Floating Edit Button on Card Hover -->
                              <div class="absolute top-2 right-2 md:top-4 md:right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                  <button onclick="openEditBlogModal(event, {{ json_encode($blog) }})" 
@@ -397,7 +397,7 @@
                                      <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
                                  </button>
                              </div>
-                         @endauth
+                         @endif
                     </div>
                 @endforeach
             </div>

@@ -89,13 +89,13 @@
                 <h2 class="text-2xl md:text-3xl font-heading text-brand-dark">Galeri Kebahagiaan</h2>
                 <p class="text-slate-500 text-sm">Foto selfie dan ulasan jujur dari wisatawan Punjulharjo</p>
             </div>
-            @auth
+            @if(Auth::check() && Auth::user()->isAdmin())
                 <div>
                     <button onclick="openQrModal()" class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark font-bold px-4 py-2.5 text-xs transition flex items-center gap-1.5 shadow-sm">
                         <i class="fa-solid fa-qrcode"></i> Cetak QR Standee
                     </button>
                 </div>
-            @endauth
+            @endif
         </div>
 
         @if($testimonials->isEmpty())

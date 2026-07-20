@@ -15,12 +15,12 @@
     <div class="max-w-5xl mx-auto">
         <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
             <h1 class="text-4xl font-heading text-sky-700 text-center sm:text-left">{{ $video->title }}</h1>
-            @auth
+            @if(Auth::check() && Auth::user()->isAdmin())
                 <button onclick="openEditVideoModal(event, {{ json_encode($video) }})" 
                         class="bg-white hover:bg-slate-100 text-slate-800 px-4 py-2 rounded-none border border-slate-200 shadow-sm text-xs font-semibold flex items-center gap-1.5 transition whitespace-nowrap">
                     <i class="fa-solid fa-pencil text-sky-600"></i> Edit Video
                 </button>
-            @endauth
+            @endif
         </div>
         
         <div class="mb-8 flex justify-center">
