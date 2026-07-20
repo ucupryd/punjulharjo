@@ -1,24 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="pt-24 bg-slate-50 min-h-screen font-sans">
-    <!-- Top Hero Header -->
-    <section class="py-12 bg-gradient-to-r from-brand-dark to-slate-900 text-white px-6">
-        <div class="max-w-6xl mx-auto text-center space-y-4">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-brand-accent/20 text-brand-accent text-sm font-semibold uppercase tracking-wider border border-brand-accent/30">
-                <i class="fa-solid fa-heart-circle-check"></i> Kesan Pengunjung
-            </div>
-            <h1 class="text-4xl md:text-5xl font-heading tracking-wide">Cerita & Senyum Pengunjung</h1>
-            <p class="text-slate-300 max-w-2xl mx-auto text-sm md:text-base font-sans">
-                Terima kasih atas kunjungan Anda di Desa Wisata Punjulharjo. Berikut adalah statistik kebahagiaan dan potret keceriaan langsung dari pengunjung kami.
-            </p>
-            <div class="pt-3">
-                <a href="{{ route('testimoni.create') }}" class="inline-flex items-center gap-2 bg-brand-accent hover:bg-white hover:text-brand-dark text-brand-dark font-bold px-6 py-3 transition shadow duration-300">
-                    <i class="fa-solid fa-camera-retro"></i> Bagikan Ceritamu Disini
-                </a>
-            </div>
-        </div>
-    </section>
+<x-fixed-image-section
+    :image="'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1920&q=80'"
+    eyebrow="Kesan Pengunjung" eyebrowIcon="fa-solid fa-comment-dots"
+    title="Cerita & Senyum Pengunjung"
+    subtitle="Terima kasih atas kunjungan Anda di Desa Wisata Punjulharjo. Berikut statistik kebahagiaan dan potret keceriaan langsung dari pengunjung kami."
+    waveColor="text-slate-50"
+    hasWave="true">
+    <a href="{{ route('testimoni.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-brand-dark hover:bg-white transition duration-300">
+        <i class="fa-solid fa-camera-retro"></i> Bagikan Ceritamu Disini
+    </a>
+</x-fixed-image-section>
+
+<div class="bg-slate-50 min-h-screen font-sans">
 
     <!-- STATISTICS & CHARTS SECTION -->
     <section class="py-10 md:py-16 px-4 md:px-6 max-w-6xl mx-auto">

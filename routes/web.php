@@ -32,7 +32,8 @@ Route::redirect('/ebook', '/pustaka');
 Route::redirect('/video', '/pustaka');
 Route::get('/destinasi', [HomeController::class, 'destinasi'])->name('destinasi');
 Route::view('/tentang', 'tentang')->name('tentang');
-Route::view('/temukan-kami', 'temukan-kami')->name('temukan');
+Route::redirect('/temukan-kami', '/tentang#kontak')->name('temukan');
+Route::redirect('/lokasi', '/tentang#kontak');
 
 // Testimonial / Kesan Pengunjung Publik
 Route::get('/testimoni', [TestimonialController::class, 'index'])->name('testimoni.index');

@@ -1,43 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+<x-fixed-image-section variant="green"
+    :image="'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80'"
+    eyebrow="Member Area My Cemara" eyebrowIcon="fa-solid fa-tree"
+    title="Halo, {{ auth()->user()->name }}!"
+    subtitle="Selamat datang di dashboard pemantauan & adopsi pohon cemara Anda di Pantai Karangjahe. Terima kasih telah menjadi pahlawan kelestarian pesisir Punjulharjo."
+    waveColor="text-slate-50"
+    hasWave="true">
+    <a href="#pilih-paket" class="inline-flex items-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 px-6 py-3 font-semibold text-white shadow-lg transition duration-300">
+        <i class="fa-solid fa-tree"></i> Adopsi Pohon Baru
+    </a>
+</x-fixed-image-section>
+
 <div class="py-10 bg-slate-50 min-h-[80vh]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        
-        <!-- Welcome Banner -->
-        <div class="bg-gradient-to-r from-emerald-800 to-slate-900 rounded-xl p-6 md:p-8 text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-xs font-semibold uppercase tracking-wider border border-emerald-500/30">Member Area</span>
-                <h1 class="text-2xl md:text-3xl font-bold font-title mt-2">Halo, {{ auth()->user()->name }}!</h1>
-                <p class="text-slate-300 text-sm mt-1">Selamat datang di dashboard pemantauan & adopsi pohon cemara Anda di Pantai Karangjahe.</p>
-            </div>
-            <a href="#pilih-paket" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow transition flex items-center gap-2 text-sm">
-                <i class="fa-solid fa-tree"></i> Adopsi Pohon Baru
-            </a>
-        </div>
-
-        @if(session('success'))
-            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-xl text-sm text-emerald-800 shadow-sm flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
-                    <span>{{ session('success') }}</span>
-                </div>
-            </div>
-        @endif
-
-        {{-- === Banner Efek Fixed Image Reveal (Foto Diam, Kotak Jendela Scroll) === --}}
-        <x-fixed-image-section
-            :image="asset('images/beach-bg.png')"
-            eyebrow="My Cemara Konservasi"
-            title="Terima Kasih Telah Menjaga Pesisir"
-            subtitle="Setiap pohon cemara yang Anda adopsi ditanam & dirawat langsung oleh tim pengelola desa di Pantai Karangjahe."
-            height="h-[50vh]"
-            class="rounded-xl shadow-lg border border-slate-200">
-            <a href="#pilih-paket"
-               class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white shadow hover:bg-emerald-700 transition text-sm">
-                <i class="fa-solid fa-tree"></i> Adopsi Pohon Baru
-            </a>
-        </x-fixed-image-section>
 
         <!-- Section: Pilihan Paket Adopsi Pohon Cemara -->
         <div id="pilih-paket" class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-6">

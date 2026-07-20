@@ -54,10 +54,8 @@
                     $activeIndex = 2;
                 } elseif (request()->is('pustaka*') || request()->is('blog*')) {
                     $activeIndex = 3;
-                } elseif (request()->is('temukan*')) {
-                    $activeIndex = 4;
                 } elseif (request()->is('testimoni*')) {
-                    $activeIndex = 5;
+                    $activeIndex = 4;
                 } elseif (request()->is('adopsi*') || request()->is('member*')) {
                     $activeIndex = -1;
                 }
@@ -65,18 +63,18 @@
             <header x-data="{
                         hoverIndex: null, 
                         activeIndex: {{ $activeIndex }}, 
-                        isHome: {{ request()->is('/') ? 'true' : 'false' }}, 
+                        hasTransparentHeader: {{ (request()->is('/') || request()->is('tentang') || request()->is('destinasi*') || request()->is('pustaka*') || request()->is('testimoni*') || request()->is('adopsi*')) ? 'true' : 'false' }}, 
                         scrolled: false,
                         navVisible: true,
                         lastScrollY: 0
                     }"
                     x-init="
-                        scrolled = !isHome || window.pageYOffset > 50;
+                        scrolled = !hasTransparentHeader || window.pageYOffset > 50;
                         lastScrollY = window.pageYOffset;
                     "
                     @scroll.window="
                         let currentY = window.pageYOffset;
-                        scrolled = !isHome || currentY > 50;
+                        scrolled = !hasTransparentHeader || currentY > 50;
                         if (currentY <= 50) {
                             navVisible = true;
                         } else if (currentY > lastScrollY && currentY > 100) {
@@ -244,9 +242,6 @@
                                 </div>
                             </li>
                             <li @mouseenter="hoverIndex = 4" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('temukan') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Lokasi</a>
-                            </li>
-                            <li @mouseenter="hoverIndex = 5" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
                                 <a href="{{ route('testimoni.index') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Kesan</a>
                             </li>
                         </ul>
@@ -313,8 +308,6 @@
                             <a href="{{ route('tentang') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Tentang</a>
                             <a href="{{ route('destinasi') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Destinasi</a>
                             <a href="{{ route('pustaka') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Pustaka</a>
-                            <a href="{{ route('blog.index') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Blog</a>
-                            <a href="{{ route('temukan') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Lokasi</a>
                             <a href="{{ route('testimoni.index') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Kesan Pengunjung</a>
                         </div>
                     </div>

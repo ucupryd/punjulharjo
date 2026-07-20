@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-fixed-image-section
+        :image="'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80'"
+        eyebrow="Pustaka Media Desa" eyebrowIcon="fa-solid fa-book-open"
+        title="Pustaka Digital & Dokumentasi"
+        subtitle="Telusuri koleksi buku panduan wisata interaktif kami dan saksikan kumpulan video dokumentasi keindahan Desa Wisata Punjulharjo."
+        waveColor="text-slate-100"
+        hasWave="true" />
+
 <div x-data="{ 
     activeTab: '{{ request('tab', 'ebook') }}',
     init() {
@@ -11,20 +19,7 @@
             }
         }
     }
-}" class="pt-24 bg-slate-100 min-h-screen font-sans">
-    
-    <!-- Hero / Header Section -->
-    <section class="py-12 bg-gradient-to-r from-brand-dark to-slate-900 text-white px-6">
-        <div class="max-w-6xl mx-auto text-center space-y-4">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-brand-accent/20 text-brand-accent text-sm font-semibold uppercase tracking-wider border border-brand-accent/30">
-                <i class="fa-solid fa-photo-film"></i> Pustaka Media Desa
-            </div>
-            <h1 class="text-4xl md:text-5xl font-heading tracking-wide">Pustaka Digital & Dokumentasi</h1>
-            <p class="text-slate-300 max-w-2xl mx-auto text-sm md:text-base font-sans">
-                Telusuri koleksi buku panduan wisata interaktif kami dan saksikan kumpulan video dokumentasi keindahan Desa Wisata Punjulharjo.
-            </p>
-        </div>
-    </section>
+}" class="bg-slate-100 min-h-screen font-sans">
 
     <!-- E-BOOK TAB PANEL -->
     <div x-show="activeTab === 'ebook'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" class="max-w-6xl mx-auto px-6 py-12">

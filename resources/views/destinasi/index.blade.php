@@ -1,21 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="pt-24 bg-slate-100 min-h-screen">
+<x-fixed-image-section
+    :image="'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80'"
+    eyebrow="Eksplorasi Wisata" eyebrowIcon="fa-solid fa-map-location-dot"
+    title="Destinasi Unggulan"
+    subtitle="Kunjungi tempat wisata favorit di Punjulharjo yang memiliki daya tarik tersendiri bagi wisatawan."
+    waveColor="text-slate-100"
+    hasWave="true" />
+
+<div class="bg-slate-100 min-h-screen">
     <!-- SECTION C: Top Destinations (Destinasi Unggulan) -->
-    <section class="bg-slate-100 border-t border-b border-slate-200 py-12 md:py-24 px-4 md:px-12 relative">
+    <section class="bg-slate-100 py-12 md:py-20 px-4 md:px-12 relative">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center space-y-4 mb-16">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-map-location-dot"></i> Eksplorasi Wisata
-                </div>
-                <h2 class="text-2xl md:text-5xl font-heading text-gray-900 tracking-wide">
-                    Destinasi Unggulan
-                </h2>
-                <p class="text-gray-500 font-sans max-w-xl mx-auto text-sm md:text-base">
-                    Kunjungi tempat wisata favorit di Punjulharjo yang memiliki daya tarik tersendiri bagi wisatawan.
-                </p>
-            </div>
 
             <!-- Destinasi Grid Layout with no harsh borders -->
             <div class="grid grid-cols-2 gap-3 md:gap-12">
