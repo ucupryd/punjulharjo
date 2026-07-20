@@ -336,9 +336,19 @@
         </div>
     </section>
 
-
-
-
+    <!-- SECTION C.5: Fixed Image Reveal Parallax Banner -->
+    <x-fixed-image-section
+        image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+        eyebrow="Pesona Pesisir Rembang"
+        title="Keindahan Alam & Harmoni Punjulharjo"
+        subtitle="Dari keteduhan ribuan pohon cemara hingga pesona pantai pasir putih yang membentang luas di pesisir utara Jawa."
+        height="h-[65vh]"
+        align="center">
+        <a href="{{ route('destinasi') }}" 
+           class="inline-flex items-center gap-2 px-8 py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg transition duration-300 text-sm">
+            <i class="fa-solid fa-compass"></i> Jelajahi Destinasi Wisata &rarr;
+        </a>
+    </x-fixed-image-section>
 
     <!-- SECTION D: Aesthetic Photo Gallery -->
     <section class="bg-white py-10 md:py-16 px-4 md:px-6">

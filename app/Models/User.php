@@ -21,7 +21,28 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isMember(): bool
+    {
+        return $this->role === 'member';
+    }
+
+    public function adopsis()
+    {
+        return $this->hasMany(\App\Models\CemaraAdopsi::class);
+    }
+
+    public function pohons()
+    {
+        return $this->hasMany(\App\Models\CemaraPohon::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

@@ -14,6 +14,11 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\EbookController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\AdopsiPublicController;
+use App\Http\Controllers\Member\AdopsiController as MemberAdopsiController;
+use App\Http\Controllers\Admin\AdopsiController as AdminAdopsiController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ModerasiController as AdminModerasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,25 +57,72 @@ Route::prefix('video')->name('video.')->group(function () {
 
 Route::post('/kirim-pesan', [ContactController::class, 'store'])->name('contact.store');
 
+/*
+|--------------------------------------------------------------------------
+| Modul My Cemara (Publik)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('adopsi')->name('adopsi.')->group(function () {
+    Route::get('/', [AdopsiPublicController::class, 'index'])->name('index');
+    Route::get('/paket/{paket}', [AdopsiPublicController::class, 'show'])->name('show');
+});
 
 /*
 |--------------------------------------------------------------------------
-| Auth (Login/Register/Logout Admin)
+| Auth (Login Terpisah User & Admin / Register / Logout)
 |--------------------------------------------------------------------------
 */
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+
+// Login User / Member
+Route::get('/login/user', [AuthController::class, 'showUserLogin'])->name('login.user');
+Route::post('/login/user', [AuthController::class, 'userLogin'])->name('login.user.submit');
+
+// Login Admin
+Route::get('/login/admin', [AuthController::class, 'showAdminLogin'])->name('login.admin');
+Route::post('/login/admin', [AuthController::class, 'adminLogin'])->name('login.admin.submit');
+
+// Registrasi
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
+Route::get('/daftar', [AuthController::class, 'showMemberRegister'])->name('member.register');
+Route::post('/daftar', [AuthController::class, 'memberRegister']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 
 /*
 |--------------------------------------------------------------------------
-| Admin (Proteksi Auth)
+| Member Dashboard & Management (My Cemara)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->group(function () {
+    Route::get('/adopsi', [MemberAdopsiController::class, 'dashboard'])->name('adopsi.dashboard');
+    Route::get('/adopsi/buat/{paket}', [MemberAdopsiController::class, 'create'])->name('adopsi.create');
+    Route::post('/adopsi', [MemberAdopsiController::class, 'store'])->name('adopsi.store');
+    Route::get('/adopsi/{adopsi}', [MemberAdopsiController::class, 'show'])->name('adopsi.show');
+    Route::get('/adopsi/{adopsi}/bayar', [MemberAdopsiController::class, 'bayar'])->name('adopsi.bayar');
+    Route::post('/adopsi/{adopsi}/bayar', [MemberAdopsiController::class, 'uploadBukti'])->name('adopsi.bayar.upload');
+    Route::get('/pohon/{pohon}/sertifikat', [MemberAdopsiController::class, 'sertifikat'])->name('pohon.sertifikat');
+    Route::get('/pohon/{pohon}/sertifikat/download', [MemberAdopsiController::class, 'sertifikatWord'])->name('pohon.sertifikat.download');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin (Proteksi Auth & Role Admin)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    // Admin Landing Page Redirects to Moderasi Hub
+    Route::get('/', function () {
+        return redirect()->route('admin.moderasi.index');
+    })->name('dashboard');
+    Route::get('/dashboard', function () {
+        return redirect()->route('admin.moderasi.index');
+    });
+
+    // Admin Moderasi Gabungan (Testimoni + Pesan + Adopsi)
+    Route::get('/moderasi', [AdminModerasiController::class, 'index'])->name('moderasi.index');
 
     // CRUD Blog Admin
     Route::resource('/blog', AdminBlogController::class);
@@ -78,10 +130,12 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // CRUD Video Admin
     Route::resource('/video', AdminVideoController::class);
 
-    // Hanya lihat pesan (read-only)
+    // Pesan Masuk Admin
     Route::get('/pesan', [ContactMessageController::class, 'index'])->name('pesan.index');
+    Route::patch('/pesan/{id}/read', [ContactMessageController::class, 'markAsRead'])->name('pesan.read');
+    Route::post('/pesan/read-all', [ContactMessageController::class, 'markAllAsRead'])->name('pesan.read-all');
 
-    // 🔹 Tambah route untuk ubah hero background
+    // Ubah Hero Background
     Route::get('/hero', [HeroController::class, 'edit'])->name('hero.edit');
     Route::post('/hero', [HeroController::class, 'update'])->name('hero.update');
     Route::post('/about-image', [HeroController::class, 'updateAboutImage'])->name('about-image.update');
@@ -106,4 +160,13 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/testimoni', [TestimonialController::class, 'adminIndex'])->name('testimoni.index');
     Route::patch('/testimoni/{id}/approve', [TestimonialController::class, 'approve'])->name('testimoni.approve');
     Route::delete('/testimoni/{id}', [TestimonialController::class, 'destroy'])->name('testimoni.destroy');
+
+    // Admin Adopsi Cemara
+    Route::prefix('adopsi')->name('adopsi.')->group(function () {
+        Route::get('/', [AdminAdopsiController::class, 'index'])->name('index');
+        Route::get('/{adopsi}', [AdminAdopsiController::class, 'show'])->name('show');
+        Route::post('/{adopsi}/verifikasi', [AdminAdopsiController::class, 'verifikasi'])->name('verifikasi');
+        Route::post('/{adopsi}/tolak', [AdminAdopsiController::class, 'tolak'])->name('tolak');
+        Route::post('/pohon/{pohon}/monitoring', [AdminAdopsiController::class, 'storeMonitoring'])->name('monitoring.store');
+    });
 });

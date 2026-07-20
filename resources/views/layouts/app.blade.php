@@ -17,21 +17,12 @@
     @endphp
     <link rel="icon" href="{{ $faviconUrl }}" type="{{ $faviconType }}">
 
-    <!-- Google Fonts Poppins -->
+    <!-- Google Fonts Poppins & Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- Bulletproof Latar Belakang & Font Face menggunakan Laravel helper -->
     <style>
-        @font-face {
-            font-family: 'The Last Trunks';
-            src: url("{{ asset('fonts/The-Last-Trunks.ttf') }}") format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
         .page-frame-inner {
             background-color: #ffffff !important;
         }
@@ -67,13 +58,43 @@
                     $activeIndex = 4;
                 } elseif (request()->is('testimoni*')) {
                     $activeIndex = 5;
+                } elseif (request()->is('adopsi*') || request()->is('member*')) {
+                    $activeIndex = -1;
                 }
             @endphp
-            <header x-data="{ hoverIndex: null, activeIndex: {{ $activeIndex }}, isHome: {{ request()->is('/') ? 'true' : 'false' }}, scrolled: false }"
-                    x-init="scrolled = !isHome || window.pageYOffset > 50"
-                    @scroll.window="scrolled = !isHome || window.pageYOffset > 50"
-                    :class="scrolled ? 'bg-white shadow-md text-brand-dark' : 'bg-transparent text-white'"
-                    class="fixed top-0 left-0 w-full z-[999] transition-all duration-300">
+            <header x-data="{
+                        hoverIndex: null, 
+                        activeIndex: {{ $activeIndex }}, 
+                        isHome: {{ request()->is('/') ? 'true' : 'false' }}, 
+                        scrolled: false,
+                        navVisible: true,
+                        lastScrollY: 0
+                    }"
+                    x-init="
+                        scrolled = !isHome || window.pageYOffset > 50;
+                        lastScrollY = window.pageYOffset;
+                    "
+                    @scroll.window="
+                        let currentY = window.pageYOffset;
+                        scrolled = !isHome || currentY > 50;
+                        if (currentY <= 50) {
+                            navVisible = true;
+                        } else if (currentY > lastScrollY && currentY > 100) {
+                            navVisible = false;
+                        } else if (currentY < lastScrollY) {
+                            navVisible = true;
+                        }
+                        lastScrollY = currentY;
+                    "
+                    @mousemove.window="if ($event.clientY < 70) navVisible = true"
+                    @mouseenter="navVisible = true"
+                    :class="{
+                        'bg-white shadow-md text-brand-dark': scrolled,
+                        'bg-transparent text-white': !scrolled,
+                        '-translate-y-full': !navVisible,
+                        'translate-y-0': navVisible
+                    }"
+                    class="fixed top-0 left-0 w-full z-[999] transition-transform duration-300 transform">
                 <nav class="max-w-7xl mx-auto py-3 md:py-4 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 transition duration-300">
                     <!-- Top Row (Branding & Mobile Buttons) -->
                     <div class="w-full md:w-auto flex justify-between items-center shrink-0">
@@ -89,36 +110,27 @@
                         <!-- Mobile Action Buttons (Visible only on Mobile next to brand) -->
                         <div class="flex md:hidden items-center space-x-2 shrink-0">
                             @auth
-                                <!-- Link to Testimonial Moderation Panel -->
-                                <a href="{{ route('admin.testimoni.index') }}" 
-                                   class="bg-slate-800 hover:bg-slate-700 text-white px-2 py-1.5 rounded-none text-[10px] font-bold shadow-sm transition duration-300">
-                                    <i class="fa-solid fa-comments"></i>
-                                </a>
-
-                                <!-- Toggle Button for Contact Messages Modal -->
-                                <button onclick="document.getElementById('messages-modal').classList.remove('hidden')" 
-                                        class="bg-slate-800 hover:bg-slate-700 text-white px-2 py-1.5 rounded-none text-[10px] font-bold shadow-sm transition duration-300 relative">
-                                    <i class="fa-solid fa-envelope"></i>
-                                    @php
-                                        $unreadMessages = \App\Models\ContactMessage::where('is_read', false)->count();
-                                    @endphp
-                                    @if($unreadMessages > 0)
-                                        <span class="absolute -top-1 -right-1 bg-red-600 text-white font-extrabold text-[8px] h-3.5 w-3.5 rounded-full flex items-center justify-center animate-pulse border border-white">
-                                            {{ $unreadMessages }}
-                                        </span>
-                                    @endif
-                                </button>
-
-                                <!-- Form Logout Admin -->
-                                <form action="{{ route('logout') }}" method="POST" class="inline">
-                                    @csrf
-                                    <button type="submit" 
-                                            class="bg-red-600 hover:bg-red-700 text-white px-2 py-1.5 rounded-none text-[10px] font-bold shadow-sm transition duration-300">
-                                        Logout
-                                    </button>
-                                </form>
+                                @if(Auth::user()->isMember())
+                                    <a href="{{ route('member.adopsi.dashboard') }}" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px] font-bold">
+                                        <i class="fa-solid fa-tree"></i>
+                                    </a>
+                                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="bg-rose-600 text-white px-2 py-1 rounded text-[10px] font-bold">
+                                            Logout
+                                        </button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" 
+                                                class="bg-red-600 hover:bg-red-700 text-white px-2 py-1.5 rounded-md text-[10px] font-bold shadow-sm transition duration-300">
+                                            Logout Admin
+                                        </button>
+                                    </form>
+                                @endif
                             @else
-                                <a href="{{ route('login') }}" class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-2.5 py-1.5 rounded-none text-[10px] font-bold shadow-sm transition duration-300" title="Login Admin">
+                                <a href="{{ route('login.user') }}" class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-2.5 py-1.5 rounded-md text-[10px] font-bold shadow-sm transition duration-300" title="Login">
                                     <i class="fa-solid fa-right-to-bracket text-[11px]"></i>
                                 </a>
                             @endauth
@@ -126,34 +138,110 @@
                     </div>
 
                     <!-- Navigation Links Container (Pill Navbar) -->
-                    <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible flex justify-start md:justify-center py-1 md:py-0 px-2 md:px-0">
+                    <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible flex justify-start md:justify-center items-center gap-2 py-1 md:py-0 px-2 md:px-0">
                         <ul class="relative flex items-center px-1 py-0.5 rounded-lg select-none mx-auto md:mx-0"
                             @mouseleave="hoverIndex = null">
                             
                             <!-- The Sliding Background Pill (slidebar) -->
-                            <div class="absolute h-[calc(100%-8px)] w-[58px] md:w-[82px] rounded-md z-0"
+                            <div x-show="(hoverIndex !== null ? hoverIndex : activeIndex) !== null && (hoverIndex !== null ? hoverIndex : activeIndex) >= 0"
+                                 class="absolute h-[calc(100%-8px)] w-[58px] md:w-[82px] rounded-md z-0"
                                  :class="scrolled ? 'bg-gray-300/50' : 'bg-white/20'"
                                  :style="'transform: translateX(' + ((hoverIndex !== null ? hoverIndex : activeIndex) * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'"></div>
 
-                            <!-- The Sliding Bar (bar) -->
-                            <div class="absolute h-full w-[58px] md:w-[82px] z-0 pointer-events-none"
+                            <!-- The Active Page Bar (garis atas-bawah diam di page yang dipilih) -->
+                            <div x-show="activeIndex !== null && activeIndex >= 0"
+                                 class="absolute h-full w-[58px] md:w-[82px] z-0 pointer-events-none"
                                  :style="'transform: translateX(' + (activeIndex * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'">
                                  <div class="absolute top-0 left-0 w-full h-[3px] rounded-b-full bg-current"></div>
                                  <div class="absolute bottom-0 left-0 w-full h-[3px] rounded-t-full bg-current"></div>
                              </div>
 
-                            <!-- Links -->
+                            <!-- Links (0 to 5) -->
                             <li @mouseenter="hoverIndex = 0" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
                                 <a href="{{ route('home') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Beranda</a>
                             </li>
                             <li @mouseenter="hoverIndex = 1" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
                                 <a href="{{ route('tentang') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Tentang</a>
                             </li>
-                            <li @mouseenter="hoverIndex = 2" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('destinasi') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Destinasi</a>
+                            <li @mouseenter="hoverIndex = 2; destinasiDropdown = true" 
+                                @mouseleave="hoverIndex = null; destinasiDropdown = false" 
+                                x-data="{ destinasiDropdown: false }"
+                                class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('destinasi') }}" 
+                                   @click="destinasiDropdown = !destinasiDropdown"
+                                   class="py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current flex items-center justify-center gap-0.5">
+                                    <span>Destinasi</span>
+                                    <i class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200" :class="{ 'rotate-180': destinasiDropdown }"></i>
+                                </a>
+
+                                <!-- Dropdown Menu Destinasi -->
+                                <div x-show="destinasiDropdown"
+                                     x-transition:enter="transition ease-out duration-200"
+                                     x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                     x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                     x-transition:leave="transition ease-in duration-150"
+                                     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                     x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                     @mouseenter="destinasiDropdown = true"
+                                     @mouseleave="destinasiDropdown = false"
+                                     class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 py-1.5 text-left z-[1000] overflow-hidden"
+                                     style="display: none;">
+                                    <a href="{{ route('destinasi') }}" 
+                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                                        <i class="fa-solid fa-map-location-dot text-emerald-600 text-xs"></i>
+                                        <span>Semua Destinasi</span>
+                                    </a>
+                                    <a href="{{ route('destinasi.pantai-karang-jahe') }}" 
+                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                                        <i class="fa-solid fa-umbrella-beach text-emerald-600 text-xs"></i>
+                                        <span>Pantai Karang Jahe</span>
+                                    </a>
+                                    <a href="{{ route('destinasi.situs-perahu-kuno') }}" 
+                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                                        <i class="fa-solid fa-ship text-emerald-600 text-xs"></i>
+                                        <span>Situs Perahu Kuno</span>
+                                    </a>
+                                </div>
                             </li>
-                            <li @mouseenter="hoverIndex = 3" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('pustaka') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Pustaka</a>
+                            <li @mouseenter="hoverIndex = 3; pustakaDropdown = true" 
+                                @mouseleave="hoverIndex = null; pustakaDropdown = false" 
+                                x-data="{ pustakaDropdown: false }"
+                                class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+                                <a href="{{ route('pustaka') }}" 
+                                   @click="pustakaDropdown = !pustakaDropdown"
+                                   class="py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current flex items-center justify-center gap-0.5">
+                                    <span>Pustaka</span>
+                                    <i class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200" :class="{ 'rotate-180': pustakaDropdown }"></i>
+                                </a>
+
+                                <!-- Dropdown Menu Pustaka -->
+                                <div x-show="pustakaDropdown"
+                                     x-transition:enter="transition ease-out duration-200"
+                                     x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+                                     x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                     x-transition:leave="transition ease-in duration-150"
+                                     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                     x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+                                     @mouseenter="pustakaDropdown = true"
+                                     @mouseleave="pustakaDropdown = false"
+                                     class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 py-1.5 text-left z-[1000] overflow-hidden"
+                                     style="display: none;">
+                                    <a href="{{ route('pustaka', ['tab' => 'ebook']) }}" 
+                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                                        <i class="fa-solid fa-book-open text-emerald-600 text-xs"></i>
+                                        <span>E-Book Panduan</span>
+                                    </a>
+                                    <a href="{{ route('pustaka', ['tab' => 'video']) }}" 
+                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                                        <i class="fa-solid fa-circle-play text-emerald-600 text-xs"></i>
+                                        <span>Video Dokumentasi</span>
+                                    </a>
+                                    <a href="{{ route('pustaka', ['tab' => 'blog']) }}" 
+                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                                        <i class="fa-solid fa-newspaper text-emerald-600 text-xs"></i>
+                                        <span>Artikel & Blog</span>
+                                    </a>
+                                </div>
                             </li>
                             <li @mouseenter="hoverIndex = 4" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
                                 <a href="{{ route('temukan') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Lokasi</a>
@@ -162,43 +250,53 @@
                                 <a href="{{ route('testimoni.index') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Kesan</a>
                             </li>
                         </ul>
+
+                        <!-- Separate Standout My Cemara Button -->
+                        <a href="{{ route('adopsi.index') }}" 
+                           class="px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0"
+                           :class="scrolled ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600' : 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-400/60 shadow-emerald-500/30'">
+                            <i class="fa-solid fa-tree text-[11px]"></i>
+                            <span>My Cemara</span>
+                        </a>
                     </div>
                     
                     <!-- Desktop Actions (Hidden on Mobile) -->
-                    <div class="hidden md:flex items-center space-x-4 shrink-0">
+                    <div class="hidden md:flex items-center space-x-3 shrink-0">
                         @auth
-                            <!-- Link to Testimonial Moderation Panel -->
-                            <a href="{{ route('admin.testimoni.index') }}" 
-                               class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-none text-xs font-semibold shadow-sm transition duration-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-comments"></i> Moderasi
-                            </a>
-
-                            <!-- Toggle Button for Contact Messages Modal -->
-                            <button onclick="document.getElementById('messages-modal').classList.remove('hidden')" 
-                                    class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-none text-xs font-semibold shadow-sm transition duration-300 relative">
-                                <i class="fa-solid fa-envelope mr-1.5"></i> Pesan
-                                @php
-                                    $unreadMessages = \App\Models\ContactMessage::where('is_read', false)->count();
-                                @endphp
-                                @if($unreadMessages > 0)
-                                    <span class="absolute -top-2 -right-2 bg-red-600 text-white font-extrabold text-[10px] h-5 w-5 rounded-full flex items-center justify-center animate-pulse border border-white">
-                                        {{ $unreadMessages }}
-                                    </span>
-                                @endif
-                            </button>
-
-                            <!-- Form Logout Admin -->
-                            <form action="{{ route('logout') }}" method="POST" class="inline">
-                                @csrf
-                                <button type="submit" 
-                                        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition duration-300">
-                                    Logout Admin
-                                </button>
-                            </form>
+                            @if(Auth::user()->isMember())
+                                <form action="{{ route('logout') }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-none text-xs font-semibold shadow-sm transition duration-300">
+                                        Logout Member
+                                    </button>
+                                </form>
+                            @else
+                                <!-- Form Logout Admin -->
+                                <form action="{{ route('logout') }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition duration-300">
+                                        Logout Admin
+                                    </button>
+                                </form>
+                            @endif
                         @else
-                            <a href="{{ route('login') }}" class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition-colors duration-300">
-                                Login Admin
-                            </a>
+                            <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left">
+                                <button @click="openLoginDrop = !openLoginDrop" @click.away="openLoginDrop = false" type="button"
+                                        class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-4 py-2 text-xs font-semibold shadow-sm transition-colors duration-300 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-right-to-bracket"></i> Login / Akses <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                                </button>
+                                <div x-show="openLoginDrop" x-transition
+                                     class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-[1000] text-slate-800 text-xs font-semibold py-1">
+                                    <a href="{{ route('login.user') }}" class="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2">
+                                        <i class="fa-solid fa-tree text-emerald-600"></i> Login User / Member
+                                    </a>
+                                    <a href="{{ route('login.admin') }}" class="block px-4 py-2 hover:bg-sky-50 hover:text-sky-700 flex items-center gap-2 border-t border-slate-100">
+                                        <i class="fa-solid fa-user-shield text-sky-600"></i> Login Admin Panel
+                                    </a>
+                                </div>
+                            </div>
                         @endauth
                         
                         <!-- Hamburger Menu Button -->
@@ -425,16 +523,27 @@
                     @endif
                 </div>
 
-                <!-- Modal Footer -->
-                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
-                    <button onclick="document.getElementById('messages-modal').classList.add('hidden')" 
-                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-5 py-2 rounded-none text-sm transition">
-                        Tutup
-                    </button>
                 </div>
             </div>
         </div>
     @endauth
+
+    <!-- Floating Action Button (FAB) for Logged in Member & Admin -->
+    @auth
+        @if(auth()->user()->isMember())
+            <a href="{{ route('member.adopsi.dashboard') }}" title="Dashboard My Cemara"
+               class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xl flex items-center justify-center text-xl transition-all duration-300 transform hover:scale-110 border-2 border-white">
+                <i class="fa-solid fa-tree"></i>
+            </a>
+        @endif
+        @if(auth()->user()->isAdmin())
+            <a href="{{ route('admin.moderasi.index') }}" title="Halaman Moderasi Gabungan"
+               class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-sky-700 hover:bg-sky-800 text-white shadow-2xl flex items-center justify-center text-xl transition-all duration-300 transform hover:scale-110 border-2 border-white">
+                <i class="fa-solid fa-shield-halved"></i>
+            </a>
+        @endif
+    @endauth
+
     @stack('scripts')
 </body>
 

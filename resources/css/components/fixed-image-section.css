@@ -1,0 +1,53 @@
+/* ==== Fitur: Fixed Image Reveal (foto diam, kotak jadi jendela) ==== */
+.fixed-window {
+    position: relative;
+    clip-path: inset(0);
+    -webkit-clip-path: inset(0);
+}
+
+.fixed-window__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-attachment: fixed !important;
+    background-position: center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    z-index: 0;
+}
+
+.fixed-window__img {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Fallback jika clip-path/fixed attachment tak didukung */
+@supports not (clip-path: inset(0)) {
+    .fixed-window__bg {
+        background-attachment: scroll !important;
+    }
+    .fixed-window__img {
+        position: absolute !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+/* Aksesibilitas: nonaktifkan efek untuk reduce motion */
+@media (prefers-reduced-motion: reduce) {
+    .fixed-window__bg {
+        background-attachment: scroll !important;
+    }
+    .fixed-window__img {
+        position: absolute !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+}

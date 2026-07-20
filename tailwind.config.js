@@ -10,7 +10,8 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Poppins", ...defaultTheme.fontFamily.sans],
-                heading: ["'The Last Trunks'", ...defaultTheme.fontFamily.sans],
+                heading: ["'Playfair Display'", "serif", ...defaultTheme.fontFamily.sans],
+                title: ["'Playfair Display'", "serif", ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 brand: {
