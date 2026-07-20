@@ -86,7 +86,7 @@
 
     <!-- SECTION A: Hero Section -->
     <section class="relative w-full h-[115vh] flex flex-col justify-center items-center text-center px-6 overflow-hidden bg-transparent">
-        @auth
+        @if(Auth::check() && Auth::user()->isAdmin())
             <!-- Floating Edit Button for Hero Background -->
             <div class="absolute top-28 right-8 z-30">
                 <button onclick="document.getElementById('edit-hero-modal').classList.remove('hidden')" 
@@ -126,7 +126,7 @@
                     </form>
                 </div>
             </div>
-        @endauth
+        @endif
         <!-- Edge-to-edge Background Video/Image with darkened overlay -->
         @php
             $isVideo = false;
@@ -293,7 +293,7 @@
                     <div class="absolute -inset-4 bg-transparent z-0"></div>
                     
                     <div class="cyber-card-container aspect-[4/3] w-full relative z-10 group">
-                        @auth
+                        @if(Auth::check() && Auth::user()->isAdmin())
                             <!-- Floating Edit Button on Card Hover - Placed on top layer outside the 3D trackers -->
                             <div class="absolute top-4 right-4 z-[50] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
                                 <button type="button" onclick="event.stopPropagation(); document.getElementById('edit-about-modal').classList.remove('hidden')" 
@@ -301,7 +301,7 @@
                                     <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
                                 </button>
                             </div>
-                        @endauth
+                        @endif
                         <div class="cyber-card-canvas">
                             <!-- 25 Hover Trackers -->
                             <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div>
@@ -364,7 +364,7 @@
                     Koleksi sudut-sudut keindahan alam, budaya, dan momen di sepanjang pesisir pantai desa kami.
                 </p>
             </div>
-            @auth
+            @if(Auth::check() && Auth::user()->isAdmin())
                 <!-- Floating Add Button for Gallery -->
                 <div class="absolute top-0 right-0">
                     <button onclick="document.getElementById('add-gallery-modal').classList.remove('hidden')" 
@@ -372,7 +372,7 @@
                         <i class="fa-solid fa-plus"></i> Tambah Foto
                     </button>
                 </div>
-            @endauth
+            @endif
         </div>
     </section>
 
@@ -404,7 +404,7 @@
                         <span class="text-white font-medium text-lg leading-tight">{{ $item['title'] }}</span>
                     </div>
 
-                    @auth
+                    @if(Auth::check() && Auth::user()->isAdmin())
                         <!-- Floating Edit Button on top of everything -->
                         <div class="absolute top-4 right-4 z-[50] pointer-events-auto">
                             <button onclick="openEditGalleryModal(event, {{ json_encode($item) }})" 
@@ -412,7 +412,7 @@
                                 <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
                             </button>
                         </div>
-                    @endauth
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -436,7 +436,7 @@
         </div>
     </section>
 
-        @auth
+        @if(Auth::check() && Auth::user()->isAdmin())
             <!-- Add Gallery Modal -->
             <div id="add-gallery-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
                 <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
@@ -558,7 +558,7 @@
                     }
                 }
             </script>
-        @endauth
+        @endif
     </section>
 
 
@@ -575,7 +575,7 @@
                     <div class="absolute -inset-4 bg-gradient-to-br from-brand-light/10 to-brand-dark/10 rounded-[3rem] blur-xl z-0"></div>
                     
                     <div class="cyber-card-container aspect-[4/3] w-full relative z-10 group">
-                        @auth
+                        @if(Auth::check() && Auth::user()->isAdmin())
                             <!-- Floating Edit Button on Card Hover - Placed on top layer outside the 3D trackers -->
                             <div class="absolute top-4 right-4 z-[50] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
                                 <button type="button" onclick="event.stopPropagation(); document.getElementById('edit-culture-modal').classList.remove('hidden')" 
@@ -583,7 +583,7 @@
                                     <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
                                 </button>
                             </div>
-                        @endauth
+                        @endif
                         <div class="cyber-card-canvas">
                             <!-- 25 Hover Trackers -->
                             <div class="tracker tr-1"></div><div class="tracker tr-2"></div><div class="tracker tr-3"></div><div class="tracker tr-4"></div><div class="tracker tr-5"></div>
@@ -653,7 +653,7 @@
                 <p class="text-gray-600 font-sans text-sm md:text-lg">
                     Klik kartu di kanan/kiri untuk memutar dan memfokuskan petualangan seru yang dapat Anda nikmati di desa kami.
                 </p>
-                @auth
+                @if(Auth::check() && Auth::user()->isAdmin())
                     <!-- Floating Add Button for Carousel -->
                     <div class="absolute top-0 right-0">
                         <button onclick="document.getElementById('add-carousel-modal').classList.remove('hidden')" 
@@ -661,7 +661,7 @@
                             <i class="fa-solid fa-plus"></i> Tambah Aktivitas
                         </button>
                     </div>
-                @endauth
+                @endif
             </div>
 
             <!-- Viewport for 3D Carousel -->
@@ -675,7 +675,7 @@
                             <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">{{ $item['title'] }}</h4>
                             <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">{{ $item['description'] }}</p>
                         </div>
-                        @auth
+                        @if(Auth::check() && Auth::user()->isAdmin())
                             <!-- Floating Edit Button on Card Hover -->
                             <div class="absolute top-4 right-4 z-30 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
                                 <button onclick="openEditCarouselModal(event, {{ json_encode($item) }})" 
@@ -683,7 +683,7 @@
                                     <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
                                 </button>
                             </div>
-                        @endauth
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -696,7 +696,7 @@
             </div>
         </div>
 
-        @auth
+        @if(Auth::check() && Auth::user()->isAdmin())
             <!-- Add Carousel Modal -->
             <div id="add-carousel-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
                 <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
@@ -870,7 +870,7 @@
                     }
                 }
             </script>
-        @endauth
+        @endif
 
 
     <!-- SECTION F: Final Call-to-Action (CTA) -->

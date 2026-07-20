@@ -5,12 +5,12 @@
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-none shadow border border-gray-200">
         <div class="flex justify-between items-start mb-4">
             <h1 class="text-4xl font-heading text-sky-700">{{ $blog->title }}</h1>
-            @auth
+            @if(Auth::check() && Auth::user()->isAdmin())
                 <button onclick="openEditBlogModal(event, {{ json_encode($blog) }})" 
                         class="bg-white hover:bg-slate-100 text-slate-800 px-4 py-2 rounded-none border border-slate-200 shadow-sm text-xs font-semibold flex items-center gap-1.5 transition">
                     <i class="fa-solid fa-pencil text-sky-600"></i> Edit Artikel
                 </button>
-            @endauth
+            @endif
         </div>
         <p class="text-gray-500 mb-6">
             Dipublikasikan pada {{ $blog->created_at->format('d M Y') }} 

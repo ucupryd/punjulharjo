@@ -267,17 +267,20 @@
                                 <form action="{{ route('logout') }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" 
-                                            class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-none text-xs font-semibold shadow-sm transition duration-300">
-                                        Logout Member
+                                            class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
+                                        Logout
                                     </button>
                                 </form>
                             @else
-                                <!-- Form Logout Admin -->
+                                <a href="{{ route('admin.moderasi.index') }}" 
+                                   class="bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-user-shield text-xs"></i> Admin Panel
+                                </a>
                                 <form action="{{ route('logout') }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" 
-                                            class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-none text-sm font-semibold shadow-sm transition duration-300">
-                                        Logout Admin
+                                            class="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
+                                        Logout
                                     </button>
                                 </form>
                             @endif
