@@ -263,27 +263,13 @@
                     <!-- Desktop Actions (Hidden on Mobile) -->
                     <div class="hidden md:flex items-center space-x-3 shrink-0">
                         @auth
-                            @if(Auth::user()->isMember())
-                                <form action="{{ route('logout') }}" method="POST" class="inline">
-                                    @csrf
-                                    <button type="submit" 
-                                            class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
-                                        Logout
-                                    </button>
-                                </form>
-                            @else
-                                <a href="{{ route('admin.moderasi.index') }}" 
-                                   class="bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-user-shield text-xs"></i> Admin Panel
-                                </a>
-                                <form action="{{ route('logout') }}" method="POST" class="inline">
-                                    @csrf
-                                    <button type="submit" 
-                                            class="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
-                                        Logout
-                                    </button>
-                                </form>
-                            @endif
+                            <form action="{{ route('logout') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" 
+                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
+                                    Logout
+                                </button>
+                            </form>
                         @else
                             <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left">
                                 <button @click="openLoginDrop = !openLoginDrop" @click.away="openLoginDrop = false" type="button"
