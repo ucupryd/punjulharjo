@@ -274,7 +274,7 @@
                             <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left">
                                 <button @click="openLoginDrop = !openLoginDrop" @click.away="openLoginDrop = false" type="button"
                                         class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-4 py-2 text-xs font-semibold shadow-sm transition-colors duration-300 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-right-to-bracket"></i> Login / Akses <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                                    <i class="fa-solid fa-right-to-bracket"></i> Login <i class="fa-solid fa-chevron-down text-[10px]"></i>
                                 </button>
                                 <div x-show="openLoginDrop" x-transition
                                      class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-[1000] text-slate-800 text-xs font-semibold py-1">
