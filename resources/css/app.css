@@ -1,4 +1,5 @@
 @import './components/fixed-image-section.css';
+@import './components/adopsi-ticket.css';
 
 @tailwind base;
 @tailwind components;

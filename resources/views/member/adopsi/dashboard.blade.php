@@ -24,46 +24,25 @@
                 <p class="text-slate-500 text-sm mt-1">Pilih paket adopsi di bawah ini untuk memulai kontribusi penghijauan pesisir Pantai Karangjahe.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto py-4">
                 @foreach($pakets as $paket)
-                    <div class="border border-emerald-500/30 hover:border-emerald-500 rounded-xl p-6 bg-gradient-to-b from-white to-emerald-50/20 transition-all duration-300 shadow-sm flex flex-col justify-between">
-                        <div class="space-y-4">
-                            <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl font-bold">
-                                <i class="fa-solid fa-tree"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-bold text-slate-800 font-title">{{ $paket->nama }}</h3>
-                                <p class="text-slate-600 text-sm mt-1 leading-relaxed">{{ $paket->deskripsi }}</p>
-                            </div>
-
-                            <div class="py-2 border-y border-slate-100">
-                                <span class="text-3xl font-extrabold text-emerald-700 font-title">Rp {{ number_format($paket->harga) }}</span>
-                                <span class="text-slate-400 text-xs">/ paket</span>
-                            </div>
-
-                            <ul class="space-y-2 text-xs text-slate-700">
-                                <li class="flex items-center gap-2">
-                                    <i class="fa-solid fa-check text-emerald-600"></i>
-                                    <span><strong>{{ $paket->jumlah_bibit }} Bibit Cemara Laut</strong> (ditanam tim pengelola desa)</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i class="fa-solid fa-check text-emerald-600"></i>
-                                    <span>Kode Pohon Unik & Sertifikat Digital (Word .doc)</span>
-                                </li>
-                                <li class="flex items-center gap-2">
-                                    <i class="fa-solid fa-check text-emerald-600"></i>
-                                    <span>Pemantauan Foto & Grafik Tinggi Pohon Berkala</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="mt-6 pt-4 border-t border-slate-100">
-                            <a href="{{ route('member.adopsi.create', $paket) }}" 
-                               class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow text-center block transition text-sm">
-                                <i class="fa-solid fa-cart-shopping mr-1.5"></i> Pilih & Adopsi Paket Ini &rarr;
-                            </a>
-                        </div>
-                    </div>
+                    @php
+                        $fiturs = [
+                            '<strong>' . $paket->jumlah_bibit . ' Bibit Cemara Laut</strong> (ditanam tim pengelola desa)',
+                            'Kode Pohon Unik & Sertifikat Digital (Word .docx)',
+                            'Pemantauan Foto & Grafik Tinggi Pohon Berkala'
+                        ];
+                    @endphp
+                    <x-adopsi-ticket
+                        :kode="$paket->kode"
+                        :nama="'Paket ' . $paket->kode"
+                        :judul="$paket->jumlah_bibit . ' Bibit Cemara'"
+                        :harga="$paket->harga"
+                        :deskripsi="$paket->deskripsi"
+                        :fitur="$fiturs"
+                        :action="route('member.adopsi.create', $paket)"
+                        method="GET"
+                        :treeCode="'MYC-' . strtoupper($paket->kode) . '2026'" />
                 @endforeach
             </div>
         </div>
