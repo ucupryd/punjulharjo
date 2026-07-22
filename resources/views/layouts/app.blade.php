@@ -107,31 +107,6 @@
 
                         <!-- Mobile Action Buttons (Visible only on Mobile next to brand) -->
                         <div class="flex md:hidden items-center space-x-2 shrink-0">
-                            @auth
-                                @if(Auth::user()->isMember())
-                                    <a href="{{ route('member.adopsi.dashboard') }}" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px] font-bold">
-                                        <i class="fa-solid fa-tree"></i>
-                                    </a>
-                                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                                        @csrf
-                                        <button type="submit" class="bg-rose-600 text-white px-2 py-1 rounded text-[10px] font-bold">
-                                            Logout
-                                        </button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                                        @csrf
-                                        <button type="submit" 
-                                                class="bg-red-600 hover:bg-red-700 text-white px-2 py-1.5 rounded-md text-[10px] font-bold shadow-sm transition duration-300">
-                                            Logout Admin
-                                        </button>
-                                    </form>
-                                @endif
-                            @else
-                                <a href="{{ route('login.user') }}" class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-2.5 py-1.5 rounded-md text-[10px] font-bold shadow-sm transition duration-300" title="Login">
-                                    <i class="fa-solid fa-right-to-bracket text-[11px]"></i>
-                                </a>
-                            @endauth
                             <!-- Hamburger Menu Button -->
                             <button id="mobile-menu-toggle" 
                                     class="focus:outline-none transition-colors duration-300 p-2 text-current"
