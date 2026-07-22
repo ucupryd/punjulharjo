@@ -172,7 +172,7 @@
                                 x-data="{ destinasiDropdown: false }"
                                 class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
                                 <a href="{{ route('destinasi') }}" 
-                                   @click="destinasiDropdown = !destinasiDropdown"
+                                   @click.prevent="destinasiDropdown = !destinasiDropdown"
                                    class="py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current flex items-center justify-center gap-0.5">
                                     <span>Destinasi</span>
                                     <i class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200" :class="{ 'rotate-180': destinasiDropdown }"></i>
@@ -212,7 +212,7 @@
                                 x-data="{ pustakaDropdown: false }"
                                 class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
                                 <a href="{{ route('pustaka') }}" 
-                                   @click="pustakaDropdown = !pustakaDropdown"
+                                   @click.prevent="pustakaDropdown = !pustakaDropdown"
                                    class="py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current flex items-center justify-center gap-0.5">
                                     <span>Pustaka</span>
                                     <i class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200" :class="{ 'rotate-180': pustakaDropdown }"></i>
@@ -306,12 +306,57 @@
                         <div class="flex flex-col space-y-4 mt-8 font-medium">
                             <a href="/" class="text-slate-700 hover:text-sky-600 text-lg transition">Beranda</a>
                             <a href="{{ route('tentang') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Tentang</a>
-                            <a href="{{ route('destinasi') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Destinasi</a>
-                            <a href="{{ route('pustaka') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Pustaka</a>
+                            
+                            <!-- Destinasi Dropdown Accordion -->
+                            <div x-data="{ open: false }" class="w-full text-left">
+                                <button @click="open = !open" class="w-full flex items-center justify-between text-slate-700 hover:text-sky-600 text-lg transition font-medium focus:outline-none">
+                                    <span>Destinasi</span>
+                                    <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                                </button>
+                                <div x-show="open" x-transition.opacity class="pl-4 mt-2 space-y-2 border-l-2 border-slate-100 flex flex-col text-left">
+                                    <a href="{{ route('destinasi') }}" class="text-slate-600 hover:text-sky-600 text-base py-1">Semua Destinasi</a>
+                                    <a href="{{ route('destinasi.pantai-karang-jahe') }}" class="text-slate-600 hover:text-sky-600 text-base py-1">Pantai Karang Jahe</a>
+                                    <a href="{{ route('destinasi.situs-perahu-kuno') }}" class="text-slate-600 hover:text-sky-600 text-base py-1">Situs Perahu Kuno</a>
+                                </div>
+                            </div>
+                            
+                            <!-- Pustaka Dropdown Accordion -->
+                            <div x-data="{ open: false }" class="w-full text-left">
+                                <button @click="open = !open" class="w-full flex items-center justify-between text-slate-700 hover:text-sky-600 text-lg transition font-medium focus:outline-none">
+                                    <span>Pustaka</span>
+                                    <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                                </button>
+                                <div x-show="open" x-transition.opacity class="pl-4 mt-2 space-y-2 border-l-2 border-slate-100 flex flex-col text-left">
+                                    <a href="{{ route('pustaka', ['tab' => 'ebook']) }}" class="text-slate-600 hover:text-sky-600 text-base py-1">E-Book Panduan</a>
+                                    <a href="{{ route('pustaka', ['tab' => 'video']) }}" class="text-slate-600 hover:text-sky-600 text-base py-1">Video Dokumentasi</a>
+                                    <a href="{{ route('pustaka', ['tab' => 'blog']) }}" class="text-slate-600 hover:text-sky-600 text-base py-1">Artikel & Blog</a>
+                                </div>
+                            </div>
+
                             <a href="{{ route('testimoni.index') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Kesan Pengunjung</a>
                             <a href="{{ route('adopsi.index') }}" class="text-emerald-700 hover:text-emerald-800 font-bold text-lg transition flex items-center gap-2">
                                 <i class="fa-solid fa-tree"></i> My Cemara
                             </a>
+
+                            <!-- Login Dropdown Accordion for Guest -->
+                            @guest
+                                <div x-data="{ open: false }" class="w-full text-left">
+                                    <button @click="open = !open" class="w-full flex items-center justify-between text-slate-700 hover:text-sky-600 text-lg transition font-medium focus:outline-none">
+                                        <span class="flex items-center gap-2">
+                                            <i class="fa-solid fa-right-to-bracket text-sky-600"></i> Login
+                                        </span>
+                                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                                    </button>
+                                    <div x-show="open" x-transition.opacity class="pl-4 mt-2 space-y-2 border-l-2 border-slate-100 flex flex-col text-left">
+                                        <a href="{{ route('login.user') }}" class="text-emerald-600 hover:text-emerald-700 text-base py-1 font-bold flex items-center gap-1.5">
+                                            <i class="fa-solid fa-tree text-xs"></i> Member / User
+                                        </a>
+                                        <a href="{{ route('login.admin') }}" class="text-slate-700 hover:text-slate-900 text-base py-1 font-bold flex items-center gap-1.5 border-t border-slate-100 mt-1">
+                                            <i class="fa-solid fa-user-shield text-xs"></i> Admin Panel
+                                        </a>
+                                    </div>
+                                </div>
+                            @endguest
                         </div>
                     </div>
                     <div class="pt-6 border-t space-y-3">
@@ -333,13 +378,6 @@
                                     Logout
                                 </button>
                             </form>
-                        @else
-                            <a href="{{ route('login.user') }}" class="block text-center bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold shadow">
-                                Login Member
-                            </a>
-                            <a href="{{ route('login.admin') }}" class="block text-center bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-lg font-semibold shadow">
-                                Login Admin Panel
-                            </a>
                         @endauth
                     </div>
                 </div>
