@@ -55,14 +55,14 @@
         @endif
 
         @if($title)
-            <h1 class="mt-6 font-title text-4xl md:text-6xl font-bold leading-tight drop-shadow-md">
+            <h1 class="mt-6 font-title text-3xl sm:text-4xl md:text-6xl font-bold leading-tight drop-shadow-md">
                 {{ $title }}
                 @if($titleAccent)<br><span class="{{ $theme['accent'] }}">{{ $titleAccent }}</span>@endif
             </h1>
         @endif
-
+ 
         @if($subtitle)
-            <p class="mx-auto mt-5 max-w-2xl text-base md:text-lg text-white/80 font-sans leading-relaxed drop-shadow">{{ $subtitle }}</p>
+            <p class="mx-auto mt-5 max-w-2xl text-sm sm:text-base md:text-lg text-white/80 font-sans leading-relaxed drop-shadow">{{ $subtitle }}</p>
         @endif
 
         @if(trim($slot))

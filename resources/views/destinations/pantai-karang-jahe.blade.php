@@ -939,55 +939,55 @@
                 </p>
             </div>
 
-            <!-- Impact Grid (2 Columns on Mobile) -->
-            <div class="grid grid-cols-2 gap-3 md:gap-8">
+            <!-- Impact Grid (1 Column on Mobile) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
                 <!-- Card 1 -->
-                <div class="bg-white p-3 md:p-8 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex items-start gap-3">
+                <div class="bg-white p-4 md:p-8 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex items-start gap-3">
                     <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0" aria-hidden="true">
                         <i class="fa-solid fa-briefcase text-sm md:text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Tenaga Kerja</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
+                        <h3 class="text-sm sm:text-base md:text-lg font-heading text-slate-900 mb-1">Tenaga Kerja</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-justify">
                             Warga desa diserap aktif sebagai petugas pengelola, kebersihan pantai, parkir, dan operator wahana.
                         </p>
                     </div>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="bg-white p-3 md:p-8 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex items-start gap-3">
+                <div class="bg-white p-4 md:p-8 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex items-start gap-3">
                     <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0" aria-hidden="true">
                         <i class="fa-solid fa-store text-sm md:text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">UMKM Warga</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
+                        <h3 class="text-sm sm:text-base md:text-lg font-heading text-slate-900 mb-1">UMKM Warga</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-justify">
                             Sebanyak ± 41 unit UMKM tumbuh di kuliner laut, cendera mata khas pesisir, and homestay rumah warga.
                         </p>
                     </div>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="bg-white p-3 md:p-8 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex items-start gap-3">
+                <div class="bg-white p-4 md:p-8 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex items-start gap-3">
                     <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0" aria-hidden="true">
                         <i class="fa-solid fa-leaf text-sm md:text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Restorasi Hijau</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
+                        <h3 class="text-sm sm:text-base md:text-lg font-heading text-slate-900 mb-1">Restorasi Hijau</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-justify">
                             Konservasi penanaman ribuan pohon cemara laut guna menahan ancaman abrasi pesisir utara Jawa.
                         </p>
                     </div>
                 </div>
 
                 <!-- Card 4 -->
-                <div class="bg-white p-3 md:p-8 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex items-start gap-3">
+                <div class="bg-white p-4 md:p-8 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex items-start gap-3">
                     <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0" aria-hidden="true">
                         <i class="fa-solid fa-hand-holding-heart text-sm md:text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Pemberdayaan</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
+                        <h3 class="text-sm sm:text-base md:text-lg font-heading text-slate-900 mb-1">Pemberdayaan</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-justify">
                             Melalui BUMDes & Pokdarwis, warga bertindak sebagai pemilik sekaligus pengelola cagar wisata.
                         </p>
                     </div>

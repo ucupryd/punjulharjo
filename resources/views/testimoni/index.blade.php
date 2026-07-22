@@ -17,42 +17,42 @@
 
     <!-- STATISTICS & CHARTS SECTION -->
     <section class="py-10 md:py-16 px-4 md:px-6 max-w-6xl mx-auto">
-        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <!-- Radial Bar: Satisfaction Rating -->
-            <div class="bg-white border border-slate-200 shadow-sm p-3 md:p-6 flex flex-col justify-between">
+            <div class="bg-white border border-slate-200 shadow-sm p-4 md:p-6 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-slate-800 font-bold text-xs md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
-                        <i class="fa-solid fa-circle-check text-emerald-500 text-xs md:text-base"></i> Indeks Kepuasan
+                    <h3 class="text-slate-800 font-bold text-sm md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-sm md:text-base"></i> Indeks Kepuasan
                     </h3>
-                    <p class="text-[9px] md:text-xs text-slate-500 leading-tight">Persentase pengunjung yang memberikan rating bintang 5</p>
+                    <p class="text-xs text-slate-500 leading-tight">Persentase pengunjung yang memberikan rating bintang 5</p>
                 </div>
                 <div class="my-2 md:my-4 flex items-center justify-center">
                     <div id="radialSatisfactionChart" class="w-full"></div>
                 </div>
                 <div class="border-t border-slate-100 pt-2 md:pt-3 text-center">
                     <span class="text-xl md:text-3xl font-extrabold text-brand-dark">{{ $averageRating }}</span>
-                    <span class="text-slate-400 font-bold text-[9px] md:text-sm">/ 5.0 Rata-rata Rating</span>
+                    <span class="text-slate-400 font-bold text-xs md:text-sm">/ 5.0 Rata-rata Rating</span>
                 </div>
             </div>
 
             <!-- Donut Chart: Favorite Destination -->
-            <div class="bg-white border border-slate-200 shadow-sm p-3 md:p-6 flex flex-col justify-between">
+            <div class="bg-white border border-slate-200 shadow-sm p-4 md:p-6 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-slate-800 font-bold text-xs md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
-                        <i class="fa-solid fa-umbrella-beach text-sky-500 text-xs md:text-base"></i> Destinasi Terpopuler
+                    <h3 class="text-slate-800 font-bold text-sm md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
+                        <i class="fa-solid fa-umbrella-beach text-sky-500 text-sm md:text-base"></i> Destinasi Terpopuler
                     </h3>
-                    <p class="text-[9px] md:text-xs text-slate-500 leading-tight">Pembagian sebaran pilihan tempat wisata favorit hari ini</p>
+                    <p class="text-xs text-slate-500 leading-tight">Pembagian sebaran pilihan tempat wisata favorit hari ini</p>
                 </div>
                 <div class="my-2 md:my-4 flex items-center justify-center">
                     <div id="donutDestinationChart" class="w-full"></div>
                 </div>
                 <div class="border-t border-slate-100 pt-2 md:pt-3 text-center">
-                    <span class="text-[9px] md:text-xs font-semibold text-slate-400">Diupdate otomatis berdasarkan data masuk</span>
+                    <span class="text-xs font-semibold text-slate-400">Diupdate otomatis berdasarkan data masuk</span>
                 </div>
             </div>
 
             <!-- Static Quick Stats / Call To Action Card -->
-            <div class="col-span-2 lg:col-span-1 bg-gradient-to-br from-brand-light to-brand-dark text-white p-5 md:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
+            <div class="col-span-1 bg-gradient-to-br from-brand-light to-brand-dark text-white p-5 md:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-white/10 rounded-full blur-2xl"></div>
                 <div>
                     <h3 class="font-bold text-lg md:text-xl mb-1.5 md:mb-2 text-brand-accent flex items-center gap-2">
@@ -64,13 +64,13 @@
                 </div>
                 <div class="my-4 md:my-6">
                     <div class="text-3xl md:text-5xl font-black text-white tracking-tight">{{ $totalTestimonials }}</div>
-                    <div class="text-[10px] md:text-xs text-brand-accent font-bold uppercase tracking-widest mt-1">Ulasan Pengunjung Terverifikasi</div>
+                    <div class="text-xs md:text-xs text-brand-accent font-bold uppercase tracking-widest mt-1">Ulasan Pengunjung Terverifikasi</div>
                 </div>
                 <div class="border-t border-white/20 pt-3 md:pt-4 flex items-center gap-3 md:gap-4">
                     <i class="fa-solid fa-qrcode text-3xl md:text-4xl text-white/90"></i>
                     <div>
                         <span class="text-xs font-bold block">Pindai Barcode di Lokasi!</span>
-                        <span class="text-[9px] md:text-[10px] text-slate-200 block">Kirim ulasan instan lewat kamera HP</span>
+                        <span class="text-xs text-slate-200 block">Kirim ulasan instan lewat HP</span>
                     </div>
                 </div>
             </div>
@@ -101,7 +101,7 @@
             </div>
         @else
             <!-- Responsive Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @foreach($testimonials as $item)
                     <!-- Testimonial Card Design -->
                     <div class="bg-white border {{ !$item->is_approved ? 'border-amber-400 bg-amber-50/20' : 'border-slate-200' }} shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300 group overflow-hidden relative">

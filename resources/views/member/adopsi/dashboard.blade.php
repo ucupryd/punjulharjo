@@ -88,7 +88,7 @@
                                 </h4>
                                 @if($pohon->monitorings->isNotEmpty())
                                     <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-                                        <table class="w-full text-left text-xs text-slate-600">
+                                        <table class="min-w-[600px] lg:min-w-full w-full text-left text-xs text-slate-600">
                                             <thead class="bg-slate-100 text-slate-500 uppercase text-[11px] font-semibold border-b border-slate-200">
                                                 <tr>
                                                     <th class="p-3">Tanggal Pantau</th>
@@ -141,7 +141,7 @@
                 <p class="text-slate-500 text-sm text-center py-6">Belum ada transaksi adopsi.</p>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-600">
+                    <table class="min-w-[650px] lg:min-w-full w-full text-left text-sm text-slate-600">
                         <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
                             <tr>
                                 <th class="p-3">Kode Transaksi</th>

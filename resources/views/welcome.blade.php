@@ -200,7 +200,7 @@
                         <i class="fa-solid fa-feather-pointed"></i> Sekilas Profil
                     </div>
                     
-                    <h2 class="text-xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
+                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Tentang Desa Wisata
                     </h2>
                     
@@ -357,7 +357,7 @@
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
                     <i class="fa-regular fa-images"></i> Galeri Visual
                 </div>
-                <h2 class="text-xl md:text-5xl font-heading text-gray-900 tracking-wide">
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-gray-900 tracking-wide">
                     Potret Punjulharjo
                 </h2>
                 <p class="text-gray-500 font-sans max-w-xl mx-auto">
@@ -621,7 +621,7 @@
                         <i class="fa-solid fa-people-group"></i> Harmoni Sosial
                     </div>
                     
-                    <h2 class="text-xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
+                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Kehidupan Budaya & Tradisi
                     </h2>
                     
@@ -647,7 +647,7 @@
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
                     <i class="fa-solid fa-compass"></i> Sorotan Pengalaman
                 </div>
-                <h2 class="text-xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
                     Jelajahi Aktivitas Punjulharjo
                 </h2>
                 <p class="text-gray-600 font-sans text-sm md:text-lg">

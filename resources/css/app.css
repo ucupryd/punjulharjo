@@ -5,6 +5,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+*, *::before, *::after {
+  min-width: 0;
+}
+img, video, svg, canvas, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
 body {
   @apply font-sans text-slate-800 bg-[#edf2f7];
 }

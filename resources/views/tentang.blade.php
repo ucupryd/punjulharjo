@@ -495,14 +495,16 @@
                 ];
             @endphp
 
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                 @foreach($perangkat as $p)
-                    <div class="p-4 bg-slate-50 rounded-none border border-slate-200 text-center space-y-1 hover:border-brand-dark transition">
-                        <div class="w-10 h-10 bg-brand-dark/10 text-brand-dark rounded-none flex items-center justify-center mx-auto text-sm font-bold">
-                            <i class="fa-solid fa-user-tie"></i>
+                    <div class="p-4 bg-slate-50 rounded-none border border-slate-200 text-center flex flex-col justify-between hover:border-brand-dark transition duration-300">
+                        <div class="space-y-2">
+                            <div class="w-10 h-10 bg-brand-dark/10 text-brand-dark rounded-none flex items-center justify-center mx-auto text-sm font-bold">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400 block pt-1 min-h-[2.4em] leading-tight">{{ $p['jabatan'] }}</span>
                         </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block pt-1">{{ $p['jabatan'] }}</span>
-                        <h4 class="text-xs md:text-sm font-bold text-slate-800">{{ $p['nama'] }}</h4>
+                        <h4 class="text-xs sm:text-sm font-bold text-slate-800 leading-snug break-words hyphens-auto mt-2">{{ $p['nama'] }}</h4>
                     </div>
                 @endforeach
             </div>
