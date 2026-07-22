@@ -196,9 +196,7 @@
             <div class="grid lg:grid-cols-12 gap-6 md:gap-8 lg:gap-16 items-center">
                 <!-- Text Block Left with custom radio tabs -->
                 <div class="lg:col-span-7 space-y-4 md:space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 rounded-none bg-brand-muted/10 text-brand-dark text-xs md:text-sm font-semibold uppercase tracking-wider border border-brand-muted/20">
-                        <i class="fa-solid fa-feather-pointed"></i> Sekilas Profil
-                    </div>
+
                     
                     <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Tentang Desa Wisata
@@ -354,9 +352,7 @@
     <section class="bg-white py-10 md:py-16 px-4 md:px-6">
         <div class="max-w-6xl mx-auto relative">
             <div class="text-center space-y-4">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-regular fa-images"></i> Galeri Visual
-                </div>
+
                 <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-gray-900 tracking-wide">
                     Potret Punjulharjo
                 </h2>
@@ -617,9 +613,7 @@
 
                 <!-- Text Block Right -->
                 <div class="order-1 lg:order-2 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-brand-muted/10 text-brand-dark text-sm font-semibold uppercase tracking-wider border border-brand-muted/20">
-                        <i class="fa-solid fa-people-group"></i> Harmoni Sosial
-                    </div>
+
                     
                     <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Kehidupan Budaya & Tradisi
@@ -644,9 +638,7 @@
         <div class="max-w-6xl mx-auto relative z-10 text-center">
             <!-- Header -->
             <div class="space-y-4 mb-16 max-w-3xl mx-auto relative">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-sky-50 text-sky-600 text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-compass"></i> Sorotan Pengalaman
-                </div>
+
                 <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
                     Jelajahi Aktivitas Punjulharjo
                 </h2>

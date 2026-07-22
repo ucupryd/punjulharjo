@@ -21,9 +21,7 @@
     <section id="sekilas-desa" class="py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-8">
             <div class="text-center space-y-3 max-w-3xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-none bg-brand-dark/10 text-brand-dark text-xs font-bold uppercase tracking-wider border border-brand-dark/20">
-                    <i class="fa-solid fa-compass"></i> Profil Umum
-                </div>
+
                 <h2 class="text-3xl md:text-5xl font-heading text-brand-dark tracking-wide">
                     Sekilas Desa Punjulharjo
                 </h2>
@@ -68,7 +66,7 @@
     <section class="py-16 bg-slate-50 border-y border-slate-200 px-6">
         <div class="max-w-6xl mx-auto space-y-10">
             <div class="text-center space-y-2 max-w-2xl mx-auto">
-                <span class="text-brand-dark font-semibold uppercase text-xs tracking-wider">Data Wilayah</span>
+
                 <h2 class="text-2xl md:text-4xl font-heading text-brand-dark">Geografis & Iklim Desa</h2>
                 <p class="text-slate-600 text-xs md:text-sm">Karakteristik fisik dan posisi strategis Punjulharjo di pesisir Pantura.</p>
             </div>
@@ -124,7 +122,7 @@
     <section class="py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
-                <span class="text-brand-dark font-semibold uppercase text-xs tracking-wider">Arah Pembangunan</span>
+
                 <h2 class="text-3xl md:text-4xl font-heading text-brand-dark">Visi & Misi Desa</h2>
                 <p class="text-slate-600 text-sm">Komitmen pemerintah dan masyarakat dalam membangun Punjulharjo yang maju.</p>
             </div>
@@ -254,7 +252,7 @@
     <section class="py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
-                <span class="text-brand-dark font-semibold uppercase text-xs tracking-wider">Destinasi Favorit</span>
+
                 <h2 class="text-3xl md:text-4xl font-heading text-brand-dark">Potensi Wisata Unggulan</h2>
                 <p class="text-slate-600 text-sm">Destinasi wisata kebanggaan Punjulharjo yang selalu ramai dikunjungi wisatawan.</p>
             </div>
@@ -342,7 +340,7 @@
     <section class="py-16 bg-slate-50 border-y border-slate-200 px-6">
         <div class="max-w-6xl mx-auto space-y-10">
             <div class="text-center space-y-2 max-w-2xl mx-auto">
-                <span class="text-brand-dark font-semibold uppercase text-xs tracking-wider">Kearifan Lokal</span>
+
                 <h2 class="text-2xl md:text-4xl font-heading text-brand-dark">Ekonomi & Wisata Edukasi</h2>
                 <p class="text-slate-600 text-xs md:text-sm">Pengalaman belajar langsung dari mata pencaharian & produksi khas warga Punjulharjo.</p>
             </div>
@@ -390,7 +388,7 @@
     <section class="py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-10">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
-                <span class="text-brand-dark font-semibold uppercase text-xs tracking-wider">Warisan Tradisi</span>
+
                 <h2 class="text-3xl md:text-4xl font-heading text-brand-dark">Kesenian & Budaya Desa</h2>
                 <p class="text-slate-600 text-sm">Kesenian khas yang terus dijaga dan dilestarikan oleh masyarakat Punjulharjo.</p>
             </div>
@@ -475,7 +473,7 @@
     <section class="py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-10">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
-                <span class="text-brand-dark font-semibold uppercase text-xs tracking-wider">Struktur Organisasi</span>
+
                 <h2 class="text-3xl md:text-4xl font-heading text-brand-dark">Pemerintahan Desa</h2>
                 <p class="text-slate-600 text-sm">Jajaran Perangkat Desa yang melayani masyarakat Desa Punjulharjo.</p>
             </div>
@@ -522,9 +520,7 @@
     <section id="kontak" class="py-16 md:py-24 bg-slate-50 border-t border-slate-200 px-6">
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/15 text-brand-dark text-xs font-semibold uppercase tracking-wider border border-brand-accent/30">
-                    <i class="fa-solid fa-map-location-dot text-brand-accent"></i> Layanan Kontak & Lokasi
-                </div>
+
                 <h2 class="text-3xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                     Kontak & Peta Kantor Desa
                 </h2>

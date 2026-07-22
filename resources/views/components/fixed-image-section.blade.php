@@ -47,12 +47,7 @@
 
     <!-- Content Area (Dengan padding top untuk offset navbar fixed) -->
     <div class="relative z-20 mx-auto max-w-4xl px-6 pt-32 pb-24 md:pt-40 md:pb-32 text-center">
-        @if($eyebrow)
-            <span class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-widest {{ $theme['badge'] }} backdrop-blur-md">
-                @if($eyebrowIcon)<i class="{{ $eyebrowIcon }}"></i>@endif
-                {{ $eyebrow }}
-            </span>
-        @endif
+
 
         @if($title)
             <h1 class="mt-6 font-title text-3xl sm:text-4xl md:text-6xl font-bold leading-tight drop-shadow-md">

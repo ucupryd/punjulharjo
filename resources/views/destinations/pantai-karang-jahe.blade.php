@@ -47,9 +47,6 @@
             </nav>
 
             <!-- Eyebrow Chip -->
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-sky-500/20 backdrop-blur-sm text-sky-300 text-[10px] md:text-sm font-semibold uppercase tracking-wider border border-sky-400/20">
-                <i class="fa-solid fa-umbrella-beach"></i> Destinasi Wisata
-            </div>
 
             <!-- Title in heading font -->
             <h1 class="text-2xl md:text-7xl font-heading text-white drop-shadow-lg leading-tight">
@@ -152,9 +149,6 @@
             <div class="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
                 <!-- Text Content Left -->
                 <div class="space-y-4 md:space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                        <i class="fa-solid fa-circle-info"></i> Selaras Alam
-                    </div>
                     <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                         Tentang Pantai Karang Jahe
                     </h2>
@@ -189,9 +183,6 @@
     <section id="lokasi" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-map-location-dot"></i> Rute Perjalanan
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Lokasi & Akses Menuju Pantai
                 </h2>
@@ -266,9 +257,6 @@
     <section id="sejarah" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
         <div class="max-w-4xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-timeline text-xs md:text-sm"></i> Garis Waktu
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Jejak Sejarah Karang Jahe
                 </h2>
@@ -355,9 +343,6 @@
     <section id="dayatarik" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-wand-magic-sparkles text-xs md:text-sm"></i> Keistimewaan
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Apa yang Membuatnya Istimewa
                 </h2>
@@ -455,9 +440,6 @@
     <section id="fasilitas" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-square-plus text-xs md:text-sm"></i> Kenyamanan Pengunjung
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Fasilitas & Sarana Lengkap
                 </h2>
@@ -526,9 +508,6 @@
     <section id="aktivitas" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-compass text-xs md:text-sm"></i> Eksplorasi Seru
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Aktivitas Seru untuk Semua
                 </h2>
@@ -701,9 +680,6 @@
     <section id="event" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
         <div class="max-w-4xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-masks-theater text-xs md:text-sm"></i> Ragam Budaya
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Event Tahunan & Tradisi Lokal
                 </h2>
@@ -765,9 +741,6 @@
     <section id="tarif" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-4xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-receipt text-xs md:text-sm"></i> Informasi Retribusi
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Harga Tiket & Tarif Masuk
                 </h2>
@@ -863,9 +836,6 @@
     <section id="ekonomi" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-emerald-50 text-emerald-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-emerald-100">
-                    <i class="fa-solid fa-chart-line text-xs md:text-sm"></i> Kemakmuran Desa
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-slate-900 tracking-wide">
                     Tata Kelola & Dampak Ekonomi
                 </h2>
@@ -928,9 +898,6 @@
     <section id="dampaksosial" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-sky-50 text-sky-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-sky-100">
-                    <i class="fa-solid fa-people-carry-box text-xs md:text-sm"></i> Aspek Sosial
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Manfaat Bagi Warga Punjulharjo
                 </h2>

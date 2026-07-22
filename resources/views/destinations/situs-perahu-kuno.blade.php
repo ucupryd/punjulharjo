@@ -51,9 +51,6 @@
             </nav>
 
             <!-- Eyebrow Chip -->
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-amber-500/20 backdrop-blur-sm text-amber-300 text-[10px] md:text-sm font-semibold uppercase tracking-wider border border-amber-400/20">
-                <i class="fa-solid fa-anchor"></i> Wisata Sejarah & Edukasi
-            </div>
 
             <!-- Title in heading font -->
             <h1 class="text-2xl md:text-7xl font-heading text-white drop-shadow-lg leading-tight">
@@ -156,9 +153,6 @@
             <div class="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center">
                 <!-- Text Content Left -->
                 <div class="space-y-4 md:space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                        <i class="fa-solid fa-circle-info"></i> Jejak Sejarah Maritim
-                    </div>
                     <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                         Tentang Situs Perahu Kuno
                     </h2>
@@ -193,9 +187,6 @@
     <section id="lokasi" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                    <i class="fa-solid fa-map-location-dot"></i> Rute Perjalanan
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Lokasi & Akses Menuju Situs
                 </h2>
@@ -285,9 +276,6 @@
     <section id="sejarah" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
         <div class="max-w-4xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                    <i class="fa-solid fa-timeline"></i> Garis Waktu
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Kronologi Penemuan
                 </h2>
@@ -373,9 +361,6 @@
     <section id="dayatarik" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                    <i class="fa-solid fa-wand-magic-sparkles text-xs md:text-sm"></i> Keistimewaan
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Apa yang Membuatnya Istimewa
                 </h2>
@@ -473,9 +458,6 @@
     <section id="artefak" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                    <i class="fa-solid fa-gem text-xs md:text-sm"></i> Temuan Berharga
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Artefak yang Ditemukan
                 </h2>
@@ -540,9 +522,6 @@
     <section id="fasilitas" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                    <i class="fa-solid fa-square-plus text-xs md:text-sm"></i> Keadaan Terkini
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Keadaan & Fasilitas
                 </h2>
@@ -599,9 +578,6 @@
     <section id="aktivitas" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                    <i class="fa-solid fa-compass text-xs md:text-sm"></i> Eksplorasi Edukasi
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Aktivitas untuk Pengunjung
                 </h2>
@@ -687,9 +663,6 @@
     <section id="event" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-4xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                    <i class="fa-solid fa-calendar-star text-xs md:text-sm"></i> Panggung Kebudayaan
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Event & Kegiatan
                 </h2>
@@ -737,9 +710,6 @@
     <section id="ekonomi" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-emerald-50 text-emerald-600 text-xs md:text-sm font-semibold uppercase tracking-wider border border-emerald-100">
-                    <i class="fa-solid fa-chart-line text-xs md:text-sm"></i> Tata Kelola Cagar Budaya
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-slate-900 tracking-wide">
                     Tata Kelola & Nilai Ekonomi
                 </h2>
@@ -798,9 +768,6 @@
     <section id="dampaksosial" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-amber-50 text-amber-700 text-xs md:text-sm font-semibold uppercase tracking-wider border border-amber-100">
-                    <i class="fa-solid fa-people-carry-box text-xs md:text-sm"></i> Aspek Sosial & Pemberdayaan
-                </div>
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
                     Manfaat bagi Masyarakat
                 </h2>
