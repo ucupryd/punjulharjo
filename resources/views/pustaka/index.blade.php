@@ -40,7 +40,7 @@
         </div>
 
         @if($ebooks->isNotEmpty() || (Auth::check() && Auth::user()->isAdmin()))
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 py-4 justify-items-center">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 py-4 justify-items-center">
                 @if(Auth::check() && Auth::user()->isAdmin())
                     <div onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
                           class="group border-2 border-dashed border-brand-muted hover:border-brand-accent rounded-none flex flex-col items-center justify-center p-4 md:p-8 w-full max-w-[340px] min-h-[220px] md:min-h-[385px] cursor-pointer bg-white/50 hover:bg-brand-muted/10 shadow-sm hover:shadow transition-all duration-300 text-center">
@@ -290,7 +290,7 @@
             }
         @endphp
         @if($videos->count())
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                 @foreach($videos as $video)
                     @php
                         $videoId = getYoutubeId($video->video_url);
@@ -313,12 +313,12 @@
                             </div>
                         </div>
                         
-                        <div class="p-3 md:p-5 text-left">
-                            <h3 class="text-xs md:text-base font-bold text-slate-800 group-hover:text-sky-600 transition duration-300 line-clamp-2 font-sans leading-snug">
+                        <div class="p-4 sm:p-5 text-left">
+                            <h3 class="text-sm sm:text-base font-bold text-slate-800 group-hover:text-sky-600 transition duration-300 line-clamp-2 font-sans leading-snug">
                                 {{ $video->title }}
                             </h3>
                             @if($video->description)
-                                <p class="text-[10px] md:text-xs text-slate-400 mt-1 md:mt-2 line-clamp-2">{{ $video->description }}</p>
+                                <p class="text-xs sm:text-sm text-slate-400 mt-1 md:mt-2 line-clamp-2">{{ $video->description }}</p>
                             @endif
                         </div>
 
@@ -359,28 +359,28 @@
         </div>
 
         @if($blogs->count() > 0)
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
                 @foreach ($blogs as $blog)
                     <div class="bg-white shadow-sm rounded-none overflow-hidden hover:shadow transition duration-300 border border-slate-200 relative group flex flex-col justify-between animate-fade-in">
                          <div>
                              @if($blog->image)
                                  <img src="{{ Storage::url($blog->image) }}" 
                                       alt="{{ $blog->title }}" 
-                                      class="w-full h-32 md:h-52 object-cover">
+                                      class="w-full h-44 md:h-52 object-cover">
                              @else
                                  <img src="https://via.placeholder.com/400x250?text=Desa+Punjulharjo" 
-                                      class="w-full h-32 md:h-52 object-cover">
+                                      class="w-full h-44 md:h-52 object-cover">
                              @endif
-                             <div class="p-3 md:p-6 text-left">
-                                 <h3 class="text-xs md:text-lg font-heading text-sky-600 mb-1 line-clamp-2 leading-snug" title="{{ $blog->title }}">{{ $blog->title }}</h3>
-                                 <p class="text-gray-600 text-[10px] md:text-sm line-clamp-2 md:line-clamp-3">
+                             <div class="p-4 md:p-6 text-left">
+                                 <h3 class="text-sm sm:text-base md:text-lg font-heading text-sky-600 mb-1 line-clamp-2 leading-snug" title="{{ $blog->title }}">{{ $blog->title }}</h3>
+                                 <p class="text-gray-600 text-xs sm:text-sm line-clamp-2 md:line-clamp-3">
                                      {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 100) }}
                                  </p>
                              </div>
                          </div>
-                         <div class="p-3 pt-0 md:p-6 md:pt-0 text-left">
+                         <div class="p-4 pt-0 md:p-6 md:pt-0 text-left">
                              <a href="{{ route('blog.show', $blog->slug) }}" 
-                                class="inline-block text-sky-500 hover:text-sky-700 text-[11px] md:text-sm font-medium transition">
+                                class="inline-block text-sky-500 hover:text-sky-700 text-xs sm:text-sm font-medium transition">
                                  Baca Selengkapnya →
                              </a>
                          </div>

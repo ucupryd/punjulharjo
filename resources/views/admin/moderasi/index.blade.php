@@ -147,7 +147,7 @@
                     <p class="text-slate-400 text-sm py-6 text-center">Belum ada pesan masuk.</p>
                 @else
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-slate-600">
+                        <table class="min-w-[650px] lg:min-w-full w-full text-left text-sm text-slate-600">
                             <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
                                 <tr>
                                     <th class="p-3">Pengirim</th>

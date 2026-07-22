@@ -15,7 +15,7 @@
         <div class="max-w-6xl mx-auto">
 
             <!-- Destinasi Grid Layout with no harsh borders -->
-            <div class="grid grid-cols-2 gap-3 md:gap-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-12">
                 <!-- Card 1: Pantai Karang Jahe -->
                 <a href="{{ route('destinasi.pantai-karang-jahe') }}" class="group relative bg-white rounded-none shadow hover:shadow-md transition-all duration-500 overflow-hidden flex flex-col justify-between h-full border border-gray-200">
                     <div class="overflow-hidden aspect-[16/10] relative">
@@ -34,13 +34,13 @@
                         </span>
                     </div>
                     
-                    <div class="p-3 md:p-8 space-y-2 md:space-y-4 flex-grow flex flex-col justify-between">
+                    <div class="p-4 md:p-8 space-y-2 md:space-y-4 flex-grow flex flex-col justify-between">
                         <div>
-                            <h3 class="text-sm md:text-2xl font-bold text-gray-900 font-sans group-hover:text-sky-600 transition duration-300 flex items-center justify-between">
+                            <h3 class="text-base sm:text-lg md:text-2xl font-bold text-gray-900 font-sans group-hover:text-sky-600 transition duration-300 flex items-center justify-between">
                                 Pantai Karang Jahe
                                 <i class="fa-solid fa-arrow-right text-sky-500 text-sm md:text-lg opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"></i>
                             </h3>
-                            <p class="text-gray-600 font-sans text-[10px] md:text-base leading-relaxed text-justify mt-1.5 md:mt-3 line-clamp-2 md:line-clamp-none">
+                            <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-base leading-relaxed text-justify mt-1.5 md:mt-3 line-clamp-3 md:line-clamp-none">
                                 Pantai Karang Jahe merupakan salah satu destinasi wisata paling dikenal di Desa Punjulharjo. Menghadirkan suasana rekreasi yang nyaman dengan panorama pesisir yang menenangkan, hamparan pasir putih yang lembut, dan air laut yang relatif tenang. Nama Karang Jahe sendiri berasal dari bentuk karang-karang kecil di kawasan pantai yang dianggap menyerupai jahe.
                             </p>
                         </div>
@@ -65,13 +65,13 @@
                         </span>
                     </div>
                     
-                    <div class="p-3 md:p-8 space-y-2 md:space-y-4 flex-grow flex flex-col justify-between">
+                    <div class="p-4 md:p-8 space-y-2 md:space-y-4 flex-grow flex flex-col justify-between">
                         <div>
-                            <h3 class="text-sm md:text-2xl font-bold text-gray-900 font-sans group-hover:text-sky-600 transition duration-300 flex items-center justify-between">
+                            <h3 class="text-base sm:text-lg md:text-2xl font-bold text-gray-900 font-sans group-hover:text-sky-600 transition duration-300 flex items-center justify-between">
                                 Situs Perahu Kuno
                                 <i class="fa-solid fa-arrow-right text-indigo-500 text-sm md:text-lg opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"></i>
                             </h3>
-                            <p class="text-gray-600 font-sans text-[10px] md:text-base leading-relaxed text-justify mt-1.5 md:mt-3 line-clamp-2 md:line-clamp-none">
+                            <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-base leading-relaxed text-justify mt-1.5 md:mt-3 line-clamp-3 md:line-clamp-none">
                                 Selain pantai, Punjulharjo juga memiliki Situs Perahu Kuno yang diperkirakan berasal dari abad ke-7 Masehi. Situs ini menyimpan nilai sejarah tinggi sebagai peninggalan arkeologis yang sangat penting bagi pemahaman sejarah maritim Indonesia, menjadi bukti bahwa masyarakat Nusantara telah memiliki kemampuan pelayaran yang maju sejak berabad-abad lalu.
                             </p>
                         </div>

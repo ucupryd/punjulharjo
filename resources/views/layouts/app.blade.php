@@ -132,11 +132,17 @@
                                     <i class="fa-solid fa-right-to-bracket text-[11px]"></i>
                                 </a>
                             @endauth
+                            <!-- Hamburger Menu Button -->
+                            <button id="mobile-menu-toggle" 
+                                    class="focus:outline-none transition-colors duration-300 p-2 text-current"
+                                    aria-label="Toggle Menu">
+                                <i class="fa-solid fa-bars text-xl"></i>
+                            </button>
                         </div>
                     </div>
-
+ 
                     <!-- Navigation Links Container (Pill Navbar) -->
-                    <div class="w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible flex justify-start md:justify-center items-center gap-2 py-1 md:py-0 px-2 md:px-0">
+                    <div class="hidden md:flex w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible justify-start md:justify-center items-center gap-2 py-1 md:py-0 px-2 md:px-0">
                         <ul class="relative flex items-center px-1 py-0.5 rounded-lg select-none mx-auto md:mx-0"
                             @mouseleave="hoverIndex = null">
                             
@@ -283,16 +289,10 @@
                             </div>
                         @endauth
                         
-                        <!-- Hamburger Menu Button -->
-                        <button id="mobile-menu-toggle" 
-                                class="md:hidden focus:outline-none transition-colors duration-300"
-                                aria-label="Toggle Menu">
-                            <i class="fa-solid fa-bars text-xl"></i>
-                        </button>
                     </div>
                 </nav>
             </header>
-
+ 
             <!-- Mobile Navigation Drawer -->
             <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-md transition-opacity duration-300 flex justify-end">
                 <div class="w-72 bg-white h-full p-6 shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300">
@@ -309,27 +309,36 @@
                             <a href="{{ route('destinasi') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Destinasi</a>
                             <a href="{{ route('pustaka') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Pustaka</a>
                             <a href="{{ route('testimoni.index') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Kesan Pengunjung</a>
+                            <a href="{{ route('adopsi.index') }}" class="text-emerald-700 hover:text-emerald-800 font-bold text-lg transition flex items-center gap-2">
+                                <i class="fa-solid fa-tree"></i> My Cemara
+                            </a>
                         </div>
                     </div>
                     <div class="pt-6 border-t space-y-3">
                         @auth
-                            <a href="{{ route('admin.testimoni.index') }}" 
-                               class="block w-full text-center bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-none font-semibold shadow">
-                                Moderasi Testimoni
-                            </a>
-                            <button onclick="document.getElementById('messages-modal').classList.remove('hidden')" 
-                                    class="block w-full text-center bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-none font-semibold shadow">
-                                Pesan
-                            </button>
+                            @if(auth()->user()->isAdmin())
+                                <a href="{{ route('admin.moderasi.index') }}" 
+                                   class="block w-full text-center bg-sky-700 hover:bg-sky-800 text-white py-3 rounded-lg font-semibold shadow">
+                                    Pusat Moderasi Admin
+                                </a>
+                            @else
+                                <a href="{{ route('member.adopsi.dashboard') }}" 
+                                   class="block w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold shadow">
+                                    Dashboard Member
+                                </a>
+                            @endif
                             <form action="{{ route('logout') }}" method="POST" class="block w-full">
                                 @csrf
-                                <button type="submit" class="block w-full text-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-none font-semibold shadow">
+                                <button type="submit" class="block w-full text-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold shadow">
                                     Logout
                                 </button>
                             </form>
                         @else
-                            <a href="{{ route('login') }}" class="block text-center bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-none font-semibold shadow">
-                                Login Admin
+                            <a href="{{ route('login.user') }}" class="block text-center bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold shadow">
+                                Login Member
+                            </a>
+                            <a href="{{ route('login.admin') }}" class="block text-center bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-lg font-semibold shadow">
+                                Login Admin Panel
                             </a>
                         @endauth
                     </div>

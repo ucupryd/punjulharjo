@@ -45,7 +45,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             <!-- Card 1: Total Dana Terkumpul -->
-            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
+            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-5 sm:p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
                 <div class="flex items-center gap-5">
                     <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
                         <i class="fa-solid fa-hand-holding-dollar"></i>
@@ -66,7 +66,7 @@
             </div>
 
             <!-- Card 2: Jumlah Pohon Tertanam -->
-            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
+            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-5 sm:p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
                 <div class="flex items-center gap-5">
                     <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
                         <i class="fa-solid fa-tree"></i>
@@ -87,7 +87,7 @@
             </div>
 
             <!-- Card 3: Member Adopsi -->
-            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
+            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-5 sm:p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
                 <div class="flex items-center gap-5">
                     <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
                         <i class="fa-solid fa-users"></i>
@@ -164,33 +164,33 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl">
                     <i class="fa-solid fa-shield-virus"></i>
                 </div>
-                <h3 class="font-bold text-slate-800 text-lg font-title">Daya Tahan Tinggi</h3>
-                <p class="text-slate-600 text-sm leading-relaxed">
+                <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Daya Tahan Tinggi</h3>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     Dapat tumbuh subur di tanah berpasir kering dengan toleransi salinitas tinggi serta embusan angin pantai yang keras.
                 </p>
             </div>
 
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+            <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl">
                     <i class="fa-solid fa-microscope"></i>
                 </div>
-                <h3 class="font-bold text-slate-800 text-lg font-title">Penyerap Karbon Efektif</h3>
-                <p class="text-slate-600 text-sm leading-relaxed">
+                <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Penyerap Karbon Efektif</h3>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     Tajuk cemara laut memiliki biomassa yang lebat, membantu menyerap emisi karbon serta memperbaiki mikroiklim pesisir.
                 </p>
             </div>
 
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+            <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl">
                     <i class="fa-solid fa-people-roof"></i>
                 </div>
-                <h3 class="font-bold text-slate-800 text-lg font-title">Pemberdayaan Masyarakat</h3>
-                <p class="text-slate-600 text-sm leading-relaxed">
+                <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Pemberdayaan Masyarakat</h3>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     Bibit dipenyemaian lokal dan ditanam langsung oleh Tim Pengelola Desa (Pokdarwis Karangjahe), menggerakkan ekonomi warga.
                 </p>
             </div>
