@@ -301,51 +301,27 @@
             <p class="text-slate-600 mt-2">Pilih & pesan paket adopsi secara lengkap melalui Dashboard Member Anda.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto py-2">
             @foreach($pakets as $paket)
-                <div class="border-2 border-emerald-500/20 hover:border-emerald-500 rounded-3xl p-8 bg-gradient-to-b from-white to-emerald-50/20 transition-all duration-300 shadow-md flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-xl font-bold mb-4">
-                            <i class="fa-solid fa-tree"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-slate-800 font-title">{{ $paket->nama }}</h3>
-                        <p class="text-slate-500 text-sm mt-2 leading-relaxed">{{ $paket->deskripsi }}</p>
-
-                        <div class="my-6">
-                            <span class="text-4xl font-extrabold text-emerald-700 font-title">Rp {{ number_format($paket->harga) }}</span>
-                            <span class="text-slate-400 text-sm">/ paket</span>
-                        </div>
-
-                        <ul class="space-y-2 border-t border-slate-200/60 pt-4 text-xs text-slate-700">
-                            <li class="flex items-center gap-2">
-                                <i class="fa-solid fa-check text-emerald-600"></i>
-                                <span><strong>{{ $paket->jumlah_bibit }} Bibit Cemara Laut</strong> (ditanam tim desa)</span>
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <i class="fa-solid fa-check text-emerald-600"></i>
-                                <span>Kode pohon unik & Sertifikat Digital Word (.doc)</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="mt-8 pt-4 border-t border-slate-100">
-                        @auth
-                            @if(auth()->user()->isMember())
-                                <a href="{{ route('member.adopsi.dashboard') }}" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 text-center block transition text-sm">
-                                    Adopsi via Dashboard Member &rarr;
-                                </a>
-                            @else
-                                <a href="{{ route('admin.moderasi.index') }}" class="w-full py-4 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-center block transition text-sm">
-                                    Pusat Moderasi Admin
-                                </a>
-                            @endif
-                        @else
-                            <a href="{{ route('login.user') }}" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 text-center block transition text-sm">
-                                Login Member untuk Mengadopsi &rarr;
-                            </a>
-                        @endauth
-                    </div>
-                </div>
+                @php
+                    $targetAction = auth()->check() 
+                        ? (auth()->user()->isMember() ? route('member.adopsi.create', $paket) : route('admin.moderasi.index'))
+                        : route('login.user');
+                    $fiturs = [
+                        '<strong>' . $paket->jumlah_bibit . ' Bibit Cemara Laut</strong> (ditanam tim desa)',
+                        'Kode Pohon Unik & Sertifikat Digital (Word .docx)',
+                    ];
+                @endphp
+                <x-adopsi-ticket
+                    :kode="$paket->kode"
+                    :nama="'Paket ' . $paket->kode"
+                    :judul="$paket->jumlah_bibit . ' Bibit Cemara'"
+                    :harga="$paket->harga"
+                    :deskripsi="$paket->deskripsi"
+                    :fitur="$fiturs"
+                    :action="$targetAction"
+                    method="GET"
+                    :treeCode="'MYC-' . strtoupper($paket->kode) . '2026'" />
             @endforeach
         </div>
     </div>

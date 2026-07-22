@@ -9,5 +9,9 @@ class ContactMessage extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'message'];
+    protected $fillable = ['name', 'email', 'subject', 'message', 'is_read'];
+
+    protected $casts = [
+        'is_read' => 'boolean',
+    ];
 }

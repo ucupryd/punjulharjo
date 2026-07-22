@@ -515,187 +515,131 @@
 
 
     <!-- =========================================================================
-         SECTION 11: KONTAK & LOKASI (GOOGLE MAPS EMBED)
-         ========================================================================= -->
-    <section class="py-16 md:py-24 bg-slate-50 border-t border-slate-200 px-6">
-        <div class="max-w-6xl mx-auto space-y-10">
-            <div class="text-center space-y-3 max-w-2xl mx-auto">
-                <span class="text-brand-dark font-semibold uppercase text-xs tracking-wider">Lokasi Kantor</span>
-                <h2 class="text-3xl md:text-4xl font-heading text-brand-dark">Kontak & Peta Kantor Desa</h2>
-                <p class="text-slate-600 text-sm">Hubungi kami atau kunjungi langsung Kantor Balai Desa Punjulharjo.</p>
-            </div>
-
-            <div class="grid lg:grid-cols-12 gap-8 items-start">
-                <!-- Kontak Left -->
-                <div class="lg:col-span-5 bg-white p-6 md:p-8 rounded-none border border-slate-200 shadow-sm space-y-6">
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-none bg-brand-dark/10 text-brand-dark flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm md:text-base">Alamat Kantor Desa</h4>
-                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                                Desa Punjulharjo, Kec. Rembang, Kab. Rembang, Jawa Tengah 59219
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-none bg-brand-dark/10 text-brand-dark flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-phone"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm md:text-base">Telepon / WhatsApp</h4>
-                            <p class="text-xs text-slate-600 mt-1 font-mono">
-                                089673988491
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-none bg-brand-dark/10 text-brand-dark flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm md:text-base">Email Resmi</h4>
-                            <p class="text-xs text-slate-600 mt-1 font-mono">
-                                punjulharjo.berkah@gmail.com
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="p-3 bg-brand-dark/5 border border-brand-dark/10 rounded-none text-xs text-slate-600 flex gap-2">
-                        <i class="fa-solid fa-circle-info text-brand-dark shrink-0 mt-0.5"></i>
-                        <span>Koordinat Kantor Desa: <strong>-6.69102, 111.41467</strong>.</span>
-                    </div>
-                </div>
-
-                <!-- Google Maps Right -->
-                <div class="lg:col-span-7 space-y-3">
-                    <div class="w-full aspect-video rounded-none overflow-hidden border border-slate-200 shadow-sm bg-white p-1">
-                        <iframe src="https://maps.google.com/maps?q=-6.69102,%20111.41467&t=&z=16&ie=UTF8&iwloc=&output=embed" 
-                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="border-none w-full h-full"></iframe>
-                    </div>
-                    <div class="flex justify-end">
-                        <a href="https://www.google.com/maps/search/?api=1&query=-6.69102,111.41467" 
-                           target="_blank" 
-                           class="inline-flex items-center justify-center bg-brand-dark hover:bg-brand-accent hover:text-brand-dark text-white font-bold px-5 py-2.5 rounded-none text-xs shadow transition duration-300">
-                            <i class="fa-solid fa-map-location-dot mr-2"></i> Buka Rute di Google Maps
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- =========================================================================
-         SECTION 13: HUBUNGI KAMI & KIRIM PESAN
+         SECTION 11: LAYANAN KONTAK & LOKASI KANTOR DESA
          ========================================================================= -->
     <section id="kontak" class="py-16 md:py-24 bg-slate-50 border-t border-slate-200 px-6">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-start">
-            <div class="space-y-6">
+        <div class="max-w-6xl mx-auto space-y-12">
+            <div class="text-center space-y-3 max-w-2xl mx-auto">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent/15 text-brand-dark text-xs font-semibold uppercase tracking-wider border border-brand-accent/30">
-                    <i class="fa-solid fa-envelope-open-text text-brand-accent"></i> Layanan Kontak
+                    <i class="fa-solid fa-map-location-dot text-brand-accent"></i> Layanan Kontak & Lokasi
                 </div>
                 <h2 class="text-3xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
-                    Hubungi Kami
+                    Kontak & Peta Kantor Desa
                 </h2>
-                <p class="text-slate-600 font-sans text-base leading-relaxed">
-                    Jika Anda memiliki pertanyaan tentang kegiatan wisata, reservasi paket, event budaya, atau ingin berkolaborasi — jangan ragu untuk menghubungi tim Desa Wisata Punjulharjo.
+                <p class="text-slate-600 font-sans text-sm md:text-base leading-relaxed">
+                    Hubungi kami untuk informasi wisata, reservasi paket, event budaya, atau kunjungi langsung Kantor Balai Desa Punjulharjo.
                 </p>
+            </div>
 
-                <div class="space-y-4 font-sans text-sm md:text-base text-slate-700">
-                    <div class="flex items-start gap-3 p-4 bg-white rounded-xl shadow-sm border border-slate-200">
-                        <i class="fa-solid fa-location-dot text-brand-accent text-xl mt-0.5 shrink-0"></i>
-                        <div>
-                            <strong class="block text-brand-dark font-semibold mb-0.5">Alamat Desa Wisata:</strong>
-                            <a href="https://maps.google.com/maps?q=-6.69102,%20111.41467" target="_blank" class="text-slate-600 hover:text-sky-600 transition">
-                                Punjulharjo, Kec. Rembang, Kabupaten Rembang, Jawa Tengah 59219
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-12 items-start">
+                <!-- Info Kontak & Peta (Left) -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="space-y-3 font-sans text-sm text-slate-700">
+                        <div class="flex items-start gap-3 p-4 bg-white rounded-xl shadow-sm border border-slate-200">
+                            <i class="fa-solid fa-location-dot text-brand-accent text-xl mt-0.5 shrink-0"></i>
+                            <div>
+                                <strong class="block text-brand-dark font-semibold mb-0.5">Alamat Kantor Desa:</strong>
+                                <span class="text-slate-600">Desa Punjulharjo, Kec. Rembang, Kab. Rembang, Jawa Tengah 59219</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex items-start gap-3 p-4 bg-white rounded-xl shadow-sm border border-slate-200">
+                                <i class="fa-solid fa-phone text-brand-accent text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <strong class="block text-brand-dark font-semibold mb-0.5 text-xs">Telepon / WhatsApp:</strong>
+                                    <span class="text-slate-600 font-mono text-xs">089673988491</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-4 bg-white rounded-xl shadow-sm border border-slate-200">
+                                <i class="fa-solid fa-envelope text-brand-accent text-lg mt-0.5 shrink-0"></i>
+                                <div>
+                                    <strong class="block text-brand-dark font-semibold mb-0.5 text-xs">Email Resmi:</strong>
+                                    <span class="text-slate-600 text-xs">punjulharjo.berkah@gmail.com</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-4 bg-white rounded-xl shadow-sm border border-slate-200">
+                            <i class="fa-solid fa-clock text-brand-accent text-xl mt-0.5 shrink-0"></i>
+                            <div>
+                                <strong class="block text-brand-dark font-semibold mb-0.5">Jam Operasional Kantor:</strong>
+                                <span class="text-slate-600">08.00 - 17.00 WIB (Setiap Hari)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Google Maps iFrame -->
+                    <div class="space-y-3">
+                        <div class="w-full aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-white p-1">
+                            <iframe src="https://maps.google.com/maps?q=-6.69102,%20111.41467&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="border-none w-full h-full rounded-lg"></iframe>
+                        </div>
+                        <div class="flex justify-between items-center pt-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Sosial Media:</span>
+                                <a href="https://www.instagram.com/desawisatapunjulharjo/" target="_blank" 
+                                   class="w-8 h-8 rounded-full bg-white text-slate-700 flex items-center justify-center hover:bg-[#e1306c] hover:text-white transition duration-300 shadow-sm border border-slate-200" title="Instagram">
+                                    <i class="fa-brands fa-instagram text-xs"></i>
+                                </a>
+                                <a href="https://www.youtube.com/@desawisatapunjulharjo9639" target="_blank" 
+                                   class="w-8 h-8 rounded-full bg-white text-slate-700 flex items-center justify-center hover:bg-[#ff0000] hover:text-white transition duration-300 shadow-sm border border-slate-200" title="YouTube">
+                                    <i class="fa-brands fa-youtube text-xs"></i>
+                                </a>
+                                <a href="https://www.tiktok.com/@desawisata.punjul" target="_blank" 
+                                   class="w-8 h-8 rounded-full bg-white text-slate-700 flex items-center justify-center hover:bg-black hover:text-white transition duration-300 shadow-sm border border-slate-200" title="TikTok">
+                                    <i class="fa-brands fa-tiktok text-xs"></i>
+                                </a>
+                            </div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=-6.69102,111.41467" 
+                               target="_blank" 
+                               class="inline-flex items-center justify-center bg-brand-dark hover:bg-brand-accent hover:text-brand-dark text-white font-bold px-4 py-2 rounded-lg text-xs shadow transition duration-300">
+                                <i class="fa-solid fa-map-location-dot mr-1.5"></i> Buka Rute
                             </a>
                         </div>
                     </div>
-                    <div class="flex items-start gap-3 p-4 bg-white rounded-xl shadow-sm border border-slate-200">
-                        <i class="fa-solid fa-phone text-brand-accent text-xl mt-0.5 shrink-0"></i>
-                        <div>
-                            <strong class="block text-brand-dark font-semibold mb-0.5">Telepon & WhatsApp:</strong>
-                            <span class="text-slate-600">+62 812 3456 7890</span>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3 p-4 bg-white rounded-xl shadow-sm border border-slate-200">
-                        <i class="fa-solid fa-envelope text-brand-accent text-xl mt-0.5 shrink-0"></i>
-                        <div>
-                            <strong class="block text-brand-dark font-semibold mb-0.5">Email Resmi:</strong>
-                            <span class="text-slate-600">info@desapunjulharjo.id</span>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3 p-4 bg-white rounded-xl shadow-sm border border-slate-200">
-                        <i class="fa-solid fa-clock text-brand-accent text-xl mt-0.5 shrink-0"></i>
-                        <div>
-                            <strong class="block text-brand-dark font-semibold mb-0.5">Jam Operasional Kantor:</strong>
-                            <span class="text-slate-600">08.00 - 17.00 WIB (Setiap Hari)</span>
-                        </div>
-                    </div>
                 </div>
 
-                <div class="flex items-center gap-3 pt-2">
-                    <span class="text-xs font-semibold uppercase text-slate-500 tracking-wider">Sosial Media:</span>
-                    <a href="https://www.instagram.com/desawisatapunjulharjo/" target="_blank" 
-                       class="w-9 h-9 rounded-full bg-white text-slate-700 flex items-center justify-center hover:bg-[#e1306c] hover:text-white transition duration-300 shadow-sm border border-slate-200" title="Instagram">
-                        <i class="fa-brands fa-instagram text-sm"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@desawisatapunjulharjo9639" target="_blank" 
-                       class="w-9 h-9 rounded-full bg-white text-slate-700 flex items-center justify-center hover:bg-[#ff0000] hover:text-white transition duration-300 shadow-sm border border-slate-200" title="YouTube">
-                        <i class="fa-brands fa-youtube text-sm"></i>
-                    </a>
-                    <a href="https://www.tiktok.com/@desawisata.punjul" target="_blank" 
-                       class="w-9 h-9 rounded-full bg-white text-slate-700 flex items-center justify-center hover:bg-black hover:text-white transition duration-300 shadow-sm border border-slate-200" title="TikTok">
-                        <i class="fa-brands fa-tiktok text-sm"></i>
-                    </a>
+                <!-- Form Kirim Pesan (Right) -->
+                <div class="lg:col-span-6 bg-white rounded-2xl shadow-md p-6 md:p-8 border border-slate-200">
+                    <h3 class="text-2xl font-heading text-brand-dark mb-2">Kirim Pesan</h3>
+                    <p class="text-xs text-slate-500 mb-6 font-sans">Sampaikan pertanyaan, masukan, atau permintaan informasi langsung kepada pengelola desa.</p>
+
+                    @if(session('success'))
+                        <div class="bg-emerald-50 border border-emerald-300 text-emerald-800 px-4 py-3 rounded-xl mb-4 text-xs font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                            <span>{{ session('success') }}</span>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('contact.store') }}" class="space-y-4 font-sans text-sm">
+                        @csrf
+
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1.5" for="name">Nama Lengkap</label>
+                            <input type="text" id="name" name="name" value="{{ old('name') }}"
+                                class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent outline-none transition"
+                                placeholder="Contoh: Budi Santoso" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1.5" for="email">Alamat Email</label>
+                            <input type="email" id="email" name="email" value="{{ old('email') }}"
+                                class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent outline-none transition"
+                                placeholder="nama@email.com" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-700 font-semibold mb-1.5" for="message">Pesan Anda</label>
+                            <textarea id="message" name="message" rows="4"
+                                class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent outline-none transition"
+                                placeholder="Tuliskan pertanyaan atau saran Anda secara rinci..." required>{{ old('message') }}</textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-brand-dark hover:bg-brand-accent hover:text-brand-dark text-white font-semibold py-3 rounded-xl transition duration-300 shadow-md flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Pesan Sekarang
+                        </button>
+                    </form>
                 </div>
-            </div>
-
-            <!-- Form Kirim Pesan -->
-            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border border-slate-200">
-                <h3 class="text-2xl font-heading text-brand-dark mb-2">Kirim Pesan</h3>
-                <p class="text-xs text-slate-500 mb-6 font-sans">Sampaikan pertanyaan, masukan, atau permintaan informasi langsung kepada pengelola desa.</p>
-
-                @if(session('success'))
-                    <div class="bg-emerald-50 border border-emerald-300 text-emerald-800 px-4 py-3 rounded-xl mb-4 text-xs font-semibold flex items-center gap-2">
-                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
-                        <span>{{ session('success') }}</span>
-                    </div>
-                @endif
-
-                <form method="POST" action="{{ route('contact.store') }}" class="space-y-4 font-sans text-sm">
-                    @csrf
-
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1.5" for="name">Nama Lengkap</label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}"
-                            class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent outline-none transition"
-                            placeholder="Contoh: Budi Santoso" required>
-                    </div>
-
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1.5" for="email">Alamat Email</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}"
-                            class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent outline-none transition"
-                            placeholder="nama@email.com" required>
-                    </div>
-
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1.5" for="message">Pesan Anda</label>
-                        <textarea id="message" name="message" rows="4"
-                            class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent outline-none transition"
-                            placeholder="Tuliskan pertanyaan atau saran Anda secara rinci..." required>{{ old('message') }}</textarea>
-                    </div>
-
-                    <button type="submit"
-                        class="w-full bg-brand-dark hover:bg-brand-accent hover:text-brand-dark text-white font-semibold py-3 rounded-xl transition duration-300 shadow-md flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-paper-plane"></i> Kirim Pesan Sekarang
-                    </button>
-                </form>
             </div>
         </div>
     </section>

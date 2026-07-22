@@ -23,28 +23,6 @@
             </div>
         @endif
 
-        <!-- Quick Access Section for Content Management -->
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Pintasan Kelola Konten Situs</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                <a href="{{ route('admin.hero.edit') }}" class="p-3 bg-sky-50 hover:bg-sky-100 border border-sky-100 rounded-xl text-sky-800 text-xs font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-image text-sky-600"></i> Background Hero
-                </a>
-                <a href="{{ route('pustaka') }}" class="p-3 bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 rounded-xl text-indigo-800 text-xs font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-book-open text-indigo-600"></i> Kelola Pustaka
-                </a>
-                <a href="{{ route('admin.blog.index') }}" class="p-3 bg-purple-50 hover:bg-purple-100 border border-purple-100 rounded-xl text-purple-800 text-xs font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-newspaper text-purple-600"></i> Kelola Artikel
-                </a>
-                <a href="{{ route('admin.video.index') }}" class="p-3 bg-amber-50 hover:bg-amber-100 border border-amber-100 rounded-xl text-amber-800 text-xs font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-video text-amber-600"></i> Kelola Video
-                </a>
-                <a href="{{ route('admin.adopsi.index') }}" class="p-3 bg-emerald-50 hover:bg-emerald-100 border border-emerald-100 rounded-xl text-emerald-800 text-xs font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-tree text-emerald-600"></i> Daftar Adopsi
-                </a>
-            </div>
-        </div>
-
         <!-- Tab Moderasi -->
         <div x-data="{ tab: '{{ $activeTab }}' }" class="space-y-6">
             <div class="flex border-b border-slate-200 space-x-2 text-sm font-semibold bg-white p-2 rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
@@ -62,7 +40,7 @@
                 </button>
                 <button @click="tab = 'pesan'" :class="tab === 'pesan' ? 'bg-sky-700 text-white shadow' : 'text-slate-600 hover:bg-slate-100'" class="px-5 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap">
                     <i class="fa-solid fa-envelope"></i> Pesan Masuk Kontak
-                    @php $unread = $messages->where('is_read', false)->count(); @endphp
+                    @php $unread = $messages->filter(fn($m) => !$m->is_read)->count(); @endphp
                     @if($unread > 0)
                         <span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $unread }}</span>
                     @endif

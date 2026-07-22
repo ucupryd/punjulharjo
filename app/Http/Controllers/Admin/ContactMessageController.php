@@ -16,15 +16,16 @@ class ContactMessageController extends Controller
     public function markAsRead($id)
     {
         $message = ContactMessage::findOrFail($id);
-        $message->update(['is_read' => true]);
+        $message->is_read = true;
+        $message->save();
 
-        return back()->with('success', 'Pesan berhasil ditandai sebagai telah dibaca.');
+        return redirect()->route('admin.moderasi.index', ['tab' => 'pesan'])->with('success', 'Pesan berhasil ditandai sebagai telah dibaca.');
     }
 
     public function markAllAsRead()
     {
         ContactMessage::where('is_read', false)->update(['is_read' => true]);
 
-        return back()->with('success', 'Semua pesan berhasil ditandai sebagai telah dibaca.');
+        return redirect()->route('admin.moderasi.index', ['tab' => 'pesan'])->with('success', 'Semua pesan berhasil ditandai sebagai telah dibaca.');
     }
 }
