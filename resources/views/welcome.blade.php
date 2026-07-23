@@ -629,7 +629,7 @@
 
 
     <!-- SECTION EEE: 3D Coverflow Experience (Sorotan Aktivitas Desa) -->
-    <section class="bg-transparent pt-12 pb-24 md:pt-32 md:pb-44 px-4 md:px-12 relative overflow-hidden" style="padding-bottom: 220px !important;">
+    <section class="bg-transparent pt-12 pb-16 md:pt-32 md:pb-24 px-4 md:px-12 relative overflow-hidden">
         <!-- Background shapes matching the design system -->
         <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-sky-200/10 rounded-full blur-3xl z-0"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-200/10 rounded-full blur-3xl z-0"></div>
@@ -680,7 +680,7 @@
             </div>
 
             <!-- Bullet indicators -->
-            <div class="mt-8 flex justify-center items-center gap-2" id="coverflow-dots" style="margin-bottom: 120px !important;">
+            <div class="mt-8 flex justify-center items-center gap-2" id="coverflow-dots">
                 @foreach($carouselItems as $index => $item)
                     <button class="h-2 transition-all duration-300 {{ $index === 0 ? 'bg-sky-500 w-6' : 'bg-slate-300 w-2' }}" aria-label="Slide {{ $index + 1 }}"></button>
                 @endforeach
