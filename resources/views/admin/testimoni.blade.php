@@ -65,7 +65,7 @@
                         <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold uppercase text-slate-500 tracking-wider">
                             <th class="p-4">Pengunjung</th>
                             <th class="p-4">Ulasan & Rating</th>
-                            <th class="p-4">Destinasi & Teman</th>
+                            <th class="p-4">Destinasi & Aktivitas</th>
                             <th class="p-4">Status</th>
                             <th class="p-4 text-right">Aksi</th>
                         </tr>
@@ -92,23 +92,37 @@
                                     </div>
                                 </td>
 
-                                <!-- Review, One Word & Stars -->
+                                <!-- Review & Rating Stars -->
                                 <td class="p-4 max-w-xs">
                                     <div class="space-y-1">
-                                        <div class="flex items-center gap-1.5 text-brand-accent text-xs">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                <i class="fa-solid fa-star {{ $i <= $item->rating ? 'text-amber-400' : 'text-slate-200' }}"></i>
-                                            @endfor
+                                        <div class="flex items-center gap-1.5 text-xs">
+                                            <span class="text-[9px] text-slate-400 font-bold w-12">Puas:</span>
+                                            <div class="flex text-amber-400">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="fa-solid fa-star {{ $i <= $item->rating ? 'text-amber-400' : 'text-slate-200' }}"></i>
+                                                @endfor
+                                            </div>
                                         </div>
-                                        <span class="font-extrabold text-brand-dark block text-xs md:text-sm">"{{ $item->one_word }}"</span>
-                                        <p class="text-xs text-slate-500 leading-normal line-clamp-2" title="{{ $item->review }}">{{ $item->review }}</p>
+                                        <div class="flex items-center gap-1.5 text-xs">
+                                            <span class="text-[9px] text-slate-400 font-bold w-12">Bersih:</span>
+                                            <div class="flex text-teal-500">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="fa-solid fa-star {{ $i <= $item->cleanliness_rating ? 'text-teal-500' : 'text-slate-200' }}"></i>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-slate-600 leading-normal line-clamp-2" title="{{ $item->review }}">{{ $item->review }}</p>
+                                        @if($item->suggestions)
+                                            <p class="text-[10px] text-slate-400 italic font-medium leading-normal line-clamp-1" title="Saran: {{ $item->suggestions }}">Saran: {{ $item->suggestions }}</p>
+                                        @endif
                                     </div>
                                 </td>
 
                                 <!-- Preference info -->
                                 <td class="p-4">
                                     <span class="text-xs font-semibold text-slate-600 block"><i class="fa-solid fa-location-dot text-sky-500 mr-1"></i>{{ $item->favorite_destination }}</span>
-                                    <span class="text-[10px] text-slate-400 block mt-0.5"><i class="fa-solid fa-users mr-1"></i>{{ $item->companion }}</span>
+                                    <span class="text-xs text-slate-500 block mt-0.5"><i class="fa-solid fa-person-running mr-1 text-slate-400"></i>{{ $item->activity }}</span>
+                                    <span class="text-[10px] text-slate-400 block mt-0.5"><i class="fa-solid fa-magnifying-glass mr-1"></i>Tahu dari: {{ $item->referral_source }}</span>
                                 </td>
 
                                 <!-- Status Badge -->

@@ -18,36 +18,41 @@
     <!-- STATISTICS & CHARTS SECTION -->
     <section class="py-10 md:py-16 px-4 md:px-6 max-w-6xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <!-- Radial Bar: Satisfaction Rating -->
+            <!-- Pie Chart: Kepuasan Keseluruhan -->
             <div class="bg-white border border-slate-200 shadow-sm p-4 md:p-6 flex flex-col justify-between">
                 <div>
                     <h3 class="text-slate-800 font-bold text-sm md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
-                        <i class="fa-solid fa-circle-check text-emerald-500 text-sm md:text-base"></i> Indeks Kepuasan
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-sm md:text-base"></i> Kepuasan Pengunjung
                     </h3>
-                    <p class="text-xs text-slate-500 leading-tight">Persentase pengunjung yang memberikan rating bintang 5</p>
+                    <p class="text-xs text-slate-500 leading-tight">Sebaran tingkat rating kepuasan (skala 1-5)</p>
                 </div>
                 <div class="my-2 md:my-4 flex items-center justify-center">
-                    <div id="radialSatisfactionChart" class="w-full"></div>
+                    <div id="pieSatisfactionChart" class="w-full"></div>
                 </div>
-                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center">
-                    <span class="text-xl md:text-3xl font-extrabold text-brand-dark">{{ $averageRating }}</span>
-                    <span class="text-slate-400 font-bold text-xs md:text-sm">/ 5.0 Rata-rata Rating</span>
+                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center flex justify-around">
+                    <div>
+                        <span class="text-xl md:text-2xl font-extrabold text-brand-dark block">{{ $averageRating }} / 5.0</span>
+                        <span class="text-slate-400 font-semibold text-[10px] md:text-xs">Rata-rata Rating</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Donut Chart: Favorite Destination -->
+            <!-- Pie Chart: Kebersihan Lokasi -->
             <div class="bg-white border border-slate-200 shadow-sm p-4 md:p-6 flex flex-col justify-between">
                 <div>
                     <h3 class="text-slate-800 font-bold text-sm md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
-                        <i class="fa-solid fa-umbrella-beach text-sky-500 text-sm md:text-base"></i> Destinasi Terpopuler
+                        <i class="fa-solid fa-leaf text-teal-500 text-sm md:text-base"></i> Kebersihan Lokasi
                     </h3>
-                    <p class="text-xs text-slate-500 leading-tight">Pembagian sebaran pilihan tempat wisata favorit hari ini</p>
+                    <p class="text-xs text-slate-500 leading-tight">Sebaran tingkat rating kebersihan (skala 1-5)</p>
                 </div>
                 <div class="my-2 md:my-4 flex items-center justify-center">
-                    <div id="donutDestinationChart" class="w-full"></div>
+                    <div id="pieCleanlinessChart" class="w-full"></div>
                 </div>
-                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center">
-                    <span class="text-xs font-semibold text-slate-400">Diupdate otomatis berdasarkan data masuk</span>
+                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center flex justify-around">
+                    <div>
+                        <span class="text-xl md:text-2xl font-extrabold text-brand-dark block">{{ $averageCleanliness }} / 5.0</span>
+                        <span class="text-slate-400 font-semibold text-[10px] md:text-xs">Rata-rata Kebersihan</span>
+                    </div>
                 </div>
             </div>
 
@@ -133,26 +138,52 @@
                         <!-- Card Content Section -->
                         <div class="p-3 md:p-5 flex-grow flex flex-col justify-between space-y-2 md:space-y-4">
                             <div>
-                                <!-- Star Rating Display -->
-                                <div class="text-brand-accent text-[9px] md:text-xs flex gap-0.5 mb-1 md:mb-2">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= $item->rating)
-                                            <i class="fa-solid fa-star"></i>
-                                        @else
-                                            <i class="fa-regular fa-star text-slate-300"></i>
-                                        @endif
-                                    @endfor
+                                <!-- Star Rating Displays -->
+                                <div class="space-y-1 mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[9px] font-bold text-slate-400 uppercase w-14">Puas:</span>
+                                        <div class="text-brand-accent text-[9px] md:text-xs flex gap-0.5">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $item->rating)
+                                                    <i class="fa-solid fa-star text-amber-400"></i>
+                                                @else
+                                                    <i class="fa-regular fa-star text-slate-300"></i>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[9px] font-bold text-slate-400 uppercase w-14">Bersih:</span>
+                                        <div class="text-teal-500 text-[9px] md:text-xs flex gap-0.5">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $item->cleanliness_rating)
+                                                    <i class="fa-solid fa-star text-teal-500"></i>
+                                                @else
+                                                    <i class="fa-regular fa-star text-slate-300"></i>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- One Word Highlight -->
-                                <h4 class="text-brand-dark font-extrabold text-xs md:text-base font-sans tracking-wide leading-snug line-clamp-1 mb-1 md:mb-2">
-                                    "{{ $item->one_word }}"
+                                <!-- Activity Highlight -->
+                                <h4 class="text-brand-dark font-extrabold text-xs md:text-sm font-sans tracking-wide leading-snug line-clamp-1 mb-1 md:mb-2">
+                                    Aktivitas: {{ $item->activity }}
                                 </h4>
 
                                 <!-- Paragraph Kesan -->
                                 <p class="text-slate-600 font-sans text-[10px] md:text-sm leading-relaxed text-justify line-clamp-3 md:line-clamp-4">
                                     {{ $item->review }}
                                 </p>
+
+                                @if($item->suggestions)
+                                    <div class="mt-2 bg-slate-50 p-2 border-l-2 border-slate-300">
+                                        <span class="text-[9px] font-bold text-slate-400 block uppercase">Saran:</span>
+                                        <p class="text-slate-500 font-sans italic text-[9px] md:text-[11px] leading-relaxed">
+                                            {{ $item->suggestions }}
+                                        </p>
+                                    </div>
+                                @endif
                             </div>
 
                             <!-- Bottom Identity Info -->
@@ -162,7 +193,7 @@
                                     <span>Asal: {{ $item->origin_city }}</span>
                                 </div>
                                 <span class="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded-none text-[8px] md:text-[9px] font-medium shrink-0 ml-1">
-                                    {{ $item->companion }}
+                                    {{ $item->referral_source }}
                                 </span>
                             </div>
 
@@ -207,63 +238,18 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // 1. CHART KEPUASAN (Pie Chart)
+        const satisfactionSeries = {!! json_encode(array_values($satisfactionData)) !!};
+        const satisfactionLabels = ['Bintang 1', 'Bintang 2', 'Bintang 3', 'Bintang 4', 'Bintang 5'];
         
-        // 1. CHART KEPUASAN (Radial Bar Chart)
-        const satisfPercent = {{ $fiveStarPercentage }};
-        const radialOptions = {
+        const satisfactionOptions = {
             chart: {
-                height: window.innerWidth < 768 ? 160 : 240,
-                type: 'radialBar',
+                height: window.innerWidth < 768 ? 200 : 250,
+                type: 'pie',
             },
-            series: [satisfPercent],
-            colors: ['#fab831'], // Brand yellow accent
-            plotOptions: {
-                radialBar: {
-                    hollow: {
-                        size: window.innerWidth < 768 ? '55%' : '70%',
-                    },
-                    dataLabels: {
-                        name: {
-                            show: window.innerWidth >= 768,
-                            color: '#475569',
-                            fontSize: '11px',
-                            fontWeight: 600,
-                            offsetY: -10
-                        },
-                        value: {
-                            show: true,
-                            color: '#0d355e',
-                            fontSize: window.innerWidth < 768 ? '18px' : '32px',
-                            fontWeight: 800,
-                            offsetY: window.innerWidth < 768 ? 5 : 8,
-                            formatter: function (val) {
-                                return val + "%";
-                            }
-                        }
-                    }
-                }
-            },
-            labels: ['Kepuasan Bintang 5'],
-            stroke: {
-                lineCap: 'round'
-            }
-        };
-
-        const radialChart = new ApexCharts(document.querySelector("#radialSatisfactionChart"), radialOptions);
-        radialChart.render();
-
-        // 2. CHART DESTINASI FAVORIT (Donut Chart)
-        const destKeys = {!! json_encode(array_keys($destinationData)) !!};
-        const destValues = {!! json_encode(array_values($destinationData)) !!};
-
-        const donutOptions = {
-            chart: {
-                height: window.innerWidth < 768 ? 180 : 250,
-                type: 'donut',
-            },
-            series: destValues,
-            labels: destKeys,
-            colors: ['#0d355e', '#749db2', '#fab831', '#acb6bd'], // Palette Warna Brand
+            series: satisfactionSeries,
+            labels: satisfactionLabels,
+            colors: ['#ef4444', '#f97316', '#eab308', '#3b82f6', '#10b981'], // Red to Green
             legend: {
                 show: true,
                 position: 'bottom',
@@ -271,32 +257,58 @@
                 fontFamily: 'Inter, sans-serif',
                 labels: {
                     colors: '#475569'
-                },
-                itemMargin: {
-                    horizontal: window.innerWidth < 768 ? 2 : 5,
-                    vertical: window.innerWidth < 768 ? 1 : 2
                 }
             },
             dataLabels: {
                 enabled: true,
                 style: {
-                    fontSize: window.innerWidth < 768 ? '9px' : '12px'
+                    fontSize: window.innerWidth < 768 ? '9px' : '11px'
                 },
-                formatter: function (val) {
-                    return Math.round(val) + "%";
-                }
-            },
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%'
-                    }
+                formatter: function (val, opts) {
+                    const count = opts.w.config.series[opts.seriesIndex];
+                    return count > 0 ? count : '';
                 }
             }
         };
 
-        const donutChart = new ApexCharts(document.querySelector("#donutDestinationChart"), donutOptions);
-        donutChart.render();
+        const satChart = new ApexCharts(document.querySelector("#pieSatisfactionChart"), satisfactionOptions);
+        satChart.render();
+
+        // 2. CHART KEBERSIHAN (Pie Chart)
+        const cleanlinessSeries = {!! json_encode(array_values($cleanlinessData)) !!};
+        const cleanlinessLabels = ['Bintang 1', 'Bintang 2', 'Bintang 3', 'Bintang 4', 'Bintang 5'];
+        
+        const cleanlinessOptions = {
+            chart: {
+                height: window.innerWidth < 768 ? 200 : 250,
+                type: 'pie',
+            },
+            series: cleanlinessSeries,
+            labels: cleanlinessLabels,
+            colors: ['#f43f5e', '#fb923c', '#fbbf24', '#60a5fa', '#2dd4bf'], // Rose to Teal
+            legend: {
+                show: true,
+                position: 'bottom',
+                fontSize: window.innerWidth < 768 ? '8px' : '11px',
+                fontFamily: 'Inter, sans-serif',
+                labels: {
+                    colors: '#475569'
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontSize: window.innerWidth < 768 ? '9px' : '11px'
+                },
+                formatter: function (val, opts) {
+                    const count = opts.w.config.series[opts.seriesIndex];
+                    return count > 0 ? count : '';
+                }
+            }
+        };
+
+        const cleanChart = new ApexCharts(document.querySelector("#pieCleanlinessChart"), cleanlinessOptions);
+        cleanChart.render();
     });
 </script>
 
@@ -373,15 +385,15 @@
 </div>
 
 <script>
-    function openQrModal() {
+    window.openQrModal = function() {
         document.getElementById('qrStandeeModal').classList.remove('hidden');
     }
 
-    function closeQrModal() {
+    window.closeQrModal = function() {
         document.getElementById('qrStandeeModal').classList.add('hidden');
     }
 
-    function printQrStandee() {
+    window.printQrStandee = function() {
         window.print();
     }
 </script>
@@ -389,7 +401,6 @@
 @push('styles')
 <style>
     @media print {
-        /* Hide all page components except the print standee */
         body * {
             visibility: hidden;
         }

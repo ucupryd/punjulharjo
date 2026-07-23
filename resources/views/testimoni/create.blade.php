@@ -38,12 +38,12 @@
                 <div class="flex-grow h-0.5 bg-white/20 mx-2 -mt-4 step-line" data-step="1"></div>
                 <div class="flex flex-col items-center step-indicator" data-step="2">
                     <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm border-2 border-white/10 transition duration-300">2</span>
-                    <span class="text-[10px] text-slate-400 mt-1">Preferensi</span>
+                    <span class="text-[10px] text-slate-400 mt-1">Kunjungan</span>
                 </div>
                 <div class="flex-grow h-0.5 bg-white/20 mx-2 -mt-4 step-line" data-step="2"></div>
                 <div class="flex flex-col items-center step-indicator" data-step="3">
                     <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm border-2 border-white/10 transition duration-300">3</span>
-                    <span class="text-[10px] text-slate-400 mt-1">Kesan</span>
+                    <span class="text-[10px] text-slate-400 mt-1">Kesan & Foto</span>
                 </div>
             </div>
 
@@ -61,8 +61,8 @@
                     @error('origin_city') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="text-center py-2">
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Tingkat Kepuasan Anda</label>
+                <div class="text-center py-2 border-t border-white/10 pt-4">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Rating Kepuasan Keseluruhan</label>
                     <div class="flex justify-center gap-3 text-3xl text-slate-400" id="ratingStars">
                         <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition star-btn" data-value="1"></i>
                         <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition star-btn" data-value="2"></i>
@@ -75,6 +75,20 @@
                     @error('rating') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
+                <div class="text-center py-2 border-t border-white/10 pt-4">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Rating Kebersihan Lokasi</label>
+                    <div class="flex justify-center gap-3 text-3xl text-slate-400" id="cleanlinessStars">
+                        <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition clean-star-btn" data-value="1"></i>
+                        <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition clean-star-btn" data-value="2"></i>
+                        <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition clean-star-btn" data-value="3"></i>
+                        <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition clean-star-btn" data-value="4"></i>
+                        <i class="fa-solid fa-star cursor-pointer hover:scale-110 transition clean-star-btn" data-value="5"></i>
+                    </div>
+                    <input type="hidden" name="cleanliness_rating" id="cleanlinessInput" value="5" required>
+                    <p class="text-xs text-slate-300 mt-2" id="cleanlinessLabel">Sangat Bersih (5 / 5)</p>
+                    @error('cleanliness_rating') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
                 <div class="pt-4 flex justify-end">
                     <button type="button" onclick="nextStep(2)" class="w-full md:w-auto bg-brand-accent text-brand-dark font-semibold px-6 py-3 hover:bg-white hover:text-brand-dark transition shadow duration-300">
                         Lanjut <i class="fa-solid fa-arrow-right ml-2"></i>
@@ -82,60 +96,63 @@
                 </div>
             </div>
 
-            <!-- STEP 2: PREFERENSI & KUNJUNGAN -->
+            <!-- STEP 2: KUNJUNGAN & AKTIVITAS -->
             <div class="step-content space-y-5 hidden" id="step2">
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Destinasi Terfavorit Hari Ini</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Destinasi yang dikunjungi</label>
                     <div class="grid grid-cols-2 gap-3">
-                        <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-3 text-center cursor-pointer select-none transition">
-                            <input type="radio" name="favorite_destination" value="Pantai Karang Jahe" class="absolute top-2 right-2 accent-brand-accent" checked>
+                        <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-4 text-center cursor-pointer select-none transition">
+                            <input type="radio" name="favorite_destination" value="Pantai Karangjahe" class="absolute top-2 right-2 accent-brand-accent" checked onchange="updateActivities()">
                             <i class="fa-solid fa-umbrella-beach text-brand-accent text-xl mb-1.5 block"></i>
-                            <span class="text-xs font-bold block text-white leading-tight">Pantai Karang Jahe</span>
+                            <span class="text-xs font-bold block text-white leading-tight">Pantai Karangjahe</span>
                         </label>
-                        <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-3 text-center cursor-pointer select-none transition">
-                            <input type="radio" name="favorite_destination" value="Situs Perahu Kuno" class="absolute top-2 right-2 accent-brand-accent">
+                        <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-4 text-center cursor-pointer select-none transition">
+                            <input type="radio" name="favorite_destination" value="Situs Perahu Kuno" class="absolute top-2 right-2 accent-brand-accent" onchange="updateActivities()">
                             <i class="fa-solid fa-ship text-brand-accent text-xl mb-1.5 block"></i>
                             <span class="text-xs font-bold block text-white leading-tight">Situs Perahu Kuno</span>
-                        </label>
-                        <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-3 text-center cursor-pointer select-none transition">
-                            <input type="radio" name="favorite_destination" value="Wisata Kuliner" class="absolute top-2 right-2 accent-brand-accent">
-                            <i class="fa-solid fa-utensils text-brand-accent text-xl mb-1.5 block"></i>
-                            <span class="text-xs font-bold block text-white leading-tight">Wisata Kuliner</span>
-                        </label>
-                        <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-3 text-center cursor-pointer select-none transition">
-                            <input type="radio" name="favorite_destination" value="Desa Edukasi" class="absolute top-2 right-2 accent-brand-accent">
-                            <i class="fa-solid fa-graduation-cap text-brand-accent text-xl mb-1.5 block"></i>
-                            <span class="text-xs font-bold block text-white leading-tight">Desa Edukasi</span>
                         </label>
                     </div>
                     @error('favorite_destination') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Berkunjung Bersama Siapa?</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Darimana kamu tau tentang destinasi ini?</label>
                     <div class="grid grid-cols-2 gap-3">
                         <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-3 text-center cursor-pointer select-none transition">
-                            <input type="radio" name="companion" value="Keluarga" class="absolute top-2 right-2 accent-brand-accent" checked>
-                            <i class="fa-solid fa-people-roof text-brand-accent text-xl mb-1.5 block"></i>
-                            <span class="text-xs font-semibold block text-white">Keluarga</span>
+                            <input type="radio" name="referral_radio" value="Media sosial" class="absolute top-2 right-2 accent-brand-accent" checked onchange="toggleReferralSource(this)">
+                            <i class="fa-brands fa-instagram text-brand-accent text-xl mb-1 block"></i>
+                            <span class="text-[10px] font-semibold block text-white">Media Sosial</span>
                         </label>
                         <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-3 text-center cursor-pointer select-none transition">
-                            <input type="radio" name="companion" value="Pasangan" class="absolute top-2 right-2 accent-brand-accent">
-                            <i class="fa-solid fa-heart text-brand-accent text-xl mb-1.5 block"></i>
-                            <span class="text-xs font-semibold block text-white">Pasangan</span>
+                            <input type="radio" name="referral_radio" value="Rekomendasi teman/keluarga" class="absolute top-2 right-2 accent-brand-accent" onchange="toggleReferralSource(this)">
+                            <i class="fa-solid fa-people-arrows text-brand-accent text-xl mb-1 block"></i>
+                            <span class="text-[10px] font-semibold block text-white">Teman / Keluarga</span>
                         </label>
                         <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-3 text-center cursor-pointer select-none transition">
-                            <input type="radio" name="companion" value="Teman/Rombongan" class="absolute top-2 right-2 accent-brand-accent">
-                            <i class="fa-solid fa-users text-brand-accent text-xl mb-1.5 block"></i>
-                            <span class="text-xs font-semibold block text-white">Teman / Rombongan</span>
+                            <input type="radio" name="referral_radio" value="Website desa" class="absolute top-2 right-2 accent-brand-accent" onchange="toggleReferralSource(this)">
+                            <i class="fa-solid fa-globe text-brand-accent text-xl mb-1 block"></i>
+                            <span class="text-[10px] font-semibold block text-white">Website Desa</span>
                         </label>
                         <label class="relative block bg-white/5 border border-white/10 hover:border-brand-accent/50 p-3 text-center cursor-pointer select-none transition">
-                            <input type="radio" name="companion" value="Sendiri" class="absolute top-2 right-2 accent-brand-accent">
-                            <i class="fa-solid fa-user text-brand-accent text-xl mb-1.5 block"></i>
-                            <span class="text-xs font-semibold block text-white">Sendiri</span>
+                            <input type="radio" name="referral_radio" value="Lainnya" class="absolute top-2 right-2 accent-brand-accent" onchange="toggleReferralSource(this)">
+                            <i class="fa-solid fa-ellipsis text-brand-accent text-xl mb-1 block"></i>
+                            <span class="text-[10px] font-semibold block text-white">Lainnya</span>
                         </label>
                     </div>
-                    @error('companion') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
+                    <!-- Store final referral value -->
+                    <input type="hidden" name="referral_source" id="referralSourceInput" value="Media sosial">
+                    <div id="referralCustomWrapper" class="hidden mt-3">
+                        <input type="text" id="referralCustomInput" maxlength="150" class="w-full bg-white/10 border border-white/20 rounded-none px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-accent placeholder-slate-400 transition" placeholder="Tuliskan dari mana Anda tahu..." oninput="updateReferralCustomValue(this)">
+                    </div>
+                    @error('referral_source') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Aktivitas apa yang kamu lakukan disana?</label>
+                    <select name="activity" id="activitySelect" class="w-full bg-slate-800 border border-white/20 rounded-none px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-accent transition cursor-pointer" required>
+                        <!-- Populated dynamically via JS -->
+                    </select>
+                    @error('activity') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="pt-4 flex justify-between gap-3">
@@ -148,24 +165,23 @@
                 </div>
             </div>
 
-            <!-- STEP 3: KESAN, PESAN & SELFIE -->
+            <!-- STEP 3: KESAN, SARAN & SELFIE -->
             <div class="step-content space-y-5 hidden" id="step3">
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Satu Kata Untuk Punjulharjo</label>
-                    <input type="text" name="one_word" maxlength="20" class="w-full bg-white/10 border border-white/20 rounded-none px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-accent placeholder-slate-400 transition" placeholder="Misal: Indah, Keren, Bikin Kangen" required>
-                    <p class="text-[10px] text-slate-400 mt-1">Maksimal 20 karakter.</p>
-                    @error('one_word') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Tulis Kesan & Pesan Anda</label>
-                    <textarea name="review" rows="3" maxlength="250" class="w-full bg-white/10 border border-white/20 rounded-none px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-accent placeholder-slate-400 transition" placeholder="Bagikan cerita keseruan Anda selama berkunjung..." required></textarea>
-                    <p class="text-[10px] text-slate-400 mt-1">Maksimal 250 karakter agar tidak merusak tampilan desain.</p>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Ceritakan pengalamanmu di sini!</label>
+                    <textarea name="review" rows="3" maxlength="500" class="w-full bg-white/10 border border-white/20 rounded-none px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-accent placeholder-slate-400 transition" placeholder="Bagikan cerita keseruan Anda selama berkunjung..." required></textarea>
+                    <p class="text-[10px] text-slate-400 mt-1">Maksimal 500 karakter.</p>
                     @error('review') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Foto Selfie / Keseruan Anda</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Ada saran untuk pengelola? (opsional)</label>
+                    <textarea name="suggestions" rows="2" maxlength="500" class="w-full bg-white/10 border border-white/20 rounded-none px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-accent placeholder-slate-400 transition" placeholder="Saran perbaikan, sarana prasarana, atau pelayanan..."></textarea>
+                    @error('suggestions') <span class="text-xs text-rose-400 mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Upload keseruan kamu di lokasi! 📸</label>
                     
                     <div class="flex flex-col items-center justify-center border-2 border-dashed border-white/20 hover:border-brand-accent/50 bg-white/5 p-6 relative cursor-pointer group" onclick="document.getElementById('selfieInput').click()">
                         <!-- Camera selfie specialized input -->
@@ -173,12 +189,12 @@
                         
                         <div class="text-center" id="uploadPlaceholder">
                             <i class="fa-solid fa-camera text-4xl text-slate-400 group-hover:text-brand-accent group-hover:scale-110 transition duration-300 mb-2"></i>
-                            <span class="block text-xs font-bold text-slate-200">Buka Kamera & Ambil Selfie</span>
-                            <span class="text-[10px] text-slate-400 mt-1 block">Klik untuk memilih file atau memotret langsung</span>
+                            <span class="block text-xs font-bold text-slate-200">Ambil Foto / Pilih File</span>
+                            <span class="text-[10px] text-slate-400 mt-1 block">Klik untuk memotret atau memilih gambar</span>
                         </div>
                         <!-- Preview Box -->
                         <div class="hidden w-full flex-col items-center" id="previewContainer">
-                            <img id="imagePreview" src="#" alt="Selfie Preview" class="max-h-48 aspect-square object-cover border border-white/20 mb-2 shadow-md">
+                            <img id="imagePreview" src="#" alt="Preview" class="max-h-48 aspect-square object-cover border border-white/20 mb-2 shadow-md">
                             <span class="text-xs text-brand-accent font-semibold flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> Foto berhasil terpasang</span>
                         </div>
                     </div>
@@ -190,7 +206,7 @@
                         <i class="fa-solid fa-arrow-left mr-2"></i> Kembali
                     </button>
                     <button type="submit" class="w-2/3 bg-brand-accent text-brand-dark font-bold px-6 py-3 hover:bg-white hover:text-brand-dark transition shadow-lg">
-                        Kirim Kesan <i class="fa-solid fa-paper-plane ml-2"></i>
+                        Kirim Ulasan <i class="fa-solid fa-paper-plane ml-2"></i>
                     </button>
                 </div>
             </div>
@@ -200,7 +216,7 @@
 </div>
 
 <script>
-    // Rating star logic
+    // 1. Rating Kepuasan logic
     const stars = document.querySelectorAll('.star-btn');
     const ratingInput = document.getElementById('ratingInput');
     const ratingLabel = document.getElementById('ratingLabel');
@@ -218,7 +234,6 @@
             ratingInput.value = val;
             ratingLabel.textContent = ratingTexts[val];
             
-            // Highlight selected stars
             stars.forEach((s, idx) => {
                 if (idx < val) {
                     s.classList.remove('text-slate-400');
@@ -231,26 +246,95 @@
         });
     });
 
-    // Default load: fill rating to 5
-    document.querySelector('.star-btn[data-value="5"]').click();
+    // 2. Rating Kebersihan logic
+    const cleanStars = document.querySelectorAll('.clean-star-btn');
+    const cleanlinessInput = document.getElementById('cleanlinessInput');
+    const cleanlinessLabel = document.getElementById('cleanlinessLabel');
+    const cleanlinessTexts = {
+        1: 'Sangat kotor (1 / 5)',
+        2: 'Kurang bersih (2 / 5)',
+        3: 'Cukup bersih (3 / 5)',
+        4: 'Bersih (4 / 5)',
+        5: 'Sangat Bersih (5 / 5)'
+    };
 
-    // Multi-step logic
+    cleanStars.forEach(star => {
+        star.addEventListener('click', () => {
+            const val = parseInt(star.getAttribute('data-value'));
+            cleanlinessInput.value = val;
+            cleanlinessLabel.textContent = cleanlinessTexts[val];
+            
+            cleanStars.forEach((s, idx) => {
+                if (idx < val) {
+                    s.classList.remove('text-slate-400');
+                    s.classList.add('text-brand-accent');
+                } else {
+                    s.classList.remove('text-brand-accent');
+                    s.classList.add('text-slate-400');
+                }
+            });
+        });
+    });
+
+    // Triggers default values
+    document.querySelector('.star-btn[data-value="5"]').click();
+    document.querySelector('.clean-star-btn[data-value="5"]').click();
+
+    // 3. Dynamic activities select options
+    const activities = {
+        'Pantai Karangjahe': ['ATV', 'motor Trail', 'Wahana Ban', 'mandi Bola', 'perahu'],
+        'Situs Perahu Kuno': ['museum', 'perahu Kuno', 'aviary', 'kandang Kelinci', 'sepeda Tandem', 'greenhouse']
+    };
+
+    function updateActivities() {
+        const selectedDest = document.querySelector('input[name="favorite_destination"]:checked').value;
+        const selectElement = document.getElementById('activitySelect');
+        selectElement.innerHTML = '';
+        
+        const list = activities[selectedDest] || [];
+        list.forEach(act => {
+            const opt = document.createElement('option');
+            opt.value = act;
+            opt.textContent = act;
+            selectElement.appendChild(opt);
+        });
+    }
+    updateActivities(); // Initial load
+
+    // 4. Referral source custom toggle
+    function toggleReferralSource(radio) {
+        const referralInput = document.getElementById('referralSourceInput');
+        const customWrapper = document.getElementById('referralCustomWrapper');
+        const customInput = document.getElementById('referralCustomInput');
+        
+        if (radio.value === 'Lainnya') {
+            customWrapper.classList.remove('hidden');
+            customInput.setAttribute('required', 'required');
+            referralInput.value = customInput.value.trim() || 'Lainnya';
+        } else {
+            customWrapper.classList.add('hidden');
+            customInput.removeAttribute('required');
+            referralInput.value = radio.value;
+        }
+    }
+
+    function updateReferralCustomValue(input) {
+        document.getElementById('referralSourceInput').value = input.value.trim() || 'Lainnya';
+    }
+
+    // 5. Multi-step logic
     let currentActiveStep = 1;
     function nextStep(step) {
-        // Validate before moving
+        // Validate inputs before continuing
         if (step === 2) {
             const name = document.querySelector('input[name="name"]').value.trim();
             const origin = document.querySelector('input[name="origin_city"]').value.trim();
             if (!name || !origin) {
-                alert('Silakan isi nama dan asal daerah Anda terlebih dahulu.');
+                alert('Silakan isi nama dan asal kota/daerah Anda terlebih dahulu.');
                 return;
             }
         }
-        if (step === 3) {
-            // Verify step 2 selection (always selected by default)
-        }
 
-        // Hide current step, show target step
         document.getElementById(`step${currentActiveStep}`).classList.add('hidden');
         document.getElementById(`step${step}`).classList.remove('hidden');
         
@@ -258,13 +342,17 @@
         updateStepperIndicators();
     }
 
-    function prevStep(step) {
+    // Prev step helper
+    window.prevStep = function(step) {
         document.getElementById(`step${currentActiveStep}`).classList.add('hidden');
         document.getElementById(`step${step}`).classList.remove('hidden');
         
         currentActiveStep = step;
         updateStepperIndicators();
     }
+
+    // Next step helper
+    window.nextStep = nextStep;
 
     function updateStepperIndicators() {
         const indicators = document.querySelectorAll('.step-indicator');
@@ -276,17 +364,14 @@
             const text = ind.querySelector('span + span');
 
             if (stepNum < currentActiveStep) {
-                // Completed steps
                 circle.className = "w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm border-2 border-emerald-500 transition duration-300";
                 circle.innerHTML = '<i class="fa-solid fa-check"></i>';
                 text.className = "text-[10px] text-emerald-400 mt-1 font-semibold";
             } else if (stepNum === currentActiveStep) {
-                // Active step
                 circle.className = "w-8 h-8 rounded-full bg-brand-accent text-brand-dark flex items-center justify-center font-bold text-sm border-2 border-brand-accent transition duration-300";
                 circle.textContent = stepNum;
                 text.className = "text-[10px] text-brand-accent mt-1 font-semibold";
             } else {
-                // Pending steps
                 circle.className = "w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm border-2 border-white/10 transition duration-300";
                 circle.textContent = stepNum;
                 text.className = "text-[10px] text-slate-400 mt-1";
@@ -295,7 +380,7 @@
     }
 
     // Image preview
-    function previewImage(input) {
+    window.previewImage = function(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             

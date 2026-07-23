@@ -16,7 +16,7 @@ class TestimonialController extends Controller
         }
 
         // 1. Data Destinasi Terpopuler (Donut Chart)
-        $allDestinations = ['Pantai Karang Jahe', 'Situs Perahu Kuno', 'Wisata Kuliner', 'Desa Edukasi'];
+        $allDestinations = ['Pantai Karangjahe', 'Situs Perahu Kuno'];
         $destQuery = \App\Models\Testimonial::where('is_approved', true)
             ->select('favorite_destination', \DB::raw('count(*) as total'))
             ->groupBy('favorite_destination')
@@ -28,19 +28,45 @@ class TestimonialController extends Controller
             $destinationData[$dest] = $destQuery[$dest] ?? 0;
         }
 
-        // 2. Indeks Kepuasan Pengunjung (Radial Chart / Rata-rata)
+        // 2. Rating Kepuasan Distribusi (Pie Chart)
+        $satisfactionQuery = \App\Models\Testimonial::where('is_approved', true)
+            ->select('rating', \DB::raw('count(*) as total'))
+            ->groupBy('rating')
+            ->pluck('total', 'rating')
+            ->toArray();
+
+        $satisfactionData = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $satisfactionData[$i] = $satisfactionQuery[$i] ?? 0;
+        }
+
+        // 3. Rating Kebersihan Distribusi (Pie Chart)
+        $cleanlinessQuery = \App\Models\Testimonial::where('is_approved', true)
+            ->select('cleanliness_rating', \DB::raw('count(*) as total'))
+            ->groupBy('cleanliness_rating')
+            ->pluck('total', 'cleanliness_rating')
+            ->toArray();
+
+        $cleanlinessData = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $cleanlinessData[$i] = $cleanlinessQuery[$i] ?? 0;
+        }
+
+        // 4. Quick Stats
         $totalTestimonials = \App\Models\Testimonial::where('is_approved', true)->count();
         $averageRating = \App\Models\Testimonial::where('is_approved', true)->avg('rating') ?? 0;
         $averageRating = round($averageRating, 1);
 
-        $fiveStarCount = \App\Models\Testimonial::where('is_approved', true)->where('rating', 5)->count();
-        $fiveStarPercentage = $totalTestimonials > 0 ? round(($fiveStarCount / $totalTestimonials) * 100) : 0;
+        $averageCleanliness = \App\Models\Testimonial::where('is_approved', true)->avg('cleanliness_rating') ?? 0;
+        $averageCleanliness = round($averageCleanliness, 1);
 
         return view('testimoni.index', compact(
             'testimonials',
             'destinationData',
+            'satisfactionData',
+            'cleanlinessData',
             'averageRating',
-            'fiveStarPercentage',
+            'averageCleanliness',
             'totalTestimonials'
         ));
     }
@@ -57,15 +83,19 @@ class TestimonialController extends Controller
         $request->validate([
             'name' => 'required|string|max:50',
             'origin_city' => 'required|string|max:50',
-            'favorite_destination' => 'required|string|in:Pantai Karang Jahe,Situs Perahu Kuno,Wisata Kuliner,Desa Edukasi',
-            'companion' => 'required|string|in:Keluarga,Pasangan,Teman/Rombongan,Sendiri',
+            'favorite_destination' => 'required|string|in:Pantai Karangjahe,Situs Perahu Kuno',
+            'referral_source' => 'required|string|max:255',
             'rating' => 'required|integer|min:1|max:5',
-            'one_word' => 'required|string|max:20',
-            'review' => 'required|string|max:250',
+            'cleanliness_rating' => 'required|integer|min:1|max:5',
+            'activity' => 'required|string|max:100',
+            'review' => 'required|string|max:500',
+            'suggestions' => 'nullable|string|max:1000',
             'photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:10240',
         ]);
 
-        $testimonial = new \App\Models\Testimonial($request->except('photo'));
+        $testimonial = new \App\Models\Testimonial($request->except(['photo', 'referral_radio']));
+        $testimonial->one_word = ''; // Set default empty to avoid non-null checks
+        $testimonial->companion = ''; // Set default empty to avoid non-null checks
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
