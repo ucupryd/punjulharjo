@@ -39,7 +39,7 @@
     @stack('styles')
 </head>
 
-<body class="bg-white min-h-screen antialiased">
+<body class="bg-white min-h-screen flex flex-col antialiased">
 
     <!-- Page Frame Wrapper (Clean corporate theme) -->
     <div class="page-frame-container">
@@ -359,7 +359,7 @@
             </div>
 
             <!-- Main Content -->
-            <main class="flex-grow">
+            <main class="flex-1">
                 <!-- Global Alerts (Floating Toast) -->
                 @if(session('success') || $errors->any())
                     <div class="fixed top-28 right-6 z-[9999] max-w-md w-full space-y-3 pointer-events-auto">

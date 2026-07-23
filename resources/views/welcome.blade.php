@@ -866,7 +866,7 @@
 
 
     <!-- SECTION F: Final Call-to-Action (CTA) -->
-    <section class="relative py-16 md:py-36 px-4 md:px-6 text-center text-white overflow-hidden bg-slate-900">
+    <section class="relative py-12 md:py-16 px-4 md:px-6 text-center text-white overflow-hidden bg-slate-900">
         <!-- Scenic Background Image with Dark/Gradient Overlay -->
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 transition-transform duration-[10000ms] hover:scale-105"
              style="background-image: url('{{ asset($heroBg) }}');">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-slate-900 relative flex items-center justify-center py-20 px-4 md:px-8 overflow-hidden font-sans">
+<div class="bg-slate-900 relative flex items-center justify-center py-20 px-4 md:px-8 overflow-hidden font-sans">
     <!-- Blurred Background Image of Pantai Karang Jahe -->
     <div class="absolute inset-0 bg-cover bg-center z-0 opacity-40 scale-105 filter blur-lg" 
          style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80');"></div>

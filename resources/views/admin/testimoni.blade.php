@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="pt-24 bg-slate-100 min-h-screen font-sans">
+<div class="pt-24 bg-slate-100 font-sans">
     <div class="max-w-6xl mx-auto px-6 py-12">
         
         <!-- Header -->

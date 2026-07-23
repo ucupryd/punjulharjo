@@ -13,7 +13,7 @@
     </a>
 </x-fixed-image-section>
 
-<div class="bg-slate-50 min-h-screen font-sans">
+<div class="bg-slate-50 font-sans">
 
     <!-- STATISTICS & CHARTS SECTION -->
     <section class="py-10 md:py-16 px-4 md:px-6 max-w-6xl mx-auto">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="min-h-screen relative flex items-center justify-center bg-slate-900 py-24 px-6 md:px-12 overflow-hidden">
+<section class="relative flex items-center justify-center bg-slate-900 py-24 px-6 md:px-12 overflow-hidden">
     <!-- Scenic Background Overlay -->
     <div class="absolute inset-0 bg-cover bg-center opacity-30 z-0 select-none pointer-events-none" 
          style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80');">

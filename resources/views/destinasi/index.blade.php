@@ -9,7 +9,7 @@
     waveColor="text-slate-100"
     hasWave="true" />
 
-<div class="bg-slate-100 min-h-screen">
+<div class="bg-slate-100">
     <!-- SECTION C: Top Destinations (Destinasi Unggulan) -->
     <section class="bg-slate-100 py-12 md:py-20 px-4 md:px-12 relative">
         <div class="max-w-6xl mx-auto">
