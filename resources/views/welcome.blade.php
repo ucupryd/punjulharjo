@@ -555,7 +555,6 @@
                 }
             </script>
         @endif
-    </section>
 
 
     <!-- SECTION E: Culture & Community (Kehidupan Budaya) -->
@@ -863,7 +862,7 @@
                 }
             </script>
         @endif
-
+    </section>
 
     <!-- SECTION F: Final Call-to-Action (CTA) -->
     <section class="relative py-12 md:py-16 px-4 md:px-6 text-center text-white overflow-hidden bg-slate-900">
