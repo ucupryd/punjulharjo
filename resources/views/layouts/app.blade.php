@@ -8,7 +8,7 @@
     
     <!-- Dynamic Favicon Override Logic:
          Checks if custom-favicon.png exists in public directory. 
-         If yes, resolves to that. If no, defaults to the beautiful 2D vector-style blue coconut tree SVG inlined as Base64. -->
+         If yes, resolves to that. If no, defaults to the beautiful 2D vector-style blue coconut tree SVG inlined  as Base64. -->
     @php
         $customFaviconExists = file_exists(public_path('custom-favicon.png'));
         $defaultSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 90 C 52 70, 48 40, 52 35 C 53 30, 55 25, 50 25 C 45 25, 47 30, 48 35 C 52 40, 48 70, 50 90 Z" fill="#0284c7" /><path d="M50 25 C 40 20, 25 22, 15 30 C 25 35, 40 30, 50 25 Z" fill="#0369a1" /><path d="M50 25 C 60 20, 75 22, 85 30 C 75 35, 60 30, 50 25 Z" fill="#0369a1" /><path d="M50 25 C 38 28, 28 38, 22 50 C 30 50, 40 40, 50 25 Z" fill="#0284c7" /><path d="M50 25 C 62 28, 72 38, 78 50 C 70 50, 60 40, 50 25 Z" fill="#0284c7" /><path d="M50 25 C 45 15, 35 8, 25 5 C 32 12, 42 18, 50 25 Z" fill="#075985" /><path d="M50 25 C 55 15, 65 8, 75 5 C 68 12, 58 18, 50 25 Z" fill="#075985" /><circle cx="46" cy="27" r="4" fill="#0c4a6e" /><circle cx="54" cy="27" r="4" fill="#0c4a6e" /><circle cx="50" cy="31" r="4.5" fill="#0c4a6e" /></svg>';
