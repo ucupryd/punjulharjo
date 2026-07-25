@@ -139,6 +139,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Ubah Hero Background
     Route::get('/hero', [HeroController::class, 'edit'])->name('hero.edit');
     Route::post('/hero', [HeroController::class, 'update'])->name('hero.update');
+    Route::post('/hero/update-custom', [HeroController::class, 'updateCustom'])->name('hero.update-custom');
+    Route::post('/hero/restore', [HeroController::class, 'restore'])->name('hero.restore');
     Route::post('/about-image', [HeroController::class, 'updateAboutImage'])->name('about-image.update');
     Route::post('/culture-image', [HeroController::class, 'updateCultureImage'])->name('culture-image.update');
 

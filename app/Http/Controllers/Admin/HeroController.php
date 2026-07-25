@@ -29,11 +29,30 @@ class HeroController extends Controller
             return back()->withErrors(['hero_background' => 'Format file tidak didukung. Gunakan gambar (jpg, jpeg, png, webp) atau video (mp4, webm, mov, ogg).']);
         }
 
-        // Delete old background file if it exists and is local
-        $oldPath = SiteSetting::getValue('hero_background');
-        if ($oldPath && !str_starts_with($oldPath, 'http')) {
-            Storage::disk('public_direct')->delete($oldPath);
+        // Simpan file ke storage
+        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $targetDir = public_path('storage/hero');
+        if (!\Illuminate\Support\Facades\File::exists($targetDir)) {
+            \Illuminate\Support\Facades\File::makeDirectory($targetDir, 0755, true);
         }
+        $file->move($targetDir, $fileName);
+        $path = 'hero/' . $fileName;
+
+        // Simpan path ke database dengan sistem backup & hapus file 2 langkah ke belakang
+        $this->updateSettingWithBackup('hero_background', $path);
+
+        return back()->with('success', 'Background hero berhasil diperbarui!');
+    }
+
+    public function updateCustom(Request $request)
+    {
+        $request->validate([
+            'hero_key' => 'required|string',
+            'hero_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+        $key = $request->input('hero_key');
+        $file = $request->file('hero_image');
 
         // Simpan file ke storage
         $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
@@ -44,8 +63,8 @@ class HeroController extends Controller
         $file->move($targetDir, $fileName);
         $path = 'hero/' . $fileName;
 
-        // Simpan path ke database
-        SiteSetting::setValue('hero_background', $path);
+        // Simpan path ke database dengan sistem backup & hapus file 2 langkah ke belakang
+        $this->updateSettingWithBackup($key, $path);
 
         return back()->with('success', 'Background hero berhasil diperbarui!');
     }
@@ -57,10 +76,6 @@ class HeroController extends Controller
         ]);
 
         $file = $request->file('about_image');
-        $oldPath = SiteSetting::getValue('about_image');
-        if ($oldPath && !str_starts_with($oldPath, 'http')) {
-            Storage::disk('public_direct')->delete($oldPath);
-        }
 
         $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         $targetDir = public_path('storage/about');
@@ -70,7 +85,8 @@ class HeroController extends Controller
         $file->move($targetDir, $fileName);
         $path = 'about/' . $fileName;
 
-        SiteSetting::setValue('about_image', $path);
+        // Simpan path ke database dengan sistem backup & hapus file 2 langkah ke belakang
+        $this->updateSettingWithBackup('about_image', $path);
 
         return back()->with('success', 'Foto tentang desa berhasil diperbarui!');
     }
@@ -82,10 +98,6 @@ class HeroController extends Controller
         ]);
 
         $file = $request->file('culture_image');
-        $oldPath = SiteSetting::getValue('culture_image');
-        if ($oldPath && !str_starts_with($oldPath, 'http')) {
-            Storage::disk('public_direct')->delete($oldPath);
-        }
 
         $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         $targetDir = public_path('storage/culture');
@@ -95,8 +107,53 @@ class HeroController extends Controller
         $file->move($targetDir, $fileName);
         $path = 'culture/' . $fileName;
 
-        SiteSetting::setValue('culture_image', $path);
+        // Simpan path ke database dengan sistem backup & hapus file 2 langkah ke belakang
+        $this->updateSettingWithBackup('culture_image', $path);
 
         return back()->with('success', 'Foto kehidupan budaya berhasil diperbarui!');
+    }
+
+    public function restore(Request $request)
+    {
+        $request->validate([
+            'hero_key' => 'required|string',
+        ]);
+
+        $key = $request->input('hero_key');
+
+        $currentPath = SiteSetting::getValue($key);
+        $backupPath = SiteSetting::getValue($key . '_backup');
+
+        if ($backupPath) {
+            // Swap them
+            SiteSetting::setValue($key, $backupPath);
+            SiteSetting::setValue($key . '_backup', $currentPath);
+
+            return back()->with('success', 'Berhasil mengembalikan ke gambar sebelumnya!');
+        }
+
+        return back()->withErrors(['error' => 'Tidak ada gambar sebelumnya yang tersimpan.']);
+    }
+
+    private function updateSettingWithBackup($key, $newPath)
+    {
+        // 1. Dapatkan file backup lama (2 file ke belakang)
+        $oldBackupPath = SiteSetting::getValue($key . '_backup');
+        
+        // 2. Dapatkan file saat ini (1 file sebelumnya)
+        $currentPath = SiteSetting::getValue($key);
+
+        // 3. Hapus file backup lama (2 file ke belakang)
+        if ($oldBackupPath && !str_starts_with($oldBackupPath, 'http')) {
+            Storage::disk('public_direct')->delete($oldBackupPath);
+        }
+
+        // 4. Pindahkan path saat ini ke backup jika ada
+        if ($currentPath) {
+            SiteSetting::setValue($key . '_backup', $currentPath);
+        }
+
+        // 5. Simpan path baru sebagai nilai utama
+        SiteSetting::setValue($key, $newPath);
     }
 }

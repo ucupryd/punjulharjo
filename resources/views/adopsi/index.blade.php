@@ -3,6 +3,7 @@
 @section('content')
 <!-- Section 1: Hero Section -->
 <x-fixed-image-section variant="green"
+    key="hero_adopsi"
     :image="'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80'"
     eyebrow="Program Konservasi Pesisir Desa Punjulharjo" eyebrowIcon="fa-solid fa-leaf"
     title="My Cemara" titleAccent="Pantai Karangjahe"
@@ -200,6 +201,7 @@
 
 <!-- Fixed Image Reveal Feature Section: Hutan Cemara Laut (Gambar Pohon) -->
 <x-fixed-image-section
+    key="hero_adopsi_bottom"
     image="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80"
     eyebrow="Konservasi Hutan Cemara Laut"
     title="Satu Pohon, Ribuan Manfaat Bagi Pesisir"

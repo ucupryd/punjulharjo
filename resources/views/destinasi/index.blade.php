@@ -2,6 +2,7 @@
 
 @section('content')
 <x-fixed-image-section
+    key="hero_destinasi"
     :image="'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80'"
     eyebrow="Eksplorasi Wisata" eyebrowIcon="fa-solid fa-map-location-dot"
     title="Destinasi Unggulan"

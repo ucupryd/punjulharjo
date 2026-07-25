@@ -2,6 +2,7 @@
 
 @section('content')
 <x-fixed-image-section
+    key="hero_testimoni"
     :image="'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1920&q=80'"
     eyebrow="Kesan Pengunjung" eyebrowIcon="fa-solid fa-comment-dots"
     title="Cerita & Senyum Pengunjung"

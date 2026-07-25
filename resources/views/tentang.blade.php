@@ -3,6 +3,7 @@
 @section('content')
 
     <x-fixed-image-section
+        key="hero_tentang"
         :image="asset('images/beach-bg.png')"
         eyebrow="Tentang Kami" eyebrowIcon="fa-solid fa-compass"
         title="Tentang Desa Wisata Punjulharjo"

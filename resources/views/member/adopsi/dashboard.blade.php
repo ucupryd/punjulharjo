@@ -2,6 +2,7 @@
 
 @section('content')
 <x-fixed-image-section variant="green"
+    key="hero_member_adopsi"
     :image="'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80'"
     eyebrow="Member Area My Cemara" eyebrowIcon="fa-solid fa-tree"
     title="Halo, {{ auth()->user()->name }}!"

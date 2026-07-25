@@ -2,6 +2,7 @@
 
 @section('content')
     <x-fixed-image-section
+        key="hero_pustaka"
         :image="'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80'"
         eyebrow="Pustaka Media Desa" eyebrowIcon="fa-solid fa-book-open"
         title="Pustaka Digital & Dokumentasi"

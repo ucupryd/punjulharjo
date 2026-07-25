@@ -124,6 +124,28 @@
                             </button>
                         </div>
                     </form>
+                    @php
+                        $welcomeBackup = \App\Models\SiteSetting::getValue('hero_background_backup');
+                    @endphp
+                    @if($welcomeBackup)
+                        <div class="p-6 border-t border-slate-100 bg-slate-50 text-slate-800">
+                            <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 berkas cadangan sebelumnya:</p>
+                            <div class="flex items-center gap-3">
+                                @if(Str::endsWith(Str::lower($welcomeBackup), ['.mp4', '.webm', '.mov', '.ogg']))
+                                    <div class="w-16 h-10 border border-slate-200 bg-slate-200 flex items-center justify-center text-[10px] text-slate-600 font-bold">VIDEO</div>
+                                @else
+                                    <img src="{{ (str_starts_with($welcomeBackup, 'http') || str_contains($welcomeBackup, 'storage/')) ? asset($welcomeBackup) : Storage::url($welcomeBackup) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
+                                @endif
+                                <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="hero_key" value="hero_background">
+                                    <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
+                                        <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke File Ini
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         @endif
@@ -336,6 +358,7 @@
 
     <!-- SECTION C.5: Fixed Image Reveal Parallax Banner -->
     <x-fixed-image-section
+        key="hero_welcome_nature"
         image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
         eyebrow="Pesona Pesisir Rembang"
         title="Keindahan Alam & Harmoni Punjulharjo"
