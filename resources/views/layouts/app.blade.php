@@ -59,40 +59,95 @@
                 } elseif (request()->is('adopsi*') || request()->is('member*')) {
                     $activeIndex = -1;
                 }
+
+                $hasTransparentHeader = (request()->is('/') || request()->is('tentang') || request()->is('destinasi*') || request()->is('pustaka*') || request()->is('testimoni*') || request()->is('adopsi*'));
             @endphp
-            <header x-data="{
-                        hoverIndex: null, 
-                        activeIndex: {{ $activeIndex }}, 
-                        hasTransparentHeader: {{ (request()->is('/') || request()->is('tentang') || request()->is('destinasi*') || request()->is('pustaka*') || request()->is('testimoni*') || request()->is('adopsi*')) ? 'true' : 'false' }}, 
-                        scrolled: false,
-                        navVisible: true,
-                        lastScrollY: 0
+
+            <!-- Nav Transparan (Absolute, scrolls away with hero) -->
+            @if($hasTransparentHeader)
+                <header x-data="{
+                            hoverIndex: null,
+                            activeIndex: {{ $activeIndex }},
+                            scrolled: false,
+                            hasTransparentHeader: true
+                        }"
+                        class="absolute top-0 left-0 w-full z-30 bg-transparent text-white">
+                    <nav class="max-w-7xl mx-auto py-3 md:py-4 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 transition duration-300">
+                        <!-- Top Row (Branding & Mobile Buttons) -->
+                        <div class="w-full md:w-auto flex justify-between items-center shrink-0">
+                            <!-- Left (Branding) -->
+                            <a href="/" class="flex items-center hover:opacity-90 transition duration-300 mr-2 shrink-0">
+                                <img src="{{ asset('images/Lambang_Kabupaten_Rembang.webp') }}" class="w-8 h-8 md:w-9 md:h-9 object-contain shrink-0 mr-2" alt="Logo Rembang">
+                                <div class="flex flex-col text-left">
+                                    <span class="font-bold text-xs md:text-sm leading-tight text-white font-heading">Desa Wisata Punjulharjo</span>
+                                    <span class="text-[9px] md:text-[10px] font-sans leading-none mt-0.5 opacity-75 text-white">Kec. Rembang, Kab. Rembang</span>
+                                </div>
+                            </a>
+
+                            <!-- Mobile Action Buttons -->
+                            <div class="flex md:hidden items-center space-x-2 shrink-0">
+                                <button id="mobile-menu-toggle-transparent" 
+                                        class="focus:outline-none transition-colors duration-300 p-2 text-white"
+                                        aria-label="Toggle Menu">
+                                    <i class="fa-solid fa-bars text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Links Container (Pill Navbar) -->
+                        <div class="hidden md:flex w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible justify-start md:justify-center items-center gap-2 py-1 md:py-0 px-2 md:px-0">
+                            <x-partials.nav-links variant="transparent" />
+
+                            <!-- Separate Standout My Cemara Button -->
+                            <a href="{{ route('adopsi.index') }}" 
+                               class="px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-400/60 shadow-emerald-500/30">
+                                <i class="fa-solid fa-tree text-[11px]"></i>
+                                <span>My Cemara</span>
+                            </a>
+                        </div>
+
+                        <!-- Desktop Actions (Hidden on Mobile) -->
+                        <div class="hidden md:flex items-center space-x-3 shrink-0">
+                            @auth
+                                <form action="{{ route('logout') }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
+                                        Logout
+                                    </button>
+                                </form>
+                            @else
+                                <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left">
+                                    <button @click="openLoginDrop = !openLoginDrop" @click.away="openLoginDrop = false" type="button"
+                                            class="bg-white/10 text-white hover:bg-white hover:text-slate-800 px-4 py-2 text-xs font-semibold shadow-sm transition-colors duration-300 flex items-center gap-1.5 border border-white/20">
+                                        <i class="fa-solid fa-right-to-bracket"></i> Login <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                                    </button>
+                                    <div x-show="openLoginDrop" x-transition
+                                         class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-[1000] text-slate-800 text-xs font-semibold py-1">
+                                        <a href="{{ route('login.user') }}" class="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2">
+                                            <i class="fa-solid fa-tree text-emerald-600"></i> Login User / Member
+                                        </a>
+                                        <a href="{{ route('login.admin') }}" class="block px-4 py-2 hover:bg-sky-50 hover:text-sky-700 flex items-center gap-2 border-t border-slate-100">
+                                            <i class="fa-solid fa-user-shield text-sky-600"></i> Login Admin Panel
+                                        </a>
+                                    </div>
+                                </div>
+                            @endauth
+                        </div>
+                    </nav>
+                </header>
+            @endif
+
+            <!-- Nav Putih Sticky (Fixed, gets shown after hero sentinel or is immediately active) -->
+            <header id="navSolid"
+                    x-data="{
+                        hoverIndex: null,
+                        activeIndex: {{ $activeIndex }},
+                        scrolled: true,
+                        hasTransparentHeader: {{ $hasTransparentHeader ? 'true' : 'false' }}
                     }"
-                    x-init="
-                        scrolled = !hasTransparentHeader || window.pageYOffset > 50;
-                        lastScrollY = window.pageYOffset;
-                    "
-                    @scroll.window="
-                        let currentY = window.pageYOffset;
-                        scrolled = !hasTransparentHeader || currentY > 50;
-                        if (currentY <= 50) {
-                            navVisible = true;
-                        } else if (currentY > lastScrollY && currentY > 100) {
-                            navVisible = false;
-                        } else if (currentY < lastScrollY) {
-                            navVisible = true;
-                        }
-                        lastScrollY = currentY;
-                    "
-                    @mousemove.window="if ($event.clientY < 70) navVisible = true"
-                    @mouseenter="navVisible = true"
-                    :class="{
-                        'bg-white shadow-md text-brand-dark': scrolled,
-                        'bg-transparent text-white': !scrolled,
-                        '-translate-y-full': !navVisible,
-                        'translate-y-0': navVisible
-                    }"
-                    class="fixed top-0 left-0 w-full z-[999] transition-transform duration-300 transform">
+                    class="fixed top-0 left-0 w-full z-40 bg-white/95 shadow-md backdrop-blur transition-transform duration-300 ease-out will-change-transform"
+                    :class="hasTransparentHeader ? '-translate-y-full' : 'translate-y-0'">
                 <nav class="max-w-7xl mx-auto py-3 md:py-4 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 transition duration-300">
                     <!-- Top Row (Branding & Mobile Buttons) -->
                     <div class="w-full md:w-auto flex justify-between items-center shrink-0">
@@ -100,142 +155,33 @@
                         <a href="/" class="flex items-center hover:opacity-90 transition duration-300 mr-2 shrink-0">
                             <img src="{{ asset('images/Lambang_Kabupaten_Rembang.webp') }}" class="w-8 h-8 md:w-9 md:h-9 object-contain shrink-0 mr-2" alt="Logo Rembang">
                             <div class="flex flex-col text-left">
-                                <span class="font-bold text-xs md:text-sm leading-tight">Desa Wisata Punjulharjo</span>
-                                <span class="text-[9px] md:text-[10px] font-sans leading-none mt-0.5 opacity-75">Kec. Rembang, Kab. Rembang</span>
+                                <span class="font-bold text-xs md:text-sm leading-tight text-brand-dark font-heading">Desa Wisata Punjulharjo</span>
+                                <span class="text-[9px] md:text-[10px] font-sans leading-none mt-0.5 opacity-75 text-gray-500">Kec. Rembang, Kab. Rembang</span>
                             </div>
                         </a>
 
-                        <!-- Mobile Action Buttons (Visible only on Mobile next to brand) -->
+                        <!-- Mobile Action Buttons -->
                         <div class="flex md:hidden items-center space-x-2 shrink-0">
-                            <!-- Hamburger Menu Button -->
-                            <button id="mobile-menu-toggle" 
-                                    class="focus:outline-none transition-colors duration-300 p-2 text-current"
+                            <button id="mobile-menu-toggle-solid" 
+                                    class="focus:outline-none transition-colors duration-300 p-2 text-brand-dark"
                                     aria-label="Toggle Menu">
                                 <i class="fa-solid fa-bars text-xl"></i>
                             </button>
                         </div>
                     </div>
- 
+
                     <!-- Navigation Links Container (Pill Navbar) -->
                     <div class="hidden md:flex w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-hide no-scrollbar max-w-full md:max-w-none md:overflow-visible justify-start md:justify-center items-center gap-2 py-1 md:py-0 px-2 md:px-0">
-                        <ul class="relative flex items-center px-1 py-0.5 rounded-lg select-none mx-auto md:mx-0"
-                            @mouseleave="hoverIndex = null">
-                            
-                            <!-- The Sliding Background Pill (slidebar) -->
-                            <div x-show="(hoverIndex !== null ? hoverIndex : activeIndex) !== null && (hoverIndex !== null ? hoverIndex : activeIndex) >= 0"
-                                 class="absolute h-[calc(100%-8px)] w-[58px] md:w-[82px] rounded-md z-0"
-                                 :class="scrolled ? 'bg-gray-300/50' : 'bg-white/20'"
-                                 :style="'transform: translateX(' + ((hoverIndex !== null ? hoverIndex : activeIndex) * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'"></div>
-
-                            <!-- The Active Page Bar (garis atas-bawah diam di page yang dipilih) -->
-                            <div x-show="activeIndex !== null && activeIndex >= 0"
-                                 class="absolute h-full w-[58px] md:w-[82px] z-0 pointer-events-none"
-                                 :style="'transform: translateX(' + (activeIndex * 100) + '%); transition: transform 0.5s cubic-bezier(0.33, 0.83, 0.99, 0.98);'">
-                                 <div class="absolute top-0 left-0 w-full h-[3px] rounded-b-full bg-current"></div>
-                                 <div class="absolute bottom-0 left-0 w-full h-[3px] rounded-t-full bg-current"></div>
-                             </div>
-
-                            <!-- Links (0 to 5) -->
-                            <li @mouseenter="hoverIndex = 0" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('home') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Beranda</a>
-                            </li>
-                            <li @mouseenter="hoverIndex = 1" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('tentang') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Tentang</a>
-                            </li>
-                            <li @mouseenter="hoverIndex = 2; destinasiDropdown = true" 
-                                @mouseleave="hoverIndex = null; destinasiDropdown = false" 
-                                x-data="{ destinasiDropdown: false }"
-                                class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('destinasi') }}" 
-                                   @click.prevent="destinasiDropdown = !destinasiDropdown"
-                                   class="py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current flex items-center justify-center gap-0.5">
-                                    <span>Destinasi</span>
-                                    <i class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200" :class="{ 'rotate-180': destinasiDropdown }"></i>
-                                </a>
-
-                                <!-- Dropdown Menu Destinasi -->
-                                <div x-show="destinasiDropdown"
-                                     x-transition:enter="transition ease-out duration-200"
-                                     x-transition:enter-start="opacity-0 translate-y-1 scale-95"
-                                     x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                                     x-transition:leave="transition ease-in duration-150"
-                                     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                                     x-transition:leave-end="opacity-0 translate-y-1 scale-95"
-                                     @mouseenter="destinasiDropdown = true"
-                                     @mouseleave="destinasiDropdown = false"
-                                     class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 py-1.5 text-left z-[1000] overflow-hidden"
-                                     style="display: none;">
-                                    <a href="{{ route('destinasi') }}" 
-                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
-                                        <i class="fa-solid fa-map-location-dot text-emerald-600 text-xs"></i>
-                                        <span>Semua Destinasi</span>
-                                    </a>
-                                    <a href="{{ route('destinasi.pantai-karang-jahe') }}" 
-                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
-                                        <i class="fa-solid fa-umbrella-beach text-emerald-600 text-xs"></i>
-                                        <span>Pantai Karang Jahe</span>
-                                    </a>
-                                    <a href="{{ route('destinasi.situs-perahu-kuno') }}" 
-                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
-                                        <i class="fa-solid fa-ship text-emerald-600 text-xs"></i>
-                                        <span>Situs Perahu Kuno</span>
-                                    </a>
-                                </div>
-                            </li>
-                            <li @mouseenter="hoverIndex = 3; pustakaDropdown = true" 
-                                @mouseleave="hoverIndex = null; pustakaDropdown = false" 
-                                x-data="{ pustakaDropdown: false }"
-                                class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('pustaka') }}" 
-                                   @click.prevent="pustakaDropdown = !pustakaDropdown"
-                                   class="py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current flex items-center justify-center gap-0.5">
-                                    <span>Pustaka</span>
-                                    <i class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200" :class="{ 'rotate-180': pustakaDropdown }"></i>
-                                </a>
-
-                                <!-- Dropdown Menu Pustaka -->
-                                <div x-show="pustakaDropdown"
-                                     x-transition:enter="transition ease-out duration-200"
-                                     x-transition:enter-start="opacity-0 translate-y-1 scale-95"
-                                     x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                                     x-transition:leave="transition ease-in duration-150"
-                                     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                                     x-transition:leave-end="opacity-0 translate-y-1 scale-95"
-                                     @mouseenter="pustakaDropdown = true"
-                                     @mouseleave="pustakaDropdown = false"
-                                     class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 py-1.5 text-left z-[1000] overflow-hidden"
-                                     style="display: none;">
-                                    <a href="{{ route('pustaka', ['tab' => 'ebook']) }}" 
-                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
-                                        <i class="fa-solid fa-book-open text-emerald-600 text-xs"></i>
-                                        <span>E-Book Panduan</span>
-                                    </a>
-                                    <a href="{{ route('pustaka', ['tab' => 'video']) }}" 
-                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
-                                        <i class="fa-solid fa-circle-play text-emerald-600 text-xs"></i>
-                                        <span>Video Dokumentasi</span>
-                                    </a>
-                                    <a href="{{ route('pustaka', ['tab' => 'blog']) }}" 
-                                       class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
-                                        <i class="fa-solid fa-newspaper text-emerald-600 text-xs"></i>
-                                        <span>Artikel & Blog</span>
-                                    </a>
-                                </div>
-                            </li>
-                            <li @mouseenter="hoverIndex = 4" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-                                <a href="{{ route('testimoni.index') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Kesan</a>
-                            </li>
-                        </ul>
+                        <x-partials.nav-links variant="light" />
 
                         <!-- Separate Standout My Cemara Button -->
                         <a href="{{ route('adopsi.index') }}" 
-                           class="px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0"
-                           :class="scrolled ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600' : 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-400/60 shadow-emerald-500/30'">
+                           class="px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600">
                             <i class="fa-solid fa-tree text-[11px]"></i>
                             <span>My Cemara</span>
                         </a>
                     </div>
-                    
+
                     <!-- Desktop Actions (Hidden on Mobile) -->
                     <div class="hidden md:flex items-center space-x-3 shrink-0">
                         @auth
@@ -263,11 +209,10 @@
                                 </div>
                             </div>
                         @endauth
-                        
                     </div>
                 </nav>
             </header>
- 
+
             <!-- Mobile Navigation Drawer -->
             <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-md transition-opacity duration-300 flex justify-end">
                 <div class="w-72 bg-white h-full p-6 shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300">
@@ -453,10 +398,11 @@
         </div>
     </div>
 
-    <!-- Script for mobile menu navigation drawer -->
+    <!-- Script for mobile menu navigation drawer & dual-navbar scroll logic -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            // Mobile Menu Toggle
+            const toggleBtns = document.querySelectorAll('[id^="mobile-menu-toggle"]');
             const closeBtn = document.getElementById('mobile-menu-close');
             const menuDrawer = document.getElementById('mobile-menu');
             const menuContent = menuDrawer.querySelector('div');
@@ -475,11 +421,88 @@
                 }, 300);
             }
 
-            toggleBtn.addEventListener('click', openMenu);
+            toggleBtns.forEach(btn => {
+                btn.addEventListener('click', openMenu);
+            });
             closeBtn.addEventListener('click', closeMenu);
             menuDrawer.addEventListener('click', function(e) {
                 if (e.target === menuDrawer) closeMenu();
             });
+
+            // Dual Navbar scroll/sticky behavior
+            const navSolid = document.getElementById('navSolid');
+            const sentinel = document.getElementById('heroSentinel');
+
+            if (navSolid) {
+                const hasTransparent = {{ $hasTransparentHeader ? 'true' : 'false' }};
+                
+                if (hasTransparent && sentinel) {
+                    let lastScroll = window.scrollY;
+                    let pastHero = false;
+                    let idleTimer;
+                    let mouseNearTop = false;
+                    let mouseOverNav = false;
+
+                    const show = () => navSolid.classList.remove('-translate-y-full');
+                    const hide = () => navSolid.classList.add('-translate-y-full');
+
+                    // Check cursor near top of screen (clientY < 70)
+                    window.addEventListener('mousemove', (e) => {
+                        mouseNearTop = e.clientY < 70;
+                        if (mouseNearTop && pastHero) {
+                            show();
+                        }
+                    }, { passive: true });
+
+                    // Check cursor hovering over the navigation bar itself
+                    navSolid.addEventListener('mouseenter', () => {
+                        mouseOverNav = true;
+                        if (pastHero) {
+                            show();
+                        }
+                    });
+
+                    navSolid.addEventListener('mouseleave', () => {
+                        mouseOverNav = false;
+                    });
+
+                    // intersection observer sentinel check
+                    const observer = new IntersectionObserver(([entry]) => {
+                        // pastHero is true when sentinel is completely out of view at the top of the viewport
+                        pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+                        update();
+                    }, { threshold: 0 });
+                    
+                    observer.observe(sentinel);
+
+                    function update() {
+                        const current = window.scrollY;
+                        if (!pastHero) {
+                            hide(); // Still in hero section → hide solid navbar
+                        } else if (mouseNearTop || mouseOverNav || current < lastScroll) {
+                            show(); // Near top, hovering, or scrolling up → show solid navbar
+                        } else {
+                            hide(); // Scrolling down and mouse not near top/hovering → hide
+                        }
+                        lastScroll = current;
+                    }
+
+                    window.addEventListener('scroll', () => {
+                        update();
+                        // Hide after 1500ms of inactivity when past hero, unless cursor is near top or hovering
+                        clearTimeout(idleTimer);
+                        idleTimer = setTimeout(() => {
+                            if (pastHero && !mouseNearTop && !mouseOverNav) {
+                                hide();
+                            }
+                        }, 1500);
+                    }, { passive: true });
+                } else {
+                    // Non-hero page or sentinel not found: solid navbar is always visible
+                    navSolid.classList.remove('-translate-y-full');
+                    navSolid.classList.add('translate-y-0');
+                }
+            }
         });
     </script>
 

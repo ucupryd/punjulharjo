@@ -210,6 +210,7 @@
             </svg>
         </div>
     </section>
+    <div id="heroSentinel" aria-hidden="true" class="h-px w-full bg-transparent"></div>
 
 
     <!-- SECTION B: About Us (Tentang Desa) -->

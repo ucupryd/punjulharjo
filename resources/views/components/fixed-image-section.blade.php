@@ -152,3 +152,6 @@
         </div>
     @endif
 </section>
+@if($hasWave)
+    <div id="heroSentinel" aria-hidden="true" class="h-px w-full bg-transparent"></div>
+@endif
