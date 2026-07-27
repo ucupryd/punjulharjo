@@ -214,61 +214,61 @@
 
 
     <!-- SECTION B: About Us (Tentang Desa) -->
-    <section id="tentang" class="bg-transparent py-8 md:py-32 px-4 md:px-12 relative overflow-hidden">
+    <section id="tentang" class="bg-transparent py-10 md:py-32 px-4 md:px-12 relative overflow-hidden">
         <div class="max-w-6xl mx-auto">
             <div class="grid lg:grid-cols-12 gap-6 md:gap-8 lg:gap-16 items-center">
                 <!-- Text Block Left with custom radio tabs -->
-                <div class="lg:col-span-7 space-y-4 md:space-y-6">
+                <div class="lg:col-span-7 space-y-3 md:space-y-6">
 
                     
-                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
+                    <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Tentang Desa Wisata
                     </h2>
                     
                     <!-- Radio tab switcher layout -->
-                    <div class="radio-tabs-wrapper [--w-label:95px] md:[--w-label:120px]">
+                    <div class="radio-tabs-wrapper [--w-label:85px] md:[--w-label:120px]">
                         <div class="wrap">
                             <input checked type="radio" id="rd-1" name="radio" class="rd-1" hidden />
-                            <label for="rd-1" class="label text-[11px] md:text-sm py-2.5 px-2 md:py-3 md:px-4" style="--index: 0;"><span>Profil Desa</span></label>
+                            <label for="rd-1" class="label text-[10px] md:text-sm py-2 px-1 md:py-3 md:px-4" style="--index: 0;"><span>Profil Desa</span></label>
                             <input type="radio" id="rd-2" name="radio" class="rd-2" hidden />
-                            <label for="rd-2" class="label text-[11px] md:text-sm py-2.5 px-2 md:py-3 md:px-4" style="--index: 1;"><span>Visi & Misi</span></label>
+                            <label for="rd-2" class="label text-[10px] md:text-sm py-2 px-1 md:py-3 md:px-4" style="--index: 1;"><span>Visi & Misi</span></label>
                             <input type="radio" id="rd-3" name="radio" class="rd-3" hidden />
-                            <label for="rd-3" class="label text-[11px] md:text-sm py-2.5 px-2 md:py-3 md:px-4" style="--index: 2;"><span>Potensi</span></label>
+                            <label for="rd-3" class="label text-[10px] md:text-sm py-2 px-1 md:py-3 md:px-4" style="--index: 2;"><span>Potensi</span></label>
                             <div class="bar"></div>
                             <div class="slidebar"></div>
                         </div>
                     </div>
 
                     <!-- Tab Contents Panel -->
-                    <div id="tab-content-1" class="tab-content-panel space-y-4 animate-fade-in">
-                        <p class="text-gray-600 font-sans text-sm md:text-lg leading-relaxed text-justify">
+                    <div id="tab-content-1" class="tab-content-panel space-y-3 animate-fade-in">
+                        <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-lg leading-relaxed text-justify">
                             Desa Punjulharjo merupakan salah satu desa pesisir yang terletak di Kabupaten Rembang, Jawa Tengah. Secara geografis, Punjulharjo berada di kawasan pesisir utara Jawa yang memiliki hubungan erat dengan kehidupan bahari. Letaknya yang berada di wilayah pantai menjadikan desa ini memiliki sumber daya alam yang khas. Keindahan pantainya, kekayaan sejarah maritimnya, serta kehidupan masyarakat pesisir yang masih kuat dengan nilai kebersamaan menjadikan Punjulharjo sebagai desa yang memiliki daya tarik tersendiri.
                         </p>
                     </div>
                     
-                    <div id="tab-content-2" class="tab-content-panel hidden space-y-4 animate-fade-in">
-                        <div class="p-5 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
-                            <h4 class="font-bold text-sky-700 mb-2 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <div id="tab-content-2" class="tab-content-panel hidden space-y-3 animate-fade-in">
+                        <div class="p-4 md:p-5 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
+                            <h4 class="font-bold text-sky-700 text-xs sm:text-sm md:text-base mb-1 md:mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0z" />
                                     <circle cx="12" cy="12" r="3" />
                                 </svg>
                                 Visi
                             </h4>
-                            <p class="text-gray-700 text-sm md:text-base leading-relaxed">
+                            <p class="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed">
                                 Menjadi desa wisata unggulan berbasis budaya dan kearifan lokal yang berkelanjutan, serta menjadi inspirasi bagi pengembangan desa wisata lainnya di Indonesia.
                             </p>
                         </div>
-                        <div class="p-5 bg-indigo-50/50 backdrop-blur-sm rounded-none border border-indigo-100">
-                            <h4 class="font-bold text-indigo-700 mb-2 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-indigo-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <div class="p-4 md:p-5 bg-indigo-50/50 backdrop-blur-sm rounded-none border border-indigo-100">
+                            <h4 class="font-bold text-indigo-700 text-xs sm:text-sm md:text-base mb-1 md:mb-2 flex items-center gap-2">
+                                <svg class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="10" />
                                     <circle cx="12" cy="12" r="6" />
                                     <circle cx="12" cy="12" r="2" />
                                 </svg>
                                 Misi
                             </h4>
-                            <ul class="list-disc list-inside text-gray-700 text-sm md:text-base leading-relaxed space-y-1">
+                            <ul class="list-disc list-inside text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed space-y-1">
                                 <li>Melestarikan warisan budaya dan sejarah desa.</li>
                                 <li>Mendorong partisipasi masyarakat dalam pengelolaan wisata.</li>
                                 <li>Mengembangkan potensi ekonomi kreatif berbasis wisata.</li>
@@ -277,32 +277,32 @@
                         </div>
                     </div>
 
-                    <div id="tab-content-3" class="tab-content-panel hidden space-y-4 animate-fade-in">
-                        <p class="text-gray-600 font-sans text-sm md:text-lg leading-relaxed text-justify">
+                    <div id="tab-content-3" class="tab-content-panel hidden space-y-3 animate-fade-in">
+                        <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-lg leading-relaxed text-justify">
                             Punjulharjo menyajikan perpaduan wisata alam pantai yang mempesona dan wisata sejarah maritim Nusantara:
                         </p>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="p-4 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
-                                <span class="font-bold text-gray-800 text-sm md:text-base flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <div class="grid grid-cols-2 gap-3 md:gap-4">
+                            <div class="p-3 md:p-4 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
+                                <span class="font-bold text-gray-800 text-xs sm:text-sm md:text-base flex items-center gap-2">
+                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M22 12h-20a10 10 0 0 1 20 0Z" />
                                         <path d="M12 12v10" />
                                         <path d="M12 21a2 2 0 0 0 2-2" />
                                     </svg>
                                     Pantai Karang Jahe
                                 </span>
-                                <p class="text-xs text-gray-500 mt-1">Hamparan pasir putih bersih & ribuan pohon cemara yang rindang.</p>
+                                <p class="text-[10px] sm:text-xs text-gray-500 mt-1">Hamparan pasir putih bersih & ribuan pohon cemara yang rindang.</p>
                             </div>
-                            <div class="p-4 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
-                                <span class="font-bold text-gray-800 text-sm md:text-base flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <div class="p-3 md:p-4 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
+                                <span class="font-bold text-gray-800 text-xs sm:text-sm md:text-base flex items-center gap-2">
+                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="5" r="3" />
                                         <path d="M12 22V8" />
                                         <path d="M5 12H2a10 10 0 0 0 20 0h-3" />
                                     </svg>
                                     Situs Perahu Kuno
                                 </span>
-                                <p class="text-xs text-gray-500 mt-1">Bukti arkeologis pelayaran Nusantara dari abad ke-7 Masehi.</p>
+                                <p class="text-[10px] sm:text-xs text-gray-500 mt-1">Bukti arkeologis pelayaran Nusantara dari abad ke-7 Masehi.</p>
                             </div>
                         </div>
                     </div>
@@ -367,20 +367,20 @@
         height="h-[65vh]"
         align="center">
         <a href="{{ route('destinasi') }}" 
-           class="inline-flex items-center gap-2 px-8 py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg transition duration-300 text-sm">
-            <i class="fa-solid fa-compass"></i> Jelajahi Destinasi Wisata &rarr;
+           class="inline-flex items-center gap-2 px-5 py-3 md:px-8 md:py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg transition duration-300 text-xs sm:text-sm">
+            <i class="fa-solid fa-compass text-xs sm:text-sm"></i> Jelajahi Destinasi Wisata &rarr;
         </a>
     </x-fixed-image-section>
 
     <!-- SECTION D: Aesthetic Photo Gallery -->
     <section class="bg-white py-10 md:py-16 px-4 md:px-6">
         <div class="max-w-6xl mx-auto relative">
-            <div class="text-center space-y-4">
+            <div class="text-center space-y-2 md:space-y-4">
 
-                <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-gray-900 tracking-wide">
+                <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-gray-900 tracking-wide">
                     Potret Punjulharjo
                 </h2>
-                <p class="text-gray-500 font-sans max-w-xl mx-auto">
+                <p class="text-gray-500 font-sans text-xs sm:text-sm md:text-base max-w-xl mx-auto">
                     Koleksi sudut-sudut keindahan alam, budaya, dan momen di sepanjang pesisir pantai desa kami.
                 </p>
             </div>
@@ -408,7 +408,7 @@
     @endphp
 
     <section x-data="{ activePhoto: null }" class="relative">
-        <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black">
+        <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] sm:auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black">
             @foreach(array_slice($galleryItems, 0, 6) as $index => $item)
                 @php
                     $imageUrl = str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']);
@@ -582,7 +582,7 @@
 
 
     <!-- SECTION E: Culture & Community (Kehidupan Budaya) -->
-    <section class="bg-brand-muted/10 py-12 md:py-32 px-4 md:px-12 relative">
+    <section class="bg-brand-muted/10 py-10 md:py-32 px-4 md:px-12 relative">
         <!-- Subtle background shapes -->
         <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-brand-light/10 rounded-full blur-3xl z-0"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-dark/10 rounded-full blur-3xl z-0"></div>
@@ -635,14 +635,14 @@
                 </div>
 
                 <!-- Text Block Right -->
-                <div class="order-1 lg:order-2 space-y-6">
+                <div class="order-1 lg:order-2 space-y-3 md:space-y-6">
 
                     
-                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
+                    <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
                         Kehidupan Budaya & Tradisi
                     </h2>
                     
-                    <p class="text-slate-600 font-sans text-sm md:text-lg leading-relaxed text-justify">
+                    <p class="text-slate-600 font-sans text-xs sm:text-sm md:text-lg leading-relaxed text-justify">
                         Masyarakat Desa Punjulharjo dikenal memiliki kehidupan sosial yang erat dengan semangat gotong royong. Sebagai desa pesisir, warga setempat terbiasa hidup berdampingan dengan alam. Aktivitas masyarakat mencerminkan adaptasi terhadap lingkungan pantai, sementara budaya lokal dan tradisi tetap dijaga sebagai bagian dari identitas desa yang kuat.
                     </p>
                 </div>
@@ -653,19 +653,19 @@
 
 
     <!-- SECTION EEE: 3D Coverflow Experience (Sorotan Aktivitas Desa) -->
-    <section class="bg-transparent pt-12 pb-16 md:pt-32 md:pb-24 px-4 md:px-12 relative overflow-hidden">
+    <section class="bg-transparent pt-10 pb-12 md:pt-32 md:pb-24 px-4 md:px-12 relative overflow-hidden">
         <!-- Background shapes matching the design system -->
         <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-sky-200/10 rounded-full blur-3xl z-0"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-200/10 rounded-full blur-3xl z-0"></div>
 
         <div class="max-w-6xl mx-auto relative z-10 text-center">
             <!-- Header -->
-            <div class="space-y-4 mb-16 max-w-3xl mx-auto relative">
+            <div class="space-y-2 md:space-y-4 mb-8 md:mb-16 max-w-3xl mx-auto relative">
 
-                <h2 class="text-2xl sm:text-3xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
+                <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
                     Jelajahi Aktivitas Punjulharjo
                 </h2>
-                <p class="text-gray-600 font-sans text-sm md:text-lg">
+                <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-lg">
                     Klik kartu di kanan/kiri untuk memutar dan memfokuskan petualangan seru yang dapat Anda nikmati di desa kami.
                 </p>
                 @if(Auth::check() && Auth::user()->isAdmin())
@@ -704,7 +704,7 @@
             </div>
 
             <!-- Bullet indicators -->
-            <div class="mt-8 flex justify-center items-center gap-2" id="coverflow-dots">
+            <div class="mt-4 md:mt-8 flex justify-center items-center gap-2" id="coverflow-dots">
                 @foreach($carouselItems as $index => $item)
                     <button class="h-2 transition-all duration-300 {{ $index === 0 ? 'bg-sky-500 w-6' : 'bg-slate-300 w-2' }}" aria-label="Slide {{ $index + 1 }}"></button>
                 @endforeach
@@ -889,28 +889,28 @@
     </section>
 
     <!-- SECTION F: Final Call-to-Action (CTA) -->
-    <section class="relative py-12 md:py-16 px-4 md:px-6 text-center text-white overflow-hidden bg-slate-900">
+    <section class="relative py-10 md:py-16 px-4 md:px-6 text-center text-white overflow-hidden bg-slate-900">
         <!-- Scenic Background Image with Dark/Gradient Overlay -->
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 transition-transform duration-[10000ms] hover:scale-105"
              style="background-image: url('{{ asset($heroBg) }}');">
         </div>
         <div class="absolute inset-0 bg-gradient-to-b from-indigo-950/80 via-slate-900/90 to-indigo-950/95"></div>
 
-        <div class="relative z-10 max-w-4xl mx-auto space-y-8">
-            <h2 class="text-2xl md:text-6xl font-heading tracking-wide">
+        <div class="relative z-10 max-w-4xl mx-auto space-y-4 md:space-y-8">
+            <h2 class="text-xl sm:text-2xl md:text-6xl font-heading tracking-wide">
                 Mulai Kunjungan Anda
             </h2>
             
-            <p class="text-slate-200 font-sans text-sm md:text-xl leading-relaxed max-w-2xl mx-auto">
+            <p class="text-slate-200 font-sans text-xs sm:text-sm md:text-xl leading-relaxed max-w-2xl mx-auto">
                 Dengan potensi alam, sejarah, budaya, dan partisipasi masyarakat yang kuat, Punjulharjo layak diperkenalkan lebih luas sebagai desa wisata yang memiliki keindahan, pengetahuan, dan nilai kehidupan yang lengkap.
             </p>
             
-            <div class="pt-4">
+            <div class="pt-2 md:pt-4">
                 <a href="#kontak-peta" 
                    onclick="document.querySelector('footer').scrollIntoView({ behavior: 'smooth' }); return false;"
-                   class="inline-flex items-center justify-center bg-white text-indigo-900 font-bold px-6 py-3 md:px-8 md:py-4 rounded-none text-sm md:text-lg shadow hover:shadow-white/10 transition duration-300 transform hover:-translate-y-1">
+                   class="inline-flex items-center justify-center bg-white text-indigo-900 font-bold px-5 py-3 md:px-8 md:py-4 rounded-none text-xs sm:text-sm md:text-lg shadow hover:shadow-white/10 transition duration-300 transform hover:-translate-y-1">
                     Lihat Peta Lokasi
-                    <i class="fa-solid fa-map-location-dot ml-3"></i>
+                    <i class="fa-solid fa-map-location-dot ml-2 md:ml-3"></i>
                 </a>
             </div>
         </div>

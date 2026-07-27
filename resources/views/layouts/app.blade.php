@@ -346,47 +346,48 @@
 
             <!-- Footer -->
             <footer class="bg-white border-t border-gray-200">
-                <div class="max-w-7xl mx-auto px-4 py-8 md:px-6 md:py-16 grid md:grid-cols-3 gap-8 md:gap-12 text-sm text-gray-600">
-                    <div class="space-y-4">
-                        <h3 class="font-extrabold text-lg text-gray-900">Desa Wisata Punjulharjo</h3>
-                        <div class="space-y-2 font-sans text-xs">
+                <div class="max-w-7xl mx-auto px-5 py-8 md:px-6 md:py-16 grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-12 text-xs md:text-sm text-gray-600">
+                    <div class="space-y-2 md:space-y-4">
+                        <h3 class="font-extrabold text-sm sm:text-base md:text-lg text-slate-900 font-heading">Desa Wisata Punjulharjo</h3>
+                        <div class="flex items-start gap-2 text-[10px] sm:text-xs md:text-sm text-slate-500 font-sans mt-2">
+                            <i class="fa-solid fa-location-dot text-sky-600 mt-0.5 shrink-0"></i>
                             <p class="leading-relaxed">
-                                <strong class="text-gray-700 font-semibold">Alamat Desa Wisata:</strong><br>
-                                📍 <a href="https://maps.app.goo.gl/jhFMynBy4wUFiuCA7" target="_blank" class="hover:text-sky-600 transition">Punjulharjo, Kec. Rembang, Kabupaten Rembang, Jawa Tengah 59219</a>
+                                <strong class="text-slate-700 font-semibold block text-[10px] sm:text-xs md:text-sm">Alamat Desa Wisata:</strong>
+                                <a href="https://maps.app.goo.gl/jhFMynBy4wUFiuCA7" target="_blank" class="hover:text-sky-600 transition">Punjulharjo, Kec. Rembang, Kabupaten Rembang, Jawa Tengah 59219</a>
                             </p>
                         </div>
-                        <div class="flex space-x-3 pt-2">
+                        <div class="flex space-x-2 pt-1 md:pt-2">
                             <a href="https://www.instagram.com/desawisatapunjulharjo/" target="_blank" 
-                               class="w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-[#e1306c] hover:text-white transition-all duration-300 shadow-sm" 
+                               class="w-7 h-7 md:w-9 md:h-9 rounded-full bg-slate-50 hover:bg-[#e1306c] hover:text-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-100" 
                                title="Instagram">
-                                <i class="fa-brands fa-instagram text-base"></i>
+                                <i class="fa-brands fa-instagram text-xs md:text-base"></i>
                             </a>
                             <a href="https://www.youtube.com/@desawisatapunjulharjo9639" target="_blank" 
-                               class="w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-[#ff0000] hover:text-white transition-all duration-300 shadow-sm" 
+                               class="w-7 h-7 md:w-9 md:h-9 rounded-full bg-slate-50 hover:bg-[#ff0000] hover:text-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-100" 
                                title="YouTube">
-                                <i class="fa-brands fa-youtube text-base"></i>
+                                <i class="fa-brands fa-youtube text-xs md:text-base"></i>
                             </a>
                             <a href="https://www.tiktok.com/@desawisata.punjul" target="_blank" 
-                               class="w-9 h-9 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 shadow-sm" 
+                               class="w-7 h-7 md:w-9 md:h-9 rounded-full bg-slate-50 hover:bg-black hover:text-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-100" 
                                title="TikTok">
-                                <i class="fa-brands fa-tiktok text-base"></i>
+                                <i class="fa-brands fa-tiktok text-xs md:text-base"></i>
                             </a>
                         </div>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-900 text-base mb-4">Navigasi Halaman</h3>
-                        <ul class="space-y-3 font-medium">
-                            <li><a href="/" class="hover:text-sky-600 transition">Beranda</a></li>
-                            <li><a href="{{ route('tentang') }}" class="hover:text-sky-600 transition">Tentang Kami</a></li>
-                            <li><a href="{{ route('video.index') }}" class="hover:text-sky-600 transition">Galeri Video</a></li>
-                            <li><a href="{{ route('blog.index') }}" class="hover:text-sky-600 transition">Artikel & Blog</a></li>
-                            <li><a href="{{ route('temukan') }}" class="hover:text-sky-600 transition">Hubungi & Lokasi Kami</a></li>
+                        <h4 class="font-extrabold text-[11px] sm:text-sm md:text-base uppercase tracking-wider text-slate-900 mb-2 md:mb-4">Navigasi Halaman</h4>
+                        <ul class="grid grid-cols-2 md:grid-cols-1 gap-x-4 gap-y-2 md:space-y-3 font-semibold text-[10px] sm:text-xs md:text-sm text-slate-500">
+                            <li><a href="/" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Beranda</a></li>
+                            <li><a href="{{ route('tentang') }}" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Tentang Kami</a></li>
+                            <li><a href="{{ route('video.index') }}" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Galeri Video</a></li>
+                            <li><a href="{{ route('blog.index') }}" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Artikel & Blog</a></li>
+                            <li class="col-span-2 md:col-span-1"><a href="{{ route('temukan') }}" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Hubungi & Lokasi</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-900 text-base mb-4">Peta Lokasi</h3>
-                        <div class="rounded-none overflow-hidden shadow border border-gray-200">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15855.531271081694!2d111.3857503757342!3d-6.685363393311915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e774775d710fa53%3A0xe54d6ea6a6c221a9!2sPunjulharjo%2C%20Kec.%20Rembang%2C%20Kabupaten%20Rembang%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1720680000000!5m2!1sid!2sid" width="100%" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="border-none"></iframe>
+                        <h4 class="font-extrabold text-[11px] sm:text-sm md:text-base uppercase tracking-wider text-slate-900 mb-2 md:mb-4">Peta Lokasi</h4>
+                        <div class="rounded-lg overflow-hidden shadow-sm border border-slate-100 h-28 sm:h-36 md:h-48 w-full">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15855.531271081694!2d111.3857503757342!3d-6.685363393311915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e774775d710fa53%3A0xe54d6ea6a6c221a9!2sPunjulharjo%2C%20Kec.%20Rembang%2C%20Kabupaten%20Rembang%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1720680000000!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="border-none"></iframe>
                         </div>
                     </div>
                 </div>
