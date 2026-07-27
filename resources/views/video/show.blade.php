@@ -23,10 +23,10 @@
             @endif
         </div>
         
-        <div class="mb-8 flex justify-center">
+        <div class="mb-8 flex justify-center w-full">
             <iframe width="100%" height="480" src="{{ $embedUrl }}" 
                     title="{{ $video->title }}" frameborder="0" 
-                    allowfullscreen class="rounded-none shadow-sm"></iframe>
+                    allowfullscreen class="rounded-none shadow-sm w-full h-[270px] sm:h-[480px]"></iframe>
         </div>
 
         <p class="text-gray-600 leading-relaxed text-lg text-center mb-12 font-sans">

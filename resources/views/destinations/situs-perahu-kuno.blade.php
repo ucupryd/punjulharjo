@@ -309,7 +309,7 @@
                 <div class="lg:col-span-7 space-y-3">
                     <div class="border border-slate-200 p-1 bg-white shadow-sm aspect-video md:h-96">
                         <iframe src="https://maps.google.com/maps?q=Situs%20Perahu%20Kuno%20Punjulharjo%20Rembang&t=&z=16&ie=UTF8&iwloc=&output=embed" 
-                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-none"></iframe>
+                                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-none w-full h-full"></iframe>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 justify-between items-center bg-white p-3 border border-slate-200">
                         <div class="flex items-center gap-2.5 text-left w-full sm:w-auto">
@@ -436,7 +436,7 @@
             <!-- Features Grid (2 Columns on Mobile) -->
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
                 <!-- Feature 1 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
+                <div class="relative group bg-white p-3 md:p-6 border border-slate-200 hover:border-sky-300 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
                             <i class="fa-solid fa-hourglass-half text-sm md:text-lg"></i>
@@ -446,10 +446,21 @@
                             Berasal dari abad ke-7–8 M berdasarkan penanggalan radiokarbon.
                         </p>
                     </div>
+                    <div class="mt-4 flex items-center gap-1.5 text-[9px] md:text-xs font-semibold text-sky-700 group-hover:text-sky-900 transition">
+                        <span>Sumber: Dinbudpar Rembang</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[7px] md:text-[9px]" aria-hidden="true"></i>
+                    </div>
+                    <a href="https://dinbudpar.rembangkab.go.id/situs-perahu-kuno-punjulharjo/" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="absolute inset-0 z-20"
+                       aria-label="Buka sumber: Perahu Kayu Tertua (Sumber: Dinbudpar Rembang, tab baru)">
+                        <span class="sr-only">Buka sumber</span>
+                    </a>
                 </div>
 
                 <!-- Feature 2 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
+                <div class="relative group bg-white p-3 md:p-6 border border-slate-200 hover:border-sky-300 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
                             <i class="fa-solid fa-award text-sm md:text-lg"></i>
@@ -459,10 +470,21 @@
                             Lebih utuh dibanding temuan serupa di Sumatra, Malaysia, dan Filipina.
                         </p>
                     </div>
+                    <div class="mt-4 flex items-center gap-1.5 text-[9px] md:text-xs font-semibold text-sky-700 group-hover:text-sky-900 transition">
+                        <span>Sumber: Prosiding APCONF/BRIN</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[7px] md:text-[9px]" aria-hidden="true"></i>
+                    </div>
+                    <a href="https://apconf-much.org/proceedings/files/original/99fa28cddc8bac103ef9f04b52d265c8.pdf" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="absolute inset-0 z-20"
+                       aria-label="Buka sumber: Terlengkap se-ASEAN (Sumber: Prosiding APCONF/BRIN, tab baru)">
+                        <span class="sr-only">Buka sumber</span>
+                    </a>
                 </div>
 
                 <!-- Feature 3 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
+                <div class="relative group bg-white p-3 md:p-6 border border-slate-200 hover:border-sky-300 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
                             <i class="fa-solid fa-link text-sm md:text-lg"></i>
@@ -472,10 +494,21 @@
                             Teknik papan ikat/kupingan pengikat (sewn-plank): ijuk + pasak, tanpa paku.
                         </p>
                     </div>
+                    <div class="mt-4 flex items-center gap-1.5 text-[9px] md:text-xs font-semibold text-sky-700 group-hover:text-sky-900 transition">
+                        <span>Sumber: Visit Jawa Tengah</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[7px] md:text-[9px]" aria-hidden="true"></i>
+                    </div>
+                    <a href="https://visitjawatengah.jatengprov.go.id/id/artikel/nelisik-sejarah-perahu-kuno-punjulharjo-rembang" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="absolute inset-0 z-20"
+                       aria-label="Buka sumber: Teknik Papan Ikat (Sumber: Visit Jawa Tengah, tab baru)">
+                        <span class="sr-only">Buka sumber</span>
+                    </a>
                 </div>
 
                 <!-- Feature 4 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
+                <div class="relative group bg-white p-3 md:p-6 border border-slate-200 hover:border-sky-300 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
                             <i class="fa-solid fa-gears text-sm md:text-lg"></i>
@@ -485,10 +518,21 @@
                             Terlihat tumbuku (ikat), gading (rangka), lunas, haluan, buritan.
                         </p>
                     </div>
+                    <div class="mt-4 flex items-center gap-1.5 text-[9px] md:text-xs font-semibold text-sky-700 group-hover:text-sky-900 transition">
+                        <span>Sumber: Jurnal Titian UNJA</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[7px] md:text-[9px]" aria-hidden="true"></i>
+                    </div>
+                    <a href="https://online-journal.unja.ac.id/titian/article/view/5215" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="absolute inset-0 z-20"
+                       aria-label="Buka sumber: Galangan Kuno (Sumber: Jurnal Titian UNJA, tab baru)">
+                        <span class="sr-only">Buka sumber</span>
+                    </a>
                 </div>
 
                 <!-- Feature 5 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
+                <div class="relative group bg-white p-3 md:p-6 border border-slate-200 hover:border-sky-300 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
                             <i class="fa-solid fa-tree text-sm md:text-lg"></i>
@@ -498,10 +542,21 @@
                             Kayu besi Kalimantan tahan air, bukti jaringan bahan lintas pulau.
                         </p>
                     </div>
+                    <div class="mt-4 flex items-center gap-1.5 text-[9px] md:text-xs font-semibold text-sky-700 group-hover:text-sky-900 transition">
+                        <span>Sumber: ResearchGate</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[7px] md:text-[9px]" aria-hidden="true"></i>
+                    </div>
+                    <a href="https://www.researchgate.net/publication/333241403_IDENTIFIKASI_KAYU_PERAHU_KUNA_SITUS_PUNJULHARJO_REMBANG_JAWA_TENGAH" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="absolute inset-0 z-20"
+                       aria-label="Buka sumber: Kayu Ulin (Kalimantan) (Sumber: ResearchGate, tab baru)">
+                        <span class="sr-only">Buka sumber</span>
+                    </a>
                 </div>
 
                 <!-- Feature 6 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
+                <div class="relative group bg-white p-3 md:p-6 border border-slate-200 hover:border-sky-300 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
                     <div>
                         <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
                             <i class="fa-solid fa-route text-sm md:text-lg"></i>
@@ -511,6 +566,17 @@
                             Kapal pelayaran jarak jauh antarpulau (Jawa-Sumatra-Sulawesi-Kalimantan) hingga luar.
                         </p>
                     </div>
+                    <div class="mt-4 flex items-center gap-1.5 text-[9px] md:text-xs font-semibold text-sky-700 group-hover:text-sky-900 transition">
+                        <span>Sumber: Dinbudpar Rembang</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[7px] md:text-[9px]" aria-hidden="true"></i>
+                    </div>
+                    <a href="https://dinbudpar.rembangkab.go.id/situs-perahu-kuno-punjulharjo/" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="absolute inset-0 z-20"
+                       aria-label="Buka sumber: Jalur Dagang Maritim (Sumber: Dinbudpar Rembang, tab baru)">
+                        <span class="sr-only">Buka sumber</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -580,61 +646,7 @@
         </div>
     </section>
 
-    <!-- =========================================================================
-         SECTION 8: Kondisi & Fasilitas [fasilitas]
-         ========================================================================= -->
-    <section id="fasilitas" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
-        <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
-            <div class="text-center space-y-2 md:space-y-4">
-                <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
-                    Keadaan & Fasilitas
-                </h2>
-                <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
-                    Informasi fasilitas penunjang yang tersedia untuk kenyamanan kunjungan Anda.
-                </p>
-            </div>
 
-            <!-- Facilities Grid (2 Columns on Mobile) -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-200 bg-white shadow-sm">
-                    <span class="text-amber-700 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-landmark"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Ruang Pamer Aula</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-200 bg-white shadow-sm">
-                    <span class="text-amber-700 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Museum / Edu Park</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-200 bg-white shadow-sm">
-                    <span class="text-amber-700 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Lambung Utuh</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-200 bg-white shadow-sm">
-                    <span class="text-amber-700 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-user-tie"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Juru Pelihara</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-200 bg-white shadow-sm">
-                    <span class="text-amber-700 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-clock"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Jam Kunjung Terjadwal</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-200 bg-white shadow-sm">
-                    <span class="text-amber-700 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-square-parking"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Area Parkir Rapi</span>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- =========================================================================
          SECTION 9: Aktivitas [aktivitas]
