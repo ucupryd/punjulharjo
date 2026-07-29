@@ -13,7 +13,7 @@
 
 <body class="bg-sky-50 flex h-screen">
 
-    <!-- Sidebar -->
+    <!-- Sidebar  -->
     <aside class="w-64 bg-white shadow-lg flex flex-col justify-between">
         <div>
             <div class="p-6 border-b border-gray-200">
