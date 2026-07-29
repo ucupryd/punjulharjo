@@ -250,7 +250,7 @@
     <!-- =========================================================================
          SECTION 6: POTENSI WISATA UNGGULAN
          ========================================================================= -->
-    <section class="py-16 md:py-24 bg-white px-6">
+    <section id="wisata" class="py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
 

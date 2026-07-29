@@ -51,13 +51,8 @@
              @mouseleave="destinasiDropdown = false"
              class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 py-1.5 text-left z-[1000] overflow-hidden"
              style="display: none;">
-            <a href="{{ route('destinasi') }}" 
-               class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
-                <i class="fa-solid fa-map-location-dot text-emerald-600 text-xs"></i>
-                <span>Semua Destinasi</span>
-            </a>
             <a href="{{ route('destinasi.pantai-karang-jahe') }}" 
-               class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+               class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-umbrella-beach text-emerald-600 text-xs"></i>
                 <span>Pantai Karang Jahe</span>
             </a>

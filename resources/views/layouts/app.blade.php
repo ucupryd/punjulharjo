@@ -234,7 +234,6 @@
                                     <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
                                 </button>
                                 <div x-show="open" x-transition.opacity class="pl-4 mt-2 space-y-2 border-l-2 border-slate-100 flex flex-col text-left">
-                                    <a href="{{ route('destinasi') }}" class="text-slate-600 hover:text-sky-600 text-base py-1">Semua Destinasi</a>
                                     <a href="{{ route('destinasi.pantai-karang-jahe') }}" class="text-slate-600 hover:text-sky-600 text-base py-1">Pantai Karang Jahe</a>
                                     <a href="{{ route('destinasi.situs-perahu-kuno') }}" class="text-slate-600 hover:text-sky-600 text-base py-1">Situs Perahu Kuno</a>
                                 </div>

@@ -37,7 +37,7 @@
                     <li>
                         <div class="flex items-center">
                             <i class="fa-solid fa-chevron-right mx-1 text-[7px] text-slate-400"></i>
-                            <a href="{{ route('destinasi') }}" class="hover:text-white transition-colors duration-200">Destinasi</a>
+                            <a href="{{ route('tentang') }}#wisata" class="hover:text-white transition-colors duration-200">Destinasi</a>
                         </div>
                     </li>
                     <li aria-current="page">
@@ -1015,7 +1015,7 @@
                     Lihat Lokasi Wisata
                     <i class="fa-solid fa-map-location-dot ml-2"></i>
                 </a>
-                <a href="{{ route('destinasi') }}" 
+                <a href="{{ route('destinasi.situs-perahu-kuno') }}" 
                    class="w-full sm:w-auto inline-flex items-center justify-center bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-2.5 text-xs border border-white/20 transition duration-300 min-h-[40px] md:min-h-[44px]">
                     Jelajahi Destinasi Lain
                     <i class="fa-solid fa-compass ml-2"></i>

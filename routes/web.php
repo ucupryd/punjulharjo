@@ -30,7 +30,7 @@ Route::get('/', [PublicBlogController::class, 'home'])->name('home');
 Route::get('/pustaka', [HomeController::class, 'pustaka'])->name('pustaka');
 Route::redirect('/ebook', '/pustaka');
 Route::redirect('/video', '/pustaka');
-Route::get('/destinasi', [HomeController::class, 'destinasi'])->name('destinasi');
+Route::get('/destinasi', function () { return redirect('/tentang#wisata'); })->name('destinasi');
 Route::view('/tentang', 'tentang')->name('tentang');
 Route::redirect('/temukan-kami', '/tentang#kontak')->name('temukan');
 Route::redirect('/lokasi', '/tentang#kontak');

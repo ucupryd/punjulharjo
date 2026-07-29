@@ -290,7 +290,7 @@
         subtitle="Dari keteduhan ribuan pohon cemara hingga pesona pantai pasir putih yang membentang luas di pesisir utara Jawa."
         height="h-[65vh]"
         align="center">
-        <a href="{{ route('destinasi') }}" 
+        <a href="{{ route('tentang') }}#wisata" 
            class="inline-flex items-center gap-2 px-5 py-3 md:px-8 md:py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg transition duration-300 text-xs sm:text-sm">
             <i class="fa-solid fa-compass text-xs sm:text-sm"></i> Jelajahi Destinasi Wisata &rarr;
         </a>

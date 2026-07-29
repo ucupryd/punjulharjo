@@ -22,9 +22,4 @@ class HomeController extends Controller
         $blogs = Blog::latest()->get();
         return view('pustaka.index', compact('ebooks', 'videos', 'blogs'));
     }
-
-    public function destinasi()
-    {
-        return view('destinasi.index');
-    }
 }

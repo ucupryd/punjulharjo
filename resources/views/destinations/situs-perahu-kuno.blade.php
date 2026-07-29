@@ -41,7 +41,7 @@
                     <li>
                         <div class="flex items-center">
                             <i class="fa-solid fa-chevron-right mx-1 text-[7px] text-slate-400"></i>
-                            <a href="{{ route('destinasi') }}" class="hover:text-white transition-colors duration-200">Destinasi</a>
+                            <a href="{{ route('tentang') }}#wisata" class="hover:text-white transition-colors duration-200">Destinasi</a>
                         </div>
                     </li>
                     <li aria-current="page">
