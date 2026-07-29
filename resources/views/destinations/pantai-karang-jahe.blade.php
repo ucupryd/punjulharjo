@@ -575,168 +575,134 @@
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
-                    Aktivitas Seru untuk Semua
+                    Aktivitas apa yang kamu lakukan disana?
                 </h2>
                 <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
-                    Pilihan rekreasi pantai interaktif yang seru bagi pengunjung dewasa maupun anak-anak.
+                    Pilihan rekreasi seru yang dapat Anda nikmati selama berkunjung di Pantai Karang Jahe.
                 </p>
             </div>
 
-            <!-- Activity Cards Grid (2 Columns on Mobile) -->
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
-                <!-- ATV -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" 
-                             alt="Penyewaan ATV menyusuri Pantai Karang Jahe" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Adventure</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">ATV / Mini Trail</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Menyusuri garis pasir pantai sepanjang 3 km dengan armada ATV atau mini trail.</p>
-                        </div>
-                    </div>
-                </div>
+            @php
+                $pantaiActivities = [
+                    'pantai_act_atv' => [
+                        'title' => 'ATV',
+                        'desc' => 'Menyusuri garis pasir pantai sepanjang 3 km dengan menggunakan armada ATV.',
+                        'default_img' => 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'pantai_act_trail' => [
+                        'title' => 'Motor Trail',
+                        'desc' => 'Petualangan seru memacu adrenalin dengan motor trail di area trek berpasir.',
+                        'default_img' => 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'pantai_act_ban' => [
+                        'title' => 'Wahana Ban',
+                        'desc' => 'Bermain air seru dan santai di tepi pantai yang dangkal menggunakan ban pelampung.',
+                        'default_img' => 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'pantai_act_mandi_bola' => [
+                        'title' => 'Mandi Bola',
+                        'desc' => 'Wahana bermain anak yang seru dan aman penuh keceriaan mandi bola warna-warni.',
+                        'default_img' => 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'pantai_act_perahu' => [
+                        'title' => 'Perahu',
+                        'desc' => 'Menyusuri perairan pantai tenang dengan menyewa perahu wisata tradisional bersama keluarga.',
+                        'default_img' => 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'pantai_act_gazebo' => [
+                        'title' => 'Gazebo',
+                        'desc' => 'Sewa gazebo kayu yang nyaman untuk bersantai menikmati hembusan angin laut di bawah keteduhan cemara.',
+                        'default_img' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+                    ],
+                ];
+            @endphp
 
-                <!-- Perahu Wisata -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=600&q=80" 
-                             alt="Perahu wisata menyusuri perairan Pantai Karang Jahe" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Watersport</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Perahu Kayu</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Menikmati tenangnya perairan pesisir dari atas perahu kayu wisata atau perahu karet.</p>
+            <!-- Activity Cards Grid (3 Columns on Desktop with small gap) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
+                @foreach($pantaiActivities as $actKey => $act)
+                    @php
+                        $actVal = \App\Models\SiteSetting::getValue($actKey . '_image', $act['default_img']);
+                        $actImgUrl = (str_starts_with($actVal, 'http') || str_contains($actVal, 'storage/')) ? asset($actVal) : Storage::url($actVal);
+                    @endphp
+                    <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
+                        <div class="h-32 md:h-48 overflow-hidden relative">
+                            <img src="{{ $actImgUrl }}" 
+                                 alt="{{ $act['title'] }}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                                 loading="lazy">
+                            @if(Auth::check() && Auth::user()->isAdmin())
+                                <div class="absolute top-2 right-2 z-20">
+                                    <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.remove('hidden')" 
+                                            class="bg-white/95 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                                        <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="p-3 md:p-6 flex-grow flex flex-col justify-between bg-white">
+                            <div>
+                                <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1 font-bold">{{ $act['title'] }}</h3>
+                                <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">{{ $act['desc'] }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Banana Boat -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80" 
-                             alt="Wahana Banana Boat di air laut tenang" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Kelompok</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Banana Boat</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Wahana air seru ditarik perahu cepat untuk sensasi petualangan basah-basahan.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kereta Wisata -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=600&q=80" 
-                             alt="Kereta wisata keliling area Pantai Karang Jahe" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Keluarga</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Kereta Wisata</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Keliling menikmati rindangnya barisan cemara laut tanpa perlu kelelahan.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Berenang -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" 
-                             alt="Berenang di Pantai Karang Jahe pasir putih" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Rekreasi</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Berenang & Pasir</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Dengan ombak sangat tenang, aman untuk berenang and bermain pasir keluarga.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Outbound & Voli -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80" 
-                             alt="Kegiatan voli pantai kelompok" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Olahraga</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Outbound & Voli</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Tersedia lahan rindang di bawah cemara untuk gathering corporate and voli pantai.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Camping -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=600&q=80" 
-                             alt="Camping ground di dekat pepohonan cemara laut" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Akomodasi</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Camping / Homestay</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Berkemah di camping ground pesisir atau homestay nyaman warga Punjulharjo.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pulau Gede -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" 
-                             alt="Perahu penyeberangan menuju Pulau Gede" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Eksplorasi</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Pulau Gede</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Menyewa perahu nelayan setempat untuk penyeberangan rombongan ke Pulau Gede.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sunset Spot -->
-                <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300 col-span-2 lg:col-span-1">
-                    <div class="h-32 md:h-48 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80" 
-                             alt="Sunset siluet cemara laut di Pantai Karang Jahe" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                             loading="lazy">
-                        <span class="absolute top-2 left-2 bg-brand-dark text-white text-[8px] md:text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 md:px-2.5 md:py-1">Fotografi</span>
-                    </div>
-                    <div class="p-3 md:p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Berburu Sunset</h3>
-                            <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">Mengabadikan siluet senja romantis di antara sela pepohonan cemara laut.</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
+
+            <!-- Activity Modals for Admin Editing -->
+            @if(Auth::check() && Auth::user()->isAdmin())
+                @foreach($pantaiActivities as $actKey => $act)
+                    <div id="edit-act-modal-{{ $actKey }}" class="hidden fixed inset-0 z-[100] overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                        <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all text-slate-800">
+                            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                                <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Gambar {{ $act['title'] }}</h3>
+                                <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                                    <i class="fa-solid fa-xmark text-xl"></i>
+                                </button>
+                            </div>
+                            <form action="{{ route('admin.hero.update-custom') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="hero_key" value="{{ $actKey }}_image">
+                                <div class="p-6 space-y-4">
+                                    <div>
+                                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih Gambar Baru</label>
+                                        <input type="file" name="hero_image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                        <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP. Ukuran maks: 5MB.</p>
+                                    </div>
+                                </div>
+                                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                                    <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.add('hidden')" 
+                                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                        Batal
+                                    </button>
+                                    <button type="submit" 
+                                            class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                        Simpan Perubahan
+                                    </button>
+                                </div>
+                            </form>
+                            @php
+                                $backup = \App\Models\SiteSetting::getValue($actKey . '_image_backup');
+                            @endphp
+                            @if($backup)
+                                <div class="p-6 border-t border-slate-100 bg-slate-50">
+                                    <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 gambar cadangan sebelumnya:</p>
+                                    <div class="flex items-center gap-3">
+                                        <img src="{{ (str_starts_with($backup, 'http') || str_contains($backup, 'storage/')) ? asset($backup) : Storage::url($backup) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
+                                        <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="hero_key" value="{{ $actKey }}_image">
+                                            <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
+                                                <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke Gambar Ini
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </section>
 

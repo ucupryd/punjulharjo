@@ -657,81 +657,134 @@
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
             <div class="text-center space-y-2 md:space-y-4">
                 <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
-                    Aktivitas untuk Pengunjung
+                    Aktivitas apa yang kamu lakukan disana?
                 </h2>
                 <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
-                    Berbagai aktivitas interaktif bernilai edukasi sejarah tinggi yang dapat Anda ikuti.
+                    Berbagai aktivitas seru dan edukasi sejarah yang dapat Anda ikuti di Situs Perahu Kuno.
                 </p>
             </div>
 
-            <!-- Activity Grid (2 Columns on Mobile) -->
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
-                <!-- Activity 1 -->
-                <div class="bg-slate-50 border border-slate-200 p-3 md:p-6 flex items-start gap-3">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-eye text-sm md:text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xs md:text-base font-bold text-slate-900 mb-0.5">Saksikan Perahu</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">Melihat perahu kuno abad ke-7 dari dekat.</p>
-                    </div>
-                </div>
+            @php
+                $situsActivities = [
+                    'situs_act_museum' => [
+                        'title' => 'Museum',
+                        'desc' => 'Menyaksikan benda-benda bersejarah dan artefak kuno penemuan situs di dalam gedung museum.',
+                        'default_img' => 'https://images.unsplash.com/photo-1554907906-ac25b443e07f?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'situs_act_perahu' => [
+                        'title' => 'Perahu Kuno',
+                        'desc' => 'Melihat langsung fisik perahu kayu kuno cagar budaya nasional abad ke-7 dari dekat.',
+                        'default_img' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'situs_act_aviary' => [
+                        'title' => 'Aviary',
+                        'desc' => 'Menikmati keindahan berbagai macam burung eksotis di dalam kubah aviary edukatif.',
+                        'default_img' => 'https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'situs_act_kelinci' => [
+                        'title' => 'Kandang Kelinci',
+                        'desc' => 'Interaksi menyenangkan memberi makan kelinci-kelinci lucu yang ramah bersama anak-anak.',
+                        'default_img' => 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'situs_act_sepeda' => [
+                        'title' => 'Sepeda Tandem',
+                        'desc' => 'Berkeliling santai menikmati keindahan kawasan edupark menggunakan sepeda tandem rombongan.',
+                        'default_img' => 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80',
+                    ],
+                    'situs_act_greenhouse' => [
+                        'title' => 'Greenhouse',
+                        'desc' => 'Belajar budidaya tanaman hias dan hidroponik modern yang hijau di dalam greenhouse.',
+                        'default_img' => 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=600&q=80',
+                    ],
+                ];
+            @endphp
 
-                <!-- Activity 2 -->
-                <div class="bg-slate-50 border border-slate-200 p-3 md:p-6 flex items-start gap-3">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-book-open text-sm md:text-lg"></i>
+            <!-- Activity Cards Grid (3 Columns on Desktop with small gap) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
+                @foreach($situsActivities as $actKey => $act)
+                    @php
+                        $actVal = \App\Models\SiteSetting::getValue($actKey . '_image', $act['default_img']);
+                        $actImgUrl = (str_starts_with($actVal, 'http') || str_contains($actVal, 'storage/')) ? asset($actVal) : Storage::url($actVal);
+                    @endphp
+                    <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
+                        <div class="h-32 md:h-48 overflow-hidden relative">
+                            <img src="{{ $actImgUrl }}" 
+                                 alt="{{ $act['title'] }}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                                 loading="lazy">
+                            @if(Auth::check() && Auth::user()->isAdmin())
+                                <div class="absolute top-2 right-2 z-20">
+                                    <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.remove('hidden')" 
+                                            class="bg-white/95 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                                        <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="p-3 md:p-6 flex-grow flex flex-col justify-between bg-white">
+                            <div>
+                                <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1 font-bold">{{ $act['title'] }}</h3>
+                                <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">{{ $act['desc'] }}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-xs md:text-base font-bold text-slate-900 mb-0.5">Belajar Sejarah</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">Studi panel kronologi & konservasi sejarah.</p>
-                    </div>
-                </div>
-
-                <!-- Activity 3 -->
-                <div class="bg-slate-50 border border-slate-200 p-3 md:p-6 flex items-start gap-3">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-user-group text-sm md:text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xs md:text-base font-bold text-slate-900 mb-0.5">Tur Terpandu</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">Edukasi sejarah terpandu juru pelihara.</p>
-                    </div>
-                </div>
-
-                <!-- Activity 4 -->
-                <div class="bg-slate-50 border border-slate-200 p-3 md:p-6 flex items-start gap-3">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-camera text-sm md:text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xs md:text-base font-bold text-slate-900 mb-0.5">Dokumentasi</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">Berfoto dengan latar cagar budaya nasional.</p>
-                    </div>
-                </div>
-
-                <!-- Activity 5 -->
-                <div class="bg-slate-50 border border-slate-200 p-3 md:p-6 flex items-start gap-3">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-school text-sm md:text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xs md:text-base font-bold text-slate-900 mb-0.5">Riset & Studi</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">Karyawisata sekolah & riset akademisi.</p>
-                    </div>
-                </div>
-
-                <!-- Activity 6 -->
-                <div class="bg-slate-50 border border-slate-200 p-3 md:p-6 flex items-start gap-3">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-circle-nodes text-sm md:text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xs md:text-base font-bold text-slate-900 mb-0.5">Satu Paket Wisata</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">Paket terpadu Pantai Karangjahe (± 500 m).</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
+
+            <!-- Activity Modals for Admin Editing -->
+            @if(Auth::check() && Auth::user()->isAdmin())
+                @foreach($situsActivities as $actKey => $act)
+                    <div id="edit-act-modal-{{ $actKey }}" class="hidden fixed inset-0 z-[100] overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                        <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all text-slate-800">
+                            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                                <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Gambar {{ $act['title'] }}</h3>
+                                <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                                    <i class="fa-solid fa-xmark text-xl"></i>
+                                </button>
+                            </div>
+                            <form action="{{ route('admin.hero.update-custom') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="hero_key" value="{{ $actKey }}_image">
+                                <div class="p-6 space-y-4">
+                                    <div>
+                                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih Gambar Baru</label>
+                                        <input type="file" name="hero_image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                        <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP. Ukuran maks: 5MB.</p>
+                                    </div>
+                                </div>
+                                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                                    <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.add('hidden')" 
+                                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                        Batal
+                                    </button>
+                                    <button type="submit" 
+                                            class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                        Simpan Perubahan
+                                    </button>
+                                </div>
+                            </form>
+                            @php
+                                $backup = \App\Models\SiteSetting::getValue($actKey . '_image_backup');
+                            @endphp
+                            @if($backup)
+                                <div class="p-6 border-t border-slate-100 bg-slate-50">
+                                    <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 gambar cadangan sebelumnya:</p>
+                                    <div class="flex items-center gap-3">
+                                        <img src="{{ (str_starts_with($backup, 'http') || str_contains($backup, 'storage/')) ? asset($backup) : Storage::url($backup) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
+                                        <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="hero_key" value="{{ $actKey }}_image">
+                                            <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
+                                                <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke Gambar Ini
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </section>
 

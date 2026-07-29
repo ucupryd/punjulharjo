@@ -13,7 +13,7 @@ class EbookController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:150',
             'pdf' => 'required|file|mimes:pdf|max:15360',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
@@ -53,7 +53,7 @@ class EbookController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:150',
             'pdf' => 'nullable|file|mimes:pdf|max:15360',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);

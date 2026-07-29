@@ -45,7 +45,7 @@
                 @if(Auth::check() && Auth::user()->isAdmin())
                     <div onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
                           class="group border-2 border-dashed border-slate-300 hover:border-sky-500 rounded-none flex flex-col items-center justify-center p-4 cursor-pointer bg-white hover:bg-slate-50 shadow-sm hover:shadow transition-all duration-300 text-center"
-                          style="width: 15em; height: 14.3em;">
+                          style="width: 100%; max-width: 17em; height: 16.5em;">
                         <div class="w-12 h-12 rounded-full bg-slate-200/50 group-hover:bg-sky-100 flex items-center justify-center mb-3 transition duration-300">
                             <i class="fa-solid fa-plus text-xl text-slate-500 group-hover:text-sky-600"></i>
                         </div>
@@ -101,7 +101,7 @@
                                         </div>
                                         <div class="eb-text">
                                             <div class="eb-text-m" title="{{ $ebook->title }}">{{ $ebook->title }}</div>
-                                            <div class="eb-text-s">{{ Str::limit($ebook->description ?? 'Desa Wisata Punjulharjo', 28) }}</div>
+                                            <div class="eb-text-s">{{ $ebook->description ?? 'Desa Wisata Punjulharjo' }}</div>
                                         </div>
                                     </div>
 
@@ -291,7 +291,7 @@
             }
         @endphp
         @if($videos->count())
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            <div class="eb-grid">
                 @foreach($videos as $video)
                     @php
                         $videoId = getYoutubeId($video->video_url);
@@ -299,39 +299,44 @@
                             ? "https://img.youtube.com/vi/{$videoId}/hqdefault.jpg"
                             : ($video->thumbnail ? Storage::disk('public_direct')->url($video->thumbnail) : asset('images/default-video.jpg'));
                     @endphp
-                    <a href="{{ route('video.show', $video->slug) }}" 
-                       class="group block bg-white shadow-sm hover:shadow-md transition duration-300 border border-slate-200 overflow-hidden relative animate-fade-in">
-                        
-                        <div class="relative aspect-video w-full overflow-hidden bg-slate-900">
-                            <img src="{{ $thumbnailUrl }}" 
-                                 alt="{{ $video->title }}" 
-                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                            
-                            <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <div class="w-10 h-10 md:w-14 md:h-14 rounded-full bg-sky-600 text-white flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-all duration-300">
-                                    <i class="fa-solid fa-play text-xs md:text-xl ml-1"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="p-4 sm:p-5 text-left">
-                            <h3 class="text-sm sm:text-base font-bold text-slate-800 group-hover:text-sky-600 transition duration-300 line-clamp-2 font-sans leading-snug">
-                                {{ $video->title }}
-                            </h3>
-                            @if($video->description)
-                                <p class="text-xs sm:text-sm text-slate-400 mt-1 md:mt-2 line-clamp-2">{{ $video->description }}</p>
-                            @endif
-                        </div>
-
+                    <div class="eb-main relative group">
                         @if(Auth::check() && Auth::user()->isAdmin())
-                            <div class="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute top-4 left-4 z-30" onclick="event.stopPropagation();">
                                 <button onclick="openEditVideoModal(event, {{ json_encode($video) }})" 
-                                        class="bg-white/90 hover:bg-white text-slate-800 p-2 rounded-none shadow border border-white/20 flex items-center justify-center">
-                                    <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                        class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Video">
+                                    <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
                                 </button>
                             </div>
                         @endif
-                    </a>
+                        <a href="{{ route('video.show', $video->slug) }}" class="eb-card-wrapper block no-underline text-current">
+                            <div class="eb-card">
+                                <div class="eb-cover-container bg-slate-900">
+                                    <img class="eb-cover-img transition-transform duration-500 group-hover:scale-105" src="{{ $thumbnailUrl }}"
+                                         alt="Sampul {{ $video->title }}" loading="lazy">
+                                    <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                        <div class="w-10 h-10 rounded-full bg-sky-600 text-white flex items-center justify-center shadow-lg">
+                                            <i class="fa-solid fa-play text-xs ml-0.5"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="eb-content-bottom">
+                                <div class="eb-data">
+                                    <div class="eb-date-badge">
+                                        <span class="eb-date-day">{{ $video->created_at->format('d') }}</span>
+                                        <span class="eb-date-month">{{ $video->created_at->format('M') }}</span>
+                                    </div>
+                                    <div class="eb-text">
+                                        <div class="eb-text-m" title="{{ $video->title }}">{{ $video->title }}</div>
+                                        @if($video->description)
+                                            <div class="eb-text-s">{{ $video->description }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 @endforeach
             </div>
         @else
@@ -360,40 +365,48 @@
         </div>
 
         @if($blogs->count() > 0)
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+            <div class="eb-grid">
                 @foreach ($blogs as $blog)
-                    <div class="bg-white shadow-sm rounded-none overflow-hidden hover:shadow transition duration-300 border border-slate-200 relative group flex flex-col justify-between animate-fade-in">
-                         <div>
-                             @if($blog->image)
-                                 <img src="{{ Storage::url($blog->image) }}" 
-                                      alt="{{ $blog->title }}" 
-                                      class="w-full h-44 md:h-52 object-cover">
-                             @else
-                                 <img src="https://via.placeholder.com/400x250?text=Desa+Punjulharjo" 
-                                      class="w-full h-44 md:h-52 object-cover">
-                             @endif
-                             <div class="p-4 md:p-6 text-left">
-                                 <h3 class="text-sm sm:text-base md:text-lg font-heading text-sky-600 mb-1 line-clamp-2 leading-snug" title="{{ $blog->title }}">{{ $blog->title }}</h3>
-                                 <p class="text-gray-600 text-xs sm:text-sm line-clamp-2 md:line-clamp-3">
-                                     {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 100) }}
-                                 </p>
-                             </div>
-                         </div>
-                         <div class="p-4 pt-0 md:p-6 md:pt-0 text-left">
-                             <a href="{{ route('blog.show', $blog->slug) }}" 
-                                class="inline-block text-sky-500 hover:text-sky-700 text-xs sm:text-sm font-medium transition">
-                                 Baca Selengkapnya →
-                             </a>
-                         </div>
-                         @if(Auth::check() && Auth::user()->isAdmin())
-                             <!-- Floating Edit Button on Card Hover -->
-                             <div class="absolute top-2 right-2 md:top-4 md:right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                 <button onclick="openEditBlogModal(event, {{ json_encode($blog) }})" 
-                                         class="bg-white/90 hover:bg-white text-slate-800 p-2 md:p-2.5 rounded-none shadow-sm border border-white/20 flex items-center justify-center">
-                                     <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
-                                 </button>
-                             </div>
-                         @endif
+                    @php
+                        $blogImgUrl = $blog->image ? Storage::url($blog->image) : 'https://via.placeholder.com/400x250?text=Desa+Punjulharjo';
+                    @endphp
+                    <div class="eb-main relative group">
+                        @if(Auth::check() && Auth::user()->isAdmin())
+                            <div class="absolute top-4 left-4 z-30" onclick="event.stopPropagation();">
+                                <button onclick="openEditBlogModal(event, {{ json_encode($blog) }})" 
+                                        class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Artikel">
+                                    <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
+                                </button>
+                            </div>
+                        @endif
+                        <a href="{{ route('blog.show', $blog->slug) }}" class="eb-card-wrapper block no-underline text-current animate-fade-in">
+                            <div class="eb-card">
+                                <div class="eb-cover-container">
+                                    <img class="eb-cover-img transition-transform duration-500 group-hover:scale-105" src="{{ $blogImgUrl }}"
+                                         alt="Sampul {{ $blog->title }}" loading="lazy">
+                                </div>
+                            </div>
+
+                            <div class="eb-content-bottom">
+                                <div class="eb-data mb-3">
+                                    <div class="eb-date-badge">
+                                        <span class="eb-date-day">{{ $blog->created_at->format('d') }}</span>
+                                        <span class="eb-date-month">{{ $blog->created_at->format('M') }}</span>
+                                    </div>
+                                    <div class="eb-text">
+                                        <div class="eb-text-m" title="{{ $blog->title }}">{{ $blog->title }}</div>
+                                        <div class="eb-text-s">
+                                            {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 100) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-left border-t border-slate-100 pt-2.5">
+                                    <span class="text-sky-500 group-hover:text-sky-700 text-xs font-semibold transition">
+                                        Baca Selengkapnya &rarr;
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 @endforeach
             </div>
@@ -441,7 +454,7 @@
                     </div>
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi Singkat</label>
-                        <textarea name="description" rows="3" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Jelaskan isi e-book ini secara ringkas..."></textarea>
+                        <textarea name="description" rows="3" maxlength="150" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Jelaskan isi e-book ini secara ringkas..."></textarea>
                     </div>
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih File PDF</label>
@@ -487,7 +500,7 @@
                     </div>
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi Singkat</label>
-                        <textarea id="edit-ebook-description" name="description" rows="3" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm"></textarea>
+                        <textarea id="edit-ebook-description" name="description" rows="3" maxlength="150" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm"></textarea>
                     </div>
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti File PDF (Opsional)</label>

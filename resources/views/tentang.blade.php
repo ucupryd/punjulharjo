@@ -258,17 +258,33 @@
                 <p class="text-slate-600 text-sm">Destinasi wisata kebanggaan Punjulharjo yang selalu ramai dikunjungi wisatawan.</p>
             </div>
 
+            @php
+                $pantaiImg = \App\Models\SiteSetting::getValue('potensi_pantai_image', 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80');
+                $pantaiImgUrl = (str_starts_with($pantaiImg, 'http') || str_contains($pantaiImg, 'storage/')) ? asset($pantaiImg) : Storage::url($pantaiImg);
+
+                $situsImg = \App\Models\SiteSetting::getValue('potensi_situs_image', 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80');
+                $situsImgUrl = (str_starts_with($situsImg, 'http') || str_contains($situsImg, 'storage/')) ? asset($situsImg) : Storage::url($situsImg);
+
+                $cemaraImg = \App\Models\SiteSetting::getValue('potensi_cemara_image', 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=800&q=80');
+                $cemaraImgUrl = (str_starts_with($cemaraImg, 'http') || str_contains($cemaraImg, 'storage/')) ? asset($cemaraImg) : Storage::url($cemaraImg);
+            @endphp
+
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Card 1: Pantai Karang Jahe -->
                 <div class="bg-white rounded-none border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition border-t-4 border-t-sky-600">
                     <div>
                         <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80" 
+                            <img src="{{ $pantaiImgUrl }}" 
                                  alt="Pantai Karang Jahe Punjulharjo" 
                                  class="w-full h-full object-cover" loading="lazy">
-                            <span class="absolute top-3 left-3 bg-sky-700 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-none shadow">
-                                Wisata Bahari
-                            </span>
+                            @if(Auth::check() && Auth::user()->isAdmin())
+                                <div class="absolute top-3 right-3 z-20">
+                                    <button type="button" onclick="document.getElementById('edit-potensi-modal-potensi_pantai_image').classList.remove('hidden')" 
+                                            class="bg-white/90 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                                        <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                         <div class="p-6 space-y-3">
                             <h3 class="text-xl font-bold font-heading text-brand-dark">Pantai Karang Jahe (KJB)</h3>
@@ -279,20 +295,25 @@
                     </div>
                     <div class="p-6 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between text-xs text-slate-500">
                         <span><i class="fa-regular fa-clock"></i> 06.00 – 17.30 WIB</span>
-                        <a href="{{ route('destinasi.pantai-karang-jahe') }}" class="text-brand-dark font-bold hover:text-brand-accent transition">Detail &rarr;</a>
+                        <a href="{{ route('destinasi.pantai-karang-jahe') }}" class="text-sky-600 font-bold hover:text-sky-700 transition">Detail &rarr;</a>
                     </div>
                 </div>
 
                 <!-- Card 2: Edu Park Situs Perahu Kuno -->
-                <div class="bg-white rounded-none border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition border-t-4 border-t-brand-dark">
+                <div class="bg-white rounded-none border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition border-t-4 border-t-brand-accent">
                     <div>
                         <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80" 
+                            <img src="{{ $situsImgUrl }}" 
                                  alt="Edu Park Situs Perahu Kuno" 
                                  class="w-full h-full object-cover" loading="lazy">
-                            <span class="absolute top-3 left-3 bg-brand-dark text-brand-accent text-[10px] font-bold uppercase px-3 py-1 rounded-none shadow">
-                                Wisata Sejarah
-                            </span>
+                            @if(Auth::check() && Auth::user()->isAdmin())
+                                <div class="absolute top-3 right-3 z-20">
+                                    <button type="button" onclick="document.getElementById('edit-potensi-modal-potensi_situs_image').classList.remove('hidden')" 
+                                            class="bg-white/90 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                                        <i class="fa-solid fa-pencil text-xs text-brand-accent"></i>
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                         <div class="p-6 space-y-3">
                             <h3 class="text-xl font-bold font-heading text-brand-dark">Edu Park Perahu Kuno</h3>
@@ -303,7 +324,7 @@
                     </div>
                     <div class="p-6 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between text-xs text-slate-500">
                         <span><i class="fa-solid fa-graduation-cap"></i> Edukasi Sejarah</span>
-                        <a href="{{ route('destinasi.situs-perahu-kuno') }}" class="text-brand-dark font-bold hover:text-brand-accent transition">Detail &rarr;</a>
+                        <a href="{{ route('destinasi.situs-perahu-kuno') }}" class="text-amber-600 font-bold hover:text-brand-accent transition">Detail &rarr;</a>
                     </div>
                 </div>
 
@@ -311,12 +332,17 @@
                 <div class="bg-white rounded-none border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition border-t-4 border-t-emerald-600">
                     <div>
                         <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=800&q=80" 
+                            <img src="{{ $cemaraImgUrl }}" 
                                  alt="Program My Cemara Punjulharjo" 
                                  class="w-full h-full object-cover" loading="lazy">
-                            <span class="absolute top-3 left-3 bg-emerald-700 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-none shadow">
-                                Konservasi Pesisir
-                            </span>
+                            @if(Auth::check() && Auth::user()->isAdmin())
+                                <div class="absolute top-3 right-3 z-20">
+                                    <button type="button" onclick="document.getElementById('edit-potensi-modal-potensi_cemara_image').classList.remove('hidden')" 
+                                            class="bg-white/90 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                                        <i class="fa-solid fa-pencil text-xs text-emerald-600"></i>
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                         <div class="p-6 space-y-3">
                             <h3 class="text-xl font-bold font-heading text-brand-dark">My Cemara (Adopsi Pohon)</h3>
@@ -327,10 +353,65 @@
                     </div>
                     <div class="p-6 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between text-xs text-slate-500">
                         <span><i class="fa-solid fa-tree"></i> Program Adopsi</span>
-                        <a href="{{ route('adopsi.index') }}" class="text-emerald-700 font-bold hover:underline">Ikut Adopsi &rarr;</a>
+                        <a href="{{ route('adopsi.index') }}" class="text-emerald-600 font-bold hover:text-emerald-700 transition hover:underline">Ikut Adopsi &rarr;</a>
                     </div>
                 </div>
             </div>
+
+            @if(Auth::check() && Auth::user()->isAdmin())
+                @foreach(['potensi_pantai_image' => 'Pantai Karang Jahe', 'potensi_situs_image' => 'Situs Perahu Kuno', 'potensi_cemara_image' => 'My Cemara'] as $mKey => $mTitle)
+                    <!-- Edit Modal for {{ $mTitle }} -->
+                    <div id="edit-potensi-modal-{{ $mKey }}" class="hidden fixed inset-0 z-[100] overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                        <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all text-slate-800">
+                            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                                <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Gambar {{ $mTitle }}</h3>
+                                <button type="button" onclick="document.getElementById('edit-potensi-modal-{{ $mKey }}').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                                    <i class="fa-solid fa-xmark text-xl"></i>
+                                </button>
+                            </div>
+                            <form action="{{ route('admin.hero.update-custom') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="hero_key" value="{{ $mKey }}">
+                                <div class="p-6 space-y-4">
+                                    <div>
+                                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih Gambar Baru</label>
+                                        <input type="file" name="hero_image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                        <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP. Ukuran maks: 5MB.</p>
+                                    </div>
+                                </div>
+                                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                                    <button type="button" onclick="document.getElementById('edit-potensi-modal-{{ $mKey }}').classList.add('hidden')" 
+                                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                        Batal
+                                    </button>
+                                    <button type="submit" 
+                                            class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                        Simpan Perubahan
+                                    </button>
+                                </div>
+                            </form>
+                            @php
+                                $backup = \App\Models\SiteSetting::getValue($mKey . '_backup');
+                            @endphp
+                            @if($backup)
+                                <div class="p-6 border-t border-slate-100 bg-slate-50">
+                                    <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 gambar cadangan sebelumnya:</p>
+                                    <div class="flex items-center gap-3">
+                                        <img src="{{ (str_starts_with($backup, 'http') || str_contains($backup, 'storage/')) ? asset($backup) : Storage::url($backup) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
+                                        <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="hero_key" value="{{ $mKey }}">
+                                            <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
+                                                <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke Gambar Ini
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </section>
 
