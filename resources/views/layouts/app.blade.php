@@ -345,54 +345,157 @@
             </main>
 
             <!-- Footer -->
-            <footer class="bg-white border-t border-gray-200">
-                <div class="max-w-7xl mx-auto px-5 py-8 md:px-6 md:py-16 grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-12 text-xs md:text-sm text-gray-600">
-                    <div class="space-y-2 md:space-y-4">
-                        <h3 class="font-extrabold text-sm sm:text-base md:text-lg text-slate-900 font-heading">Desa Wisata Punjulharjo</h3>
-                        <div class="flex items-start gap-2 text-[10px] sm:text-xs md:text-sm text-slate-500 font-sans mt-2">
-                            <i class="fa-solid fa-location-dot text-sky-600 mt-0.5 shrink-0"></i>
+            <!-- Footer -->
+            <footer class="bg-white border-t border-slate-100 relative">
+                <!-- Top Accent Gradient Line -->
+                <div class="h-1 w-full bg-gradient-to-r from-brand-dark via-brand-light to-brand-accent"></div>
+                
+                <!-- Main Grid Container -->
+                <div class="max-w-7xl mx-auto px-5 py-8 md:px-6 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-12 text-xs sm:text-sm text-slate-600">
+                    
+                    <!-- Column 1: Brand & Alamat (Proportion 4/12) -->
+                    <div class="lg:col-span-4 md:col-span-1 space-y-3">
+                        <div class="flex items-center gap-2.5">
+                            <img src="{{ asset('images/Lambang_Kabupaten_Rembang.webp') }}" alt="Logo Kabupaten Rembang" class="h-10 w-auto object-contain shrink-0">
+                            <div>
+                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-slate-900 font-heading leading-tight">Desa Wisata Punjulharjo</h3>
+                                <p class="text-[10px] sm:text-xs text-slate-500 font-sans mt-0.5">Kec. Rembang, Kab. Rembang, Jawa Tengah</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2 text-xs sm:text-sm text-slate-600 font-sans mt-2.5">
+                            <i class="fa-solid fa-map-pin text-brand-light mt-1 shrink-0"></i>
                             <p class="leading-relaxed">
-                                <strong class="text-slate-700 font-semibold block text-[10px] sm:text-xs md:text-sm">Alamat Desa Wisata:</strong>
-                                <a href="https://maps.app.goo.gl/jhFMynBy4wUFiuCA7" target="_blank" class="hover:text-sky-600 transition">Punjulharjo, Kec. Rembang, Kabupaten Rembang, Jawa Tengah 59219</a>
+                                <a href="https://maps.app.goo.gl/jhFMynBy4wUFiuCA7" target="_blank" class="hover:text-brand-dark transition">
+                                    Punjulharjo, Kec. Rembang, Kabupaten Rembang, Jawa Tengah 59219
+                                </a>
                             </p>
                         </div>
-                        <div class="flex space-x-2 pt-1 md:pt-2">
+                        
+                        <!-- Social Media Links -->
+                        <div class="flex space-x-2.5 pt-1">
                             <a href="https://www.instagram.com/desawisatapunjulharjo/" target="_blank" 
-                               class="w-7 h-7 md:w-9 md:h-9 rounded-full bg-slate-50 hover:bg-[#e1306c] hover:text-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-100" 
-                               title="Instagram">
-                                <i class="fa-brands fa-instagram text-xs md:text-base"></i>
+                               class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-200 hover:border-transparent hover:bg-[#e1306c] hover:text-white hover:-translate-y-0.5" 
+                               aria-label="Instagram" title="Instagram">
+                                <i class="fa-brands fa-instagram text-xs sm:text-base"></i>
                             </a>
                             <a href="https://www.youtube.com/@desawisatapunjulharjo9639" target="_blank" 
-                               class="w-7 h-7 md:w-9 md:h-9 rounded-full bg-slate-50 hover:bg-[#ff0000] hover:text-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-100" 
-                               title="YouTube">
-                                <i class="fa-brands fa-youtube text-xs md:text-base"></i>
+                               class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-200 hover:border-transparent hover:bg-[#ff0000] hover:text-white hover:-translate-y-0.5" 
+                               aria-label="YouTube" title="YouTube">
+                                <i class="fa-brands fa-youtube text-xs sm:text-base"></i>
                             </a>
                             <a href="https://www.tiktok.com/@desawisata.punjul" target="_blank" 
-                               class="w-7 h-7 md:w-9 md:h-9 rounded-full bg-slate-50 hover:bg-black hover:text-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-100" 
-                               title="TikTok">
-                                <i class="fa-brands fa-tiktok text-xs md:text-base"></i>
+                               class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-slate-500 flex items-center justify-center transition-all duration-300 shadow-sm border border-slate-200 hover:border-transparent hover:bg-black hover:text-white hover:-translate-y-0.5" 
+                               aria-label="TikTok" title="TikTok">
+                                <i class="fa-brands fa-tiktok text-xs sm:text-base"></i>
                             </a>
                         </div>
                     </div>
-                    <div>
-                        <h4 class="font-extrabold text-[11px] sm:text-sm md:text-base uppercase tracking-wider text-slate-900 mb-2 md:mb-4">Navigasi Halaman</h4>
-                        <ul class="grid grid-cols-2 md:grid-cols-1 gap-x-4 gap-y-2 md:space-y-3 font-semibold text-[10px] sm:text-xs md:text-sm text-slate-500">
-                            <li><a href="/" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Beranda</a></li>
-                            <li><a href="{{ route('tentang') }}" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Tentang Kami</a></li>
-                            <li><a href="{{ route('video.index') }}" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Galeri Video</a></li>
-                            <li><a href="{{ route('blog.index') }}" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Artikel & Blog</a></li>
-                            <li class="col-span-2 md:col-span-1"><a href="{{ route('temukan') }}" class="hover:text-sky-600 transition flex items-center gap-1"><i class="fa-solid fa-chevron-right text-[7px] text-slate-400"></i> Hubungi & Lokasi</a></li>
+
+                    <!-- Column 2: Navigasi Halaman (Proportion 3/12) -->
+                    <div class="lg:col-span-3 md:col-span-1">
+                        <h4 class="font-bold text-xs sm:text-sm uppercase tracking-wider text-slate-900 font-heading">Navigasi Halaman</h4>
+                        <div class="h-0.5 w-6 sm:w-8 bg-brand-accent mt-1.5 mb-3"></div>
+                        <ul class="grid grid-cols-2 gap-x-4 gap-y-2 md:flex md:flex-col md:space-y-2.5 font-semibold text-slate-500">
+                            <li class="group">
+                                <a href="/" class="hover:text-brand-dark transition duration-200 flex items-center gap-1.5 text-slate-600 font-sans text-xs sm:text-sm">
+                                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-400 transition-transform duration-200 group-hover:translate-x-1"></i>
+                                    Beranda
+                                </a>
+                            </li>
+                            <li class="group">
+                                <a href="{{ route('tentang') }}" class="hover:text-brand-dark transition duration-200 flex items-center gap-1.5 text-slate-600 font-sans text-xs sm:text-sm">
+                                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-400 transition-transform duration-200 group-hover:translate-x-1"></i>
+                                    Tentang Kami
+                                </a>
+                            </li>
+                            <li class="group">
+                                <a href="{{ route('video.index') }}" class="hover:text-brand-dark transition duration-200 flex items-center gap-1.5 text-slate-600 font-sans text-xs sm:text-sm">
+                                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-400 transition-transform duration-200 group-hover:translate-x-1"></i>
+                                    Galeri Video
+                                </a>
+                            </li>
+                            <li class="group">
+                                <a href="{{ route('blog.index') }}" class="hover:text-brand-dark transition duration-200 flex items-center gap-1.5 text-slate-600 font-sans text-xs sm:text-sm">
+                                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-400 transition-transform duration-200 group-hover:translate-x-1"></i>
+                                    Artikel & Blog
+                                </a>
+                            </li>
+                            <li class="group">
+                                <a href="{{ route('temukan') }}" class="hover:text-brand-dark transition duration-200 flex items-center gap-1.5 text-slate-600 font-sans text-xs sm:text-sm">
+                                    <i class="fa-solid fa-chevron-right text-[8px] text-slate-400 transition-transform duration-200 group-hover:translate-x-1"></i>
+                                    Hubungi & Lokasi
+                                </a>
+                            </li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 class="font-extrabold text-[11px] sm:text-sm md:text-base uppercase tracking-wider text-slate-900 mb-2 md:mb-4">Peta Lokasi</h4>
-                        <div class="rounded-lg overflow-hidden shadow-sm border border-slate-100 h-28 sm:h-36 md:h-48 w-full">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15855.531271081694!2d111.3857503757342!3d-6.685363393311915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e774775d710fa53%3A0xe54d6ea6a6c221a9!2sPunjulharjo%2C%20Kec.%20Rembang%2C%20Kabupaten%20Rembang%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1720680000000!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="border-none w-full h-full"></iframe>
+
+                    <!-- Column 3: Kontak (Proportion 2/12) -->
+                    <div class="lg:col-span-2 md:col-span-1">
+                        <h4 class="font-bold text-xs sm:text-sm uppercase tracking-wider text-slate-900 font-heading">Hubungi Kami</h4>
+                        <div class="h-0.5 w-6 sm:w-8 bg-brand-accent mt-1.5 mb-3"></div>
+                        <ul class="space-y-2.5 text-slate-600 font-sans text-xs sm:text-sm">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-phone text-brand-light mt-0.5 shrink-0"></i>
+                                <a href="https://wa.me/6289673988491" target="_blank" class="hover:text-brand-dark transition font-mono leading-tight">
+                                    0896 7398 8491
+                                </a>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-envelope text-brand-light mt-0.5 shrink-0"></i>
+                                <a href="mailto:punjulharjo.berkah@gmail.com" class="hover:text-brand-dark transition break-all leading-tight">
+                                    punjulharjo.berkah<br class="hidden lg:inline">@gmail.com
+                                </a>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-clock text-brand-light mt-0.5 shrink-0"></i>
+                                <div class="leading-tight">
+                                    <span class="font-semibold block text-slate-800">Jam Operasional:</span>
+                                    <span class="text-[11px] sm:text-xs text-slate-500">08.00 - 17.00 WIB</span>
+                                    <span class="text-[10px] text-slate-400 block font-normal">(Setiap Hari)</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 4: Peta Lokasi (Proportion 3/12) -->
+                    <div class="lg:col-span-3 md:col-span-1">
+                        <h4 class="font-bold text-xs sm:text-sm uppercase tracking-wider text-slate-900 font-heading">Peta Lokasi</h4>
+                        <div class="h-0.5 w-6 sm:w-8 bg-brand-accent mt-1.5 mb-3"></div>
+                        
+                        <!-- Map Frame: visible on tablet/desktop, hidden on mobile -->
+                        <div class="hidden md:block rounded-xl overflow-hidden shadow-sm border border-slate-200 aspect-video w-full">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15855.531271081694!2d111.3857503757342!3d-6.685363393311915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e774775d710fa53%3A0xe54d6ea6a6c221a9!2sPunjulharjo%2C%20Kec.%20Rembang%2C%20Kabupaten%20Rembang%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1720680000000!5m2!1sid!2sid" 
+                                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" 
+                                    title="Peta Desa Wisata Punjulharjo" class="border-none w-full h-full"></iframe>
+                        </div>
+
+                        <!-- Simple button link to maps: visible only on mobile -->
+                        <div class="md:hidden mt-2">
+                            <a href="https://maps.app.goo.gl/jhFMynBy4wUFiuCA7" target="_blank" 
+                               class="inline-flex items-center justify-center gap-2 w-full py-2 px-3 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded border border-slate-200 text-xs transition font-semibold">
+                                <i class="fa-solid fa-map-location-dot text-brand-light"></i>
+                                <span>Buka di Google Maps</span>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="text-center text-gray-400 py-6 border-t border-gray-200 text-xs">
-                    © {{ date('Y') }} Desa Wisata Punjulharjo. Semua hak dilindungi.
+
+                <!-- Bottom Bar -->
+                <div class="bg-slate-50 border-t border-slate-200/60 py-4 sm:py-6 text-[10px] sm:text-xs text-slate-500 font-sans">
+                    <div class="max-w-7xl mx-auto px-5 md:px-6 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4">
+                        <div class="text-center md:text-left">
+                            © {{ date('Y') }} Desa Wisata Punjulharjo. Semua hak dilindungi.
+                        </div>
+                        <div class="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2">
+                            <a href="#" class="hover:text-brand-dark transition">Kebijakan Privasi</a>
+                            <a href="#" class="hover:text-brand-dark transition">Syarat & Ketentuan</a>
+                            <a href="#top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" 
+                               class="inline-flex items-center gap-1 hover:text-brand-dark transition font-semibold" title="Kembali ke atas">
+                                <span>Ke atas</span>
+                                <i class="fa-solid fa-arrow-up-long"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </footer>
 
