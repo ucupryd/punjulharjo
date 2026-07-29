@@ -100,7 +100,7 @@
 
                             <!-- Separate Standout My Cemara Button -->
                             <a href="{{ route('adopsi.index') }}" 
-                               class="px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-400/60 shadow-emerald-500/30">
+                               class="btn-my-cemara-glossy px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-400/60 shadow-emerald-500/30">
                                 <i class="fa-solid fa-tree text-[11px]"></i>
                                 <span>My Cemara</span>
                             </a>
@@ -176,7 +176,7 @@
 
                         <!-- Separate Standout My Cemara Button -->
                         <a href="{{ route('adopsi.index') }}" 
-                           class="px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600">
+                           class="btn-my-cemara-glossy px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600">
                             <i class="fa-solid fa-tree text-[11px]"></i>
                             <span>My Cemara</span>
                         </a>

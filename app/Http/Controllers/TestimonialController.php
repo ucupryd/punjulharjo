@@ -52,7 +52,14 @@ class TestimonialController extends Controller
             $cleanlinessData[$i] = $cleanlinessQuery[$i] ?? 0;
         }
 
-        // 4. Quick Stats
+        // 4. Aktivitas Pengunjung (New Pie Chart Data)
+        $activityData = \App\Models\Testimonial::where('is_approved', true)
+            ->select('activity', \DB::raw('count(*) as total'))
+            ->groupBy('activity')
+            ->pluck('total', 'activity')
+            ->toArray();
+
+        // 5. Quick Stats
         $totalTestimonials = \App\Models\Testimonial::where('is_approved', true)->count();
         $averageRating = \App\Models\Testimonial::where('is_approved', true)->avg('rating') ?? 0;
         $averageRating = round($averageRating, 1);
@@ -65,6 +72,7 @@ class TestimonialController extends Controller
             'destinationData',
             'satisfactionData',
             'cleanlinessData',
+            'activityData',
             'averageRating',
             'averageCleanliness',
             'totalTestimonials'

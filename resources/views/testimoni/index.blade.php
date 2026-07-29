@@ -19,45 +19,74 @@
     <!-- STATISTICS & CHARTS SECTION -->
     <section class="py-10 md:py-16 px-4 md:px-6 max-w-6xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <!-- Pie Chart: Kepuasan Keseluruhan -->
-            <div class="bg-white border border-slate-200 shadow-sm p-4 md:p-6 flex flex-col justify-between">
-                <div>
-                    <h3 class="text-slate-800 font-bold text-sm md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
-                        <i class="fa-solid fa-circle-check text-emerald-500 text-sm md:text-base"></i> Kepuasan Pengunjung
-                    </h3>
-                    <p class="text-xs text-slate-500 leading-tight">Sebaran tingkat rating kepuasan (skala 1-5)</p>
-                </div>
-                <div class="my-2 md:my-4 flex items-center justify-center">
-                    <div id="pieSatisfactionChart" class="w-full"></div>
-                </div>
-                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center flex justify-around">
-                    <div>
-                        <span class="text-xl md:text-2xl font-extrabold text-brand-dark block">{{ $averageRating }} / 5.0</span>
-                        <span class="text-slate-400 font-semibold text-[10px] md:text-xs">Rata-rata Rating</span>
+            <!-- Column 1: Rating Kepuasan & Kebersihan (Tanpa Chart) -->
+            <div class="flex flex-col gap-6">
+                <!-- Card 1: Kepuasan Pengunjung -->
+                <div class="bg-white border border-slate-200 shadow-sm p-5 flex flex-col justify-center items-center text-center flex-grow py-6">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+                        <h3 class="text-slate-800 font-bold text-sm md:text-base font-heading">Kepuasan Pengunjung</h3>
                     </div>
+                    <div class="my-3">
+                        <span class="text-4xl md:text-5xl font-black text-brand-dark tracking-tight block">
+                            {{ $averageRating }} <span class="text-lg md:text-xl text-slate-400 font-normal">/ 5.0</span>
+                        </span>
+                        <div class="flex gap-1 justify-center mt-2 text-brand-accent text-sm md:text-base">
+                            @php $stars = round($averageRating); @endphp
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= $stars)
+                                    <i class="fa-solid fa-star"></i>
+                                @else
+                                    <i class="fa-regular fa-star text-slate-300"></i>
+                                @endif
+                            @endfor
+                        </div>
+                    </div>
+                    <div class="text-slate-400 font-semibold text-[10px] md:text-xs tracking-wider uppercase">Rata-rata Rating</div>
+                </div>
+
+                <!-- Card 2: Kebersihan Lokasi -->
+                <div class="bg-white border border-slate-200 shadow-sm p-5 flex flex-col justify-center items-center text-center flex-grow py-6">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-leaf text-teal-500 text-lg"></i>
+                        <h3 class="text-slate-800 font-bold text-sm md:text-base font-heading">Kebersihan Lokasi</h3>
+                    </div>
+                    <div class="my-3">
+                        <span class="text-4xl md:text-5xl font-black text-brand-dark tracking-tight block">
+                            {{ $averageCleanliness }} <span class="text-lg md:text-xl text-slate-400 font-normal">/ 5.0</span>
+                        </span>
+                        <div class="flex gap-1 justify-center mt-2 text-brand-light text-sm md:text-base">
+                            @php $cStars = round($averageCleanliness); @endphp
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= $cStars)
+                                    <i class="fa-solid fa-star text-[#749db2]"></i>
+                                @else
+                                    <i class="fa-regular fa-star text-slate-300"></i>
+                                @endif
+                            @endfor
+                        </div>
+                    </div>
+                    <div class="text-slate-400 font-semibold text-[10px] md:text-xs tracking-wider uppercase">Rata-rata Kebersihan</div>
                 </div>
             </div>
 
-            <!-- Pie Chart: Kebersihan Lokasi -->
+            <!-- Column 2: Chart Aktivitas Yang Dilakukan (Modern 3D Pie Chart) -->
             <div class="bg-white border border-slate-200 shadow-sm p-4 md:p-6 flex flex-col justify-between">
                 <div>
                     <h3 class="text-slate-800 font-bold text-sm md:text-lg mb-0.5 md:mb-1 flex items-center gap-1.5 md:gap-2">
-                        <i class="fa-solid fa-leaf text-teal-500 text-sm md:text-base"></i> Kebersihan Lokasi
+                        <i class="fa-solid fa-person-running text-brand-dark text-sm md:text-base"></i> Aktivitas Wisatawan
                     </h3>
-                    <p class="text-xs text-slate-500 leading-tight">Sebaran tingkat rating kebersihan (skala 1-5)</p>
+                    <p class="text-xs text-slate-500 leading-tight">Sebaran aktivitas pengunjung selama berwisata</p>
                 </div>
-                <div class="my-2 md:my-4 flex items-center justify-center">
-                    <div id="pieCleanlinessChart" class="w-full"></div>
+                <div class="my-2 md:my-4 flex items-center justify-center w-full">
+                    <div id="chartAktivitas" class="w-full h-64 md:h-72"></div>
                 </div>
-                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center flex justify-around">
-                    <div>
-                        <span class="text-xl md:text-2xl font-extrabold text-brand-dark block">{{ $averageCleanliness }} / 5.0</span>
-                        <span class="text-slate-400 font-semibold text-[10px] md:text-xs">Rata-rata Kebersihan</span>
-                    </div>
+                <div class="border-t border-slate-100 pt-2 md:pt-3 text-center">
+                    <span class="text-slate-400 font-semibold text-[10px] md:text-xs tracking-wider uppercase">Statistik Aktivitas Utama</span>
                 </div>
             </div>
 
-            <!-- Static Quick Stats / Call To Action Card -->
+            <!-- Column 3: Static Quick Stats / Call To Action Card -->
             <div class="col-span-1 bg-gradient-to-br from-brand-light to-brand-dark text-white p-5 md:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-white/10 rounded-full blur-2xl"></div>
                 <div>
@@ -235,81 +264,71 @@
     </section>
 </div>
 
-<!-- CDN Integrasi ApexCharts -->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- CDN Integrasi Google Charts untuk 3D Pie Chart -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // 1. CHART KEPUASAN (Pie Chart)
-        const satisfactionSeries = {!! json_encode(array_values($satisfactionData)) !!};
-        const satisfactionLabels = ['Bintang 1', 'Bintang 2', 'Bintang 3', 'Bintang 4', 'Bintang 5'];
-        
-        const satisfactionOptions = {
-            chart: {
-                height: window.innerWidth < 768 ? 200 : 250,
-                type: 'pie',
-            },
-            series: satisfactionSeries,
-            labels: satisfactionLabels,
-            colors: ['#ef4444', '#f97316', '#eab308', '#3b82f6', '#10b981'], // Red to Green
-            legend: {
-                show: true,
-                position: 'bottom',
-                fontSize: window.innerWidth < 768 ? '8px' : '11px',
-                fontFamily: 'Inter, sans-serif',
-                labels: {
-                    colors: '#475569'
-                }
-            },
-            dataLabels: {
-                enabled: true,
-                style: {
-                    fontSize: window.innerWidth < 768 ? '9px' : '11px'
-                },
-                formatter: function (val, opts) {
-                    const count = opts.w.config.series[opts.seriesIndex];
-                    return count > 0 ? count : '';
-                }
+        // Load Google Charts
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            // PHP values injection to Google Charts format
+            const rawData = [
+                ['Aktivitas', 'Jumlah Partisipan'],
+                @foreach($activityData as $act => $count)
+                    [{!! json_encode($act) !!}, {{ (int)$count }}],
+                @endforeach
+            ];
+
+            // If there's no data yet, provide a fallback indicator row
+            if (rawData.length === 1) {
+                rawData.push(['Belum Ada Aktivitas', 1]);
             }
-        };
 
-        const satChart = new ApexCharts(document.querySelector("#pieSatisfactionChart"), satisfactionOptions);
-        satChart.render();
+            const dataTable = google.visualization.arrayToDataTable(rawData);
 
-        // 2. CHART KEBERSIHAN (Pie Chart)
-        const cleanlinessSeries = {!! json_encode(array_values($cleanlinessData)) !!};
-        const cleanlinessLabels = ['Bintang 1', 'Bintang 2', 'Bintang 3', 'Bintang 4', 'Bintang 5'];
-        
-        const cleanlinessOptions = {
-            chart: {
-                height: window.innerWidth < 768 ? 200 : 250,
-                type: 'pie',
-            },
-            series: cleanlinessSeries,
-            labels: cleanlinessLabels,
-            colors: ['#f43f5e', '#fb923c', '#fbbf24', '#60a5fa', '#2dd4bf'], // Rose to Teal
-            legend: {
-                show: true,
-                position: 'bottom',
-                fontSize: window.innerWidth < 768 ? '8px' : '11px',
-                fontFamily: 'Inter, sans-serif',
-                labels: {
-                    colors: '#475569'
-                }
-            },
-            dataLabels: {
-                enabled: true,
-                style: {
-                    fontSize: window.innerWidth < 768 ? '9px' : '11px'
+            const options = {
+                is3D: true,
+                chartArea: {
+                    left: '5%',
+                    top: '5%',
+                    width: '90%',
+                    height: '85%'
                 },
-                formatter: function (val, opts) {
-                    const count = opts.w.config.series[opts.seriesIndex];
-                    return count > 0 ? count : '';
-                }
-            }
-        };
+                legend: {
+                    position: 'bottom',
+                    textStyle: {
+                        fontName: 'Poppins',
+                        fontSize: 11,
+                        color: '#475569'
+                    }
+                },
+                pieSliceTextStyle: {
+                    fontName: 'Poppins',
+                    fontSize: 10,
+                    color: '#fff',
+                    bold: true
+                },
+                // Use brand colors
+                colors: ['#0d355e', '#749db2', '#fab831', '#acb6bd', '#10b981', '#ef4444', '#f59e0b', '#3b82f6', '#ec4899', '#8b5cf6'],
+                tooltip: {
+                    textStyle: {
+                        fontName: 'Poppins',
+                        fontSize: 11
+                    }
+                },
+                backgroundColor: 'transparent'
+            };
 
-        const cleanChart = new ApexCharts(document.querySelector("#pieCleanlinessChart"), cleanlinessOptions);
-        cleanChart.render();
+            const chart = new google.visualization.PieChart(document.getElementById('chartAktivitas'));
+            chart.draw(dataTable, options);
+
+            // Responsive window resizing logic
+            window.addEventListener('resize', function() {
+                chart.draw(dataTable, options);
+            });
+        }
     });
 </script>
 

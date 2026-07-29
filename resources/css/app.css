@@ -3351,3 +3351,50 @@ body {
 .theme-dark .eb-likes:hover, .theme-dark .eb-comments:hover, .theme-dark .eb-views:hover {
     background-color: #475569;
 }
+
+/* Glossy Shimmer effect for My Cemara Button */
+.btn-my-cemara-glossy {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-my-cemara-glossy:hover {
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+    transform: translateY(-1px);
+}
+
+.btn-my-cemara-glossy::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.6),
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: skewX(-20deg);
+}
+
+.btn-my-cemara-glossy:hover::before {
+    animation: glossy-sweep 1.2s ease-in-out infinite;
+}
+
+@keyframes glossy-sweep {
+    0% {
+        left: -150%;
+    }
+    100% {
+        left: 150%;
+    }
+}
