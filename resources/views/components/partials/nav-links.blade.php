@@ -26,7 +26,7 @@
         <a href="{{ route('home') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Beranda</a>
     </li>
     <li @mouseenter="hoverIndex = 1" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-        <a href="{{ route('tentang') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Tentang</a>
+        <a href="{{ route('tentang') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Profil</a>
     </li>
     <li @mouseenter="hoverIndex = 2; destinasiDropdown = true" 
         @mouseleave="hoverIndex = null; destinasiDropdown = false" 

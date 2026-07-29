@@ -222,89 +222,13 @@
 
                     
                     <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
-                        Tentang Desa Wisata
+                        Sekilas tentang Punjulharjo
                     </h2>
                     
-                    <!-- Radio tab switcher layout -->
-                    <div class="radio-tabs-wrapper [--w-label:85px] md:[--w-label:120px]">
-                        <div class="wrap">
-                            <input checked type="radio" id="rd-1" name="radio" class="rd-1" hidden />
-                            <label for="rd-1" class="label text-[10px] md:text-sm py-2 px-1 md:py-3 md:px-4" style="--index: 0;"><span>Profil Desa</span></label>
-                            <input type="radio" id="rd-2" name="radio" class="rd-2" hidden />
-                            <label for="rd-2" class="label text-[10px] md:text-sm py-2 px-1 md:py-3 md:px-4" style="--index: 1;"><span>Visi & Misi</span></label>
-                            <input type="radio" id="rd-3" name="radio" class="rd-3" hidden />
-                            <label for="rd-3" class="label text-[10px] md:text-sm py-2 px-1 md:py-3 md:px-4" style="--index: 2;"><span>Potensi</span></label>
-                            <div class="bar"></div>
-                            <div class="slidebar"></div>
-                        </div>
-                    </div>
-
-                    <!-- Tab Contents Panel -->
-                    <div id="tab-content-1" class="tab-content-panel space-y-3 animate-fade-in">
+                    <div class="space-y-3">
                         <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-lg leading-relaxed text-justify">
                             Desa Punjulharjo merupakan salah satu desa pesisir yang terletak di Kabupaten Rembang, Jawa Tengah. Secara geografis, Punjulharjo berada di kawasan pesisir utara Jawa yang memiliki hubungan erat dengan kehidupan bahari. Letaknya yang berada di wilayah pantai menjadikan desa ini memiliki sumber daya alam yang khas. Keindahan pantainya, kekayaan sejarah maritimnya, serta kehidupan masyarakat pesisir yang masih kuat dengan nilai kebersamaan menjadikan Punjulharjo sebagai desa yang memiliki daya tarik tersendiri.
                         </p>
-                    </div>
-                    
-                    <div id="tab-content-2" class="tab-content-panel hidden space-y-3 animate-fade-in">
-                        <div class="p-4 md:p-5 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
-                            <h4 class="font-bold text-sky-700 text-xs sm:text-sm md:text-base mb-1 md:mb-2 flex items-center gap-2">
-                                <svg class="w-4 h-4 md:w-5 md:h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0z" />
-                                    <circle cx="12" cy="12" r="3" />
-                                </svg>
-                                Visi
-                            </h4>
-                            <p class="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed">
-                                Menjadi desa wisata unggulan berbasis budaya dan kearifan lokal yang berkelanjutan, serta menjadi inspirasi bagi pengembangan desa wisata lainnya di Indonesia.
-                            </p>
-                        </div>
-                        <div class="p-4 md:p-5 bg-indigo-50/50 backdrop-blur-sm rounded-none border border-indigo-100">
-                            <h4 class="font-bold text-indigo-700 text-xs sm:text-sm md:text-base mb-1 md:mb-2 flex items-center gap-2">
-                                <svg class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10" />
-                                    <circle cx="12" cy="12" r="6" />
-                                    <circle cx="12" cy="12" r="2" />
-                                </svg>
-                                Misi
-                            </h4>
-                            <ul class="list-disc list-inside text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed space-y-1">
-                                <li>Melestarikan warisan budaya dan sejarah desa.</li>
-                                <li>Mendorong partisipasi masyarakat dalam pengelolaan wisata.</li>
-                                <li>Mengembangkan potensi ekonomi kreatif berbasis wisata.</li>
-                                <li>Menjaga kelestarian lingkungan dan keaslian alam desa.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div id="tab-content-3" class="tab-content-panel hidden space-y-3 animate-fade-in">
-                        <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-lg leading-relaxed text-justify">
-                            Punjulharjo menyajikan perpaduan wisata alam pantai yang mempesona dan wisata sejarah maritim Nusantara:
-                        </p>
-                        <div class="grid grid-cols-2 gap-3 md:gap-4">
-                            <div class="p-3 md:p-4 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
-                                <span class="font-bold text-gray-800 text-xs sm:text-sm md:text-base flex items-center gap-2">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 12h-20a10 10 0 0 1 20 0Z" />
-                                        <path d="M12 12v10" />
-                                        <path d="M12 21a2 2 0 0 0 2-2" />
-                                    </svg>
-                                    Pantai Karang Jahe
-                                </span>
-                                <p class="text-[10px] sm:text-xs text-gray-500 mt-1">Hamparan pasir putih bersih & ribuan pohon cemara yang rindang.</p>
-                            </div>
-                            <div class="p-3 md:p-4 bg-sky-50/50 backdrop-blur-sm rounded-none border border-sky-100">
-                                <span class="font-bold text-gray-800 text-xs sm:text-sm md:text-base flex items-center gap-2">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 text-sky-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="5" r="3" />
-                                        <path d="M12 22V8" />
-                                        <path d="M5 12H2a10 10 0 0 0 20 0h-3" />
-                                    </svg>
-                                    Situs Perahu Kuno
-                                </span>
-                                <p class="text-[10px] sm:text-xs text-gray-500 mt-1">Bukti arkeologis pelayaran Nusantara dari abad ke-7 Masehi.</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 

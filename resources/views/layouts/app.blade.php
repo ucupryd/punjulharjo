@@ -225,7 +225,7 @@
                         </div>
                         <div class="flex flex-col space-y-4 mt-8 font-medium">
                             <a href="/" class="text-slate-700 hover:text-sky-600 text-lg transition">Beranda</a>
-                            <a href="{{ route('tentang') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Tentang</a>
+                            <a href="{{ route('tentang') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Profil</a>
                             
                             <!-- Destinasi Dropdown Accordion -->
                             <div x-data="{ open: false }" class="w-full text-left">
@@ -405,7 +405,7 @@
                             <li class="group">
                                 <a href="{{ route('tentang') }}" class="hover:text-brand-dark transition duration-200 flex items-center gap-1.5 text-slate-600 font-sans text-xs sm:text-sm">
                                     <i class="fa-solid fa-chevron-right text-[8px] text-slate-400 transition-transform duration-200 group-hover:translate-x-1"></i>
-                                    Tentang Kami
+                                    Profil
                                 </a>
                             </li>
                             <li class="group">
