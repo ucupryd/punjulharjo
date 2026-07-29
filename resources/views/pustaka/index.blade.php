@@ -41,86 +41,86 @@
         </div>
 
         @if($ebooks->isNotEmpty() || (Auth::check() && Auth::user()->isAdmin()))
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 py-4 justify-items-center">
+            <div class="eb-grid">
                 @if(Auth::check() && Auth::user()->isAdmin())
                     <div onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
-                          class="group border-2 border-dashed border-brand-muted hover:border-brand-accent rounded-none flex flex-col items-center justify-center p-4 md:p-8 w-full max-w-[340px] min-h-[220px] md:min-h-[385px] cursor-pointer bg-white/50 hover:bg-brand-muted/10 shadow-sm hover:shadow transition-all duration-300 text-center">
-                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-none bg-brand-muted/20 group-hover:bg-brand-accent/20 flex items-center justify-center mb-2 md:mb-4 transition duration-300">
-                            <i class="fa-solid fa-plus text-xl md:text-2xl text-brand-muted group-hover:text-brand-dark"></i>
+                          class="group border-2 border-dashed border-slate-300 hover:border-sky-500 rounded-none flex flex-col items-center justify-center p-4 cursor-pointer bg-white hover:bg-slate-50 shadow-sm hover:shadow transition-all duration-300 text-center"
+                          style="width: 15em; height: 14.3em;">
+                        <div class="w-12 h-12 rounded-full bg-slate-200/50 group-hover:bg-sky-100 flex items-center justify-center mb-3 transition duration-300">
+                            <i class="fa-solid fa-plus text-xl text-slate-500 group-hover:text-sky-600"></i>
                         </div>
-                        <span class="text-xs md:text-sm font-semibold text-brand-dark font-sans">Tambah Ebook</span>
-                        <p class="text-[10px] md:text-xs text-slate-400 mt-1 md:mt-2 font-sans max-w-[150px] md:max-w-[200px]">Upload PDF buku panduan baru</p>
+                        <span class="text-sm font-semibold text-slate-700 font-sans">Tambah Ebook</span>
+                        <p class="text-xs text-slate-400 mt-2 font-sans max-w-[130px]">Upload PDF buku panduan baru</p>
                     </div>
                 @endif
 
                 @if($ebooks->isNotEmpty())
                     @foreach($ebooks as $ebook)
-                        <div class="w-full max-w-[340px] flex justify-center animate-fade-in">
-                            <div class="main relative w-full" onclick="openEbookModal('{{ Storage::url($ebook->pdf_path) }}')">
-                                @if(Auth::check() && Auth::user()->isAdmin())
-                                    <div class="absolute top-3 right-3 z-30 flex gap-2" onclick="event.stopPropagation();">
-                                        <button onclick="openEditEbookModal({{ json_encode($ebook) }})" 
-                                                class="bg-white/90 hover:bg-white text-slate-700 w-8 h-8 rounded-none shadow-sm flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Ebook">
-                                            <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                        @php
+                            $likesVal = (int)($ebook->id * 7 + 15) % 89 + 12;
+                            $commentsVal = (int)($ebook->id * 3 + 8) % 43 + 4;
+                            $viewsVal = (int)($ebook->id * 43 + 124) % 890 + 112;
+                        @endphp
+                        <div class="eb-main relative">
+                            @if(Auth::check() && Auth::user()->isAdmin())
+                                <div class="absolute top-4 left-4 z-30 flex gap-1.5" onclick="event.stopPropagation();">
+                                    <button onclick="openEditEbookModal({{ json_encode($ebook) }})" 
+                                            class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Ebook">
+                                        <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
+                                    </button>
+                                    <form action="{{ route('admin.ebook.destroy', $ebook->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus e-book ini?')" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="bg-white/95 hover:bg-red-50 text-red-600 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Hapus Ebook">
+                                            <i class="fa-solid fa-trash text-[10px]"></i>
                                         </button>
-                                        <form action="{{ route('admin.ebook.destroy', $ebook->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus e-book ini?')" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" 
-                                                    class="bg-white/90 hover:bg-red-50 text-red-600 w-8 h-8 rounded-none shadow-sm flex items-center justify-center border border-slate-100 transition duration-200" title="Hapus Ebook">
-                                                <i class="fa-solid fa-trash text-xs"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                @endif
-
-                                <div class="card">
-                                    <div class="fl">
-                                        <div class="fullscreen">
-                                            <svg viewBox="0 0 100 100" class="fullscreen_svg"><path d="M3.563-.004a3.573 3.573 0 0 0-3.527 4.09l-.004-.02v28.141c0 1.973 1.602 3.57(3.57 3.57s3.57-1.598 3.57-3.57V12.218v.004l22.461 22.461a3.571 3.571 0 0 0 6.093-2.527c0-.988-.398-1.879-1.047-2.523L12.218 7.172h19.989c1.973 0 3.57-1.602 3.57-3.57s-1.598-3.57-3.57-3.57H4.035a3.008 3.008 0 0 0-.473-.035zM96.333 0l-.398.035.02-.004h-28.16a3.569 3.569 0 0 0-3.57 3.57 3.569 3.569 0 0 0 3.57 3.57h19.989L65.323 29.632a3.555 3.555 0 0 0-1.047 2.523 3.571 3.571 0 0 0 6.093 2.527L92.83 12.221v19.985a3.569 3.569 0 0 0 3.57 3.57 3.569 3.569 0 0 0 3.57-3.57V4.034v.004a3.569 3.569 0 0 0-3.539-4.043l-.105.004zM3.548 64.23A3.573 3.573 0 0 0 .029 67.8v28.626-.004l.016.305-.004-.016.004.059v-.012l.039.289-.004-.023.023.121-.004-.023c.074.348.191.656.34.938l-.008-.02.055.098-.008-.02.148.242-.008-.012.055.082-.008-.012c.199.285.43.531.688.742l.008.008.031.027.004.004c.582.461 1.32.742 2.121.762h.004l.078.004h28.61a3.569 3.569 0 0 0 3.57-3.57 3.569 3.569 0 0 0-3.57-3.57H12.224l22.461-22.461a3.569 3.569 0 0 0-2.492-6.125l-.105.004h.008a3.562 3.562 0 0 0-2.453 1.074L7.182 87.778V67.793a3.571 3.571 0 0 0-3.57-3.57h-.055.004zm92.805 0a3.573 3.573 0 0 0-3.519 3.57v19.993-.004L70.373 65.328a3.553 3.553 0 0 0-2.559-1.082h-.004a3.573 3.573 0 0 0-3.566 3.57c0 1.004.414 1.91 1.082 2.555l22.461 22.461H67.802a3.57 3.57 0 1 0 0 7.14h28.606c.375 0 .742-.059 1.082-.168l-.023.008.027-.012-.02.008.352-.129-.023.008.039-.02-.02.008.32-.156-.02.008.023-.016-.008.008c.184-.102.34-.207.488-.32l-.008.008.137-.113-.008.004.223-.211.008-.008c.156-.164.301-.34.422-.535l.008-.016-.008.016.008-.02.164-.285.008-.02-.008.016.008-.02c.098-.188.184-.406.246-.633l.008-.023-.004.008.008-.023a3.44 3.44 0 0 0 .121-.852v-.004l.004-.078V67.804a3.569 3.569 0 0 0-3.57-3.57h-.055.004z" /></svg>
-                                        </div>
-                                    </div>
-                                    @if($ebook->cover_path)
-                                        <div class="card_content bg-slate-900 overflow-hidden flex items-center justify-center">
-                                            <img src="{{ Storage::url($ebook->cover_path) }}" class="w-full h-full object-cover" alt="{{ $ebook->title }}">
-                                        </div>
-                                    @else
-                                        <div class="card_content">
-                                            <div class="absolute left-0 top-0 bottom-0 w-3.5 bg-sky-600 shadow-md"></div>
-                                            <i class="fa-solid fa-book-open text-amber-400 text-4xl mb-2 filter drop-shadow"></i>
-                                            <span class="text-[9px] font-extrabold uppercase tracking-widest text-amber-300 font-sans">GUIDEBOOK</span>
-                                        </div>
-                                    @endif
+                                    </form>
                                 </div>
-
-                                <div class="data select-none">
-                                    <div class="flex flex-col items-center justify-center border-2 border-yellow-500 text-yellow-500 w-12 h-14 shrink-0 bg-transparent rounded-none select-none">
-                                        <span class="text-xl font-bold leading-none">{{ $ebook->created_at->format('d') }}</span>
-                                        <span class="text-xs font-medium uppercase leading-none mt-1">{{ $ebook->created_at->format('M') }}</span>
+                            @endif
+                            <a href="javascript:void(0)" onclick="openEbookModal('{{ Storage::url($ebook->pdf_path) }}')" class="eb-card-wrapper block no-underline text-current">
+                                <div class="eb-card">
+                                    <div class="eb-fl">
+                                        <div class="eb-fullscreen">
+                                            <svg class="eb-fullscreen-svg" viewBox="0 0 100 100" aria-hidden="true">
+                                                <path d="M3.563-.004a3.573 3.573 0 0 0-3.527 4.09l-.004-.02v28.141c0 1.973 1.602 3.57 3.57 3.57s3.57-1.598 3.57-3.57V12.218v.004l22.461 22.461a3.571 3.571 0 0 0 6.093-2.527c0-.988-.398-1.879-1.047-2.523L12.218 7.172h19.989c1.973 0 3.57-1.602 3.57-3.57s-1.598-3.57-3.57-3.57H4.035a3.008 3.008 0 0 0-.473-.035zM96.333 0l-.398.035.02-.004h-28.16a3.569 3.569 0 0 0-3.57 3.57 3.569 3.569 0 0 0 3.57 3.57h19.989L65.323 29.632a3.555 3.555 0 0 0-1.047 2.523 3.571 3.571 0 0 0 6.093 2.527L92.83 12.221v19.985a3.569 3.569 0 0 0 3.57 3.57 3.569 3.569 0 0 0 3.57-3.57V4.034v.004a3.569 3.569 0 0 0-3.539-4.043l-.105.004zM3.548 64.23A3.573 3.573 0 0 0 .029 67.8v28.626-.004l.016.305-.004-.016.004.059v-.012l.039.289-.004-.023.023.121-.004-.023c.074.348.191.656.34.938l-.008-.02.055.098-.008-.02.148.242-.008-.012.055.082-.008-.012c.199.285.43.531.688.742l.008.008.031.027.004.004c.582.461 1.32.742 2.121.762h.004l.078.004h28.61a3.569 3.569 0 0 0 3.57-3.57 3.569 3.569 0 0 0-3.57-3.57H12.224l22.461-22.461a3.569 3.569 0 0 0-2.492-6.125l-.105.004h.008a3.562 3.562 0 0 0-2.453 1.074L7.182 87.778V67.793a3.571 3.571 0 0 0-3.57-3.57h-.055.004zm92.805 0a3.573 3.573 0 0 0-3.519 3.57v19.993-.004L70.373 65.328a3.553 3.553 0 0 0-2.559-1.082h-.004a3.573 3.573 0 0 0-3.566 3.57c0 1.004.414 1.91 1.082 2.555l22.461 22.461H67.802a3.57 3.57 0 1 0 0 7.14h28.606c.375 0 .742-.059 1.082-.168l-.023.008.027-.012-.02.008.352-.129-.023.008.039-.02-.02.008.32-.156-.02.008.023-.016-.008.008c.184-.102.34-.207.488-.32l-.008.008.137-.113-.008.004.223-.211.008-.008c.156-.164.301-.34.422-.535l.008-.016-.008.016.008-.02.164-.285.008-.02-.008.016.008-.02c.098-.188.184-.406.246-.633l.008-.023-.004.008.008-.023a3.44 3.44 0 0 0 .121-.852v-.004l.004-.078V67.804a3.569 3.569 0 0 0-3.57-3.57h-.055.004z"></path>
+                                            </svg>
+                                        </div>
                                     </div>
-                                    <div class="text text-left">
-                                        <div class="text_m leading-snug">{{ $ebook->title }}</div>
-                                        <div class="text_s text-slate-400 mt-0.5 leading-tight">{{ Str::limit($ebook->description ?? 'Buku Panduan Desa Wisata', 28) }}</div>
+                                    <div class="eb-cover-container">
+                                        <img class="eb-cover-img" src="{{ $ebook->cover_path ? Storage::url($ebook->cover_path) : asset('images/ebook-placeholder.png') }}"
+                                             alt="Sampul {{ $ebook->title }}" loading="lazy">
                                     </div>
                                 </div>
 
-                                <div class="btns select-none">
-                                    @php
-                                        $likesVal = (int)($ebook->id * 7 + 15) % 89 + 12;
-                                        $commentsVal = (int)($ebook->id * 3 + 8) % 43 + 4;
-                                        $viewsVal = (int)($ebook->id * 43 + 124) % 890 + 112;
-                                    @endphp
-                                    <div class="likes">
-                                        <svg class="likes_svg" viewBox="-2 0 105 92"><path d="M85.24 2.67C72.29-3.08 55.75 2.67 50 14.9 44.25 2 27-3.8 14.76 2.67 1.1 9.14-5.37 25 5.42 44.38 13.33 58 27 68.11 50 86.81 73.73 68.11 87.39 58 94.58 44.38c10.79-18.7 4.32-35.24-9.34-41.71Z" /></svg><span class="likes_text">{{ $likesVal }}</span>
+                                <div class="eb-content-bottom">
+                                    <div class="eb-data">
+                                        <div class="eb-date-badge">
+                                            <span class="eb-date-day">{{ $ebook->created_at->format('d') }}</span>
+                                            <span class="eb-date-month">{{ $ebook->created_at->format('M') }}</span>
+                                        </div>
+                                        <div class="eb-text">
+                                            <div class="eb-text-m" title="{{ $ebook->title }}">{{ $ebook->title }}</div>
+                                            <div class="eb-text-s">{{ Str::limit($ebook->description ?? 'Desa Wisata Punjulharjo', 28) }}</div>
+                                        </div>
                                     </div>
-                                    <div class="comments">
-                                        <svg class="comments_svg" viewBox="-405.9 238 56.3 54.8" title="Comment"><path d="M-391 291.4c0 1.5 1.2 1.7 1.9 1.2 1.8-1.6 15.9-14.6 15.9-14.6h19.3c3.8 0 4.4-.8 4.4-4.5v-31.1c0-3.7-.8-4.5-4.4-4.5h-47.4c-3.6 0-4.4.9-4.4 4.5v31.1c0 3.7.7 4.4 4.4 4.4h10.4v13.5z" /></svg><span class="comments_text">{{ $commentsVal }}</span>
-                                    </div>
-                                    <div class="views">
-                                        <svg class="views_svg" viewBox="0 0 30.5 16.5" title="Views"><path d="M15.3 0C8.9 0 3.3 3.3 0 8.3c3.3 5 8.9 8.3 15.3 8.3s12-3.3 15.3-8.3C27.3 3.3 21.7 0 15.3 0zm0 14.5c-3.4 0-6.2-2.8-6.2-6.2C9 4.8 11.8 2 15.3 2c3.4 0 6.2 2.8 6.2 6.2 0 3.5-2.8 6.3-6.2 6.3z" /></svg><span class="views_text">{{ $viewsVal }}</span>
+
+                                    <div class="eb-btns">
+                                        <div class="eb-likes">
+                                            <svg viewBox="-2 0 105 92" class="eb-likes-svg" aria-hidden="true"><path d="M85.24 2.67C72.29-3.08 55.75 2.67 50 14.9 44.25 2 27-3.8 14.76 2.67 1.1 9.14-5.37 25 5.42 44.38 13.33 58 27 68.11 50 86.81 73.73 68.11 87.39 58 94.58 44.38c10.79-18.7 4.32-35.24-9.34-41.71Z"></path></svg>
+                                            <span class="eb-likes-text">{{ $likesVal }}</span>
+                                        </div>
+                                        <div class="eb-comments">
+                                            <svg viewBox="-405.9 238 56.3 54.8" class="eb-comments-svg" aria-hidden="true"><path d="M-391 291.4c0 1.5 1.2 1.7 1.9 1.2 1.8-1.6 15.9-14.6 15.9-14.6h19.3c3.8 0 4.4-.8 4.4-4.5v-31.1c0-3.7-.8-4.5-4.4-4.5h-47.4c-3.6 0-4.4.9-4.4 4.5v31.1c0 3.7.7 4.4 4.4 4.4h10.4v13.5z"></path></svg>
+                                            <span class="eb-comments-text">{{ $commentsVal }}</span>
+                                        </div>
+                                        <div class="eb-views">
+                                            <svg viewBox="0 0 30.5 16.5" class="eb-views-svg" aria-hidden="true"><path d="M15.3 0C8.9 0 3.3 3.3 0 8.3c3.3 5 8.9 8.3 15.3 8.3s12-3.3 15.3-8.3C27.3 3.3 21.7 0 15.3 0zm0 14.5c-3.4 0-6.2-2.8-6.2-6.2C9 4.8 11.8 2 15.3 2c3.4 0 6.2 2.8 6.2 6.2 0 3.5-2.8 6.3-6.2 6.3z"></path></svg>
+                                            <span class="eb-views-text">{{ $viewsVal }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @endforeach
                 @endif
@@ -713,154 +713,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/dflip/css/themify-icons.min.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .main {
-            width: 100%;
-            background-color: #1b2230;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 0px;
-            padding: 0.75em;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            position: relative;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        @media (min-width: 768px) {
-            .main {
-                width: 16.5em;
-                padding: 1em;
-            }
-        }
-        .main:hover {
-            transform: translateY(-5px);
-            background-color: #21293a;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-            border-color: rgba(56, 189, 248, 0.3);
-        }
-        .card {
-            width: 100%;
-            height: 7em;
-            background-color: #749db2;
-            border-radius: 0px;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        @media (min-width: 768px) {
-            .card {
-                height: 10em;
-            }
-        }
-        .card_content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease-in-out;
-        }
-        .card_content img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .fl {
-            position: absolute;
-            top: 0.5em;
-            left: 0.5em;
-            z-index: 10;
-        }
-        .fullscreen {
-            width: 1.5em;
-            height: 1.5em;
-            border-radius: 0px;
-            background-color: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease-in-out;
-        }
-        .fullscreen_svg {
-            width: 0.7em;
-            fill: #f1f5f9;
-        }
-        .main:hover .fullscreen {
-            background-color: #fab831;
-        }
-        .main:hover .fullscreen_svg {
-            fill: #0d355e;
-        }
-        .data {
-            margin-top: 0.5em;
-            width: 100%;
-        }
-        @media (min-width: 768px) {
-            .data {
-                margin-top: 1em;
-            }
-        }
-        .data {
-            display: flex;
-            gap: 1em;
-        }
-        .text {
-            color: #f1f5f9;
-            width: 100%;
-        }
-        .text_m {
-            font-size: 0.9em;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-            color: #f8fafc;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .text_s {
-            font-size: 0.7em;
-        }
-        .btns {
-            margin-top: 0.5em;
-            display: flex;
-            gap: 0.5em;
-            width: 100%;
-            font-size: 0.7em;
-            font-weight: 700;
-            color: #94a3b8;
-        }
-        @media (min-width: 768px) {
-            .btns {
-                margin-top: 1em;
-                gap: 1em;
-            }
-        }
-        .likes, .comments, .views {
-            display: flex;
-            align-items: center;
-            gap: 0.3em;
-        }
-        .likes_svg, .comments_svg, .views_svg {
-            width: 1.2em;
-            fill: #94a3b8;
-            transition: fill 0.3s;
-        }
-        .likes:hover .likes_svg { fill: #ef4444; }
-        .likes:hover .likes_text { color: #ef4444; }
-        .comments:hover .comments_svg { fill: #38bdf8; }
-        .comments:hover .comments_text { color: #38bdf8; }
-        .views:hover .views_svg { fill: #fab831; }
-        .views:hover .views_text { color: #fab831; }
-        
+
         /* Interactive 3D CSS Book animations */
         .flipbook-container {
             width: 100%;
