@@ -347,9 +347,6 @@
             <!-- Footer -->
             <!-- Footer -->
             <footer class="bg-white border-t border-slate-100 relative">
-                <!-- Top Accent Gradient Line -->
-                <div class="h-1 w-full bg-gradient-to-r from-brand-dark via-brand-light to-brand-accent"></div>
-                
                 <!-- Main Grid Container -->
                 <div class="max-w-7xl mx-auto px-5 py-8 md:px-6 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-12 text-xs sm:text-sm text-slate-600">
                     
