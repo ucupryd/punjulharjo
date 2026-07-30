@@ -78,7 +78,7 @@
                                     </form>
                                 </div>
                             @endif
-                            <a href="javascript:void(0)" onclick="openEbookModal('{{ Storage::url($ebook->pdf_path) }}')" class="eb-card-wrapper block no-underline text-current">
+                            <a href="{{ route('ebook.show', $ebook->id) }}" class="eb-card-wrapper block no-underline text-current">
                                 <div class="eb-card">
                                     <div class="eb-fl">
                                         <div class="eb-fullscreen">
@@ -461,20 +461,7 @@
 
 </div>
 
-<!-- FULLSCREEN MODALS -->
 
-@if($ebooks->isNotEmpty() || Auth::check())
-    <!-- Fullscreen Backdrop Modal for Flipbook Viewer -->
-    <div id="ebook-fullscreen-modal" class="hidden fixed inset-0 flex items-center justify-center bg-black/90 backdrop-blur-md" style="z-index: 999999 !important;">
-        <div class="absolute inset-0 bg-transparent" onclick="closeEbookModal()"></div>
-        <div class="relative w-full h-full md:w-11/12 md:max-w-7xl md:h-[88vh] flex flex-col items-center justify-center z-10" style="z-index: 1000000 !important;">
-            <button onclick="closeEbookModal()" class="absolute top-4 right-4 text-white hover:text-white bg-black/60 hover:bg-black/80 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-md border border-white/20 focus:outline-none z-[1000002]" style="z-index: 1000002 !important;">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-            <div id="df-modal-flipbook" class="w-full h-full bg-transparent"></div>
-        </div>
-    </div>
-@endif
 
 @auth
     <!-- Add Ebook Modal -->
@@ -664,8 +651,6 @@
 @endauth
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('vendor/dflip/css/dflip.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/dflip/css/themify-icons.min.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
 
@@ -719,120 +704,71 @@
             border: none;
         }
         .cover-page p, .back-page p { color: #cbd5e1; }
-        
-        .df-container {
-            border-radius: 8px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
-            background: rgba(15, 23, 42, 0.95) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .df-ui-zoom-in, .df-ui-zoom-out, .df-ui-zoom, .df-zoom,
-        .df-controls-top, .df-lightbox-controls, .df-lightbox-header, .df-share-title {
-            display: none !important;
-        }
     </style>
 @endpush
 
 @push('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('vendor/dflip/js/dflip.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
 @endpush
 
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            @if($ebooks->isNotEmpty() || Auth::check())
-                window.dfFlipbookInstance = null;
+            const flipContainer = document.getElementById('flipbook');
+            if (flipContainer && typeof St !== 'undefined') {
+                const pageFlip = new St.PageFlip(flipContainer, {
+                    width: 550,
+                    height: 580,
+                    size: "stretch",
+                    minWidth: 280,
+                    maxWidth: 1000,
+                    minHeight: 295,
+                    maxHeight: 1050,
+                    maxShadowOpacity: 0.35,
+                    showCover: true,
+                    mobileScrollSupport: false,
+                    usePortrait: true
+                });
 
-                window.openEbookModal = function(pdfUrl) {
-                    const modal = document.getElementById('ebook-fullscreen-modal');
-                    if (modal) {
-                        modal.classList.remove('hidden');
-                        document.body.classList.add('overflow-hidden');
-                    }
+                pageFlip.loadFromHTML(document.querySelectorAll('.flipbook-page'));
 
-                    if (window.dfFlipbookInstance) {
-                        $("#df-modal-flipbook").empty();
-                        window.dfFlipbookInstance = null;
-                    }
+                const btnPrev = document.getElementById('btn-prev');
+                const btnNext = document.getElementById('btn-next');
+                const pageIndicator = document.getElementById('page-indicator');
 
-                    setTimeout(function() {
-                        var options = {
-                            webgl: false,
-                            height: '100%',
-                            duration: 800,
-                            soundEnable: true,
-                            backgroundColor: "transparent"
-                        };
-                        window.dfFlipbookInstance = $("#df-modal-flipbook").flipBook(pdfUrl, options);
-                    }, 100);
-                };
-
-                window.closeEbookModal = function() {
-                    const modal = document.getElementById('ebook-fullscreen-modal');
-                    if (modal) {
-                        modal.classList.add('hidden');
-                        document.body.classList.remove('overflow-hidden');
-                    }
-                };
-            @else
-                const flipContainer = document.getElementById('flipbook');
-                if (flipContainer && typeof St !== 'undefined') {
-                    const pageFlip = new St.PageFlip(flipContainer, {
-                        width: 550,
-                        height: 580,
-                        size: "stretch",
-                        minWidth: 280,
-                        maxWidth: 1000,
-                        minHeight: 295,
-                        maxHeight: 1050,
-                        maxShadowOpacity: 0.35,
-                        showCover: true,
-                        mobileScrollSupport: false,
-                        usePortrait: true
-                    });
-
-                    pageFlip.loadFromHTML(document.querySelectorAll('.flipbook-page'));
-
-                    const btnPrev = document.getElementById('btn-prev');
-                    const btnNext = document.getElementById('btn-next');
-                    const pageIndicator = document.getElementById('page-indicator');
-
-                    function updateIndicator() {
-                        const total = pageFlip.getPageCount();
-                        const current = pageFlip.getCurrentPageIndex();
-                        
-                        if (pageFlip.getOrientation() === 'portrait') {
-                            if (current === 0) {
-                                pageIndicator.textContent = "Sampul Depan";
-                            } else if (current === total - 1) {
-                                pageIndicator.textContent = "Sampul Belakang";
-                            } else {
-                                pageIndicator.textContent = `Halaman ${current} dari ${total - 2}`;
-                            }
+                function updateIndicator() {
+                    const total = pageFlip.getPageCount();
+                    const current = pageFlip.getCurrentPageIndex();
+                    
+                    if (pageFlip.getOrientation() === 'portrait') {
+                        if (current === 0) {
+                            pageIndicator.textContent = "Sampul Depan";
+                        } else if (current === total - 1) {
+                            pageIndicator.textContent = "Sampul Belakang";
                         } else {
-                            if (current === 0) {
-                                pageIndicator.textContent = "Sampul Depan";
-                            } else if (current === total - 1 || current === total - 2) {
-                                pageIndicator.textContent = "Sampul Belakang";
-                            } else {
-                                const leftPage = current;
-                                const rightPage = current + 1;
-                                pageIndicator.textContent = `Halaman ${leftPage} & ${rightPage}`;
-                            }
+                            pageIndicator.textContent = `Halaman ${current} dari ${total - 2}`;
+                        }
+                    } else {
+                        if (current === 0) {
+                            pageIndicator.textContent = "Sampul Depan";
+                        } else if (current === total - 1 || current === total - 2) {
+                            pageIndicator.textContent = "Sampul Belakang";
+                        } else {
+                            const leftPage = current;
+                            const rightPage = current + 1;
+                            pageIndicator.textContent = `Halaman ${leftPage} & ${rightPage}`;
                         }
                     }
-
-                    btnPrev.addEventListener('click', () => pageFlip.flipPrev());
-                    btnNext.addEventListener('click', () => pageFlip.flipNext());
-
-                    pageFlip.on('flip', () => { updateIndicator(); });
-                    pageFlip.on('changeOrientation', () => { updateIndicator(); });
-
-                    setTimeout(updateIndicator, 150);
                 }
-            @endif
+
+                btnPrev.addEventListener('click', () => pageFlip.flipPrev());
+                btnNext.addEventListener('click', () => pageFlip.flipNext());
+
+                pageFlip.on('flip', () => { updateIndicator(); });
+                pageFlip.on('changeOrientation', () => { updateIndicator(); });
+
+                setTimeout(updateIndicator, 150);
+            }
         });
 
         @auth
@@ -860,7 +796,6 @@
                     document.getElementById('delete-video-form').submit();
                 }
             }
-
         @endauth
     </script>
 @endpush

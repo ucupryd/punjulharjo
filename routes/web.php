@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\BlogController as PublicBlogController;
 use App\Http\Controllers\Admin\VideoController as AdminVideoController;
 use App\Http\Controllers\VideoController as PublicVideoController;
+use App\Http\Controllers\EbookController as PublicEbookController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\HeroController;
@@ -30,6 +31,10 @@ Route::get('/', [PublicBlogController::class, 'home'])->name('home');
 Route::get('/pustaka', [HomeController::class, 'pustaka'])->name('pustaka');
 Route::redirect('/ebook', '/pustaka');
 Route::redirect('/video', '/pustaka');
+
+// Ebook Publik
+Route::get('/pustaka/ebook/{ebook}', [PublicEbookController::class, 'show'])->name('ebook.show');
+Route::get('/pustaka/ebook/{ebook}/download', [PublicEbookController::class, 'download'])->name('ebook.download');
 Route::get('/destinasi', function () { return redirect('/tentang#wisata'); })->name('destinasi');
 Route::view('/tentang', 'tentang')->name('tentang');
 Route::redirect('/temukan-kami', '/tentang#kontak')->name('temukan');

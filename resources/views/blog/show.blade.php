@@ -1,84 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="bg-transparent pt-32 pb-20 px-4 lg:px-6">
-    <div class="max-w-6xl mx-auto">
-        
-        <!-- Grid Layout: Konten Utama (Kiri) + Sidebar (Kanan) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 berita-grid">
+<x-detail.layout>
+    <x-slot:main>
+        <!-- Judul Artikel -->
+        <div class="space-y-4">
+            <h1 class="text-3xl lg:text-5xl font-extrabold font-heading text-brand-dark leading-tight">
+                {{ $blog->title }}
+            </h1>
             
-            <!-- Kolom Utama (Left - 8 Cols) -->
-            <div class="lg:col-span-8 space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200 text-xs text-slate-500 font-sans">
+                <div>
+                    Dipublikasikan pada 
+                    <span class="font-semibold text-slate-700">
+                        {{ ($blog->published_at ? \Carbon\Carbon::parse($blog->published_at) : $blog->created_at)->format('d M Y') }}
+                    </span> 
+                    oleh 
+                    <span class="font-semibold text-slate-700">
+                        {{ $blog->author->name ?? 'Admin' }}
+                    </span>
+                </div>
                 
-                <!-- Judul Artikel -->
-                <div class="space-y-4">
-                    <h1 class="text-3xl lg:text-5xl font-extrabold font-heading text-brand-dark leading-tight">
-                        {{ $blog->title }}
-                    </h1>
-                    
-                    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200 text-xs text-slate-500 font-sans">
-                        <div>
-                            Dipublikasikan pada 
-                            <span class="font-semibold text-slate-700">
-                                {{ ($blog->published_at ? \Carbon\Carbon::parse($blog->published_at) : $blog->created_at)->format('d M Y') }}
-                            </span> 
-                            oleh 
-                            <span class="font-semibold text-slate-700">
-                                {{ $blog->author->name ?? 'Admin' }}
-                            </span>
-                        </div>
-                        
-                        @if(Auth::check() && Auth::user()->isAdmin())
-                            <a href="{{ route('admin.blog.edit', $blog) }}" 
-                               class="bg-white hover:bg-slate-100 text-slate-800 px-3 py-1.5 rounded-none border border-slate-200 shadow-sm text-xs font-semibold flex items-center gap-1.5 transition">
-                                <i class="fa-solid fa-pencil text-sky-600"></i> Edit Artikel
-                            </a>
-                        @endif
-                    </div>
-                </div>
-
-                <!-- Gambar Utama -->
-                @if($blog->image)
-                    <div class="w-full bg-slate-100 overflow-hidden rounded-none shadow-sm">
-                        <img src="{{ Storage::url($blog->image) }}" 
-                             alt="{{ $blog->title }}" 
-                             class="w-full h-auto object-cover rounded-none"
-                             loading="lazy">
-                    </div>
-                @endif
-
-                <!-- Isi Artikel -->
-                <div class="text-slate-800 leading-relaxed prose max-w-none font-sans text-base lg:text-lg">
-                    {!! $blog->content !!}
-                </div>
-
-                <!-- Area Reaksi & Komentar (UI Only) -->
-                @include('partials.reaksi-komentar')
-
-                <!-- Berita Lainnya / Baca Juga -->
-                @include('partials.berita-terkait')
-
-                <!-- Tombol Kembali -->
-                <div class="pt-8 border-t border-slate-100">
-                    <a href="{{ route('blog.index') }}" class="inline-flex items-center text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
-                        <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke semua artikel
+                @if(Auth::check() && Auth::user()->isAdmin())
+                    <a href="{{ route('admin.blog.edit', $blog) }}" 
+                       class="bg-white hover:bg-slate-100 text-slate-800 px-3 py-1.5 rounded-none border border-slate-200 shadow-sm text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-pencil text-sky-600"></i> Edit Artikel
                     </a>
-                </div>
+                @endif
             </div>
-
-            <!-- Kolom Kanan / Sidebar (Right - 4 Cols) -->
-            <div class="lg:col-span-4 promo-wrapper">
-                <div class="promo-inner space-y-6">
-                    <div class="border-b border-slate-200 pb-2 mb-4">
-                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider">Rekomendasi & Promo</h3>
-                    </div>
-                    @include('partials.sidebar-iklan')
-                </div>
-            </div>
-            
         </div>
-    </div>
-</section>
+
+        <!-- Gambar Utama -->
+        @if($blog->image)
+            <div class="w-full bg-slate-100 overflow-hidden rounded-none shadow-sm">
+                <img src="{{ Storage::url($blog->image) }}" 
+                     alt="{{ $blog->title }}" 
+                     class="w-full h-auto object-cover rounded-none"
+                     loading="lazy">
+            </div>
+        @endif
+
+        <!-- Isi Artikel -->
+        <div class="text-slate-800 leading-relaxed prose max-w-none font-sans text-base lg:text-lg">
+            {!! $blog->content !!}
+        </div>
+
+        <!-- Area Reaksi & Komentar -->
+        <x-detail.reactions-comments contextType="berita" />
+
+        <!-- Berita Lainnya / Baca Juga -->
+        <x-detail.more 
+            title="Baca Juga (Berita Lainnya)" 
+            :items="$moreItems" 
+            :backUrl="route('blog.index')" 
+            backLabel="Kembali ke semua artikel" />
+    </x-slot:main>
+
+    <x-slot:sidebar>
+        <x-detail.sidebar :items="$sidebarItems" title="Rekomendasi & Promo" />
+    </x-slot:sidebar>
+</x-detail.layout>
 
 <style>
     /* Styling overrides for WYSIWYG editor content */
@@ -133,14 +114,6 @@
     }
     .prose [style*="text-align: right"] img {
         display: inline-block !important;
-    }
-
-    /* Fallback for sticky if JS is disabled */
-    .promo-wrapper {
-        align-self: start;
-    }
-    .promo-inner {
-        will-change: min-height;
     }
 </style>
 @endsection

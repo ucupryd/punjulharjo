@@ -11,10 +11,12 @@
     $videoId = getYoutubeId($video->video_url);
     $embedUrl = $videoId ? "https://www.youtube.com/embed/{$videoId}" : $video->video_url;
 @endphp
-<section class="bg-transparent pt-32 pb-20 px-6">
-    <div class="max-w-5xl mx-auto">
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-            <h1 class="text-4xl font-heading text-sky-700 text-center sm:text-left">{{ $video->title }}</h1>
+
+<x-detail.layout>
+    <x-slot:main>
+        <!-- Header & Edit button -->
+        <div class="flex flex-col sm:flex-row justify-between items-start mb-6 gap-4">
+            <h1 class="text-3xl lg:text-4xl font-heading text-brand-dark leading-tight">{{ $video->title }}</h1>
             @if(Auth::check() && Auth::user()->isAdmin())
                 <button onclick="openEditVideoModal(event, {{ json_encode($video) }})" 
                         class="bg-white hover:bg-slate-100 text-slate-800 px-4 py-2 rounded-none border border-slate-200 shadow-sm text-xs font-semibold flex items-center gap-1.5 transition whitespace-nowrap">
@@ -23,24 +25,36 @@
             @endif
         </div>
         
+        <!-- Video Player -->
         <div class="mb-8 flex justify-center w-full">
             <iframe width="100%" height="480" src="{{ $embedUrl }}" 
                     title="{{ $video->title }}" frameborder="0" 
                     allowfullscreen class="rounded-none shadow-sm w-full h-[270px] sm:h-[480px]"></iframe>
         </div>
 
-        <p class="text-gray-600 leading-relaxed text-lg text-center mb-12 font-sans">
-            {{ $video->description ?? 'Tidak ada deskripsi untuk video ini.' }}
-        </p>
-
-        <div class="text-center">
-            <a href="{{ route('video.index') }}" 
-               class="inline-block bg-sky-500 hover:bg-sky-600 text-white px-6 py-3 rounded-none font-medium transition">
-               ← Kembali ke Semua Video
-            </a>
+        <!-- Deskripsi -->
+        <div class="prose max-w-none text-slate-700 font-sans leading-relaxed mb-12">
+            <h3 class="text-lg font-semibold text-slate-800 mb-2">Deskripsi Video</h3>
+            <p class="text-base text-slate-600">
+                {{ $video->description ?? 'Tidak ada deskripsi untuk video ini.' }}
+            </p>
         </div>
-    </div>
-</section>
+
+        <!-- Area Reaksi & Komentar -->
+        <x-detail.reactions-comments contextType="video" />
+
+        <!-- Video Lainnya -->
+        <x-detail.more 
+            title="Tonton Video Lainnya" 
+            :items="$moreItems" 
+            :backUrl="route('pustaka') . '#video'" 
+            backLabel="Kembali ke daftar video" />
+    </x-slot:main>
+
+    <x-slot:sidebar>
+        <x-detail.sidebar :items="$sidebarItems" title="Rekomendasi & Promo" />
+    </x-slot:sidebar>
+</x-detail.layout>
 
 @auth
     <!-- Edit Video Modal -->
@@ -57,7 +71,6 @@
                 @csrf
                 @method('PUT')
                 <div class="p-6 space-y-4">
-
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Video</label>
                         <input type="text" id="edit-video-title" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>

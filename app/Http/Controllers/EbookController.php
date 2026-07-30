@@ -2,47 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Video;
+use App\Models\Ebook;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class VideoController extends Controller
+class EbookController extends Controller
 {
-    // Menampilkan daftar semua video
-    public function index()
+    // Menampilkan halaman detail e-book
+    public function show(Ebook $ebook)
     {
-        $videos = Video::latest()->paginate(6);
-        return view('video.index', compact('videos'));
-    }
-
-    // Menampilkan detail video berdasarkan slug
-    public function show($slug)
-    {
-        $video = Video::where('slug', $slug)->firstOrFail();
-
-        $videosLain = Video::where('id', '!=', $video->id)
+        // Ambil e-book lainnya untuk section "more"
+        $ebooksLain = Ebook::where('id', '!=', $ebook->id)
             ->latest()
             ->take(4)
             ->get();
 
-        $moreItems = $videosLain->map(function ($vid) {
+        // Map items untuk related content section
+        $moreItems = $ebooksLain->map(function ($eb) {
             return [
-                'image' => $vid->thumbnail ? (str_starts_with($vid->thumbnail, 'http') ? $vid->thumbnail : \Illuminate\Support\Facades\Storage::url($vid->thumbnail)) : 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
-                'label' => 'Video',
-                'title' => $vid->title,
-                'date' => $vid->created_at->format('d M Y'),
-                'url' => route('video.show', $vid->slug)
+                'image' => $eb->cover_path ? Storage::url($eb->cover_path) : asset('images/ebook-placeholder.png'),
+                'label' => 'E-Book',
+                'title' => $eb->title,
+                'date' => $eb->created_at->format('d M Y'),
+                'url' => route('ebook.show', $eb->id)
             ];
         })->toArray();
 
         // Rekomendasi di sidebar samping (KJB, Perahu Kuno, Ebook, Video, Adopsi)
         $pantaiImg = \App\Models\SiteSetting::getValue('potensi_pantai_image');
-        $pantaiImgUrl = (str_starts_with($pantaiImg, 'http') || str_contains($pantaiImg, 'storage/')) ? asset($pantaiImg) : \Illuminate\Support\Facades\Storage::url($pantaiImg);
+        $pantaiImgUrl = (str_starts_with($pantaiImg, 'http') || str_contains($pantaiImg, 'storage/')) ? asset($pantaiImg) : Storage::url($pantaiImg);
 
         $situsImg = \App\Models\SiteSetting::getValue('potensi_situs_image');
-        $situsImgUrl = (str_starts_with($situsImg, 'http') || str_contains($situsImg, 'storage/')) ? asset($situsImg) : \Illuminate\Support\Facades\Storage::url($situsImg);
+        $situsImgUrl = (str_starts_with($situsImg, 'http') || str_contains($situsImg, 'storage/')) ? asset($situsImg) : Storage::url($situsImg);
 
         $cemaraImg = \App\Models\SiteSetting::getValue('potensi_cemara_image');
-        $cemaraImgUrl = (str_starts_with($cemaraImg, 'http') || str_contains($cemaraImg, 'storage/')) ? asset($cemaraImg) : \Illuminate\Support\Facades\Storage::url($cemaraImg);
+        $cemaraImgUrl = (str_starts_with($cemaraImg, 'http') || str_contains($cemaraImg, 'storage/')) ? asset($cemaraImg) : Storage::url($cemaraImg);
 
         $sidebarItems = [
             [
@@ -67,21 +61,31 @@ class VideoController extends Controller
                 'ctaLabel' => 'Adopsi Sekarang'
             ],
             [
-                'image' => 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
-                'title' => 'E-Book Panduan Wisata',
-                'excerpt' => 'Unduh dan baca panduan lengkap tentang kebudayaan, sejarah, dan keindahan alam Punjulharjo.',
-                'url' => '/pustaka?tab=ebook',
-                'ctaLabel' => 'Buka E-Book'
-            ],
-            [
                 'image' => 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80',
                 'title' => 'Kabar Desa / Berita',
                 'excerpt' => 'Baca berita terbaru seputar kegiatan, agenda, dan perkembangan Desa Punjulharjo.',
                 'url' => '/pustaka?tab=blog',
                 'ctaLabel' => 'Baca Berita'
+            ],
+            [
+                'image' => 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
+                'title' => 'Kumpulan Video Wisata',
+                'excerpt' => 'Tonton dokumentasi seru dan keindahan alam pesisir Pantai Punjulharjo secara langsung.',
+                'url' => '/pustaka?tab=video',
+                'ctaLabel' => 'Tonton Video'
             ]
         ];
 
-        return view('video.show', compact('video', 'sidebarItems', 'moreItems'));
+        return view('pustaka.ebook-show', compact('ebook', 'sidebarItems', 'moreItems'));
+    }
+
+    // Mengunduh file PDF e-book
+    public function download(Ebook $ebook)
+    {
+        $filePath = public_path('storage/' . $ebook->pdf_path);
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+        abort(404, 'File tidak ditemukan.');
     }
 }
