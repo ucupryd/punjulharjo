@@ -17,6 +17,7 @@ class Blog extends Model
         'content',
         'image',
         'user_id',
+        'published_at',
     ];
 
     // Buat slug otomatis dari title

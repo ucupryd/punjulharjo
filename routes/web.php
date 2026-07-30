@@ -128,6 +128,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // CRUD Blog Admin
     Route::resource('/blog', AdminBlogController::class);
 
+    // Inline Image Upload for TinyMCE
+    Route::post('/berita/upload-image', [\App\Http\Controllers\Admin\BeritaImageController::class, 'store'])->name('berita.image.upload');
+
     // CRUD Video Admin
     Route::resource('/video', AdminVideoController::class);
 

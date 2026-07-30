@@ -31,9 +31,9 @@
                             <th class="p-4">Gambar</th>
                             <th class="p-4">Judul Artikel</th>
                             <th class="p-4">Ringkasan</th>
-                            <th class="p-4">Tanggal Buat</th>
-                            <th class="p-4 text-center">Aksi</th>
-                        </tr>
+                             <th class="p-4">Tanggal Publish</th>
+                             <th class="p-4 text-center">Aksi</th>
+                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($blogs as $blog)
@@ -47,7 +47,7 @@
                                 </td>
                                 <td class="p-4 font-semibold text-slate-800">{{ $blog->title }}</td>
                                 <td class="p-4 text-xs text-slate-500 max-w-xs truncate">{{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 80) }}</td>
-                                <td class="p-4 text-xs text-slate-400 whitespace-nowrap">{{ $blog->created_at->format('d/m/Y H:i') }}</td>
+                                <td class="p-4 text-xs text-slate-400 whitespace-nowrap">{{ ($blog->published_at ? \Carbon\Carbon::parse($blog->published_at) : $blog->created_at)->format('d/m/Y H:i') }}</td>
                                 <td class="p-4 text-center whitespace-nowrap space-x-2">
                                     <a href="{{ route('admin.blog.edit', $blog) }}" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-lg shadow">
                                         Edit

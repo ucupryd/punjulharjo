@@ -17,6 +17,8 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
-        "@dearhive/dearflip-jquery-flipbook": "^1.7.3"
+        "@dearhive/dearflip-jquery-flipbook": "^1.7.3",
+        "sticky-sidebar": "^3.3.1",
+        "tinymce": "^8.8.2"
     }
 }

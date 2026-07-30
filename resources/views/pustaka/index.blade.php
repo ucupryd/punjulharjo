@@ -349,7 +349,7 @@
                                         <span class="eb-comments-text">{{ $commentsVal }}</span>
                                     </div>
                                     <div class="eb-views">
-                                        <i class="fa-regular fa-eye eb-views-icon text-white"></i>
+                                        <svg viewBox="0 0 30.5 16.5" class="eb-views-svg" aria-hidden="true"><path d="M15.3 0C8.9 0 3.3 3.3 0 8.3c3.3 5 8.9 8.3 15.3 8.3s12-3.3 15.3-8.3C27.3 3.3 21.7 0 15.3 0zm0 14.5c-3.4 0-6.2-2.8-6.2-6.2C9 4.8 11.8 2 15.3 2c3.4 0 6.2 2.8 6.2 6.2 0 3.5-2.8 6.3-6.2 6.3z"></path></svg>
                                         <span class="eb-views-text">{{ $viewsVal }}</span>
                                     </div>
                                 </div>
@@ -375,10 +375,10 @@
             </div>
             @if(Auth::check() && Auth::user()->isAdmin())
                 <div class="mt-4 md:mt-0">
-                    <button onclick="document.getElementById('add-blog-modal').classList.remove('hidden')" 
-                            class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold">
+                    <a href="{{ route('admin.blog.create') }}" 
+                       class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold">
                         <i class="fa-solid fa-plus"></i> Tambah Artikel
-                    </button>
+                    </a>
                 </div>
             @endif
         </div>
@@ -395,10 +395,10 @@
                     <div class="eb-main relative group">
                         @if(Auth::check() && Auth::user()->isAdmin())
                             <div class="absolute top-4 left-4 z-30" onclick="event.stopPropagation();">
-                                <button onclick="openEditBlogModal(event, {{ json_encode($blog) }})" 
-                                        class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Artikel">
+                                <a href="{{ route('admin.blog.edit', $blog) }}" 
+                                   class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Artikel">
                                     <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
-                                </button>
+                                </a>
                             </div>
                         @endif
                         <a href="{{ route('blog.show', $blog->slug) }}" class="eb-card-wrapper block no-underline text-current animate-fade-in">
@@ -419,8 +419,11 @@
                             <div class="eb-content-bottom">
                                 <div class="eb-data mb-3">
                                     <div class="eb-date-badge">
-                                        <span class="eb-date-day">{{ $blog->created_at->format('d') }}</span>
-                                        <span class="eb-date-month">{{ $blog->created_at->format('M') }}</span>
+                                        @php
+                                            $pubDate = $blog->published_at ? \Carbon\Carbon::parse($blog->published_at) : $blog->created_at;
+                                        @endphp
+                                        <span class="eb-date-day">{{ $pubDate->format('d') }}</span>
+                                        <span class="eb-date-month">{{ $pubDate->format('M') }}</span>
                                     </div>
                                     <div class="eb-text">
                                         <div class="eb-text-m" title="{{ $blog->title }}">{{ $blog->title }}</div>
@@ -439,7 +442,7 @@
                                         <span class="eb-comments-text">{{ $commentsVal }}</span>
                                     </div>
                                     <div class="eb-views">
-                                        <i class="fa-regular fa-eye eb-views-icon text-white"></i>
+                                        <svg viewBox="0 0 30.5 16.5" class="eb-views-svg" aria-hidden="true"><path d="M15.3 0C8.9 0 3.3 3.3 0 8.3c3.3 5 8.9 8.3 15.3 8.3s12-3.3 15.3-8.3C27.3 3.3 21.7 0 15.3 0zm0 14.5c-3.4 0-6.2-2.8-6.2-6.2C9 4.8 11.8 2 15.3 2c3.4 0 6.2 2.8 6.2 6.2 0 3.5-2.8 6.3-6.2 6.3z"></path></svg>
                                         <span class="eb-views-text">{{ $viewsVal }}</span>
                                     </div>
                                 </div>
@@ -658,105 +661,6 @@
         </div>
     </div>
 
-    <!-- Add Blog Modal -->
-    <div id="add-blog-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-none shadow max-w-lg w-full overflow-hidden border border-slate-100 text-left transform transition-all animate-fade-in">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
-                <h3 class="text-lg font-heading text-slate-800">Tambah Artikel Baru</h3>
-                <button type="button" onclick="document.getElementById('add-blog-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <form action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="p-6 space-y-4 max-h-[65vh] overflow-y-auto">
-                    <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Foto Sampul</label>
-                        <input type="file" name="image" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Artikel</label>
-                        <input type="text" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Judul..." required>
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Kutipan Ringkas (Excerpt)</label>
-                        <input type="text" name="excerpt" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Rangkuman artikel...">
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Konten Artikel</label>
-                        <textarea name="content" rows="6" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Konten utama..." required></textarea>
-                    </div>
-                </div>
-                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
-                    <button type="button" onclick="document.getElementById('add-blog-modal').classList.add('hidden')" 
-                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
-                        Batal
-                    </button>
-                    <button type="submit" 
-                            class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
-                        Tambah
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Edit Blog Modal -->
-    <div id="edit-blog-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-none shadow max-w-lg w-full overflow-hidden border border-slate-100 text-left transform transition-all animate-fade-in">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
-                <h3 class="text-lg font-heading text-slate-800">Edit Artikel</h3>
-                <button type="button" onclick="document.getElementById('edit-blog-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            
-            <form id="edit-blog-form" action="" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="p-6 space-y-4 max-h-[65vh] overflow-y-auto">
-                    <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti Foto Sampul (opsional)</label>
-                        <input type="file" name="image" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Artikel</label>
-                        <input type="text" id="edit-blog-title" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Kutipan Ringkas (Excerpt)</label>
-                        <input type="text" id="edit-blog-excerpt" name="excerpt" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Konten Artikel</label>
-                        <textarea id="edit-blog-content" name="content" rows="6" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required></textarea>
-                    </div>
-                </div>
-                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between">
-                    <button type="button" onclick="confirmDeleteBlog()"
-                            class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-none text-sm transition">
-                        Hapus
-                    </button>
-                    
-                    <div class="flex gap-2">
-                        <button type="button" onclick="document.getElementById('edit-blog-modal').classList.add('hidden')" 
-                                class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
-                            Batal
-                        </button>
-                        <button type="submit" 
-                                class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
-                            Simpan
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <form id="delete-blog-form" action="" method="POST" class="hidden">
-                @csrf
-                @method('DELETE')
-            </form>
-        </div>
-    </div>
 @endauth
 
 @push('styles')
@@ -957,22 +861,6 @@
                 }
             }
 
-            function openEditBlogModal(e, blog) {
-                e.stopPropagation();
-                const modal = document.getElementById('edit-blog-modal');
-                modal.querySelector('#edit-blog-form').action = '/admin/blog/' + blog.id;
-                modal.querySelector('#edit-blog-title').value = blog.title;
-                modal.querySelector('#edit-blog-excerpt').value = blog.excerpt || '';
-                modal.querySelector('#edit-blog-content').value = blog.content;
-                modal.querySelector('#delete-blog-form').action = '/admin/blog/' + blog.id;
-                modal.classList.remove('hidden');
-            }
-
-            function confirmDeleteBlog() {
-                if (confirm('Apakah Anda yakin ingin menghapus artikel ini?')) {
-                    document.getElementById('delete-blog-form').submit();
-                }
-            }
         @endauth
     </script>
 @endpush
