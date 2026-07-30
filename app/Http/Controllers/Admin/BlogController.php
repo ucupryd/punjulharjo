@@ -170,7 +170,7 @@ class BlogController extends Controller
                         continue;
                     }
 
-                    $image = $manager->decode($imageData);
+                    $image = $manager->read($imageData);
                     if ($image->width() > 1600) {
                         $image->scale(width: 1600);
                     }
@@ -191,7 +191,7 @@ class BlogController extends Controller
                     if (count($baseMatches) === 3) {
                         $data = base64_decode($baseMatches[2]);
                         
-                        $image = $manager->decode($data);
+                        $image = $manager->read($data);
                         if ($image->width() > 1600) {
                             $image->scale(width: 1600);
                         }

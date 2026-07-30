@@ -38,7 +38,7 @@ class BeritaImageController extends Controller
 
             // 2. Inisialisasi Intervention Image (Gd Driver)
             $manager = new ImageManager(new Driver());
-            $image = $manager->decode($file->getRealPath());
+            $image = $manager->read($file->getRealPath());
 
             // 3. Resize jika lebar melebihi 1600px
             if ($image->width() > 1600) {
