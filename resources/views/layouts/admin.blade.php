@@ -31,8 +31,8 @@
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/hero*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     🖼️ Ubah Background Hero
                 </a>
-                <a href="{{ route('admin.blog.index') }}"
-                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/blog*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
+                <a href="{{ route('pustaka', ['tab' => 'blog']) }}"
+                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ (request()->is('admin/blog*') || (request()->is('pustaka') && request('tab') === 'blog')) ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     📝 Artikel & Blog
                 </a>
                 <a href="{{ route('admin.video.index') }}"

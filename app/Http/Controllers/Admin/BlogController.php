@@ -18,8 +18,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = Blog::latest()->paginate(8);
-        return view('admin.blog.index', compact('blogs'));
+        return redirect()->route('pustaka', ['tab' => 'blog']);
     }
 
     public function create()
@@ -58,7 +57,7 @@ class BlogController extends Controller
 
         Blog::create($validated);
 
-        return redirect()->route('admin.blog.index')->with('success', 'Artikel berhasil ditambahkan!');
+        return redirect()->route('pustaka', ['tab' => 'blog'])->with('success', 'Artikel berhasil ditambahkan!');
     }
 
     public function edit(Blog $blog)
@@ -119,7 +118,7 @@ class BlogController extends Controller
 
         $blog->update($validated);
 
-        return redirect()->route('admin.blog.index')->with('success', 'Artikel berhasil diperbarui!');
+        return redirect()->route('pustaka', ['tab' => 'blog'])->with('success', 'Artikel berhasil diperbarui!');
     }
 
     public function destroy(Blog $blog)
