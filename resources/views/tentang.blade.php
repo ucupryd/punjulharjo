@@ -2,24 +2,25 @@
 
 @section('content')
 
-    <x-fixed-image-section
-        key="hero_tentang"
-        :image="asset('images/beach-bg.png')"
-        eyebrow="Tentang Kami" eyebrowIcon="fa-solid fa-compass"
-        title="Tentang Desa Wisata Punjulharjo"
-        subtitle="Mengenal lebih dekat Desa Punjulharjo — harmoni sejarah maritim, keindahan pesisir, dan kearifan budaya di pesisir utara Rembang."
-        waveColor="text-white"
-        hasWave="true">
-        <a href="#sekilas-desa" class="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-brand-dark hover:bg-white transition duration-300">
-            <i class="fa-solid fa-arrow-down text-xs"></i> Jelajahi Profil Desa
-        </a>
-    </x-fixed-image-section>
+    <div id="hero" class="scroll-mt-24">
+        <x-fixed-image-section
+            key="hero_tentang"
+            :image="asset('images/beach-bg.png')"
+            title="Tentang Desa Wisata Punjulharjo"
+            subtitle="Mengenal lebih dekat Desa Punjulharjo harmoni sejarah maritim, keindahan pesisir, dan kearifan budaya di pesisir utara Rembang."
+            waveColor="text-white"
+            hasWave="true">
+            <a href="#sekilas-desa" class="inline-flex items-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-brand-dark hover:bg-white transition duration-300">
+                <i class="fa-solid fa-arrow-down text-xs"></i> Jelajahi Profil Desa
+            </a>
+        </x-fixed-image-section>
+    </div>
 
 
     <!-- =========================================================================
          SECTION 2: SEKILAS DESA (PROFIL UMUM)
          ========================================================================= -->
-    <section id="sekilas-desa" class="py-16 md:py-24 bg-white px-6">
+    <section id="sekilas-desa" class="scroll-mt-24 py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-8">
             <div class="text-center space-y-3 max-w-3xl mx-auto">
 
@@ -64,7 +65,7 @@
     <!-- =========================================================================
          SECTION 3: GEOGRAFIS & IKLIM (STATISTIK INFOBOX)
          ========================================================================= -->
-    <section class="py-16 bg-slate-50 border-y border-slate-200 px-6">
+    <section class="scroll-mt-24 py-16 bg-slate-50 border-y border-slate-200 px-6">
         <div class="max-w-6xl mx-auto space-y-10">
             <div class="text-center space-y-2 max-w-2xl mx-auto">
 
@@ -120,7 +121,7 @@
     <!-- =========================================================================
          SECTION 4: VISI & MISI DESA
          ========================================================================= -->
-    <section class="py-16 md:py-24 bg-white px-6">
+    <section id="visi-misi" class="scroll-mt-24 py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
 
@@ -177,72 +178,48 @@
 
 
     <!-- =========================================================================
-         SECTION 5: SEJARAH & CAGAR BUDAYA: SITUS PERAHU KUNO
+         SECTION 5: PEMERINTAHAN DESA (PERANGKAT)
          ========================================================================= -->
-    <section class="py-16 md:py-24 bg-slate-900 text-white px-6 relative overflow-hidden border-y border-slate-800">
-        <div class="absolute inset-0 bg-cover bg-center opacity-10" style="background-image: url('https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80');"></div>
+    <section id="pemerintahan" class="scroll-mt-24 py-16 md:py-24 bg-white px-6">
+        <div class="max-w-6xl mx-auto space-y-10">
+            <div class="text-center space-y-3 max-w-2xl mx-auto">
 
-        <div class="max-w-6xl mx-auto relative z-10 space-y-12">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-800 pb-8">
-                <div class="space-y-3 max-w-2xl">
-                    <span class="px-3 py-1 bg-brand-accent/20 text-brand-accent text-xs font-bold uppercase tracking-wider rounded-none border border-brand-accent/30 inline-flex items-center gap-2">
-                        <i class="fa-solid fa-landmark"></i> Cagar Budaya Nasional
-                    </span>
-                    <h2 class="text-3xl md:text-5xl font-heading text-white tracking-wide">
-                        Situs Perahu Kuno Punjulharjo
-                    </h2>
-                    <p class="text-slate-300 text-sm md:text-base">
-                        Temuan mahakarya arkeologi maritim terlengkap se-Asia Tenggara yang membuktikan kejayaan pelayaran Nusantara.
-                    </p>
-                </div>
-                <div class="px-4 py-2 bg-brand-accent/10 border border-brand-accent/30 text-brand-accent font-bold text-xs md:text-sm rounded-none shrink-0">
-                    <i class="fa-solid fa-clock-history"></i> Abad ke-7 – 8 Masehi (Lebih Tua dari Borobudur)
-                </div>
+                <h2 class="text-3xl md:text-4xl font-heading text-brand-dark">Pemerintahan Desa</h2>
+                <p class="text-slate-600 text-sm">Jajaran Perangkat Desa yang melayani masyarakat Desa Punjulharjo.</p>
             </div>
 
-            <div class="grid lg:grid-cols-12 gap-8 items-center">
-                <!-- Info Left -->
-                <div class="lg:col-span-7 space-y-6 text-slate-300 text-sm md:text-base leading-relaxed text-justify font-sans">
-                    <p>
-                        Pada <strong>Sabtu, 26 Juli 2008</strong> (±pukul 07.30 WIB), warga Desa Punjulharjo secara tidak sengaja menemukan struktur kayu kuno saat menggali tanah untuk pembuatan tambak garam pada kedalaman ±2 meter di sekitar 500 meter dari garis Pantai Karang Jahe.
-                    </p>
-                    <p>
-                        Penelitian mendalam oleh Balai Arkeologi Yogyakarta dan penanggalan radiokarbon atas sampel tali ijuk di <em>Beta Analytic Radiocarbon Laboratory, Miami, Florida, AS</em> memastikan bahwa perahu kayu sepanjang ±15 meter ini berasal dari <strong>abad ke-7 hingga ke-8 Masehi</strong> — menjadikannya lebih tua dibandingkan Candi Borobudur (abad ke-9 M).
-                    </p>
-                    <p>
-                        Perahu ini dibuat dengan teknologi khas Asia Tenggara kuno yaitu <strong>“papan ikat”</strong> (<em>sewn plank and lashed lug</em>), di mana papan-papan kayu disambung menggunakan ikatan tali ijuk dan pasak kayu tanpa paku besi sama sekali. Kini situs ini dilestarikan sebagai kawasan <strong>Edu Park Situs Perahu Kuno</strong>.
-                    </p>
-                </div>
+            @php
+                $perangkat = [
+                    ['jabatan' => 'Kepala Desa', 'nama' => 'Moh. Akrom'],
+                    ['jabatan' => 'Sekretaris Desa', 'nama' => 'Ubaidillah'],
+                    ['jabatan' => 'Kasi Pemerintahan', 'nama' => 'Akhsan'],
+                    ['jabatan' => 'Kasi Kesejahteraan', 'nama' => 'Mulyo Santoso, SE'],
+                    ['jabatan' => 'Kasi Pelayanan', 'nama' => 'Sholihul Ma’arif, S.Pd'],
+                    ['jabatan' => 'Kaur Umum & Perencanaan', 'nama' => 'M. Ali Mustofa'],
+                    ['jabatan' => 'Kaur Keuangan', 'nama' => 'Dwi Lestari Indrayani'],
+                    ['jabatan' => 'Kepala Dusun', 'nama' => 'Moh Nasrul Jamil'],
+                    ['jabatan' => 'Kepala Dusun', 'nama' => 'M. Zaenal Roziqin'],
+                    ['jabatan' => 'Kepala Dusun', 'nama' => 'Putri Dini Andani, S.Bns'],
+                ];
+            @endphp
 
-                <!-- Facts Card Right -->
-                <div class="lg:col-span-5 bg-brand-dark/90 p-6 md:p-8 rounded-none border border-slate-700 shadow-2xl space-y-4">
-                    <h3 class="text-lg font-bold text-brand-accent font-heading border-b border-slate-700 pb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-info"></i> Ringkasan Fakta Arkeologi
-                    </h3>
-                    <ul class="space-y-3 text-xs md:text-sm text-slate-300 font-sans">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-calendar-check text-brand-accent mt-1"></i>
-                            <span><strong>Ditemukan:</strong> 26 Juli 2008 oleh petani garam lokal</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-ruler-combined text-brand-accent mt-1"></i>
-                            <span><strong>Ukuran:</strong> Panjang ±15 meter pada kedalaman 2 meter</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-hammer text-brand-accent mt-1"></i>
-                            <span><strong>Teknologi:</strong> Papan ikat ijuk (<em>sewn plank & lashed lug</em>)</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-flask text-brand-accent mt-1"></i>
-                            <span><strong>Uji Laboratorium:</strong> Beta Analytic Radiocarbon Lab, Miami (AS)</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-award text-brand-accent mt-1"></i>
-                            <span><strong>Status:</strong> Temuan perahu kayu kuno terlengkap se-Asia Tenggara</span>
-                        </li>
-                    </ul>
-                </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                @foreach($perangkat as $p)
+                    <div class="p-4 bg-slate-50 rounded-none border border-slate-200 text-center flex flex-col justify-between hover:border-brand-dark transition duration-300">
+                        <div class="space-y-2">
+                            <div class="w-10 h-10 bg-brand-dark/10 text-brand-dark rounded-none flex items-center justify-center mx-auto text-sm font-bold">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400 block pt-1 min-h-[2.4em] leading-tight">{{ $p['jabatan'] }}</span>
+                        </div>
+                        <h4 class="text-xs sm:text-sm font-bold text-slate-800 leading-snug break-words hyphens-auto mt-2">{{ $p['nama'] }}</h4>
+                    </div>
+                @endforeach
             </div>
+            
+            <p class="text-[10px] text-center text-slate-400 italic font-sans">
+                * Data resmi Perangkat Desa Punjulharjo (dapat diperbarui berkala).
+            </p>
         </div>
     </section>
 
@@ -250,7 +227,7 @@
     <!-- =========================================================================
          SECTION 6: POTENSI WISATA UNGGULAN
          ========================================================================= -->
-    <section id="wisata" class="py-16 md:py-24 bg-white px-6">
+    <section id="potensi" class="scroll-mt-24 py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
 
@@ -270,7 +247,7 @@
             @endphp
 
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1: Pantai Karang Jahe -->
+                <!-- Card 1: Pantai Karang Jahe (KJB) -->
                 <div class="bg-white rounded-none border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition border-t-4 border-t-sky-600">
                     <div>
                         <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
@@ -309,7 +286,7 @@
                             @if(Auth::check() && Auth::user()->isAdmin())
                                 <div class="absolute top-3 right-3 z-20">
                                     <button type="button" onclick="document.getElementById('edit-potensi-modal-potensi_situs_image').classList.remove('hidden')" 
-                                            class="bg-white/90 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                                            class="bg-white/95 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
                                         <i class="fa-solid fa-pencil text-xs text-brand-accent"></i>
                                     </button>
                                 </div>
@@ -419,7 +396,7 @@
     <!-- =========================================================================
          SECTION 7: EKONOMI & WISATA EDUKASI
          ========================================================================= -->
-    <section class="py-16 bg-slate-50 border-y border-slate-200 px-6">
+    <section id="ekonomi-budaya" class="scroll-mt-24 py-16 bg-slate-50 border-y border-slate-200 px-6">
         <div class="max-w-6xl mx-auto space-y-10">
             <div class="text-center space-y-2 max-w-2xl mx-auto">
 
@@ -467,7 +444,7 @@
     <!-- =========================================================================
          SECTION 8: SENI & BUDAYA KHAS
          ========================================================================= -->
-    <section class="py-16 md:py-24 bg-white px-6">
+    <section class="scroll-mt-24 py-16 md:py-24 bg-white px-6">
         <div class="max-w-6xl mx-auto space-y-10">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
 
@@ -515,7 +492,7 @@
     <!-- =========================================================================
          SECTION 9: PRESTASI & PENGAKUAN
          ========================================================================= -->
-    <section class="py-16 bg-gradient-to-r from-brand-dark via-slate-900 to-brand-dark text-white px-6 shadow-xl border-y border-brand-dark">
+    <section class="scroll-mt-24 py-16 bg-gradient-to-r from-brand-dark via-slate-900 to-brand-dark text-white px-6 shadow-xl border-y border-brand-dark">
         <div class="max-w-6xl mx-auto text-center space-y-8">
             <div class="space-y-2">
                 <span class="px-3 py-1 bg-brand-accent/20 text-brand-accent text-xs font-bold uppercase tracking-wider rounded-none border border-brand-accent/30">
@@ -550,56 +527,9 @@
 
 
     <!-- =========================================================================
-         SECTION 10: PEMERINTAHAN DESA (PERANGKAT)
-         ========================================================================= -->
-    <section class="py-16 md:py-24 bg-white px-6">
-        <div class="max-w-6xl mx-auto space-y-10">
-            <div class="text-center space-y-3 max-w-2xl mx-auto">
-
-                <h2 class="text-3xl md:text-4xl font-heading text-brand-dark">Pemerintahan Desa</h2>
-                <p class="text-slate-600 text-sm">Jajaran Perangkat Desa yang melayani masyarakat Desa Punjulharjo.</p>
-            </div>
-
-            @php
-                $perangkat = [
-                    ['jabatan' => 'Kepala Desa', 'nama' => 'Moh. Akrom'],
-                    ['jabatan' => 'Sekretaris Desa', 'nama' => 'Ubaidillah'],
-                    ['jabatan' => 'Kasi Pemerintahan', 'nama' => 'Akhsan'],
-                    ['jabatan' => 'Kasi Kesejahteraan', 'nama' => 'Mulyo Santoso, SE'],
-                    ['jabatan' => 'Kasi Pelayanan', 'nama' => 'Sholihul Ma’arif, S.Pd'],
-                    ['jabatan' => 'Kaur Umum & Perencanaan', 'nama' => 'M. Ali Mustofa'],
-                    ['jabatan' => 'Kaur Keuangan', 'nama' => 'Dwi Lestari Indrayani'],
-                    ['jabatan' => 'Kepala Dusun', 'nama' => 'Moh Nasrul Jamil'],
-                    ['jabatan' => 'Kepala Dusun', 'nama' => 'M. Zaenal Roziqin'],
-                    ['jabatan' => 'Kepala Dusun', 'nama' => 'Putri Dini Andani, S.Bns'],
-                ];
-            @endphp
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                @foreach($perangkat as $p)
-                    <div class="p-4 bg-slate-50 rounded-none border border-slate-200 text-center flex flex-col justify-between hover:border-brand-dark transition duration-300">
-                        <div class="space-y-2">
-                            <div class="w-10 h-10 bg-brand-dark/10 text-brand-dark rounded-none flex items-center justify-center mx-auto text-sm font-bold">
-                                <i class="fa-solid fa-user-tie"></i>
-                            </div>
-                            <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400 block pt-1 min-h-[2.4em] leading-tight">{{ $p['jabatan'] }}</span>
-                        </div>
-                        <h4 class="text-xs sm:text-sm font-bold text-slate-800 leading-snug break-words hyphens-auto mt-2">{{ $p['nama'] }}</h4>
-                    </div>
-                @endforeach
-            </div>
-            
-            <p class="text-[10px] text-center text-slate-400 italic font-sans">
-                * Data resmi Perangkat Desa Punjulharjo (dapat diperbarui berkala).
-            </p>
-        </div>
-    </section>
-
-
-    <!-- =========================================================================
          SECTION 11: LAYANAN KONTAK & LOKASI KANTOR DESA
          ========================================================================= -->
-    <section id="kontak" class="py-16 md:py-24 bg-slate-50 border-t border-slate-200 px-6">
+    <section id="kontak" class="scroll-mt-24 py-16 md:py-24 bg-slate-50 border-t border-slate-200 px-6">
         <div class="max-w-6xl mx-auto space-y-12">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
 
@@ -740,5 +670,60 @@
             </ol>
         </div>
     </section>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = [
+                document.getElementById('hero'),
+                document.getElementById('sekilas-desa'), // Fallback trigger close to hero
+                document.getElementById('visi-misi'),
+                document.getElementById('pemerintahan'),
+                document.getElementById('potensi'),
+                document.getElementById('ekonomi-budaya'),
+                document.getElementById('kontak')
+            ].filter(Boolean);
+
+            const options = {
+                root: null,
+                rootMargin: '-30% 0px -40% 0px', // check elements intersecting middle of screen
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let id = entry.target.getAttribute('id');
+                        if (id === 'sekilas-desa') id = 'hero'; // redirect sekilas-desa to hero link
+                        
+                        // Find all links ending with the current section hash
+                        document.querySelectorAll(`a.profile-sub-link[href$="#${id}"]`).forEach(link => {
+                            link.classList.add('text-emerald-700', 'bg-emerald-50/70');
+                            if (link.closest('.border-l-2')) {
+                                link.classList.add('text-sky-600', 'font-bold');
+                            }
+                        });
+
+                        // Remove styling from all other sections
+                        sections.forEach(sec => {
+                            let secId = sec.getAttribute('id');
+                            if (secId === 'sekilas-desa') secId = 'hero';
+                            if (secId !== id) {
+                                document.querySelectorAll(`a.profile-sub-link[href$="#${secId}"]`).forEach(link => {
+                                    link.classList.remove('text-emerald-700', 'bg-emerald-50/70');
+                                    if (link.closest('.border-l-2')) {
+                                        link.classList.remove('text-sky-600', 'font-bold');
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }, options);
+
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+    @endpush
 
 @endsection

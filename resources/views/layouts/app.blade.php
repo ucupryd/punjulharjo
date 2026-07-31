@@ -226,7 +226,21 @@
                         </div>
                         <div class="flex flex-col space-y-4 mt-8 font-medium">
                             <a href="/" class="text-slate-700 hover:text-sky-600 text-lg transition">Beranda</a>
-                            <a href="{{ route('tentang') }}" class="text-slate-700 hover:text-sky-600 text-lg transition">Profil</a>
+                            <!-- Profil Dropdown Accordion -->
+                            <div x-data="{ open: false }" class="w-full text-left">
+                                <button @click="open = !open" class="w-full flex items-center justify-between text-slate-700 hover:text-sky-600 text-lg transition font-medium focus:outline-none">
+                                    <span>Profil</span>
+                                    <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                                </button>
+                                <div x-show="open" x-transition.opacity class="pl-4 mt-2 space-y-2 border-l-2 border-slate-100 flex flex-col text-left">
+                                    <a href="{{ route('tentang') }}#hero" onclick="document.getElementById('mobile-menu-close').click()" class="profile-sub-link text-slate-600 hover:text-sky-600 text-base py-1">Sekilas Tentang Desa</a>
+                                    <a href="{{ route('tentang') }}#visi-misi" onclick="document.getElementById('mobile-menu-close').click()" class="profile-sub-link text-slate-600 hover:text-sky-600 text-base py-1">Visi & Misi</a>
+                                    <a href="{{ route('tentang') }}#pemerintahan" onclick="document.getElementById('mobile-menu-close').click()" class="profile-sub-link text-slate-600 hover:text-sky-600 text-base py-1">Pemerintahan Desa</a>
+                                    <a href="{{ route('tentang') }}#potensi" onclick="document.getElementById('mobile-menu-close').click()" class="profile-sub-link text-slate-600 hover:text-sky-600 text-base py-1">Potensi Unggulan</a>
+                                    <a href="{{ route('tentang') }}#ekonomi-budaya" onclick="document.getElementById('mobile-menu-close').click()" class="profile-sub-link text-slate-600 hover:text-sky-600 text-base py-1">Ekonomi & Budaya</a>
+                                    <a href="{{ route('tentang') }}#kontak" onclick="document.getElementById('mobile-menu-close').click()" class="profile-sub-link text-slate-600 hover:text-sky-600 text-base py-1">Kontak</a>
+                                </div>
+                            </div>
                             
                             <!-- Destinasi Dropdown Accordion -->
                             <div x-data="{ open: false }" class="w-full text-left">

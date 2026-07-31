@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    $customAdopsiAbout = \App\Models\SiteSetting::getValue('adopsi_about_image');
+    $adopsiAboutImgUrl = $customAdopsiAbout 
+        ? (str_starts_with($customAdopsiAbout, 'http') || str_contains($customAdopsiAbout, 'storage/') ? asset($customAdopsiAbout) : Storage::url($customAdopsiAbout)) 
+        : 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80';
+@endphp
 <!-- Section 1: Hero Section -->
 <x-fixed-image-section variant="green"
     key="hero_adopsi"
@@ -52,17 +58,17 @@
                         <i class="fa-solid fa-hand-holding-dollar"></i>
                     </div>
                     <div>
-                        <div class="text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-emerald-300 via-teal-100 to-white bg-clip-text text-transparent font-title tracking-tight">
+                        <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
                             Rp {{ number_format($stats['total_dana']) }}
                         </div>
-                        <div class="text-xs font-sans text-emerald-200/80 mt-1 uppercase tracking-wider font-semibold">
+                        <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
                             Total Dana Terkumpul
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-emerald-400/80">
+                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
                     <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> Transparan & Akuntabel</span>
-                    <span class="font-bold text-emerald-300">100% Salur</span>
+                    <span class="font-bold text-white">100% Salur</span>
                 </div>
             </div>
 
@@ -73,17 +79,17 @@
                         <i class="fa-solid fa-tree"></i>
                     </div>
                     <div>
-                        <div class="text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-emerald-300 via-teal-100 to-white bg-clip-text text-transparent font-title tracking-tight">
-                            {{ number_format($stats['pohon_tertanam']) }} <span class="text-lg font-normal text-emerald-300">Bibit</span>
+                        <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
+                            {{ number_format($stats['pohon_tertanam']) }} <span class="text-lg font-normal text-white/90">Bibit</span>
                         </div>
-                        <div class="text-xs font-sans text-emerald-200/80 mt-1 uppercase tracking-wider font-semibold">
+                        <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
                             Jumlah Pohon Tertanam
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-emerald-400/80">
+                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
                     <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> Karangjahe Coast</span>
-                    <span class="font-bold text-emerald-300">Cemara Laut</span>
+                    <span class="font-bold text-white">Cemara Laut</span>
                 </div>
             </div>
 
@@ -94,17 +100,17 @@
                         <i class="fa-solid fa-users"></i>
                     </div>
                     <div>
-                        <div class="text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-emerald-300 via-teal-100 to-white bg-clip-text text-transparent font-title tracking-tight">
-                            {{ number_format($stats['total_adopter']) }} <span class="text-lg font-normal text-emerald-300">Orang</span>
+                        <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
+                            {{ number_format($stats['total_adopter']) }} <span class="text-lg font-normal text-white/90">Orang</span>
                         </div>
-                        <div class="text-xs font-sans text-emerald-200/80 mt-1 uppercase tracking-wider font-semibold">
+                        <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
                             Member Adopsi Partisipatif
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-emerald-400/80">
+                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
                     <span class="flex items-center gap-1"><i class="fa-solid fa-heart"></i> Komunitas Hijau</span>
-                    <span class="font-bold text-emerald-300">Pahlawan Pesisir</span>
+                    <span class="font-bold text-white">Pahlawan Pesisir</span>
                 </div>
             </div>
         </div>
@@ -137,9 +143,18 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-6">
+            <div class="lg:col-span-6 relative group">
+                @if(Auth::check() && Auth::user()->isAdmin())
+                    <!-- Floating Edit Button on Hover -->
+                    <div class="absolute top-4 right-4 z-[50] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
+                        <button type="button" onclick="document.getElementById('edit-custom-image-modal-adopsi_about_image').classList.remove('hidden')" 
+                                class="bg-white/95 hover:bg-white text-slate-800 p-2.5 rounded-md shadow-md border border-slate-200/50 flex items-center justify-center" title="Edit Foto Gambaran Umum">
+                            <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                        </button>
+                    </div>
+                @endif
                 <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80" 
+                    <img src="{{ $adopsiAboutImgUrl }}" 
                          alt="Pantai Karangjahe" 
                          class="w-full h-[400px] object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex items-end p-8">
@@ -328,4 +343,57 @@
         </div>
     </div>
 </div>
+
+@if(Auth::check() && Auth::user()->isAdmin())
+    <!-- Edit Custom Image Modal for Adopsi About -->
+    <div id="edit-custom-image-modal-adopsi_about_image" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+        <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all text-slate-800">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Foto Gambaran Umum</h3>
+                <button type="button" onclick="document.getElementById('edit-custom-image-modal-adopsi_about_image').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <form action="{{ route('admin.hero.update-custom') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="hero_key" value="adopsi_about_image">
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih Gambar Baru</label>
+                        <input type="file" name="hero_image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                        <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP. Ukuran maks: 5MB.</p>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                    <button type="button" onclick="document.getElementById('edit-custom-image-modal-adopsi_about_image').classList.add('hidden')" 
+                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                        Batal
+                    </button>
+                    <button type="submit" 
+                            class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+            @php
+                $backupAdopsiAbout = \App\Models\SiteSetting::getValue('adopsi_about_image_backup');
+            @endphp
+            @if($backupAdopsiAbout)
+                <div class="p-6 border-t border-slate-100 bg-slate-50">
+                    <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 gambar cadangan sebelumnya:</p>
+                    <div class="flex items-center gap-3">
+                        <img src="{{ (str_starts_with($backupAdopsiAbout, 'http') || str_contains($backupAdopsiAbout, 'storage/')) ? asset($backupAdopsiAbout) : Storage::url($backupAdopsiAbout) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
+                        <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
+                            @csrf
+                            <input type="hidden" name="hero_key" value="adopsi_about_image">
+                            <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke Gambar Ini
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+@endif
 @endsection

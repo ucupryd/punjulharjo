@@ -25,8 +25,62 @@
     <li @mouseenter="hoverIndex = 0" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
         <a href="{{ route('home') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Beranda</a>
     </li>
-    <li @mouseenter="hoverIndex = 1" @mouseleave="hoverIndex = null" class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
-        <a href="{{ route('tentang') }}" class="block py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current">Profil</a>
+    <li @mouseenter="hoverIndex = 1; profilDropdown = true" 
+        @mouseleave="hoverIndex = null; profilDropdown = false" 
+        @keyup.escape.window="profilDropdown = false"
+        x-data="{ profilDropdown: false }"
+        class="relative z-10 w-[58px] md:w-[82px] text-center shrink-0">
+        <a href="{{ route('tentang') }}#hero" 
+           @focus="hoverIndex = 1; profilDropdown = true"
+           @blur="setTimeout(() => { if (! $el.contains(document.activeElement)) profilDropdown = false }, 100)"
+           class="py-1.5 md:py-2 text-[9px] md:text-xs font-bold text-current flex items-center justify-center gap-0.5">
+            <span>Profil</span>
+            <i class="fa-solid fa-chevron-down text-[8px] transition-transform duration-200" :class="{ 'rotate-180': profilDropdown }"></i>
+        </a>
+
+        <!-- Dropdown Menu Profil -->
+        <div x-show="profilDropdown"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 translate-y-1 scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+             x-transition:leave-end="opacity-0 translate-y-1 scale-95"
+             @mouseenter="profilDropdown = true"
+             @mouseleave="profilDropdown = false"
+             class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 py-1.5 text-left z-[1000] overflow-hidden"
+             style="display: none;">
+            <a href="{{ route('tentang') }}#hero" @click="profilDropdown = false"
+               class="profile-sub-link flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-circle-info text-emerald-600 text-xs"></i>
+                <span>Sekilas Tentang Desa</span>
+            </a>
+            <a href="{{ route('tentang') }}#visi-misi" @click="profilDropdown = false"
+               class="profile-sub-link flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                <i class="fa-solid fa-bullseye text-emerald-600 text-xs"></i>
+                <span>Visi & Misi</span>
+            </a>
+            <a href="{{ route('tentang') }}#pemerintahan" @click="profilDropdown = false"
+               class="profile-sub-link flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                <i class="fa-solid fa-users text-emerald-600 text-xs"></i>
+                <span>Pemerintahan Desa</span>
+            </a>
+            <a href="{{ route('tentang') }}#potensi" @click="profilDropdown = false"
+               class="profile-sub-link flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                <i class="fa-solid fa-star text-emerald-600 text-xs"></i>
+                <span>Potensi Unggulan</span>
+            </a>
+            <a href="{{ route('tentang') }}#ekonomi-budaya" @click="profilDropdown = false"
+               class="profile-sub-link flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                <i class="fa-solid fa-leaf text-emerald-600 text-xs"></i>
+                <span>Ekonomi & Budaya</span>
+            </a>
+            <a href="{{ route('tentang') }}#kontak" @click="profilDropdown = false"
+               class="profile-sub-link flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">
+                <i class="fa-solid fa-envelope text-emerald-600 text-xs"></i>
+                <span>Kontak</span>
+            </a>
+        </div>
     </li>
     <li @mouseenter="hoverIndex = 2; destinasiDropdown = true" 
         @mouseleave="hoverIndex = null; destinasiDropdown = false" 
