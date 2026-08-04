@@ -29,9 +29,16 @@
                                      class="w-full h-32 md:h-52 object-cover">
                             @endif
                             <div class="p-3 md:p-6 text-left">
+                                @if($blog->categories->isNotEmpty())
+                                    <div class="flex flex-wrap gap-1 mb-2">
+                                        @foreach($blog->categories as $category)
+                                            <x-blog.category-badge :category="$category" />
+                                        @endforeach
+                                    </div>
+                                @endif
                                 <h3 class="text-sm md:text-xl font-heading text-sky-600 mb-1 md:mb-2 line-clamp-1" title="{{ $blog->title }}">{{ $blog->title }}</h3>
                                 <p class="text-gray-600 text-xs md:text-sm mb-2 md:mb-4 line-clamp-2 md:line-clamp-3">
-                                    {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 100) }}
+                                    {{ $blog->auto_excerpt }}
                                 </p>
                             </div>
                         </div>
@@ -85,10 +92,6 @@
                         <input type="text" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Judul..." required>
                     </div>
                     <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Kutipan Ringkas (Excerpt)</label>
-                        <input type="text" name="excerpt" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Rangkuman artikel...">
-                    </div>
-                    <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Konten Artikel</label>
                         <textarea name="content" rows="6" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Konten utama..." required></textarea>
                     </div>
@@ -130,10 +133,6 @@
                         <input type="text" id="edit-blog-title" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
                     </div>
                     <div>
-                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Kutipan Ringkas (Excerpt)</label>
-                        <input type="text" id="edit-blog-excerpt" name="excerpt" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm">
-                    </div>
-                    <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Konten Artikel</label>
                         <textarea id="edit-blog-content" name="content" rows="6" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required></textarea>
                     </div>
@@ -170,7 +169,6 @@
             const modal = document.getElementById('edit-blog-modal');
             modal.querySelector('#edit-blog-form').action = '/admin/blog/' + blog.id;
             modal.querySelector('#edit-blog-title').value = blog.title;
-            modal.querySelector('#edit-blog-excerpt').value = blog.excerpt || '';
             modal.querySelector('#edit-blog-content').value = blog.content;
             modal.querySelector('#delete-blog-form').action = '/admin/blog/' + blog.id;
             modal.classList.remove('hidden');

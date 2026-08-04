@@ -17,10 +17,19 @@
                          loading="lazy">
                 </div>
                 <div class="space-y-1 md:space-y-2">
-                    <span class="text-[10px] uppercase font-bold text-sky-600 tracking-wider">Berita Desa</span>
+                    @if($item->categories->isNotEmpty())
+                        <div class="flex flex-wrap gap-1">
+                            @foreach($item->categories->take(2) as $category)
+                                <x-blog.category-badge :category="$category" />
+                            @endforeach
+                        </div>
+                    @else
+                        <span class="text-[10px] uppercase font-bold text-sky-600 tracking-wider">Berita Desa</span>
+                    @endif
                     <h4 class="text-sm font-semibold text-slate-800 group-hover:text-sky-700 transition duration-150 line-clamp-2 leading-snug">
                         {{ $item->title }}
                     </h4>
+                    <p class="text-xs text-slate-500 line-clamp-2">{{ $item->auto_excerpt }}</p>
                     <span class="text-[11px] text-slate-400 block">
                         {{ ($item->published_at ? \Carbon\Carbon::parse($item->published_at) : $item->created_at)->format('d M Y') }}
                     </span>

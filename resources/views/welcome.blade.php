@@ -181,7 +181,7 @@
 
         <div class="relative z-10 max-w-4xl mx-auto pt-16 pb-16">
             <!-- Main Title in THE LAST TRUNKS Font -->
-            <h1 id="hero-title" class="text-3xl md:text-5xl lg:text-6xl font-heading text-white mb-6 tracking-wide drop-shadow-xl min-h-[2em] md:min-h-[1.2em]"></h1>
+            <h1 id="hero-title" class="text-4xl md:text-6xl lg:text-7xl font-exo font-bold uppercase text-white mb-6 tracking-wide drop-shadow-xl min-h-[2em] md:min-h-[1.2em]"></h1>
             
             <!-- Subtitle in Poppins Font -->
             <p class="text-sm md:text-base lg:text-lg text-slate-100 font-sans max-w-2xl mx-auto leading-relaxed drop-shadow-md mb-10 opacity-90">
@@ -221,9 +221,13 @@
                 <div class="lg:col-span-7 space-y-3 md:space-y-6">
 
                     
-                    <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
-                        Sekilas tentang Punjulharjo
-                    </h2>
+                    <div class="flex flex-col space-y-0">
+                        <h2 class="text-base sm:text-lg md:text-2xl font-heading text-brand-dark tracking-wide leading-tight mb-0">
+                            SELAMAT DATANG DI
+                        </h2>
+                        <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-none mt-0">PUNJULHARJO
+                        </h2>
+                    </div>
                     
                     <div class="space-y-3">
                         <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-lg leading-relaxed text-justify">
@@ -281,12 +285,11 @@
         </div>
     </section>
 
-    <!-- SECTION C.5: Fixed Image Reveal Parallax Banner -->
     <x-fixed-image-section
         key="hero_welcome_nature"
         image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
-        eyebrow="Pesona Pesisir Rembang"
-        title="Keindahan Alam & Harmoni Punjulharjo"
+
+        title="Keindahan Alam Punjulahrjo"
         subtitle="Dari keteduhan ribuan pohon cemara hingga pesona pantai pasir putih yang membentang luas di pesisir utara Jawa."
         height="h-[65vh]"
         align="center">
@@ -563,7 +566,7 @@
 
                     
                     <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-brand-dark tracking-wide leading-tight">
-                        Kehidupan Budaya & Tradisi
+                        Kehidupan Budaya
                     </h2>
                     
                     <p class="text-slate-600 font-sans text-xs sm:text-sm md:text-lg leading-relaxed text-justify">
@@ -587,7 +590,7 @@
             <div class="space-y-2 md:space-y-4 mb-8 md:mb-16 max-w-3xl mx-auto relative">
 
                 <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
-                    Jelajahi Aktivitas Punjulharjo
+                    Jelajahi Aktivitas
                 </h2>
                 <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-lg">
                     Klik kartu di kanan/kiri untuk memutar dan memfokuskan petualangan seru yang dapat Anda nikmati di desa kami.
@@ -956,7 +959,7 @@
             // ==========================================================================
             const heroTitle = document.getElementById('hero-title');
             if (heroTitle) {
-                const text = "Wonderful Punjulharjo";
+                const text = "WONDERFUL PUNJULHARJO";
                 heroTitle.innerHTML = "";
                 let index = 0;
                 

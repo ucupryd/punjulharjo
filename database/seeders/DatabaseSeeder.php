@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $this->call(CemaraPaketSeeder::class);
+        $this->call([
+            CemaraPaketSeeder::class,
+            CategorySeeder::class,
+        ]);
     }
 }

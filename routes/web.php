@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\BlogController as PublicBlogController;
 use App\Http\Controllers\Admin\VideoController as AdminVideoController;
 use App\Http\Controllers\VideoController as PublicVideoController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\Admin\ModerasiController as AdminModerasiController;
 
 Route::get('/', [PublicBlogController::class, 'home'])->name('home');
 Route::get('/pustaka', [HomeController::class, 'pustaka'])->name('pustaka');
+Route::get('/pustaka/kategori/{slug}', [HomeController::class, 'pustakaByCategory'])->name('pustaka.kategori');
 Route::redirect('/ebook', '/pustaka');
 Route::redirect('/video', '/pustaka');
 
@@ -132,6 +134,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // CRUD Blog Admin
     Route::resource('/blog', AdminBlogController::class);
+
+    // CRUD Kategori Berita Admin
+    Route::resource('/categories', AdminCategoryController::class)->except(['show']);
 
     // Inline Image Upload for TinyMCE
     Route::post('/berita/upload-image', [\App\Http\Controllers\Admin\BeritaImageController::class, 'store'])->name('berita.image.upload');

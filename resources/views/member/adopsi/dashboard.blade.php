@@ -4,8 +4,8 @@
 <x-fixed-image-section variant="green"
     key="hero_member_adopsi"
     :image="'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80'"
-    eyebrow="Member Area My Cemara" eyebrowIcon="fa-solid fa-tree"
-    title="Halo, {{ auth()->user()->name }}!"
+    eyebrow="MEMBER AREA MY CEMARA" eyebrowIcon="fa-solid fa-tree"
+    title="HALO, {{ auth()->user()->name }}!"
     subtitle="Selamat datang di dashboard pemantauan & adopsi pohon cemara Anda di Pantai Karangjahe. Terima kasih telah menjadi pahlawan kelestarian pesisir Punjulharjo."
     waveColor="text-slate-50"
     hasWave="true">

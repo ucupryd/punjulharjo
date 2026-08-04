@@ -60,7 +60,7 @@
 
             <!-- Title in heading font -->
             <h1 class="text-2xl md:text-7xl font-heading text-white drop-shadow-lg leading-tight">
-                Pantai Karang Jahe
+                PANTAI KARANG JAHE
             </h1>
 
             <!-- Subtitle -->

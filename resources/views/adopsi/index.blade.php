@@ -11,111 +11,83 @@
 <x-fixed-image-section variant="green"
     key="hero_adopsi"
     :image="'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80'"
-    eyebrow="Program Konservasi Pesisir Desa Punjulharjo" eyebrowIcon="fa-solid fa-leaf"
-    title="My Cemara" titleAccent="Pantai Karangjahe"
-    subtitle="Inisiatif partisipatif penghijauan pesisir untuk membentengi garis pantai Desa Punjulharjo dari ancaman abrasi laut Jawa melalui adopsi bibit Cemara Laut (Casuarina equisetifolia)."
-    waveColor="text-emerald-900"
-    hasWave="true">
-    @auth
-        @if(auth()->user()->isMember())
-            <a href="{{ route('member.adopsi.dashboard') }}" class="rounded-lg bg-emerald-500 px-6 py-3 font-semibold text-white hover:bg-emerald-600 transition flex items-center gap-2">
-                <i class="fa-solid fa-tree"></i> Adopsi via Dashboard Saya
-            </a>
-        @else
-            <a href="{{ route('admin.moderasi.index') }}" class="rounded-lg bg-sky-600 px-6 py-3 font-semibold text-white hover:bg-sky-700 transition flex items-center gap-2">
-                <i class="fa-solid fa-user-shield"></i> Pusat Moderasi Admin
-            </a>
-        @endif
-    @else
-        <a href="{{ route('login.user') }}" class="rounded-lg bg-emerald-500 px-6 py-3 font-semibold text-white hover:bg-emerald-600 transition flex items-center gap-2">
-            <i class="fa-solid fa-tree"></i> Mulai Adopsi (Login Member)
-        </a>
-    @endauth
-    <a href="#latar-belakang" class="rounded-lg bg-white/10 px-6 py-3 font-semibold text-white ring-1 ring-white/30 hover:bg-white/20 transition flex items-center gap-2">
-        Pelajari Selengkapnya ↓
-    </a>
-</x-fixed-image-section>
-
-<!-- Section 6: Counter / Stat Bar (Statistik Dinamis - Ultra Modern) -->
-<div class="relative bg-gradient-to-b from-emerald-950 via-emerald-900 to-slate-950 text-white py-16 overflow-hidden border-y border-emerald-800/60">
-    <!-- Ambient Glow Background effects -->
-    <div class="absolute -top-24 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-24 right-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-10">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-semibold uppercase tracking-widest ring-1 ring-emerald-400/30 backdrop-blur-md">
-                <i class="fa-solid fa-chart-line"></i> Dampak Real-time Program
-            </span>
-            <h2 class="text-2xl md:text-3xl font-heading font-bold text-white mt-3">Capaian Konservasi Pesisir</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            <!-- Card 1: Total Dana Terkumpul -->
-            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-5 sm:p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
-                        <i class="fa-solid fa-hand-holding-dollar"></i>
+    eyebrow="PROGRAM KONSERVASI PESISIR DESA PUNJULHARJO" eyebrowIcon="fa-solid fa-leaf"
+    title="MY CEMARA" titleAccent="PANTAI KARANGJAHE"
+    waveColor="text-white"
+    hasWave="true"
+    height="min-h-[112vh]"
+    maxWidth="max-w-7xl">
+    
+    <div class="w-full flex flex-col items-center">
+        <!-- Capaian Konservasi Pesisir (Statistik Dinamis) -->
+        <div class="w-full mt-8 md:mt-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 text-left">
+                <!-- Card 1: Total Dana Terkumpul -->
+                <div class="group relative bg-white/10 backdrop-blur-sm p-5 sm:p-8 rounded-2xl border border-white/20 hover:border-white/40 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                        </div>
+                        <div>
+                            <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
+                                Rp {{ number_format($stats['total_dana']) }}
+                            </div>
+                            <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
+                                Total Dana Terkumpul
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
-                            Rp {{ number_format($stats['total_dana']) }}
-                        </div>
-                        <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
-                            Total Dana Terkumpul
-                        </div>
+                    <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> Transparan & Akuntabel</span>
+                        <span class="font-bold text-white">100% Salur</span>
                     </div>
                 </div>
-                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> Transparan & Akuntabel</span>
-                    <span class="font-bold text-white">100% Salur</span>
-                </div>
-            </div>
 
-            <!-- Card 2: Jumlah Pohon Tertanam -->
-            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-5 sm:p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
-                        <i class="fa-solid fa-tree"></i>
+                <!-- Card 2: Jumlah Pohon Tertanam -->
+                <div class="group relative bg-white/10 backdrop-blur-sm p-5 sm:p-8 rounded-2xl border border-white/20 hover:border-white/40 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
+                            <i class="fa-solid fa-tree"></i>
+                        </div>
+                        <div>
+                            <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
+                                {{ number_format($stats['pohon_tertanam']) }} <span class="text-lg font-normal text-white/90">Bibit</span>
+                            </div>
+                            <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
+                                Jumlah Pohon Tertanam
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
-                            {{ number_format($stats['pohon_tertanam']) }} <span class="text-lg font-normal text-white/90">Bibit</span>
-                        </div>
-                        <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
-                            Jumlah Pohon Tertanam
-                        </div>
+                    <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> Karangjahe Coast</span>
+                        <span class="font-bold text-white">Cemara Laut</span>
                     </div>
                 </div>
-                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> Karangjahe Coast</span>
-                    <span class="font-bold text-white">Cemara Laut</span>
-                </div>
-            </div>
 
-            <!-- Card 3: Member Adopsi -->
-            <div class="group relative bg-emerald-950/60 backdrop-blur-xl p-5 sm:p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <div>
-                        <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
-                            {{ number_format($stats['total_adopter']) }} <span class="text-lg font-normal text-white/90">Orang</span>
+                <!-- Card 3: Member Adopsi -->
+                <div class="group relative bg-white/10 backdrop-blur-sm p-5 sm:p-8 rounded-2xl border border-white/20 hover:border-white/40 transition-all duration-500 shadow-xl hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] hover:-translate-y-1">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-500 shrink-0">
+                            <i class="fa-solid fa-users"></i>
                         </div>
-                        <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
-                            Member Adopsi Partisipatif
+                        <div>
+                            <div class="text-3xl lg:text-4xl font-extrabold text-white font-title tracking-tight">
+                                {{ number_format($stats['total_adopter']) }} <span class="text-lg font-normal text-white/90">Orang</span>
+                            </div>
+                            <div class="text-xs font-sans text-white/80 mt-1 uppercase tracking-wider font-semibold">
+                                Member Adopsi Partisipatif
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-heart"></i> Komunitas Hijau</span>
-                    <span class="font-bold text-white">Pahlawan Pesisir</span>
+                    <div class="mt-4 pt-4 border-t border-emerald-800/40 flex items-center justify-between text-[11px] text-white/70">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-heart"></i> Komunitas Hijau</span>
+                        <span class="font-bold text-white">Pahlawan Pesisir</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</x-fixed-image-section>
 
 <!-- Section 2: Gambaran Umum Program -->
 <div class="py-20 bg-white">

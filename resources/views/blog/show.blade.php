@@ -5,6 +5,14 @@
     <x-slot:main>
         <!-- Judul Artikel -->
         <div class="space-y-4">
+            @if($blog->categories->isNotEmpty())
+                <div class="flex flex-wrap gap-2">
+                    @foreach($blog->categories as $category)
+                        <x-blog.category-badge :category="$category" :linkable="true" size="md" />
+                    @endforeach
+                </div>
+            @endif
+
             <h1 class="text-3xl lg:text-5xl font-extrabold font-heading text-brand-dark leading-tight">
                 {{ $blog->title }}
             </h1>

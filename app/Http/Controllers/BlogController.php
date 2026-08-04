@@ -10,34 +10,38 @@ class BlogController extends Controller
     // Halaman utama (menampilkan 3-4 blog terbaru)
     public function home()
     {
-        $blogs = Blog::latest()->take(3)->get();
+        $blogs = Blog::with('categories')->latest()->take(3)->get();
         return view('welcome', compact('blogs'));
     }
 
     // Halaman semua blog
     public function index()
     {
-        $blogs = Blog::latest()->paginate(6);
+        $blogs = Blog::with('categories')->latest()->paginate(6);
         return view('blog.index', compact('blogs'));
     }
 
     // Halaman detail blog
     public function show($slug)
     {
-        $blog = Blog::where('slug', $slug)->firstOrFail();
+        $blog = Blog::with(['categories', 'author'])->where('slug', $slug)->firstOrFail();
         
-        $beritaLain = Blog::where('id', '!=', $blog->id)
+        $beritaLain = Blog::with('categories')
+            ->where('id', '!=', $blog->id)
             ->latest()
             ->take(4)
             ->get();
 
         $moreItems = $beritaLain->map(function ($b) {
+            $firstCategory = $b->categories->first();
+
             return [
                 'image' => $b->image ? \Illuminate\Support\Facades\Storage::url($b->image) : asset('images/blog-placeholder.png'),
-                'label' => 'Berita Desa',
+                'label' => $firstCategory?->name ?? 'Berita Desa',
                 'title' => $b->title,
+                'excerpt' => $b->auto_excerpt,
                 'date' => ($b->published_at ? \Carbon\Carbon::parse($b->published_at) : $b->created_at)->format('d M Y'),
-                'url' => route('blog.show', $b->slug)
+                'url' => route('blog.show', $b->slug),
             ];
         })->toArray();
 

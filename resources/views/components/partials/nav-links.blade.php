@@ -4,7 +4,7 @@
     $isTransparent = $variant === 'transparent';
 @endphp
 
-<ul class="relative flex items-center px-1 py-0.5 rounded-lg select-none mx-auto md:mx-0"
+<ul class="relative flex items-center px-1 py-0.5 rounded-lg select-none mx-auto md:mx-0 font-exo"
     @mouseleave="hoverIndex = null">
     
     <!-- The Sliding Background Pill (slidebar) -->

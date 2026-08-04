@@ -31,10 +31,7 @@
                 <input type="text" name="title" required value="{{ old('title') }}" class="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none" placeholder="Masukkan judul artikel...">
             </div>
 
-            <div>
-                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Ringkasan (Excerpt)</label>
-                <textarea name="excerpt" rows="2" class="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none" placeholder="Ringkasan singkat artikel (opsional)...">{{ old('excerpt') }}</textarea>
-            </div>
+            <x-admin.blog-category-picker :categories="$categories" :selected="old('categories', [])" />
 
             <div>
                 <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Foto Sampul / Gambar Artikel</label>

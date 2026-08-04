@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 class Blog extends Model
@@ -13,7 +15,6 @@ class Blog extends Model
     protected $fillable = [
         'title',
         'slug',
-        'excerpt',
         'content',
         'image',
         'user_id',
@@ -29,8 +30,18 @@ class Blog extends Model
         });
     }
 
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function getAutoExcerptAttribute(): string
+    {
+        return Str::limit(strip_tags($this->content ?? ''), 50, '…');
     }
 }

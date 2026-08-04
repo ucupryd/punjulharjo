@@ -4,8 +4,8 @@
 <x-fixed-image-section
     key="hero_testimoni"
     :image="'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1920&q=80'"
-    eyebrow="Kesan Pengunjung" eyebrowIcon="fa-solid fa-comment-dots"
-    title="Cerita & Senyum Pengunjung"
+    eyebrow="KESAN PENGUNJUNG" eyebrowIcon="fa-solid fa-comment-dots"
+    title="CERITA & SENYUM PENGUNJUNG"
     subtitle="Terima kasih atas kunjungan Anda di Desa Wisata Punjulharjo. Berikut statistik kebahagiaan dan potret keceriaan langsung dari pengunjung kami."
     waveColor="text-slate-50"
     hasWave="true">

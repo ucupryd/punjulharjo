@@ -11,6 +11,7 @@
     'variant' => 'default',  // 'default' (navy/amber) | 'green' (My Cemara)
     'waveColor' => 'text-white', // Warna gelombang bawah
     'hasWave' => false,      // Gelombang hanya untuk hero halaman utama subpage
+    'maxWidth' => 'max-w-4xl', // Lebar kontainer isi hero
 ])
 
 @php
@@ -56,7 +57,7 @@
     <div class="absolute inset-0 {{ $overlay }} z-10"></div>
 
     <!-- Content Area (Dengan padding top untuk offset navbar fixed) -->
-    <div class="relative z-20 mx-auto max-w-4xl px-6 pt-32 pb-24 md:pt-40 md:pb-32 text-center">
+    <div class="relative z-20 mx-auto {{ $maxWidth }} px-6 pt-12 pb-24 md:pt-14 md:pb-32 text-center">
 
 
         @if($title)

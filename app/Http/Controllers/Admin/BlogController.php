@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -23,17 +24,20 @@ class BlogController extends Controller
 
     public function create()
     {
-        return view('admin.blog.create');
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.blog.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'excerpt' => 'nullable|string|max:300',
             'content' => 'required',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'published_at' => 'nullable|date',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         // Normalisasi absolute local URLs ke root-relative paths & unduh gambar eksternal/base64
@@ -55,24 +59,29 @@ class BlogController extends Controller
         $validated['slug'] = Str::slug($request->title);
         $validated['published_at'] = $request->published_at ? Carbon::parse($request->published_at) : now();
 
-        Blog::create($validated);
+        $blog = Blog::create($validated);
+        $blog->categories()->sync($request->input('categories', []));
 
         return redirect()->route('pustaka', ['tab' => 'blog'])->with('success', 'Artikel berhasil ditambahkan!');
     }
 
     public function edit(Blog $blog)
     {
-        return view('admin.blog.edit', compact('blog'));
+        $blog->load('categories');
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.blog.edit', compact('blog', 'categories'));
     }
 
     public function update(Request $request, Blog $blog)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'excerpt' => 'nullable|string|max:300',
             'content' => 'required',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'published_at' => 'nullable|date',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         // Ambil daftar gambar lama dari content
@@ -117,6 +126,7 @@ class BlogController extends Controller
         $validated['published_at'] = $request->published_at ? Carbon::parse($request->published_at) : ($blog->published_at ?? now());
 
         $blog->update($validated);
+        $blog->categories()->sync($request->input('categories', []));
 
         return redirect()->route('pustaka', ['tab' => 'blog'])->with('success', 'Artikel berhasil diperbarui!');
     }
@@ -136,6 +146,7 @@ class BlogController extends Controller
             }
         }
 
+        $blog->categories()->detach();
         $blog->delete();
         return back()->with('success', 'Artikel berhasil dihapus!');
     }

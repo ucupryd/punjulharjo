@@ -6,7 +6,7 @@
         <x-fixed-image-section
             key="hero_tentang"
             :image="asset('images/beach-bg.png')"
-            title="Tentang Desa Wisata Punjulharjo"
+            title="TENTANG DESA WISATA PUNJULHARJO"
             subtitle="Mengenal lebih dekat Desa Punjulharjo harmoni sejarah maritim, keindahan pesisir, dan kearifan budaya di pesisir utara Rembang."
             waveColor="text-white"
             hasWave="true">

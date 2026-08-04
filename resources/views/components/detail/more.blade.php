@@ -25,6 +25,9 @@
                     <h4 class="text-sm font-semibold text-slate-800 group-hover:text-sky-700 transition duration-150 line-clamp-2 leading-snug">
                         {{ $item['title'] }}
                     </h4>
+                    @if(!empty($item['excerpt']))
+                        <p class="text-xs text-slate-500 line-clamp-2">{{ $item['excerpt'] }}</p>
+                    @endif
                     <span class="text-[11px] text-slate-400 block">
                         {{ $item['date'] }}
                     </span>

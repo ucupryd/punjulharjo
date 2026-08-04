@@ -10,8 +10,9 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Poppins", ...defaultTheme.fontFamily.sans],
-                heading: ["'Playfair Display'", "serif", ...defaultTheme.fontFamily.sans],
-                title: ["'Playfair Display'", "serif", ...defaultTheme.fontFamily.sans],
+                heading: ["'Exo'", "sans-serif"],
+                title: ["'Exo'", "sans-serif"],
+                exo: ["'Exo'", "sans-serif"],
             },
             colors: {
                 brand: {

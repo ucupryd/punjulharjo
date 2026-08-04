@@ -21,7 +21,7 @@
     <!-- Google Fonts Poppins & Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
         .page-frame-inner {
@@ -80,7 +80,7 @@
                             <a href="/" class="flex items-center hover:opacity-90 transition duration-300 mr-2 shrink-0">
                                 <img src="{{ asset('images/Lambang_Kabupaten_Rembang.webp') }}" class="w-8 h-8 md:w-9 md:h-9 object-contain shrink-0 mr-2" alt="Logo Rembang">
                                 <div class="flex flex-col text-left">
-                                    <span class="font-bold text-xs md:text-sm leading-tight text-white font-heading">Desa Wisata Punjulharjo</span>
+                                    <span class="font-bold text-xs md:text-sm leading-tight text-white font-heading">DESA WISATA PUNJULHARJO</span>
                                     <span class="text-[9px] md:text-[10px] font-sans leading-none mt-0.5 opacity-75 text-white">Kec. Rembang, Kab. Rembang</span>
                                 </div>
                             </a>
@@ -101,7 +101,7 @@
 
                             <!-- Separate Standout My Cemara Button -->
                             <a href="{{ route('adopsi.index') }}" 
-                               class="btn-my-cemara-glossy px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-400/60 shadow-emerald-500/30">
+                               class="btn-my-cemara-glossy font-exo px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-400/60 shadow-emerald-500/30">
                                 <i class="fa-solid fa-tree text-[11px]"></i>
                                 <span>My Cemara</span>
                             </a>
@@ -113,12 +113,12 @@
                                 <form action="{{ route('logout') }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" 
-                                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
+                                            class="font-exo bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
                                         Logout
                                     </button>
                                 </form>
                             @else
-                                <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left">
+                                <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left font-exo">
                                     <button @click="openLoginDrop = !openLoginDrop" @click.away="openLoginDrop = false" type="button"
                                             class="bg-white/10 text-white hover:bg-white hover:text-slate-800 px-4 py-2 text-xs font-semibold shadow-sm transition-colors duration-300 flex items-center gap-1.5 border border-white/20">
                                         <i class="fa-solid fa-right-to-bracket"></i> Login <i class="fa-solid fa-chevron-down text-[10px]"></i>
@@ -177,7 +177,7 @@
 
                         <!-- Separate Standout My Cemara Button -->
                         <a href="{{ route('adopsi.index') }}" 
-                           class="btn-my-cemara-glossy px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600">
+                           class="btn-my-cemara-glossy font-exo px-3 py-1.5 text-[9px] md:text-xs font-bold rounded-lg transition duration-300 shadow-sm border flex items-center gap-1.5 shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600">
                             <i class="fa-solid fa-tree text-[11px]"></i>
                             <span>My Cemara</span>
                         </a>
@@ -189,12 +189,12 @@
                             <form action="{{ route('logout') }}" method="POST" class="inline">
                                 @csrf
                                 <button type="submit" 
-                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
+                                        class="font-exo bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-sm transition duration-300">
                                     Logout
                                 </button>
                             </form>
                         @else
-                            <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left">
+                            <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left font-exo">
                                 <button @click="openLoginDrop = !openLoginDrop" @click.away="openLoginDrop = false" type="button"
                                         class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-4 py-2 text-xs font-semibold shadow-sm transition-colors duration-300 flex items-center gap-1.5">
                                     <i class="fa-solid fa-right-to-bracket"></i> Login <i class="fa-solid fa-chevron-down text-[10px]"></i>
@@ -224,7 +224,7 @@
                                 <i class="fa-solid fa-xmark text-2xl"></i>
                             </button>
                         </div>
-                        <div class="flex flex-col space-y-4 mt-8 font-medium">
+                        <div class="flex flex-col space-y-4 mt-8 font-exo">
                             <a href="/" class="text-slate-700 hover:text-sky-600 text-lg transition">Beranda</a>
                             <!-- Profil Dropdown Accordion -->
                             <div x-data="{ open: false }" class="w-full text-left">
@@ -293,7 +293,7 @@
                             @endguest
                         </div>
                     </div>
-                    <div class="pt-6 border-t space-y-3">
+                    <div class="pt-6 border-t space-y-3 font-exo">
                         @auth
                             @if(auth()->user()->isAdmin())
                                 <a href="{{ route('admin.moderasi.index') }}" 

@@ -4,8 +4,8 @@
     <x-fixed-image-section
         key="hero_pustaka"
         :image="'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80'"
-        eyebrow="Pustaka Media Desa" eyebrowIcon="fa-solid fa-book-open"
-        title="Pustaka Digital & Dokumentasi"
+        eyebrow="PUSTAKA MEDIA DESA" eyebrowIcon="fa-solid fa-book-open"
+        title="PUSTAKA DIGITAL & DOKUMENTASI"
         subtitle="Telusuri koleksi buku panduan wisata interaktif kami dan saksikan kumpulan video dokumentasi keindahan Desa Wisata Punjulharjo."
         waveColor="text-slate-100"
         hasWave="true" />
@@ -374,14 +374,20 @@
                 <p class="text-slate-500 text-sm">Temukan artikel menarik seputar kegiatan, budaya, dan pengumuman Desa Wisata Punjulharjo.</p>
             </div>
             @if(Auth::check() && Auth::user()->isAdmin())
-                <div class="mt-4 md:mt-0">
+                <div class="mt-4 md:mt-0 flex flex-wrap gap-2 justify-center md:justify-end">
+                    <a href="{{ route('admin.categories.index') }}"
+                       class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-none shadow-sm transition-all flex items-center gap-2 text-sm font-semibold min-h-[44px]">
+                        <i class="fa-solid fa-tags"></i> Kelola Kategori
+                    </a>
                     <a href="{{ route('admin.blog.create') }}" 
-                       class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold">
+                       class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold min-h-[44px]">
                         <i class="fa-solid fa-plus"></i> Tambah Artikel
                     </a>
                 </div>
             @endif
         </div>
+
+        <x-blog.category-filter :categories="$categories ?? collect()" :activeCategory="$activeCategory ?? null" />
 
         @if($blogs->count() > 0)
             <div class="eb-grid">
@@ -426,9 +432,16 @@
                                         <span class="eb-date-month">{{ $pubDate->format('M') }}</span>
                                     </div>
                                     <div class="eb-text">
+                                        <div class="flex flex-wrap gap-1 mb-1.5">
+                                            @forelse($blog->categories as $category)
+                                                <x-blog.category-badge :category="$category" />
+                                            @empty
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">Berita</span>
+                                            @endforelse
+                                        </div>
                                         <div class="eb-text-m" title="{{ $blog->title }}">{{ $blog->title }}</div>
                                         <div class="eb-text-s">
-                                            {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 100) }}
+                                            {{ $blog->auto_excerpt }}
                                         </div>
                                     </div>
                                 </div>
@@ -454,7 +467,13 @@
         @else
             <div class="text-center py-16 bg-white border border-slate-200">
                 <i class="fa-solid fa-newspaper text-4xl text-slate-300 mb-3 block"></i>
-                <p class="text-gray-600 text-sm">Belum ada artikel yang tersedia.</p>
+                <p class="text-gray-600 text-sm">
+                    @if(!empty($activeCategory))
+                        Belum ada artikel untuk kategori ini.
+                    @else
+                        Belum ada artikel yang tersedia.
+                    @endif
+                </p>
             </div>
         @endif
     </div>
