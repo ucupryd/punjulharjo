@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::withCount('blogs')->orderBy('name')->get();
+        $categories = Category::withCount(['blogs', 'videos', 'ebooks'])->orderBy('name')->get();
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -54,6 +54,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->blogs()->detach();
+        $category->videos()->detach();
+        $category->ebooks()->detach();
         $category->delete();
 
         return redirect()

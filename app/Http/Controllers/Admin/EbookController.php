@@ -16,6 +16,8 @@ class EbookController extends Controller
             'description' => 'nullable|string|max:150',
             'pdf' => 'required|file|mimes:pdf|max:15360',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         $pdfFile = $request->file('pdf');
@@ -39,12 +41,13 @@ class EbookController extends Controller
             $coverPath = 'ebooks/covers/' . $coverName;
         }
 
-        Ebook::create([
+        $ebook = Ebook::create([
             'title' => $request->title,
             'description' => $request->description,
             'pdf_path' => $path,
             'cover_path' => $coverPath,
         ]);
+        $ebook->categories()->sync($request->input('categories', []));
 
         return back()->with('success', 'Ebook baru berhasil ditambahkan!');
     }
@@ -56,6 +59,8 @@ class EbookController extends Controller
             'description' => 'nullable|string|max:150',
             'pdf' => 'nullable|file|mimes:pdf|max:15360',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         $ebook = Ebook::findOrFail($id);
@@ -96,6 +101,7 @@ class EbookController extends Controller
             'pdf_path' => $pdfPath,
             'cover_path' => $coverPath,
         ]);
+        $ebook->categories()->sync($request->input('categories', []));
 
         return back()->with('success', 'Ebook berhasil diperbarui!');
     }

@@ -17,7 +17,7 @@ class VideoController extends Controller
     // Menampilkan detail video berdasarkan slug
     public function show($slug)
     {
-        $video = Video::where('slug', $slug)->firstOrFail();
+        $video = Video::with('categories')->where('slug', $slug)->firstOrFail();
 
         $videosLain = Video::where('id', '!=', $video->id)
             ->latest()

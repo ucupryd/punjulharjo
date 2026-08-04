@@ -10,6 +10,14 @@
                     {{ $ebook->title }}
                 </h1>
                 
+                <div class="flex flex-wrap gap-1 mt-2">
+                    @forelse($ebook->categories as $category)
+                        <x-blog.category-badge :category="$category" />
+                    @empty
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">E-Book</span>
+                    @endforelse
+                </div>
+                
                 <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200 text-xs text-slate-500 font-sans">
                     <div>
                         Diunggah pada 

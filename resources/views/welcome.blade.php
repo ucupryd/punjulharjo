@@ -845,8 +845,111 @@
 
 
 
+    {{-- ============================================================
+         SECTION G — PROMO KONTEN PUSTAKA (BERITA, VIDEO, E-BOOK)
+         Disisipkan di antara akhir Section F dan @push('scripts').
+         JANGAN memindahkan blok ini ke dalam @push('scripts').
+         ============================================================ --}}
+    @php
+        $promoSections = [
+            ['label' => 'Berita',  'data' => $promoBlog,  'tab' => 'blog',  'type' => 'Berita'],
+            ['label' => 'Video',   'data' => $promoVideo, 'tab' => 'video', 'type' => 'Video'],
+            ['label' => 'E-Book',  'data' => $promoEbook, 'tab' => 'ebook', 'type' => 'E-Book'],
+        ];
+        $adaPromo = collect($promoSections)->contains(fn ($s) => $s['data']['items']->isNotEmpty());
+    @endphp
+
+    @if($adaPromo)
+    <section class="bg-slate-50 py-20 border-t border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+
+            {{-- Heading section --}}
+            <div class="text-center mb-14">
+                <span class="inline-block text-xs font-bold uppercase tracking-widest text-sky-600 mb-3">
+                    Pustaka Desa
+                </span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-slate-800 leading-tight">
+                    Jelajahi Pustaka Desa
+                </h2>
+                <p class="mt-3 text-slate-500 text-sm md:text-base max-w-xl mx-auto">
+                    Berita, video, dan bacaan terbaru dari Desa Punjulharjo.
+                </p>
+            </div>
+
+            @foreach($promoSections as $s)
+                @if($s['data']['items']->isNotEmpty())
+                <div class="mb-16 last:mb-0">
+
+                    {{-- Sub-heading per jenis konten --}}
+                    <div class="flex items-center justify-between mb-6 gap-4">
+                        <h3 class="text-lg md:text-xl font-bold text-slate-700 m-0 flex items-center gap-2">
+                            @if($s['data']['mode'] === 'unggulan')
+                                <i class="fa-solid fa-star text-amber-400 text-base"></i>
+                                Pilihan {{ $s['label'] }}
+                            @else
+                                <i class="fa-solid fa-clock-rotate-left text-sky-400 text-base"></i>
+                                {{ $s['label'] }} Terbaru
+                            @endif
+                        </h3>
+                        <a href="{{ url('/pustaka?tab=' . $s['tab']) }}"
+                           class="flex-shrink-0 text-xs font-semibold text-sky-600 hover:text-sky-800 underline underline-offset-2 transition-colors whitespace-nowrap">
+                            Lihat Semua
+                            <i class="fa-solid fa-arrow-right ml-1 text-[10px]"></i>
+                        </a>
+                    </div>
+
+                    {{-- Grid kartu --}}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        @foreach($s['data']['items'] as $item)
+                            @if($s['tab'] === 'blog')
+                                @php
+                                    $promoImg  = $item->image ? Storage::url($item->image) : null;
+                                    $promoUrl  = route('blog.show', $item->slug);
+                                    $promoDate = ($item->published_at
+                                                    ? \Carbon\Carbon::parse($item->published_at)
+                                                    : $item->created_at)->translatedFormat('d M Y');
+                                @endphp
+                            @elseif($s['tab'] === 'video')
+                                @php
+                                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $item->video_url, $_ym);
+                                    $_vid = $_ym[1] ?? null;
+                                    $promoImg  = $_vid
+                                        ? "https://img.youtube.com/vi/{$_vid}/hqdefault.jpg"
+                                        : ($item->thumbnail ? Storage::disk('public_direct')->url($item->thumbnail) : null);
+                                    $promoUrl  = route('video.show', $item->slug);
+                                    $promoDate = $item->created_at->translatedFormat('d M Y');
+                                @endphp
+                            @else {{-- ebook --}}
+                                @php
+                                    $promoImg  = $item->cover_path ? Storage::url($item->cover_path) : null;
+                                    $promoUrl  = route('ebook.show', $item->id);
+                                    $promoDate = $item->created_at->translatedFormat('d M Y');
+                                @endphp
+                            @endif
+
+                            <x-promo-card
+                                :title="$item->title"
+                                :url="$promoUrl"
+                                :image="$promoImg"
+                                :date="$promoDate"
+                                :categories="$item->categories"
+                                :typeLabel="$s['type']"
+                            />
+                        @endforeach
+                    </div>
+
+                </div>
+                @endif
+            @endforeach
+
+        </div>
+    </section>
+    @endif
+
+
     <!-- Scripts for Tentang Desa Wisata custom radio tabs & StPageFlip Interactive Book -->
     @push('scripts')
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Radio Tabs Content Switching

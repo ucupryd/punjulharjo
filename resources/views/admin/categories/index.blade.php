@@ -35,7 +35,10 @@
                             <tr>
                                 <th class="px-6 py-3 font-semibold text-slate-600 uppercase text-xs tracking-wider">Kategori</th>
                                 <th class="px-6 py-3 font-semibold text-slate-600 uppercase text-xs tracking-wider">Slug</th>
-                                <th class="px-6 py-3 font-semibold text-slate-600 uppercase text-xs tracking-wider">Artikel</th>
+                                <th class="px-6 py-3 font-semibold text-slate-600 uppercase text-xs tracking-wider">Berita</th>
+                                <th class="px-6 py-3 font-semibold text-slate-600 uppercase text-xs tracking-wider">Video</th>
+                                <th class="px-6 py-3 font-semibold text-slate-600 uppercase text-xs tracking-wider">E-Book</th>
+                                <th class="px-6 py-3 font-semibold text-slate-600 uppercase text-xs tracking-wider">Total</th>
                                 <th class="px-6 py-3 font-semibold text-slate-600 uppercase text-xs tracking-wider text-right">Aksi</th>
                             </tr>
                         </thead>
@@ -49,6 +52,11 @@
                                     </td>
                                     <td class="px-6 py-4 text-slate-500 font-mono text-xs">{{ $category->slug }}</td>
                                     <td class="px-6 py-4 text-slate-600">{{ $category->blogs_count }}</td>
+                                    <td class="px-6 py-4 text-slate-600">{{ $category->videos_count }}</td>
+                                    <td class="px-6 py-4 text-slate-600">{{ $category->ebooks_count }}</td>
+                                    <td class="px-6 py-4 font-semibold text-slate-700">
+                                        {{ $category->blogs_count + $category->videos_count + $category->ebooks_count }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         <div class="flex justify-end gap-2">
                                             <a href="{{ route('admin.categories.edit', $category) }}"

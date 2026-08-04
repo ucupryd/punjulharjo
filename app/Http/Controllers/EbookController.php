@@ -11,6 +11,7 @@ class EbookController extends Controller
     // Menampilkan halaman detail e-book
     public function show(Ebook $ebook)
     {
+        $ebook->load('categories');
         // Ambil e-book lainnya untuk section "more"
         $ebooksLain = Ebook::where('id', '!=', $ebook->id)
             ->latest()

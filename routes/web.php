@@ -138,6 +138,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // CRUD Kategori Berita Admin
     Route::resource('/categories', AdminCategoryController::class)->except(['show']);
 
+    // Konten Unggulan di Beranda
+    Route::post('/featured/{type}/mode',  [\App\Http\Controllers\Admin\FeaturedController::class, 'updateMode'])->name('featured.mode');
+    Route::post('/featured/{type}/items', [\App\Http\Controllers\Admin\FeaturedController::class, 'updateItems'])->name('featured.items');
+
     // Inline Image Upload for TinyMCE
     Route::post('/berita/upload-image', [\App\Http\Controllers\Admin\BeritaImageController::class, 'store'])->name('berita.image.upload');
 

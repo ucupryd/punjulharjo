@@ -7,11 +7,68 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    // Halaman utama (menampilkan 3-4 blog terbaru)
+    // Halaman utama — menampilkan 3 konten promo per jenis (terbaru atau unggulan)
     public function home()
     {
-        $blogs = Blog::with('categories')->latest()->take(3)->get();
-        return view('welcome', compact('blogs'));
+        $promoBlog  = $this->promoItems('blog',  \App\Models\Blog::class);
+        $promoVideo = $this->promoItems('video', \App\Models\Video::class);
+        $promoEbook = $this->promoItems('ebook', \App\Models\Ebook::class);
+
+        return view('welcome', compact('promoBlog', 'promoVideo', 'promoEbook'));
+    }
+
+    /**
+     * Ambil maks. 3 item promo untuk satu jenis konten.
+     * Mengembalikan array ['items' => Collection, 'mode' => 'terbaru'|'unggulan'].
+     * 'mode' adalah mode EFEKTIF: kalau unggulan tapi kosong, jatuh ke 'terbaru'.
+     */
+    private function promoItems(string $key, string $class): array
+    {
+        $mode = \App\Models\SiteSetting::getValue('beranda_mode_' . $key, 'terbaru');
+
+        $base = fn () => $class::with('categories');
+
+        // Hanya sembunyikan artikel bertanggal masa depan.
+        // published_at NULL dianggap sudah terbit (kolom baru, artikel lama nilainya NULL).
+        $applyPublished = function ($q) use ($key) {
+            if ($key === 'blog') {
+                $q->where(function ($qq) {
+                    $qq->whereNull('published_at')
+                       ->orWhere('published_at', '<=', now());
+                });
+            }
+            return $q;
+        };
+
+        if ($mode === 'unggulan') {
+            $ids = \App\Models\FeaturedItem::where('featurable_type', $class)
+                ->orderBy('position')
+                ->pluck('featurable_id')
+                ->all();
+
+            if (! empty($ids)) {
+                $q = $applyPublished($base()->whereIn('id', $ids));
+                $items = $q->get()
+                    ->sortBy(fn ($m) => array_search($m->id, $ids))
+                    ->values()
+                    ->take(3);
+
+                // Bila semua item unggulan tersaring habis, jatuh ke Terbaru.
+                if ($items->isNotEmpty()) {
+                    return ['items' => $items, 'mode' => 'unggulan'];
+                }
+            }
+        }
+
+        // Mode Terbaru, juga dipakai sebagai jaring pengaman.
+        $q = $applyPublished($base());
+        if ($key === 'blog') {
+            $q->orderByRaw('COALESCE(published_at, created_at) DESC');
+        } else {
+            $q->latest();
+        }
+
+        return ['items' => $q->take(3)->get(), 'mode' => 'terbaru'];
     }
 
     // Halaman semua blog

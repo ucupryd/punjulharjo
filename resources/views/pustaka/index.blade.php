@@ -11,7 +11,7 @@
         hasWave="true" />
 
 <div x-data="{ 
-    activeTab: '{{ request('tab', 'ebook') }}',
+    activeTab: '{{ $activeTab }}',
     init() {
         if (window.location.hash) {
             const hash = window.location.hash.substring(1);
@@ -22,6 +22,30 @@
     }
 }" class="bg-slate-100 font-sans">
 
+{{-- Notifikasi sesi & error validasi untuk form unggulan admin --}}
+@if(session('success'))
+    <div class="max-w-6xl mx-auto px-6 pt-6">
+        <div class="bg-green-50 border border-green-200 text-green-800 text-sm px-4 py-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-green-500"></i>
+            {{ session('success') }}
+        </div>
+    </div>
+@endif
+@if($errors->any())
+    <div class="max-w-6xl mx-auto px-6 pt-6">
+        <div class="bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3">
+            <div class="flex items-center gap-2 font-semibold mb-1">
+                <i class="fa-solid fa-circle-xmark text-red-500"></i> Terjadi kesalahan:
+            </div>
+            <ul class="list-disc list-inside space-y-0.5">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+@endif
+
     <!-- E-BOOK TAB PANEL -->
     <div x-show="activeTab === 'ebook'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" class="max-w-6xl mx-auto px-6 py-12">
         <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
@@ -31,17 +55,51 @@
             @if(Auth::check() && Auth::user()->isAdmin())
                 @if($ebooks->isEmpty())
                     <div class="mt-4">
-                        <button onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
+                        <button type="button" onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
                                 class="inline-flex items-center gap-2 bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark transition-colors font-semibold px-5 py-2.5 rounded-none text-xs shadow">
                             <i class="fa-solid fa-plus"></i> Upload E-Book PDF Baru
                         </button>
                     </div>
                 @endif
+                {{-- Tombol mode Beranda untuk E-Book --}}
+                <div class="mt-4 flex flex-wrap gap-2 justify-center">
+                    <form method="POST" action="{{ route('admin.featured.mode', 'ebook') }}">
+                        @csrf
+                        <input type="hidden" name="mode" value="terbaru">
+                        <button type="submit"
+                                class="px-4 py-2 text-xs font-semibold border shadow-sm transition-all {{ $featuredModes['ebook'] === 'terbaru' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
+                            <i class="fa-solid fa-clock-rotate-left mr-1"></i> Terbaru di Beranda
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ route('admin.featured.mode', 'ebook') }}">
+                        @csrf
+                        <input type="hidden" name="mode" value="unggulan">
+                        <button type="submit"
+                                class="px-4 py-2 text-xs font-semibold border shadow-sm transition-all {{ $featuredModes['ebook'] === 'unggulan' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
+                            <i class="fa-solid fa-star mr-1"></i> Pilih Unggulan
+                        </button>
+                    </form>
+                </div>
             @endif
         </div>
 
+        @if($featuredSelecting['ebook'])
+            <div class="max-w-6xl mx-auto mb-4 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Filter kategori dinonaktifkan saat memilih konten unggulan, agar seluruh konten terlihat.
+            </div>
+        @else
+            <x-blog.category-filter :categories="$categories ?? collect()" :activeCategory="$activeCategory ?? null" />
+        @endif
+
         @if($ebooks->isNotEmpty() || (Auth::check() && Auth::user()->isAdmin()))
-            <div class="eb-grid">
+            @if($featuredSelecting['ebook'])
+            <form method="POST" action="{{ route('admin.featured.items', 'ebook') }}" id="featured-form-ebook">
+                @csrf
+                <input type="hidden" name="featured_order" id="featured-order-ebook" value="">
+            @endif
+            <div class="eb-grid" id="featured-grid-ebook"
+                 data-featured-order="{{ implode(',', $featuredIds['ebook']) }}">
                 @if(Auth::check() && Auth::user()->isAdmin())
                     <div onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
                           class="group border-2 border-dashed border-slate-300 hover:border-sky-500 rounded-none flex flex-col items-center justify-center p-4 cursor-pointer bg-white hover:bg-slate-50 shadow-sm hover:shadow transition-all duration-300 text-center"
@@ -64,19 +122,25 @@
                         <div class="eb-main relative">
                             @if(Auth::check() && Auth::user()->isAdmin())
                                 <div class="absolute top-4 left-4 z-30 flex gap-1.5" onclick="event.stopPropagation();">
-                                    <button onclick="openEditEbookModal({{ json_encode($ebook) }})" 
+                                    <button type="button" onclick="openEditEbookModal({{ json_encode($ebook) }})" 
                                             class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Ebook">
                                         <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
                                     </button>
-                                    <form action="{{ route('admin.ebook.destroy', $ebook->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus e-book ini?')" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="bg-white/95 hover:bg-red-50 text-red-600 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Hapus Ebook">
-                                            <i class="fa-solid fa-trash text-[10px]"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" onclick="confirmDeleteEbook({{ $ebook->id }})"
+                                            class="bg-white/95 hover:bg-red-50 text-red-600 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Hapus Ebook">
+                                        <i class="fa-solid fa-trash text-[10px]"></i>
+                                    </button>
                                 </div>
+                                @if($featuredSelecting['ebook'])
+                                    <label class="absolute top-4 right-4 z-30 cursor-pointer" onclick="event.stopPropagation();">
+                                        <input type="checkbox"
+                                               name="featured[]"
+                                               value="{{ $ebook->id }}"
+                                               class="featured-check-ebook sr-only"
+                                               @checked(in_array($ebook->id, $featuredIds['ebook']))>
+                                        <span class="featured-badge-number inline-flex items-center justify-center w-7 h-7 rounded-full bg-slate-200 text-slate-500 text-xs font-bold border-2 border-slate-300 transition-all duration-200"></span>
+                                    </label>
+                                @endif
                             @endif
                             <a href="{{ route('ebook.show', $ebook->id) }}" class="eb-card-wrapper block no-underline text-current">
                                 <div class="eb-card">
@@ -100,6 +164,13 @@
                                             <span class="eb-date-month">{{ $ebook->created_at->format('M') }}</span>
                                         </div>
                                         <div class="eb-text">
+                                            <div class="flex flex-wrap gap-1 mb-1.5">
+                                                @forelse($ebook->categories as $category)
+                                                    <x-blog.category-badge :category="$category" />
+                                                @empty
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">E-Book</span>
+                                                @endforelse
+                                            </div>
                                             <div class="eb-text-m" title="{{ $ebook->title }}">{{ $ebook->title }}</div>
                                             <div class="eb-text-s">{{ $ebook->description ?? 'Desa Wisata Punjulharjo' }}</div>
                                         </div>
@@ -125,6 +196,15 @@
                     @endforeach
                 @endif
             </div>
+            @if($featuredSelecting['ebook'])
+                <div class="mt-6 flex items-center justify-center gap-4">
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2.5 text-sm font-semibold shadow transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-star"></i> Simpan Pilihan Unggulan E-Book
+                    </button>
+                    <span id="featured-count-ebook" class="text-xs text-slate-500">0 dari 3 dipilih</span>
+                </div>
+            </form>
+            @endif
         @else
             <!-- Static 3D Flipbook component when empty/guest fallback -->
             <div class="flipbook-container">
@@ -273,14 +353,39 @@
                 <p class="text-slate-500 text-sm">Saksikan ragam keindahan dokumentasi video pariwisata Desa Punjulharjo.</p>
             </div>
             @if(Auth::check() && Auth::user()->isAdmin())
-                <div class="mt-4 md:mt-0">
-                    <button onclick="document.getElementById('add-video-modal').classList.remove('hidden')" 
-                            class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold">
+                <div class="mt-4 md:mt-0 flex flex-wrap gap-2 justify-center md:justify-end">
+                    <form method="POST" action="{{ route('admin.featured.mode', 'video') }}">
+                        @csrf
+                        <input type="hidden" name="mode" value="terbaru">
+                        <button type="submit"
+                                class="px-4 py-2.5 text-sm font-semibold border shadow-sm transition-all min-h-[44px] {{ $featuredModes['video'] === 'terbaru' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
+                            <i class="fa-solid fa-clock-rotate-left mr-1"></i> Terbaru
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ route('admin.featured.mode', 'video') }}">
+                        @csrf
+                        <input type="hidden" name="mode" value="unggulan">
+                        <button type="submit"
+                                class="px-4 py-2.5 text-sm font-semibold border shadow-sm transition-all min-h-[44px] {{ $featuredModes['video'] === 'unggulan' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
+                            <i class="fa-solid fa-star mr-1"></i> Pilih Unggulan
+                        </button>
+                    </form>
+                    <button type="button" onclick="document.getElementById('add-video-modal').classList.remove('hidden')" 
+                            class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold min-h-[44px]">
                         <i class="fa-solid fa-plus"></i> Tambah Video
                     </button>
                 </div>
             @endif
         </div>
+
+        @if($featuredSelecting['video'])
+            <div class="max-w-6xl mx-auto mb-4 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Filter kategori dinonaktifkan saat memilih konten unggulan, agar seluruh konten terlihat.
+            </div>
+        @else
+            <x-blog.category-filter :categories="$categories ?? collect()" :activeCategory="$activeCategory ?? null" />
+        @endif
 
         @php
             if (!function_exists('getYoutubeId')) {
@@ -291,7 +396,13 @@
             }
         @endphp
         @if($videos->count())
-            <div class="eb-grid">
+            @if($featuredSelecting['video'])
+            <form method="POST" action="{{ route('admin.featured.items', 'video') }}" id="featured-form-video">
+                @csrf
+                <input type="hidden" name="featured_order" id="featured-order-video" value="">
+            @endif
+            <div class="eb-grid" id="featured-grid-video"
+                 data-featured-order="{{ implode(',', $featuredIds['video']) }}">
                 @foreach($videos as $video)
                     @php
                         $videoId = getYoutubeId($video->video_url);
@@ -305,11 +416,21 @@
                     <div class="eb-main relative group">
                         @if(Auth::check() && Auth::user()->isAdmin())
                             <div class="absolute top-4 left-4 z-30" onclick="event.stopPropagation();">
-                                <button onclick="openEditVideoModal(event, {{ json_encode($video) }})" 
+                                <button type="button" onclick="openEditVideoModal(event, {{ json_encode($video) }})" 
                                         class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Video">
                                     <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
                                 </button>
                             </div>
+                            @if($featuredSelecting['video'])
+                                <label class="absolute top-4 right-4 z-30 cursor-pointer" onclick="event.stopPropagation();">
+                                    <input type="checkbox"
+                                           name="featured[]"
+                                           value="{{ $video->id }}"
+                                           class="featured-check-video sr-only"
+                                           @checked(in_array($video->id, $featuredIds['video']))>
+                                    <span class="featured-badge-number inline-flex items-center justify-center w-7 h-7 rounded-full bg-slate-200 text-slate-500 text-xs font-bold border-2 border-slate-300 transition-all duration-200"></span>
+                                </label>
+                            @endif
                         @endif
                         <a href="{{ route('video.show', $video->slug) }}" class="eb-card-wrapper block no-underline text-current">
                             <div class="eb-card">
@@ -333,6 +454,13 @@
                                         <span class="eb-date-month">{{ $video->created_at->format('M') }}</span>
                                     </div>
                                     <div class="eb-text">
+                                        <div class="flex flex-wrap gap-1 mb-1.5">
+                                            @forelse($video->categories as $category)
+                                                <x-blog.category-badge :category="$category" />
+                                            @empty
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">Video</span>
+                                            @endforelse
+                                        </div>
                                         <div class="eb-text-m" title="{{ $video->title }}">{{ $video->title }}</div>
                                         @if($video->description)
                                             <div class="eb-text-s">{{ $video->description }}</div>
@@ -358,6 +486,15 @@
                     </div>
                 @endforeach
             </div>
+            @if($featuredSelecting['video'])
+                <div class="mt-6 flex items-center justify-center gap-4">
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2.5 text-sm font-semibold shadow transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-star"></i> Simpan Pilihan Unggulan Video
+                    </button>
+                    <span id="featured-count-video" class="text-xs text-slate-500">0 dari 3 dipilih</span>
+                </div>
+            </form>
+            @endif
         @else
             <div class="text-center py-16 bg-white border border-slate-200">
                 <i class="fa-solid fa-film text-4xl text-slate-300 mb-3 block"></i>
@@ -375,6 +512,22 @@
             </div>
             @if(Auth::check() && Auth::user()->isAdmin())
                 <div class="mt-4 md:mt-0 flex flex-wrap gap-2 justify-center md:justify-end">
+                    <form method="POST" action="{{ route('admin.featured.mode', 'blog') }}">
+                        @csrf
+                        <input type="hidden" name="mode" value="terbaru">
+                        <button type="submit"
+                                class="px-4 py-2.5 text-sm font-semibold border shadow-sm transition-all min-h-[44px] {{ $featuredModes['blog'] === 'terbaru' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
+                            <i class="fa-solid fa-clock-rotate-left mr-1"></i> Terbaru
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ route('admin.featured.mode', 'blog') }}">
+                        @csrf
+                        <input type="hidden" name="mode" value="unggulan">
+                        <button type="submit"
+                                class="px-4 py-2.5 text-sm font-semibold border shadow-sm transition-all min-h-[44px] {{ $featuredModes['blog'] === 'unggulan' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
+                            <i class="fa-solid fa-star mr-1"></i> Pilih Unggulan
+                        </button>
+                    </form>
                     <a href="{{ route('admin.categories.index') }}"
                        class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-none shadow-sm transition-all flex items-center gap-2 text-sm font-semibold min-h-[44px]">
                         <i class="fa-solid fa-tags"></i> Kelola Kategori
@@ -387,10 +540,23 @@
             @endif
         </div>
 
-        <x-blog.category-filter :categories="$categories ?? collect()" :activeCategory="$activeCategory ?? null" />
+        @if($featuredSelecting['blog'])
+            <div class="max-w-6xl mx-auto mb-4 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Filter kategori dinonaktifkan saat memilih konten unggulan, agar seluruh konten terlihat.
+            </div>
+        @else
+            <x-blog.category-filter :categories="$categories ?? collect()" :activeCategory="$activeCategory ?? null" />
+        @endif
 
         @if($blogs->count() > 0)
-            <div class="eb-grid">
+            @if($featuredSelecting['blog'])
+            <form method="POST" action="{{ route('admin.featured.items', 'blog') }}" id="featured-form-blog">
+                @csrf
+                <input type="hidden" name="featured_order" id="featured-order-blog" value="">
+            @endif
+            <div class="eb-grid" id="featured-grid-blog"
+                 data-featured-order="{{ implode(',', $featuredIds['blog']) }}">
                 @foreach ($blogs as $blog)
                     @php
                         $blogImgUrl = $blog->image ? Storage::url($blog->image) : 'https://via.placeholder.com/400x250?text=Desa+Punjulharjo';
@@ -406,6 +572,16 @@
                                     <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
                                 </a>
                             </div>
+                            @if($featuredSelecting['blog'])
+                                <label class="absolute top-4 right-4 z-30 cursor-pointer" onclick="event.stopPropagation();">
+                                    <input type="checkbox"
+                                           name="featured[]"
+                                           value="{{ $blog->id }}"
+                                           class="featured-check-blog sr-only"
+                                           @checked(in_array($blog->id, $featuredIds['blog']))>
+                                    <span class="featured-badge-number inline-flex items-center justify-center w-7 h-7 rounded-full bg-slate-200 text-slate-500 text-xs font-bold border-2 border-slate-300 transition-all duration-200"></span>
+                                </label>
+                            @endif
                         @endif
                         <a href="{{ route('blog.show', $blog->slug) }}" class="eb-card-wrapper block no-underline text-current animate-fade-in">
                             <div class="eb-card">
@@ -464,6 +640,15 @@
                     </div>
                 @endforeach
             </div>
+            @if($featuredSelecting['blog'])
+                <div class="mt-6 flex items-center justify-center gap-4">
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2.5 text-sm font-semibold shadow transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-star"></i> Simpan Pilihan Unggulan Artikel
+                    </button>
+                    <span id="featured-count-blog" class="text-xs text-slate-500">0 dari 3 dipilih</span>
+                </div>
+            </form>
+            @endif
         @else
             <div class="text-center py-16 bg-white border border-slate-200">
                 <i class="fa-solid fa-newspaper text-4xl text-slate-300 mb-3 block"></i>
@@ -502,6 +687,14 @@
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi Singkat</label>
                         <textarea name="description" rows="3" maxlength="150" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Jelaskan isi e-book ini secara ringkas..."></textarea>
+                    </div>
+                    <div>
+                        @include('partials.category-picker', [
+                            'categories' => $categories,
+                            'selected' => old('categories', []),
+                            'label' => 'Kategori E-Book',
+                            'inputIdPrefix' => 'add-eb'
+                        ])
                     </div>
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih File PDF</label>
@@ -548,6 +741,14 @@
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi Singkat</label>
                         <textarea id="edit-ebook-description" name="description" rows="3" maxlength="150" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm"></textarea>
+                    </div>
+                    <div>
+                        @include('partials.category-picker', [
+                            'categories' => $categories,
+                            'selected' => [],
+                            'label' => 'Kategori E-Book',
+                            'inputIdPrefix' => 'edit-eb'
+                        ])
                     </div>
                     <div>
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti File PDF (Opsional)</label>
@@ -599,6 +800,14 @@
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi</label>
                         <textarea name="description" rows="3" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" placeholder="Deskripsi video..."></textarea>
                     </div>
+                    <div>
+                        @include('partials.category-picker', [
+                            'categories' => $categories,
+                            'selected' => old('categories', []),
+                            'label' => 'Kategori Video',
+                            'inputIdPrefix' => 'add-vi'
+                        ])
+                    </div>
                 </div>
                 <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
                     <button type="button" onclick="document.getElementById('add-video-modal').classList.add('hidden')" 
@@ -640,6 +849,14 @@
                         <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi</label>
                         <textarea id="edit-video-desc" name="description" rows="3" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm"></textarea>
                     </div>
+                    <div>
+                        @include('partials.category-picker', [
+                            'categories' => $categories,
+                            'selected' => [],
+                            'label' => 'Kategori Video',
+                            'inputIdPrefix' => 'edit-vi'
+                        ])
+                    </div>
                 </div>
                 <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between">
                     <button type="button" onclick="confirmDeleteVideo()"
@@ -666,6 +883,14 @@
             </form>
         </div>
     </div>
+
+    {{-- Hidden form untuk hapus ebook via JS (di luar form unggulan agar tidak bersarang) --}}
+    {{-- data-template menyimpan URL template agar tidak tertimpa saat hapus kedua --}}
+    <form id="delete-ebook-form" action="" method="POST" class="hidden"
+          data-template="{{ route('admin.ebook.destroy', ['id' => '__ID__']) }}">
+        @csrf
+        @method('DELETE')
+    </form>
 
 @endauth
 
@@ -791,11 +1016,114 @@
         });
 
         @auth
+            // ============================================================
+            // KONTROL UNGGULAN — satu fungsi per tipe konten
+            // ============================================================
+            function setupFeaturedPanel(type) {
+                const grid = document.getElementById('featured-grid-' + type);
+                if (!grid) return; // Panel ini tidak dalam mode memilih unggulan
+
+                const orderInput = document.getElementById('featured-order-' + type);
+                const countEl   = document.getElementById('featured-count-' + type);
+                // Selector PER TIPE — tidak menggunakan querySelectorAll global
+                const getChecks = () => Array.from(grid.querySelectorAll('.featured-check-' + type));
+
+                // Inisialisasi order dari atribut data-featured-order (urutan position dari controller).
+                // JANGAN menggunakan urutan DOM karena grid dirender dengan latest() bukan order by position.
+                let order = (grid.dataset.featuredOrder || '')
+                    .split(',')
+                    .map(function (v) { return parseInt(v); })
+                    .filter(function (v) { return !isNaN(v); });
+
+                // Buang ID yang kartunya tidak ada di halaman ini, lalu tambahkan
+                // kotak tercentang yang belum masuk urutan (untuk keamanan).
+                var checkedIds = getChecks()
+                    .filter(function (cb) { return cb.checked; })
+                    .map(function (cb) { return parseInt(cb.value); });
+                order = order.filter(function (id) { return checkedIds.indexOf(id) !== -1; });
+                checkedIds.forEach(function (id) {
+                    if (order.indexOf(id) === -1) order.push(id);
+                });
+
+                function update() {
+                    const checks = getChecks();
+                    const checkedCount = checks.filter(function(cb) { return cb.checked; }).length;
+
+                    checks.forEach(function(cb) {
+                        const id    = parseInt(cb.value);
+                        const label = cb.closest('label');
+                        const badge = label ? label.querySelector('.featured-badge-number') : null;
+                        if (!badge) return;
+
+                        const pos = order.indexOf(id);
+
+                        if (cb.checked && pos !== -1) {
+                            badge.textContent = pos + 1;
+                            badge.classList.remove('bg-slate-200', 'text-slate-500', 'border-slate-300');
+                            badge.classList.add('bg-amber-400', 'text-white', 'border-amber-500');
+                        } else {
+                            badge.textContent = '';
+                            badge.classList.remove('bg-amber-400', 'text-white', 'border-amber-500');
+                            badge.classList.add('bg-slate-200', 'text-slate-500', 'border-slate-300');
+                        }
+
+                        // Disable kotak BELUM tercentang bila kuota penuh.
+                        // Kotak yang SUDAH tercentang JANGAN di-disable
+                        // (input[disabled] tidak terkirim ke server).
+                        if (!cb.checked) {
+                            cb.disabled = checkedCount >= 3;
+                            badge.style.opacity = checkedCount >= 3 ? '0.4' : '1';
+                        } else {
+                            cb.disabled = false;
+                            badge.style.opacity = '1';
+                        }
+                    });
+
+                    if (orderInput) orderInput.value = order.join(',');
+                    if (countEl)    countEl.textContent = checkedCount + ' dari 3 dipilih';
+                }
+
+                update(); // Tampilkan state awal
+
+                getChecks().forEach(function(cb) {
+                    cb.addEventListener('change', function() {
+                        var id = parseInt(this.value);
+                        if (this.checked) {
+                            if (order.indexOf(id) === -1) order.push(id);
+                        } else {
+                            order = order.filter(function(v) { return v !== id; });
+                        }
+                        update();
+                    });
+                });
+            }
+
+            // Jalankan untuk setiap panel (hanya aktif bila kontainernya ada di DOM)
+            setupFeaturedPanel('ebook');
+            setupFeaturedPanel('video');
+            setupFeaturedPanel('blog');
+
+            function confirmDeleteEbook(id) {
+                if (!confirm('Apakah Anda yakin ingin menghapus e-book ini?')) return;
+                var form = document.getElementById('delete-ebook-form');
+                form.action = form.dataset.template.replace('__ID__', id);
+                form.submit();
+            }
+
             function openEditEbookModal(ebook) {
                 const modal = document.getElementById('edit-ebook-modal');
                 modal.querySelector('#edit-ebook-form').action = '/admin/ebook/' + ebook.id;
                 modal.querySelector('#edit-ebook-title').value = ebook.title;
                 modal.querySelector('#edit-ebook-description').value = ebook.description || '';
+                
+                modal.querySelectorAll('input[name="categories[]"]').forEach(cb => cb.checked = false);
+                if (ebook.categories) {
+                    ebook.categories.forEach(cat => {
+                        const cb = modal.querySelector('#edit-eb-' + cat.id);
+                        if (cb) cb.checked = true;
+                    });
+                }
+                
                 modal.classList.remove('hidden');
             }
 
@@ -807,6 +1135,15 @@
                 modal.querySelector('#edit-video-url').value = video.video_url;
                 modal.querySelector('#edit-video-desc').value = video.description || '';
                 modal.querySelector('#delete-video-form').action = '/admin/video/' + video.id;
+                
+                modal.querySelectorAll('input[name="categories[]"]').forEach(cb => cb.checked = false);
+                if (video.categories) {
+                    video.categories.forEach(cat => {
+                        const cb = modal.querySelector('#edit-vi-' + cat.id);
+                        if (cb) cb.checked = true;
+                    });
+                }
+                
                 modal.classList.remove('hidden');
             }
 

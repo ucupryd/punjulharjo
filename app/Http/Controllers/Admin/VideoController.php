@@ -28,12 +28,15 @@ class VideoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'video_url' => 'required|string',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         $validated['user_id'] = Auth::id();
         $validated['slug'] = Str::slug($request->title);
 
-        Video::create($validated);
+        $video = Video::create($validated);
+        $video->categories()->sync($request->input('categories', []));
 
         return back()->with('success', 'Video berhasil ditambahkan!');
     }
@@ -49,10 +52,13 @@ class VideoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'video_url' => 'required|string',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         $validated['slug'] = Str::slug($request->title);
         $video->update($validated);
+        $video->categories()->sync($request->input('categories', []));
 
         return back()->with('success', 'Video berhasil diperbarui!');
     }

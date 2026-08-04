@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
 
 class Category extends Model
@@ -33,9 +33,19 @@ class Category extends Model
         });
     }
 
-    public function blogs(): BelongsToMany
+    public function blogs(): MorphToMany
     {
-        return $this->belongsToMany(Blog::class);
+        return $this->morphedByMany(Blog::class, 'categorizable');
+    }
+
+    public function videos(): MorphToMany
+    {
+        return $this->morphedByMany(Video::class, 'categorizable');
+    }
+
+    public function ebooks(): MorphToMany
+    {
+        return $this->morphedByMany(Ebook::class, 'categorizable');
     }
 
     public function badgeClasses(): string
