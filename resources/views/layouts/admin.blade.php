@@ -35,6 +35,10 @@
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ (request()->is('admin/blog*') || (request()->is('pustaka') && request('tab') === 'blog')) ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     📝 Artikel & Blog
                 </a>
+                <a href="{{ route('admin.categories.index') }}"
+                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/categories*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
+                    🏷️ Kelola Kategori
+                </a>
                 <a href="{{ route('admin.video.index') }}"
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/video*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     🎥 Video Wisata

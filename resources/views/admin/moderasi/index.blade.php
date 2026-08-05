@@ -45,6 +45,9 @@
                         <span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $unread }}</span>
                     @endif
                 </button>
+                <button @click="tab = 'kategori'" :class="tab === 'kategori' ? 'bg-sky-700 text-white shadow' : 'text-slate-600 hover:bg-slate-100'" class="px-5 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-tags"></i> Kelola Kategori
+                </button>
             </div>
 
             <!-- TAB 1: VERIFIKASI ADOPSI -->
@@ -181,6 +184,73 @@
                                                     <i class="fa-solid fa-circle-check text-emerald-500"></i> Dibaca
                                                 </span>
                                             @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+
+            <!-- TAB 4: KELOLA KATEGORI -->
+            <div x-show="tab === 'kategori'" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <h3 class="font-bold text-slate-800 text-lg font-title">Kelola Kategori Konten</h3>
+                    <a href="{{ route('admin.categories.create') }}" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-plus"></i> Tambah Kategori
+                    </a>
+                </div>
+
+                @if($categories->isEmpty())
+                    <p class="text-slate-400 text-sm py-6 text-center">Belum ada kategori yang ditambahkan.</p>
+                @else
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
+                                <tr>
+                                    <th class="p-3">Kategori</th>
+                                    <th class="p-3">Slug</th>
+                                    <th class="p-3 text-center">Berita</th>
+                                    <th class="p-3 text-center">Video</th>
+                                    <th class="p-3 text-center">E-Book</th>
+                                    <th class="p-3 text-center">Total</th>
+                                    <th class="p-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @foreach($categories as $category)
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-3">
+                                            <div class="flex items-center gap-3">
+                                                <x-blog.category-badge :category="$category" />
+                                            </div>
+                                        </td>
+                                        <td class="p-3 text-slate-500 font-mono text-xs">{{ $category->slug }}</td>
+                                        <td class="p-3 text-center text-slate-600">{{ $category->blogs_count }}</td>
+                                        <td class="p-3 text-center text-slate-600">{{ $category->videos_count }}</td>
+                                        <td class="p-3 text-center text-slate-600">{{ $category->ebooks_count }}</td>
+                                        <td class="p-3 text-center font-semibold text-slate-700">
+                                            {{ $category->blogs_count + $category->videos_count + $category->ebooks_count }}
+                                        </td>
+                                        <td class="p-3">
+                                            <div class="flex justify-end gap-1.5">
+                                                <a href="{{ route('admin.categories.edit', $category) }}"
+                                                   class="inline-flex items-center justify-center w-7 h-7 bg-slate-100 hover:bg-sky-50 text-sky-700 rounded transition"
+                                                   title="Edit kategori {{ $category->name }}">
+                                                    <i class="fa-solid fa-pencil text-[10px]"></i>
+                                                </a>
+                                                <form action="{{ route('admin.categories.destroy', $category) }}" method="POST"
+                                                      onsubmit="return confirm('Hapus kategori {{ $category->name }}? Relasi artikel akan dilepas, artikel tidak dihapus.')" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                            class="inline-flex items-center justify-center w-7 h-7 bg-red-50 hover:bg-red-100 text-red-600 rounded transition"
+                                                            title="Hapus kategori {{ $category->name }}">
+                                                        <i class="fa-solid fa-trash text-[10px]"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

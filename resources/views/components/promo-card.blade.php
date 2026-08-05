@@ -8,9 +8,9 @@
 ])
 
 <a href="{{ $url }}"
-   class="group flex flex-col bg-white rounded-none shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden no-underline text-current h-full">
+   class="group flex flex-col no-underline text-current h-full">
 
-    {{-- Gambar kartu --}}
+    {{-- Gambar --}}
     <div class="relative w-full aspect-video overflow-hidden bg-slate-200 flex-shrink-0">
         @if($image)
             <img src="{{ $image }}"
@@ -18,33 +18,27 @@
                  loading="lazy"
                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         @else
-            {{-- Fallback bila gambar kosong: kotak abu-abu berisi ikon --}}
             <div class="w-full h-full flex items-center justify-center bg-slate-100">
                 <i class="fa-regular fa-image text-3xl text-slate-300"></i>
             </div>
         @endif
-    </div>
 
-    {{-- Isi kartu --}}
-    <div class="flex flex-col flex-1 p-5 gap-3">
-
-        {{-- Label jenis konten --}}
-        @if($typeLabel)
-            <span class="text-[10px] font-bold uppercase tracking-widest text-sky-600">
-                {{ $typeLabel }}
-            </span>
-        @endif
-
-        {{-- Badge kategori --}}
+        {{-- Badge kategori — overlay pojok kiri atas foto --}}
         @if(!empty($categories) && count($categories) > 0)
-            <div class="flex flex-wrap gap-1">
+            <div class="absolute top-2 left-2 z-10 flex flex-wrap gap-1 max-w-[85%]">
                 @foreach($categories as $cat)
                     <x-blog.category-badge :category="$cat" />
                 @endforeach
             </div>
         @endif
+    </div>
 
-        {{-- Judul — dipotong maks. 2 baris --}}
+    {{-- Isi --}}
+    <div class="flex flex-col flex-1 pt-4 gap-2">
+
+
+
+        {{-- Judul --}}
         <h4 class="text-sm font-bold text-slate-800 leading-snug line-clamp-2 m-0
                     group-hover:text-sky-700 transition-colors duration-200">
             {{ $title }}

@@ -48,37 +48,34 @@
 
     <!-- E-BOOK TAB PANEL -->
     <div x-show="activeTab === 'ebook'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100" class="max-w-6xl mx-auto px-6 py-12">
-        <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
-            <h2 class="text-3xl font-heading text-brand-dark">Buku Panduan Desa Wisata</h2>
-            <p class="text-slate-500 text-sm">Buka lembaran interaktif di bawah ini untuk menjelajahi potensi keindahan alam, sejarah nusantara, dan kebudayaan di Desa Wisata Punjulharjo.</p>
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 relative">
+            <div class="text-center md:text-left space-y-2">
+                <h2 class="text-3xl font-heading text-brand-dark">Buku Panduan Desa Wisata</h2>
+                <p class="text-slate-500 text-sm">Buka lembaran interaktif di bawah ini untuk menjelajahi potensi keindahan alam, sejarah nusantara, dan kebudayaan di Desa Wisata Punjulharjo.</p>
+            </div>
             
             @if(Auth::check() && Auth::user()->isAdmin())
-                @if($ebooks->isEmpty())
-                    <div class="mt-4">
-                        <button type="button" onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
-                                class="inline-flex items-center gap-2 bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark transition-colors font-semibold px-5 py-2.5 rounded-none text-xs shadow">
-                            <i class="fa-solid fa-plus"></i> Upload E-Book PDF Baru
-                        </button>
-                    </div>
-                @endif
-                {{-- Tombol mode Beranda untuk E-Book --}}
-                <div class="mt-4 flex flex-wrap gap-2 justify-center">
+                <div class="mt-4 md:mt-0 flex flex-wrap gap-2 justify-center md:justify-end">
                     <form method="POST" action="{{ route('admin.featured.mode', 'ebook') }}">
                         @csrf
                         <input type="hidden" name="mode" value="terbaru">
                         <button type="submit"
-                                class="px-4 py-2 text-xs font-semibold border shadow-sm transition-all {{ $featuredModes['ebook'] === 'terbaru' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
-                            <i class="fa-solid fa-clock-rotate-left mr-1"></i> Terbaru di Beranda
+                                class="px-4 py-2.5 text-sm font-semibold border shadow-sm transition-all min-h-[44px] {{ $featuredModes['ebook'] === 'terbaru' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
+                            <i class="fa-solid fa-clock-rotate-left mr-1"></i> Terbaru
                         </button>
                     </form>
                     <form method="POST" action="{{ route('admin.featured.mode', 'ebook') }}">
                         @csrf
                         <input type="hidden" name="mode" value="unggulan">
                         <button type="submit"
-                                class="px-4 py-2 text-xs font-semibold border shadow-sm transition-all {{ $featuredModes['ebook'] === 'unggulan' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
+                                class="px-4 py-2.5 text-sm font-semibold border shadow-sm transition-all min-h-[44px] {{ $featuredModes['ebook'] === 'unggulan' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' }}">
                             <i class="fa-solid fa-star mr-1"></i> Pilih Unggulan
                         </button>
                     </form>
+                    <button type="button" onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
+                            class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold min-h-[44px]">
+                        <i class="fa-solid fa-plus"></i> Tambah Ebook
+                    </button>
                 </div>
             @endif
         </div>
@@ -100,17 +97,7 @@
             @endif
             <div class="eb-grid" id="featured-grid-ebook"
                  data-featured-order="{{ implode(',', $featuredIds['ebook']) }}">
-                @if(Auth::check() && Auth::user()->isAdmin())
-                    <div onclick="document.getElementById('add-ebook-modal').classList.remove('hidden')" 
-                          class="group border-2 border-dashed border-slate-300 hover:border-sky-500 rounded-none flex flex-col items-center justify-center p-4 cursor-pointer bg-white hover:bg-slate-50 shadow-sm hover:shadow transition-all duration-300 text-center"
-                          style="width: 100%; max-width: 17em; height: 16.5em;">
-                        <div class="w-12 h-12 rounded-full bg-slate-200/50 group-hover:bg-sky-100 flex items-center justify-center mb-3 transition duration-300">
-                            <i class="fa-solid fa-plus text-xl text-slate-500 group-hover:text-sky-600"></i>
-                        </div>
-                        <span class="text-sm font-semibold text-slate-700 font-sans">Tambah Ebook</span>
-                        <p class="text-xs text-slate-400 mt-2 font-sans max-w-[130px]">Upload PDF buku panduan baru</p>
-                    </div>
-                @endif
+
 
                 @if($ebooks->isNotEmpty())
                     @foreach($ebooks as $ebook)
@@ -142,12 +129,20 @@
                                     </label>
                                 @endif
                             @endif
+                            {{-- Badge kategori — overlay pojok kiri atas foto --}}
+                            @if($ebook->categories->isNotEmpty())
+                                <div class="absolute left-2 z-20 flex flex-wrap gap-1 max-w-[75%] {{ (Auth::check() && Auth::user()->isAdmin()) ? 'top-14' : 'top-2' }}">
+                                    @foreach($ebook->categories as $category)
+                                        <x-blog.category-badge :category="$category" />
+                                    @endforeach
+                                </div>
+                            @endif
                             <a href="{{ route('ebook.show', $ebook->id) }}" class="eb-card-wrapper block no-underline text-current">
                                 <div class="eb-card">
                                     <div class="eb-fl">
                                         <div class="eb-fullscreen">
                                             <svg class="eb-fullscreen-svg" viewBox="0 0 100 100" aria-hidden="true">
-                                                <path d="M3.563-.004a3.573 3.573 0 0 0-3.527 4.09l-.004-.02v28.141c0 1.973 1.602 3.57 3.57 3.57s3.57-1.598 3.57-3.57V12.218v.004l22.461 22.461a3.571 3.571 0 0 0 6.093-2.527c0-.988-.398-1.879-1.047-2.523L12.218 7.172h19.989c1.973 0 3.57-1.602 3.57-3.57s-1.598-3.57-3.57-3.57H4.035a3.008 3.008 0 0 0-.473-.035zM96.333 0l-.398.035.02-.004h-28.16a3.569 3.569 0 0 0-3.57 3.57 3.569 3.569 0 0 0 3.57 3.57h19.989L65.323 29.632a3.555 3.555 0 0 0-1.047 2.523 3.571 3.571 0 0 0 6.093 2.527L92.83 12.221v19.985a3.569 3.569 0 0 0 3.57 3.57 3.569 3.569 0 0 0 3.57-3.57V4.034v.004a3.569 3.569 0 0 0-3.539-4.043l-.105.004zM3.548 64.23A3.573 3.573 0 0 0 .029 67.8v28.626-.004l.016.305-.004-.016.004.059v-.012l.039.289-.004-.023.023.121-.004-.023c.074.348.191.656.34.938l-.008-.02.055.098-.008-.02.148.242-.008-.012.055.082-.008-.012c.199.285.43.531.688.742l.008.008.031.027.004.004c.582.461 1.32.742 2.121.762h.004l.078.004h28.61a3.569 3.569 0 0 0 3.57-3.57 3.569 3.569 0 0 0-3.57-3.57H12.224l22.461-22.461a3.569 3.569 0 0 0-2.492-6.125l-.105.004h.008a3.562 3.562 0 0 0-2.453 1.074L7.182 87.778V67.793a3.571 3.571 0 0 0-3.57-3.57h-.055.004zm92.805 0a3.573 3.573 0 0 0-3.519 3.57v19.993-.004L70.373 65.328a3.553 3.553 0 0 0-2.559-1.082h-.004a3.573 3.573 0 0 0-3.566 3.57c0 1.004.414 1.91 1.082 2.555l22.461 22.461H67.802a3.57 3.57 0 1 0 0 7.14h28.606c.375 0 .742-.059 1.082-.168l-.023.008.027-.012-.02.008.352-.129-.023.008.039-.02-.02.008.32-.156-.02.008.023-.016-.008.008c.184-.102.34-.207.488-.32l-.008.008.137-.113-.008.004.223-.211.008-.008c.156-.164.301-.34.422-.535l.008-.016-.008.016.008-.02.164-.285.008-.02-.008.016.008-.02c.098-.188.184-.406.246-.633l.008-.023-.004.008.008-.023a3.44 3.44 0 0 0 .121-.852v-.004l.004-.078V67.804a3.569 3.569 0 0 0-3.57-3.57h-.055.004z"></path>
+                                                <path d="M3.563-.004a3.573 3.573 0 0 0-3.527 4.09l-.004-.02v28.141c0 1.973 1.602 3.57 3.57 3.57s3.57-1.598 3.57-3.57V12.218v.004l22.461 22.461a3.571 3.571 0 0 0 6.093-2.527c0-.988-.398-1.879-1.047-2.523L12.218 7.172h19.989c1.973 0 3.57-1.602 3.57-3.57s-1.598-3.57-3.57-3.57H4.035a3.008 3.008 0 0 0-.473-.035zM96.333 0l-.398.035.02-.004h-28.16a3.569 3.569 0 0 0-3.57 3.57 3.569 3.569 0 0 0 3.57 3.57h19.989L65.323 29.632a3.555 3.555 0 0 0-1.047 2.523 3.571 3.571 0 0 0 6.093 2.527L92.83 12.221v19.985a3.569 3.569 0 0 0 3.57 3.57 3.569 3.569 0 0 0 3.57-3.57V4.034v.004a3.569 3.569 0 0 0-3.539-4.043l-.105.004zM3.548 64.23A3.573 3.573 0 0 0 .029 67.8v28.626-.004l.016.305-.004-.016.004.059v-.012l.039.289-.004-.023.023.121-.004-.023c.074.348.191.656.34.938l-.008-.02.055.098-.008-.02.148.242-.008-.012.055.082-.008-.012c.199.285.43.531.688.742l.008.008.031.027.004.004c.582.461 1.32.742 2.121.762h.004l.078.004h28.61a3.569 3.569 0 0 0 3.57-3.57 3.569 3.569 0 0 0-3.57-3.57H12.224l22.461-22.461a3.569 3.569 0 0 0-2.492-6.125l-.105.004h.008a3.562 3.562 0 0 0-2.453 1.074L7.182 87.778V67.793a3.571 3.571 0 0 0-3.57-3.57h-.055.004zm92.805 0a3.573 3.573 0 0 0-3.519 3.57v19.993-.004L70.373 65.328a3.553 3.553 0 0 0-2.559-1.082h-.004a3.573 3.573 0 0 0-3.566 3.57c0 1.004.414 1.91 1.082 2.555l22.461 22.461H67.802a3.57 3.7 0 1 0 0 7.14h28.606c.375 0 .742-.059 1.082-.168l-.023.008.027-.012-.02.008.352-.129-.023.008.039-.02-.02.008.32-.156-.02.008.023-.016-.008.008c.184-.102.34-.207.488-.32l-.008.008.137-.113-.008.004.223-.211.008-.008c.156-.164.301-.34.422-.535l.008-.016-.008.016.008-.02.164-.285.008-.02-.008.016.008-.02c.098-.188.184-.406.246-.633l.008-.023-.004.008.008-.023a3.44 3.44 0 0 0 .121-.852v-.004l.004-.078V67.804a3.569 3.569 0 0 0-3.57-3.57h-.055.004z"></path>
                                             </svg>
                                         </div>
                                     </div>
@@ -164,13 +159,11 @@
                                             <span class="eb-date-month">{{ $ebook->created_at->format('M') }}</span>
                                         </div>
                                         <div class="eb-text">
-                                            <div class="flex flex-wrap gap-1 mb-1.5">
-                                                @forelse($ebook->categories as $category)
-                                                    <x-blog.category-badge :category="$category" />
-                                                @empty
+                                            @if($ebook->categories->isEmpty())
+                                                <div class="flex flex-wrap gap-1 mb-1.5">
                                                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">E-Book</span>
-                                                @endforelse
-                                            </div>
+                                                </div>
+                                            @endif
                                             <div class="eb-text-m" title="{{ $ebook->title }}">{{ $ebook->title }}</div>
                                             <div class="eb-text-s">{{ $ebook->description ?? 'Desa Wisata Punjulharjo' }}</div>
                                         </div>
@@ -432,12 +425,20 @@
                                 </label>
                             @endif
                         @endif
+                        {{-- Badge kategori — overlay pojok kiri atas foto --}}
+                        @if($video->categories->isNotEmpty())
+                            <div class="absolute left-2 z-20 flex flex-wrap gap-1 max-w-[75%] {{ (Auth::check() && Auth::user()->isAdmin()) ? 'top-14' : 'top-2' }}">
+                                @foreach($video->categories as $category)
+                                    <x-blog.category-badge :category="$category" />
+                                @endforeach
+                            </div>
+                        @endif
                         <a href="{{ route('video.show', $video->slug) }}" class="eb-card-wrapper block no-underline text-current">
                             <div class="eb-card">
                                 <div class="eb-fl">
                                     <div class="eb-fullscreen">
                                         <svg class="eb-fullscreen-svg" viewBox="0 0 100 100" aria-hidden="true">
-                                            <path d="M3.563-.004a3.573 3.573 0 0 0-3.527 4.09l-.004-.02v28.141c0 1.973 1.602 3.57 3.57 3.57s3.57-1.598 3.57-3.57V12.218v.004l22.461 22.461a3.571 3.571 0 0 0 6.093-2.527c0-.988-.398-1.879-1.047-2.523L12.218 7.172h19.989c1.973 0 3.57-1.602 3.57-3.57s-1.598-3.57-3.57-3.57H4.035a3.008 3.008 0 0 0-.473-.035zM96.333 0l-.398.035.02-.004h-28.16a3.569 3.569 0 0 0-3.57 3.57 3.569 3.569 0 0 0 3.57 3.57h19.989L65.323 29.632a3.555 3.555 0 0 0-1.047 2.523 3.571 3.571 0 0 0 6.093 2.527L92.83 12.221v19.985a3.569 3.569 0 0 0 3.57 3.57 3.569 3.569 0 0 0 3.57-3.57V4.034v.004a3.569 3.569 0 0 0-3.539-4.043l-.105.004zM3.548 64.23A3.573 3.573 0 0 0 .029 67.8v28.626-.004l.016.305-.004-.016.004.059v-.012l.039.289-.004-.023.023.121-.004-.023c.074.348.191.656.34.938l-.008-.02.055.098-.008-.02.148.242-.008-.012.055.082-.008-.012c.199.285.43.531.688.742l.008.008.031.027.004.004c.582.461 1.32.742 2.121.762h.004l.078.004h28.61a3.569 3.569 0 0 0 3.57-3.57 3.569 3.569 0 0 0-3.57-3.57H12.224l22.461-22.461a3.569 3.569 0 0 0-2.492-6.125l-.105.004h.008a3.562 3.562 0 0 0-2.453 1.074L7.182 87.778V67.793a3.571 3.571 0 0 0-3.57-3.57h-.055.004zm92.805 0a3.573 3.573 0 0 0-3.519 3.57v19.993-.004L70.373 65.328a3.553 3.553 0 0 0-2.559-1.082h-.004a3.573 3.573 0 0 0-3.566 3.57c0 1.004.414 1.91 1.082 2.555l22.461 22.461H67.802a3.57 3.57 0 1 0 0 7.14h28.606c.375 0 .742-.059 1.082-.168l-.023.008.027-.012-.02.008.352-.129-.023.008.039-.02-.02.008.32-.156-.02.008.023-.016-.008.008c.184-.102.34-.207.488-.32l-.008.008.137-.113-.008.004.223-.211.008-.008c.156-.164.301-.34.422-.535l.008-.016-.008.016.008-.02.164-.285.008-.02-.008.016.008-.02c.098-.188.184-.406.246-.633l.008-.023-.004.008.008-.023a3.44 3.44 0 0 0 .121-.852v-.004l.004-.078V67.804a3.569 3.569 0 0 0-3.57-3.57h-.055.004z"></path>
+                                            <path d="M3.563-.004a3.573 3.573 0 0 0-3.527 4.09l-.004-.02v28.141c0 1.973 1.602 3.57 3.57 3.57s3.57-1.598 3.57-3.57V12.218v.004l22.461 22.461a3.571 3.571 0 0 0 6.093-2.527c0-.988-.398-1.879-1.047-2.523L12.218 7.172h19.989c1.973 0 3.57-1.602 3.57-3.57s-1.598-3.57-3.57-3.57H4.035a3.008 3.008 0 0 0-.473-.035zM96.333 0l-.398.035.02-.004h-28.16a3.569 3.569 0 0 0-3.57 3.57 3.569 3.569 0 0 0 3.57 3.57h19.989L65.323 29.632a3.555 3.555 0 0 0-1.047 2.523 3.571 3.571 0 0 0 6.093 2.527L92.83 12.221v19.985a3.569 3.569 0 0 0 3.57 3.57 3.569 3.569 0 0 0 3.57-3.57V4.034v.004a3.569 3.569 0 0 0-3.539-4.043l-.105.004zM3.548 64.23A3.573 3.573 0 0 0 .029 67.8v28.626-.004l.016.305-.004-.016.004.059v-.012l.039.289-.004-.023.023.121-.004-.023c.074.348.191.656.34.938l-.008-.02.055.098-.008-.02.148.242-.008-.012.055.082-.008-.012c.199.285.43.531.688.742l.008.008.031.027.004.004c.582.461 1.32.742 2.121.762h.004l.078.004h28.61a3.569 3.569 0 0 0 3.57-3.57 3.569 3.569 0 0 0-3.57-3.57H12.224l22.461-22.461a3.569 3.569 0 0 0-2.492-6.125l-.105.004h.008a3.562 3.562 0 0 0-2.453 1.074L7.182 87.778V67.793a3.571 3.571 0 0 0-3.57-3.57h-.055.004zm92.805 0a3.573 3.573 0 0 0-3.519 3.57v19.993-.004L70.373 65.328a3.553 3.553 0 0 0-2.559-1.082h-.004a3.573 3.573 0 0 0-3.566 3.57c0 1.004.414 1.91 1.082 2.555l22.461 22.461H67.802a3.57 3.7 0 1 0 0 7.14h28.606c.375 0 .742-.059 1.082-.168l-.023.008.027-.012-.02.008.352-.129-.023.008.039-.02-.02.008.32-.156-.02.008.023-.016-.008.008c.184-.102.34-.207.488-.32l-.008.008.137-.113-.008.004.223-.211.008-.008c.156-.164.301-.34.422-.535l.008-.016-.008.016.008-.02.164-.285.008-.02-.008.016.008-.02c.098-.188.184-.406.246-.633l.008-.023-.004.008.008-.023a3.44 3.44 0 0 0 .121-.852v-.004l.004-.078V67.804a3.569 3.569 0 0 0-3.57-3.57h-.055.004z"></path>
                                         </svg>
                                     </div>
                                 </div>
@@ -454,13 +455,11 @@
                                         <span class="eb-date-month">{{ $video->created_at->format('M') }}</span>
                                     </div>
                                     <div class="eb-text">
-                                        <div class="flex flex-wrap gap-1 mb-1.5">
-                                            @forelse($video->categories as $category)
-                                                <x-blog.category-badge :category="$category" />
-                                            @empty
+                                        @if($video->categories->isEmpty())
+                                            <div class="flex flex-wrap gap-1 mb-1.5">
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">Video</span>
-                                            @endforelse
-                                        </div>
+                                            </div>
+                                        @endif
                                         <div class="eb-text-m" title="{{ $video->title }}">{{ $video->title }}</div>
                                         @if($video->description)
                                             <div class="eb-text-s">{{ $video->description }}</div>
@@ -528,10 +527,6 @@
                             <i class="fa-solid fa-star mr-1"></i> Pilih Unggulan
                         </button>
                     </form>
-                    <a href="{{ route('admin.categories.index') }}"
-                       class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-none shadow-sm transition-all flex items-center gap-2 text-sm font-semibold min-h-[44px]">
-                        <i class="fa-solid fa-tags"></i> Kelola Kategori
-                    </a>
                     <a href="{{ route('admin.blog.create') }}" 
                        class="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-none shadow transition-all flex items-center gap-2 text-sm font-semibold min-h-[44px]">
                         <i class="fa-solid fa-plus"></i> Tambah Artikel
@@ -583,12 +578,20 @@
                                 </label>
                             @endif
                         @endif
+                        {{-- Badge kategori — overlay pojok kiri atas foto --}}
+                        @if($blog->categories->isNotEmpty())
+                            <div class="absolute left-2 z-20 flex flex-wrap gap-1 max-w-[75%] {{ (Auth::check() && Auth::user()->isAdmin()) ? 'top-14' : 'top-2' }}">
+                                @foreach($blog->categories as $category)
+                                    <x-blog.category-badge :category="$category" />
+                                @endforeach
+                            </div>
+                        @endif
                         <a href="{{ route('blog.show', $blog->slug) }}" class="eb-card-wrapper block no-underline text-current animate-fade-in">
                             <div class="eb-card">
                                 <div class="eb-fl">
                                     <div class="eb-fullscreen">
                                         <svg class="eb-fullscreen-svg" viewBox="0 0 100 100" aria-hidden="true">
-                                            <path d="M3.563-.004a3.573 3.573 0 0 0-3.527 4.09l-.004-.02v28.141c0 1.973 1.602 3.57 3.57 3.57s3.57-1.598 3.57-3.57V12.218v.004l22.461 22.461a3.571 3.571 0 0 0 6.093-2.527c0-.988-.398-1.879-1.047-2.523L12.218 7.172h19.989c1.973 0 3.57-1.602 3.57-3.57s-1.598-3.57-3.57-3.57H4.035a3.008 3.008 0 0 0-.473-.035zM96.333 0l-.398.035.02-.004h-28.16a3.569 3.569 0 0 0-3.57 3.57 3.569 3.569 0 0 0 3.57 3.57h19.989L65.323 29.632a3.555 3.555 0 0 0-1.047 2.523 3.571 3.571 0 0 0 6.093 2.527L92.83 12.221v19.985a3.569 3.569 0 0 0 3.57 3.57 3.569 3.569 0 0 0 3.57-3.57V4.034v.004a3.569 3.569 0 0 0-3.539-4.043l-.105.004zM3.548 64.23A3.573 3.573 0 0 0 .029 67.8v28.626-.004l.016.305-.004-.016.004.059v-.012l.039.289-.004-.023.023.121-.004-.023c.074.348.191.656.34.938l-.008-.02.055.098-.008-.02.148.242-.008-.012.055.082-.008-.012c.199.285.43.531.688.742l.008.008.031.027.004.004c.582.461 1.32.742 2.121.762h.004l.078.004h28.61a3.569 3.569 0 0 0 3.57-3.57 3.569 3.569 0 0 0-3.57-3.57H12.224l22.461-22.461a3.569 3.569 0 0 0-2.492-6.125l-.105.004h.008a3.562 3.562 0 0 0-2.453 1.074L7.182 87.778V67.793a3.571 3.571 0 0 0-3.57-3.57h-.055.004zm92.805 0a3.573 3.573 0 0 0-3.519 3.57v19.993-.004L70.373 65.328a3.553 3.553 0 0 0-2.559-1.082h-.004a3.573 3.573 0 0 0-3.566 3.57c0 1.004.414 1.91 1.082 2.555l22.461 22.461H67.802a3.57 3.57 0 1 0 0 7.14h28.606c.375 0 .742-.059 1.082-.168l-.023.008.027-.012-.02.008.352-.129-.023.008.039-.02-.02.008.32-.156-.02.008.023-.016-.008.008c.184-.102.34-.207.488-.32l-.008.008.137-.113-.008.004.223-.211.008-.008c.156-.164.301-.34.422-.535l.008-.016-.008.016.008-.02.164-.285.008-.02-.008.016.008-.02c.098-.188.184-.406.246-.633l.008-.023-.004.008.008-.023a3.44 3.44 0 0 0 .121-.852v-.004l.004-.078V67.804a3.569 3.569 0 0 0-3.57-3.57h-.055.004z"></path>
+                                            <path d="M3.563-.004a3.573 3.573 0 0 0-3.527 4.09l-.004-.02v28.141c0 1.973 1.602 3.57 3.57 3.57s3.57-1.598 3.57-3.57V12.218v.004l22.461 22.461a3.571 3.571 0 0 0 6.093-2.527c0-.988-.398-1.879-1.047-2.523L12.218 7.172h19.989c1.973 0 3.57-1.602 3.57-3.57s-1.598-3.57-3.57-3.57H4.035a3.008 3.008 0 0 0-.473-.035zM96.333 0l-.398.035.02-.004h-28.16a3.569 3.569 0 0 0-3.57 3.57 3.569 3.569 0 0 0 3.57 3.57h19.989L65.323 29.632a3.555 3.555 0 0 0-1.047 2.523 3.571 3.571 0 0 0 6.093 2.527L92.83 12.221v19.985a3.569 3.569 0 0 0 3.57 3.57 3.569 3.569 0 0 0 3.57-3.57V4.034v.004a3.569 3.569 0 0 0-3.539-4.043l-.105.004zM3.548 64.23A3.573 3.573 0 0 0 .029 67.8v28.626-.004l.016.305-.004-.016.004.059v-.012l.039.289-.004-.023.023.121-.004-.023c.074.348.191.656.34.938l-.008-.02.055.098-.008-.02.148.242-.008-.012.055.082-.008-.012c.199.285.43.531.688.742l.008.008.031.027.004.004c.582.461 1.32.742 2.121.762h.004l.078.004h28.61a3.569 3.569 0 0 0 3.57-3.57 3.569 3.569 0 0 0-3.57-3.57H12.224l22.461-22.461a3.569 3.569 0 0 0-2.492-6.125l-.105.004h.008a3.562 3.562 0 0 0-2.453 1.074L7.182 87.778V67.793a3.571 3.571 0 0 0-3.57-3.57h-.055.004zm92.805 0a3.573 3.573 0 0 0-3.519 3.57v19.993-.004L70.373 65.328a3.553 3.553 0 0 0-2.559-1.082h-.004a3.573 3.573 0 0 0-3.566 3.57c0 1.004.414 1.91 1.082 2.555l22.461 22.461H67.802a3.57 3.7 0 1 0 0 7.14h28.606c.375 0 .742-.059 1.082-.168l-.023.008.027-.012-.02.008.352-.129-.023.008.039-.02-.02.008.32-.156-.02.008.023-.016-.008.008c.184-.102.34-.207.488-.32l-.008.008.137-.113-.008.004.223-.211.008-.008c.156-.164.301-.34.422-.535l.008-.016-.008.016.008-.02.164-.285.008-.02-.008.016.008-.02c.098-.188.184-.406.246-.633l.008-.023-.004.008.008-.023a3.44 3.44 0 0 0 .121-.852v-.004l.004-.078V67.804a3.569 3.569 0 0 0-3.57-3.57h-.055.004z"></path>
                                         </svg>
                                     </div>
                                 </div>
@@ -608,13 +611,11 @@
                                         <span class="eb-date-month">{{ $pubDate->format('M') }}</span>
                                     </div>
                                     <div class="eb-text">
-                                        <div class="flex flex-wrap gap-1 mb-1.5">
-                                            @forelse($blog->categories as $category)
-                                                <x-blog.category-badge :category="$category" />
-                                            @empty
+                                        @if($blog->categories->isEmpty())
+                                            <div class="flex flex-wrap gap-1 mb-1.5">
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">Berita</span>
-                                            @endforelse
-                                        </div>
+                                            </div>
+                                        @endif
                                         <div class="eb-text-m" title="{{ $blog->title }}">{{ $blog->title }}</div>
                                         <div class="eb-text-s">
                                             {{ $blog->auto_excerpt }}

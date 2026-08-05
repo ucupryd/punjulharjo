@@ -51,14 +51,14 @@ class Category extends Model
     public function badgeClasses(): string
     {
         return match ($this->color) {
-            'brand-dark' => 'bg-brand-dark/10 text-brand-dark ring-brand-dark/20',
-            'brand-accent' => 'bg-brand-accent/15 text-brand-dark ring-brand-accent/30',
-            'brand-light' => 'bg-brand-light/20 text-brand-dark ring-brand-light/30',
-            'sky' => 'bg-sky-50 text-sky-700 ring-sky-200',
-            'emerald' => 'bg-emerald-50 text-emerald-700 ring-emerald-200',
-            'amber' => 'bg-amber-50 text-amber-800 ring-amber-200',
-            'rose' => 'bg-rose-50 text-rose-700 ring-rose-200',
-            default => 'bg-slate-100 text-slate-700 ring-slate-200',
+            'brand-dark' => 'text-brand-dark border border-brand-dark/20',
+            'brand-accent' => 'text-brand-dark border border-brand-accent/30',
+            'brand-light' => 'text-brand-dark border border-brand-light/30',
+            'sky' => 'text-sky-700 border border-sky-200',
+            'emerald' => 'text-emerald-700 border border-emerald-200',
+            'amber' => 'text-amber-800 border border-amber-200',
+            'rose' => 'text-rose-700 border border-rose-200',
+            default => 'text-slate-700 border border-slate-200',
         };
     }
 }
