@@ -30,7 +30,9 @@ class AdopsiController extends Controller
 
         $pakets = CemaraPaket::where('aktif', true)->get();
 
-        return view('member.adopsi.dashboard', compact('adopsis', 'pohons', 'pakets'));
+        $pohonMapUser = $pohons->whereNotNull('lat')->whereNotNull('lng');
+
+        return view('member.adopsi.dashboard', compact('adopsis', 'pohons', 'pakets', 'pohonMapUser'));
     }
 
     /**

@@ -141,6 +141,30 @@
     </div>
 </div>
 
+<!-- Section: Peta Sebaran Pohon Cemara -->
+<div id="sebaran-peta" class="py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div class="text-center max-w-2xl mx-auto space-y-3">
+            <span class="text-emerald-600 font-semibold uppercase text-xs tracking-wider">Sebaran Lokasi</span>
+            <h2 class="text-3xl font-bold text-slate-800 font-title">Peta Sebaran Pohon Cemara</h2>
+            <p class="text-slate-600 text-sm">
+                Lihat lokasi penanaman pohon cemara laut secara langsung di sepanjang pesisir Pantai Karangjahe.
+            </p>
+        </div>
+
+        <div class="relative bg-white p-4 rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+            <div id="sebaran-map" class="w-full rounded-2xl" style="height: 450px;"></div>
+            @if($pohonMap->isEmpty())
+                <div class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center text-center p-6 z-[1000]">
+                    <i class="fa-solid fa-map-location-dot text-4xl text-slate-300 mb-3"></i>
+                    <p class="text-slate-600 font-semibold">Belum ada titik pohon yang tercatat</p>
+                    <p class="text-xs text-slate-400 mt-1">Tim desa akan segera memperbarui titik lokasi setelah proses penanaman.</p>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+
 <!-- Section 3: Latar Belakang -->
 <div id="latar-belakang" class="py-20 bg-slate-50 border-y border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -369,3 +393,77 @@
     </div>
 @endif
 @endsection
+
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    #sebaran-map {
+        z-index: 1;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const defaultLat = -6.685363;
+        const defaultLng = 111.385750;
+        
+        const map = L.map('sebaran-map').setView([defaultLat, defaultLng], 14);
+        
+        const streetLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+        });
+        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+        satelliteLayer.addTo(map);
+        L.control.layers({ 'Peta Jalan': streetLayer, 'Foto Satelit': satelliteLayer }).addTo(map);
+        
+        const trees = @json($pohonMap);
+        
+        if (trees.length > 0) {
+            const group = L.featureGroup();
+            
+            trees.forEach(function(tree) {
+                const lat = parseFloat(tree.lat);
+                const lng = parseFloat(tree.lng);
+                
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    let tglTanam = '-';
+                    if (tree.tanggal_tanam) {
+                        const parts = tree.tanggal_tanam.split('-');
+                        if (parts.length === 3) {
+                            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+                            const day = parseInt(parts[2], 10);
+                            const monthIndex = parseInt(parts[1], 10) - 1;
+                            const year = parts[0];
+                            tglTanam = day + ' ' + (months[monthIndex] || '') + ' ' + year;
+                        }
+                    }
+                    
+                    const rawStatus = tree.status || 'ditanam';
+                    const statusFormatted = rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1);
+                    
+                    const popupContent = `
+                        <div class="font-sans text-xs space-y-1.5 p-1">
+                            <div class="font-bold text-slate-800 border-b border-slate-100 pb-1 text-sm">${tree.kode_pohon}</div>
+                            <div><span class="text-slate-400 font-medium">Jenis:</span> <span class="text-slate-700">${tree.jenis}</span></div>
+                            <div><span class="text-slate-400 font-medium">Tgl Tanam:</span> <span class="text-slate-700">${tglTanam}</span></div>
+                            <div><span class="text-slate-400 font-medium">Status:</span> <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-100">${statusFormatted}</span></div>
+                        </div>
+                    `;
+                    
+                    const marker = L.marker([lat, lng]).bindPopup(popupContent);
+                    marker.addTo(group);
+                }
+            });
+            
+            group.addTo(map);
+            map.fitBounds(group.getBounds(), { padding: [50, 50] });
+        }
+    });
+</script>
+@endpush
+

@@ -22,7 +22,12 @@ class AdopsiPublicController extends Controller
             'total_adopter'  => CemaraAdopsi::whereIn('status', ['diverifikasi', 'ditanam', 'selesai'])->distinct('user_id')->count('user_id'),
         ];
 
-        return view('adopsi.index', compact('pakets', 'stats'));
+        $pohonMap = CemaraPohon::whereNotNull('lat')
+            ->whereNotNull('lng')
+            ->whereIn('status', ['ditanam', 'tumbuh', 'mati'])
+            ->get(['kode_pohon', 'jenis', 'tanggal_tanam', 'status', 'lat', 'lng']);
+
+        return view('adopsi.index', compact('pakets', 'stats', 'pohonMap'));
     }
 
     /**

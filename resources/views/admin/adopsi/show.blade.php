@@ -101,7 +101,7 @@
                                             <span class="font-mono font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-lg text-sm">{{ $pohon->kode_pohon }}</span>
                                             <span class="text-xs text-slate-500 block mt-1">Status: {{ ucfirst($pohon->status) }} | Tanam: {{ $pohon->tanggal_tanam ? $pohon->tanggal_tanam->format('d M Y') : '-' }}</span>
                                         </div>
-                                        <button onclick="document.getElementById('monitoring-modal-{{ $pohon->id }}').classList.remove('hidden')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl shadow">
+                                        <button onclick="openMonitoringModal({{ $pohon->id }}, '{{ $pohon->lat }}', '{{ $pohon->lng }}')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl shadow">
                                             + Catat Perkembangan
                                         </button>
                                     </div>
@@ -131,7 +131,7 @@
                                     <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 text-left space-y-4">
                                         <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                                             <h3 class="font-bold text-slate-800 font-title">Catat Perkembangan - {{ $pohon->kode_pohon }}</h3>
-                                            <button type="button" onclick="document.getElementById('monitoring-modal-{{ $pohon->id }}').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                                            <button type="button" onclick="closeMonitoringModal({{ $pohon->id }})" class="text-slate-400 hover:text-slate-600">&times;</button>
                                         </div>
 
                                         <form action="{{ route('admin.adopsi.monitoring.store', $pohon) }}" method="POST" enctype="multipart/form-data" class="space-y-3 text-sm">
@@ -161,6 +161,33 @@
                                                 </select>
                                             </div>
 
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Latitude</label>
+                                                    <input type="text" id="lat-{{ $pohon->id }}" name="lat" value="{{ $pohon->lat }}" readonly placeholder="Pilih di peta..." class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-slate-100 font-mono text-xs">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Longitude</label>
+                                                    <input type="text" id="lng-{{ $pohon->id }}" name="lng" value="{{ $pohon->lng }}" readonly placeholder="Pilih di peta..." class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-slate-100 font-mono text-xs">
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Lokasi Deskriptif (Opsional)</label>
+                                                <input type="text" name="lokasi_teks" value="{{ $pohon->lokasi_teks }}" placeholder="Contoh: Dekat gazebo pantai, baris ke-3" class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                            </div>
+
+                                            <div>
+                                                <div class="flex justify-between items-center mb-1">
+                                                    <label class="block text-xs font-semibold text-slate-600 uppercase">Titik Lokasi Peta</label>
+                                                    <button type="button" id="btn-geo-{{ $pohon->id }}" onclick="useCurrentLocation({{ $pohon->id }})" class="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1">
+                                                        <i class="fa-solid fa-location-crosshairs"></i> Gunakan Lokasi Saat Ini
+                                                    </button>
+                                                </div>
+                                                <div id="mini-map-{{ $pohon->id }}" class="mini-map"></div>
+                                                <p class="text-[10px] text-slate-400 mt-1 italic">Klik titik pada peta di atas untuk memindahkan pin lokasi secara manual.</p>
+                                            </div>
+
                                             <div>
                                                 <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tanggal Penanaman (jika baru ditanam)</label>
                                                 <input type="date" name="tanggal_tanam" value="{{ $pohon->tanggal_tanam ? $pohon->tanggal_tanam->format('Y-m-d') : date('Y-m-d') }}" class="w-full border border-slate-300 rounded-xl px-3 py-2">
@@ -177,7 +204,7 @@
                                             </div>
 
                                             <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
-                                                <button type="button" onclick="document.getElementById('monitoring-modal-{{ $pohon->id }}').classList.add('hidden')" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl">Batal</button>
+                                                <button type="button" onclick="closeMonitoringModal({{ $pohon->id }})" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl">Batal</button>
                                                 <button type="submit" class="px-4 py-2 bg-sky-600 text-white font-bold rounded-xl shadow">Simpan</button>
                                             </div>
                                         </form>
@@ -210,3 +237,146 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    .mini-map {
+        height: 200px;
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.75rem;
+        margin-top: 0.5rem;
+        z-index: 10;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    let maps = {};
+    let markers = {};
+
+    function openMonitoringModal(pohonId, savedLat, savedLng) {
+        const modal = document.getElementById('monitoring-modal-' + pohonId);
+        if (!modal) return;
+        
+        modal.classList.remove('hidden');
+        
+        const mapContainerId = 'mini-map-' + pohonId;
+        const latInput = document.getElementById('lat-' + pohonId);
+        const lngInput = document.getElementById('lng-' + pohonId);
+        
+        const defaultLat = -6.685363;
+        const defaultLng = 111.385750;
+        
+        const initialLat = savedLat ? parseFloat(savedLat) : (latInput.value ? parseFloat(latInput.value) : defaultLat);
+        const initialLng = savedLng ? parseFloat(savedLng) : (lngInput.value ? parseFloat(lngInput.value) : defaultLng);
+        const hasLocation = !!(savedLat || latInput.value);
+        
+        if (!maps[pohonId]) {
+            setTimeout(function() {
+                const map = L.map(mapContainerId).setView([initialLat, initialLng], hasLocation ? 16 : 14);
+                const streetLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+                });
+                const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                });
+                satelliteLayer.addTo(map);
+                L.control.layers({ 'Peta Jalan': streetLayer, 'Foto Satelit': satelliteLayer }).addTo(map);
+                
+                maps[pohonId] = map;
+                
+                let marker;
+                if (hasLocation) {
+                    marker = L.marker([initialLat, initialLng]).addTo(map);
+                    markers[pohonId] = marker;
+                }
+                
+                map.on('click', function(e) {
+                    const clickLat = e.latlng.lat.toFixed(7);
+                    const clickLng = e.latlng.lng.toFixed(7);
+                    
+                    latInput.value = clickLat;
+                    lngInput.value = clickLng;
+                    
+                    if (markers[pohonId]) {
+                        markers[pohonId].setLatLng(e.latlng);
+                    } else {
+                        markers[pohonId] = L.marker(e.latlng).addTo(map);
+                    }
+                });
+            }, 100);
+        } else {
+            setTimeout(function() {
+                maps[pohonId].invalidateSize();
+                if (hasLocation) {
+                    maps[pohonId].setView([initialLat, initialLng], 16);
+                    if (markers[pohonId]) {
+                        markers[pohonId].setLatLng([initialLat, initialLng]);
+                    } else {
+                        markers[pohonId] = L.marker([initialLat, initialLng]).addTo(maps[pohonId]);
+                    }
+                } else {
+                    maps[pohonId].setView([initialLat, initialLng], 14);
+                }
+            }, 100);
+        }
+    }
+
+    function closeMonitoringModal(pohonId) {
+        const modal = document.getElementById('monitoring-modal-' + pohonId);
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
+
+    function useCurrentLocation(pohonId) {
+        const latInput = document.getElementById('lat-' + pohonId);
+        const lngInput = document.getElementById('lng-' + pohonId);
+        const btn = document.getElementById('btn-geo-' + pohonId);
+        
+        if (!navigator.geolocation) {
+            alert("Browser Anda tidak mendukung Geolocation.");
+            return;
+        }
+        
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Mendapatkan Lokasi...';
+        
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const currentLat = position.coords.latitude.toFixed(7);
+                const currentLng = position.coords.longitude.toFixed(7);
+                
+                latInput.value = currentLat;
+                lngInput.value = currentLng;
+                
+                const latlng = [currentLat, currentLng];
+                
+                if (maps[pohonId]) {
+                    maps[pohonId].setView(latlng, 17);
+                    if (markers[pohonId]) {
+                        markers[pohonId].setLatLng(latlng);
+                    } else {
+                        markers[pohonId] = L.marker(latlng).addTo(maps[pohonId]);
+                    }
+                }
+                
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            },
+            function(error) {
+                alert("Gagal mendapatkan lokasi: " + error.message);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    }
+</script>
+@endpush
+

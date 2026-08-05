@@ -132,6 +132,28 @@
             @endif
         </div>
 
+        <!-- Section: Peta Lokasi Pohon Saya -->
+        <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-6">
+            <div>
+                <span class="text-emerald-600 font-semibold uppercase text-xs tracking-wider">Pemetaan Lokasi</span>
+                <h2 class="text-xl font-bold text-slate-800 font-title flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-emerald-600"></i> Peta Lokasi Pohon Saya
+                </h2>
+                <p class="text-slate-500 text-sm mt-1">Titik persebaran geografis pohon cemara milik Anda di Pantai Karangjahe.</p>
+            </div>
+
+            <div class="relative bg-slate-50 p-3 rounded-2xl border border-slate-200 overflow-hidden">
+                <div id="personal-map" class="w-full rounded-xl border border-slate-200" style="height: 400px; z-index: 1;"></div>
+                @if($pohonMapUser->isEmpty())
+                    <div class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center text-center p-6 z-[1000]">
+                        <i class="fa-solid fa-location-dot text-4xl text-slate-300 mb-3"></i>
+                        <p class="text-slate-600 font-semibold">Anda belum memiliki pohon dengan titik lokasi tercatat</p>
+                        <p class="text-xs text-slate-400 mt-1">Lokasi koordinat pohon Anda akan tampil setelah dipetakan oleh tim pengelola desa.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
         <!-- Section: Riwayat Transaksi Adopsi -->
         <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-4">
             <h2 class="text-xl font-bold text-slate-800 font-title flex items-center gap-2">
@@ -191,3 +213,82 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            initPersonalMap();
+        });
+
+        function initPersonalMap() {
+            const defaultLat = -6.685363;
+            const defaultLng = 111.385750;
+            
+            const mapEl = document.getElementById('personal-map');
+            if (!mapEl) return;
+            
+            const map = L.map('personal-map').setView([defaultLat, defaultLng], 14);
+            
+            const streetLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+            });
+            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+            satelliteLayer.addTo(map);
+            L.control.layers({ 'Peta Jalan': streetLayer, 'Foto Satelit': satelliteLayer }).addTo(map);
+            
+            const userTrees = @json($pohonMapUser->values());
+            
+            if (userTrees.length > 0) {
+                const group = L.featureGroup();
+                
+                userTrees.forEach(function(tree) {
+                    const lat = parseFloat(tree.lat);
+                    const lng = parseFloat(tree.lng);
+                    
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        let tglTanam = '-';
+                        if (tree.tanggal_tanam) {
+                            const parts = tree.tanggal_tanam.split('-');
+                            if (parts.length === 3) {
+                                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+                                const day = parseInt(parts[2], 10);
+                                const monthIndex = parseInt(parts[1], 10) - 1;
+                                const year = parts[0];
+                                tglTanam = day + ' ' + (months[monthIndex] || '') + ' ' + year;
+                            }
+                        }
+                        
+                        const rawStatus = tree.status || 'ditanam';
+                        const statusFormatted = rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1);
+                        const lokasiDesc = tree.lokasi_teks || '-';
+                        
+                        const popupContent = `
+                            <div class="font-sans text-xs space-y-1.5 p-1">
+                                <div class="font-bold text-slate-800 border-b border-slate-100 pb-1 text-sm">${tree.kode_pohon}</div>
+                                <div><span class="text-slate-400 font-medium">Jenis:</span> <span class="text-slate-700">${tree.jenis}</span></div>
+                                <div><span class="text-slate-400 font-medium">Tgl Tanam:</span> <span class="text-slate-700">${tglTanam}</span></div>
+                                <div><span class="text-slate-400 font-medium">Lokasi:</span> <span class="text-slate-700">${lokasiDesc}</span></div>
+                                <div><span class="text-slate-400 font-medium">Status:</span> <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-100">${statusFormatted}</span></div>
+                            </div>
+                        `;
+                        
+                        const marker = L.marker([lat, lng]).bindPopup(popupContent);
+                        marker.addTo(group);
+                    }
+                });
+                
+                group.addTo(map);
+                map.fitBounds(group.getBounds(), { padding: [50, 50] });
+            }
+        }
+    })();
+</script>
+@endpush
