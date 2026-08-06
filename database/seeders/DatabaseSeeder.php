@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CemaraPaketSeeder::class,
             CategorySeeder::class,
             PerangkatDesaSeeder::class,
+            TimProklimSeeder::class,
         ]);
     }
 }
