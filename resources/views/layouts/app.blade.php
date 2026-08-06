@@ -62,6 +62,8 @@
                 }
 
                 $hasTransparentHeader = (request()->is('/') || request()->is('tentang') || request()->is('destinasi*') || request()->is('pustaka*') || request()->is('testimoni*') || request()->is('adopsi*'));
+                
+                $isAdopsiLanding = request()->is('adopsi');
             @endphp
 
             <!-- Nav Transparan (Absolute, scrolls away with hero) -->

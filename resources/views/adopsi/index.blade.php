@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Hanging Ribbon for My Cemara Logo -->
+<div class="adopsi-hanging-ribbon-container">
+    <a href="{{ url('/adopsi') }}" class="adopsi-hanging-ribbon" aria-label="My Cemara Pantai Karangjahe">
+        <img src="{{ asset('images/logo-my-cemara.png.png') }}"
+             alt="Logo My Cemara Pantai Karangjahe"
+             class="adopsi-hanging-ribbon__logo">
+    </a>
+</div>
+
 @php
     $customAdopsiAbout = \App\Models\SiteSetting::getValue('adopsi_about_image');
     $adopsiAboutImgUrl = $customAdopsiAbout 
@@ -94,12 +103,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div class="lg:col-span-6 space-y-6">
-                <span class="text-emerald-600 font-semibold uppercase text-xs tracking-wider">Gambaran Umum Program</span>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 font-title leading-tight">
                     Membangun Benteng Hijau Alami Pesisir Rembang
                 </h2>
                 <p class="text-slate-600 leading-relaxed font-sans">
-                    <strong>My Cemara</strong> adalah wadah kolaborasi masyarakat, wisatawan, dan tim pengelola pesisir Desa Wisata Punjulharjo. Melalui program ini, siapa saja dapat berkontribusi langsung menjaga kelestarian Pantai Karangjahe tanpa harus hadir secara fisik untuk menanam.
+                    <strong>My Cemara</strong> merupakan program penanaman dan pemeliharaan cemara laut, yang dikelola oleh ProKlim Desa Punjulharjo. Program ini mengajak warga desa, masyarakat umum, instansi, maupun komunitas untuk berpartisipasi dalam upaya pelestarian lingkungan pesisir dengan mengadopsi bibit cemara laut yang akan ditanam, dirawat, dan dipantau pertumbuhannya secara berkelanjutan. 
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
@@ -176,34 +184,41 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Menyerap & Menyimpan Karbon</h3>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    Tajuk cemara yang lebat mampu mengikat karbon secara efektif dalam biomassanya, sekaligus membantu memperbaiki mikroiklim di kawasan pesisir.
+                </p>
+            </div>
+            <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl">
+                    <i class="fa-solid fa-wind"></i>
+                </div>
+                <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Pemecah Angin Alami</h3>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    Tegakan cemara laut yang rapat berfungsi sebagai pemecah angin alami, membantu meredam kecepatan angin kencang yang menerpa kawasan pantai.
+                </p>
+            </div>
             <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl">
                     <i class="fa-solid fa-shield-virus"></i>
                 </div>
                 <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Daya Tahan Tinggi</h3>
                 <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                    Dapat tumbuh subur di tanah berpasir kering dengan toleransi salinitas tinggi serta embusan angin pantai yang keras.
+                    Cemara laut tergolong spesies tangguh yang mampu tumbuh subur di tanah berpasir dengan kadar garam tinggi, sehingga banyak digunakan dalam program rehabilitasi kawasan pesisir.
                 </p>
             </div>
-
             <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl">
-                    <i class="fa-solid fa-microscope"></i>
+                    <i class="fa-solid fa-dove"></i>
                 </div>
-                <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Penyerap Karbon Efektif</h3>
+                <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Mendukung Ekosistem Pesisir</h3>
                 <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                    Tajuk cemara laut memiliki biomassa yang lebat, membantu menyerap emisi karbon serta memperbaiki mikroiklim pesisir.
-                </p>
-            </div>
-
-            <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl">
-                    <i class="fa-solid fa-people-roof"></i>
-                </div>
-                <h3 class="font-bold text-slate-800 text-base sm:text-lg font-title">Pemberdayaan Masyarakat</h3>
-                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                    Bibit dipenyemaian lokal dan ditanam langsung oleh Tim Pengelola Desa (Pokdarwis Karangjahe), menggerakkan ekonomi warga.
+                    Vegetasi cemara laut turut menyediakan struktur habitat alami bagi berbagai organisme di sekitarnya, mulai dari burung hingga biota kecil pantai.
                 </p>
             </div>
         </div>
@@ -258,17 +273,17 @@
             <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div class="w-10 h-10 bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center text-base font-title">5</div>
                 <h4 class="font-bold text-slate-800 text-base">Verifikasi Tim Desa</h4>
-                <p class="text-slate-500 text-xs">Pengelola desa melakukan verifikasi dan menerbitkan kode pohon unik.</p>
+                <p class="text-slate-500 text-xs">Tim ProKlim Desa Punjulharjo melakukan verifikasi dan menerbitkan kode pohon unik.</p>
             </div>
             <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div class="w-10 h-10 bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center text-base font-title">6</div>
                 <h4 class="font-bold text-slate-800 text-base">Penanaman Bibit</h4>
-                <p class="text-slate-500 text-xs">Tim desa menanam bibit cemara di area konservasi Karangjahe.</p>
+                <p class="text-slate-500 text-xs">Tim ProKlim Desa Punjulharjo menanam bibit cemara di area konservasi Karangjahe.</p>
             </div>
             <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div class="w-10 h-10 bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center text-base font-title">7</div>
                 <h4 class="font-bold text-slate-800 text-base">Sertifikat Digital</h4>
-                <p class="text-slate-500 text-xs">Unduh sertifikat adopsi resmi dalam format dokumen Word (.doc).</p>
+                <p class="text-slate-500 text-xs">Unduh sertifikat adopsi resmi.</p>
             </div>
             <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div class="w-10 h-10 bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center text-base font-title">8</div>
@@ -340,6 +355,65 @@
     </div>
 </div>
 
+<!-- Section 8: FAQ Seputar Adopsi Cemara -->
+<div id="faq-adopsi" class="py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-emerald-600 font-semibold uppercase text-xs tracking-wider">FAQ Terkait</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 font-title mt-1">Adopsi Cemara</h2>
+        </div>
+        @php
+            $faqsAdopsi = [
+                [
+                    'q' => 'Apakah saya bisa memantau perkembangan cemara yang saya adopsi?',
+                    'a' => 'Ya, setelah proses adopsi selesai, informasi mengenai cemara yang Anda dukung dapat diakses melalui akun member. Pemantauan dapat dilihat melalui dokumentasi foto dan pembaruan data pertumbuhan yang tersedia pada dashboard adopter.',
+                ],
+                [
+                    'q' => 'Apakah saya bisa memilih lokasi penanaman cemara?',
+                    'a' => 'Penanaman dilakukan di kawasan pesisir Punjulharjo sesuai kondisi dan kebutuhan lokasi. Saat ini sistem belum menyediakan pilihan lokasi secara mandiri; titik penanaman ditentukan oleh pengelola program bersama Tim ProKlim.',
+                ],
+                [
+                    'q' => 'Kapan saya mendapatkan sertifikat adopsi?',
+                    'a' => 'Sertifikat adopsi diterbitkan setelah proses adopsi Anda dikonfirmasi, dan dapat diunduh langsung melalui akun adopter.',
+                ],
+                [
+                    'q' => 'Ke mana kontribusi/dana adopsi cemara digunakan?',
+                    'a' => 'Kontribusi adopsi digunakan sepenuhnya untuk mendukung kebutuhan penanaman dan pemeliharaan cemara dalam program ini.',
+                ],
+                [
+                    'q' => 'Siapa yang merawat cemara setelah ditanam?',
+                    'a' => 'Cemara yang telah ditanam dirawat oleh Tim Pengelola Desa (Pokdarwis Karangjahe) bersama Tim ProKlim, melalui kegiatan pemeliharaan dan pemantauan rutin.',
+                ],
+                [
+                    'q' => 'Bagaimana jika cemara yang saya adopsi tidak tumbuh atau mati?',
+                    'a' => 'Kondisi cemara diperbarui secara berkala melalui fitur Monitoring. Jika cemara mengalami kendala atau tidak dapat bertahan hidup, Anda dapat melihat status tersebut dan memilih tindakan lanjutan yang tersedia pada fitur Monitoring sesuai ketentuan program.',
+                ],
+                [
+                    'q' => 'Apakah saya bisa mengunjungi lokasi cemara yang saya adopsi?',
+                    'a' => 'Anda dapat mengetahui lokasi penanaman melalui fitur Monitoring. Untuk kunjungan langsung ke lokasi, silakan mengikuti ketentuan dan berkoordinasi terlebih dahulu dengan pengelola program melalui kontak yang tersedia.',
+                ],
+            ];
+        @endphp
+        <div x-data="{ activeFaq: null }" class="space-y-3">
+            @foreach($faqsAdopsi as $index => $faq)
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <button type="button"
+                            @click="activeFaq = activeFaq === {{ $index }} ? null : {{ $index }}"
+                            class="w-full flex items-center justify-between gap-4 text-left px-5 sm:px-6 py-4 sm:py-5 focus:outline-none">
+                        <span class="font-bold text-slate-800 text-sm sm:text-base font-title">{{ $faq['q'] }}</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 text-sm transition-transform duration-200 shrink-0"
+                           :class="{ 'rotate-180': activeFaq === {{ $index }} }"></i>
+                    </button>
+                    <div x-show="activeFaq === {{ $index }}" x-transition.opacity
+                         class="px-5 sm:px-6 pb-4 sm:pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed">
+                        {{ $faq['a'] }}
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
 @if(Auth::check() && Auth::user()->isAdmin())
     <!-- Edit Custom Image Modal for Adopsi About -->
     <div id="edit-custom-image-modal-adopsi_about_image" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
@@ -399,6 +473,59 @@
 <style>
     #sebaran-map {
         z-index: 1;
+    }
+
+    .adopsi-hanging-ribbon-container {
+        position: absolute;
+        top: 0;
+        left: 300px; /* digeser ke kanan agar melewati branding "Desa Wisata Punjulharjo" */
+        width: 120px;
+        height: 150px;
+        z-index: 50; /* di atas navbar transparan z-30 dan navbar putih fixed z-40 */
+        filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.22)); /* shadow 3D mengikuti bentuk runcing clip-path */
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+    }
+    .adopsi-hanging-ribbon-container:hover {
+        transform: translateY(-4px); /* Efek melayang 3D */
+        filter: drop-shadow(0 20px 24px rgba(16, 185, 129, 0.22)) drop-shadow(0 8px 10px rgba(0, 0, 0, 0.15));
+    }
+    .adopsi-hanging-ribbon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        padding: 12px;
+        padding-top: 20px;
+        padding-bottom: 24px;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 50% 100%, 0% 80%);
+        overflow: hidden;
+        outline: none;
+    }
+    .adopsi-hanging-ribbon:focus-visible {
+        outline: 2px solid #10b981;
+        outline-offset: 4px;
+        border-radius: 4px;
+    }
+    .adopsi-hanging-ribbon__logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    @media (max-width: 768px) {
+        .adopsi-hanging-ribbon-container {
+            top: 0;
+            left: 205px; /* digeser agar tidak menimpa branding versi mobile yang lebih pendek */
+            width: 72px;
+            height: 94px;
+        }
+        .adopsi-hanging-ribbon {
+            padding: 8px;
+            padding-top: 14px;
+            padding-bottom: 16px;
+        }
     }
 </style>
 @endpush
