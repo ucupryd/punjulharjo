@@ -355,6 +355,65 @@
     </div>
 </div>
 
+   <!-- =========================================================================
+        SECTION TIM PROKLIM
+        ========================================================================= -->
+   <section id="tim-proklim" class="scroll-mt-24 py-16 md:py-24 bg-white px-6">
+       @if(Auth::check() && Auth::user()->isAdmin())
+           <div class="max-w-6xl mx-auto flex justify-end mb-6">
+               <a href="{{ route('admin.tim-proklim.index') }}"
+                  class="inline-flex items-center gap-2 bg-emerald-700 text-white hover:bg-emerald-600 transition-colors font-semibold px-4 py-2 rounded-lg text-sm shadow">
+                   <i class="fa-solid fa-pen"></i> Edit Tim ProKlim
+               </a>
+           </div>
+       @endif
+       <div class="max-w-6xl mx-auto space-y-10">
+           <div class="text-center space-y-3 max-w-2xl mx-auto">
+               <h2 class="text-3xl md:text-4xl font-heading text-emerald-800">Tim ProKlim</h2>
+               <p class="text-slate-600 text-sm">Program Kampung Iklim (ProKlim) Desa Punjulharjo dijalankan oleh tim berikut.</p>
+           </div>
+
+           @php
+               $proklim3dTotal = $timProklim->count();
+               $proklim3dCardWidth = 170;
+               $proklim3dCardHeight = 220;
+               $proklim3dRadius = $proklim3dTotal > 0
+                   ? round(($proklim3dCardWidth * $proklim3dTotal) / (2 * M_PI * 0.55))
+                   : 190;
+               $proklim3dRadius = max(190, $proklim3dRadius);
+               $proklim3dStageSize = $proklim3dCardHeight + 110;
+           @endphp
+
+           @if($timProklim->isEmpty())
+               <p class="text-center text-sm text-slate-400 italic">Belum ada data anggota Tim ProKlim.</p>
+           @else
+               <div class="proklim-3d-fullbleed">
+                   <div class="proklim-3d-stage" style="height: {{ $proklim3dStageSize }}px;">
+                       <div class="proklim-3d-ring" style="--total: {{ $proklim3dTotal }}; --radius: {{ $proklim3dRadius }}px;">
+                           @foreach($timProklim as $index => $anggota)
+                               <div class="proklim-3d-card" style="--i: {{ $index }};" tabindex="0">
+                                   <div class="proklim-3d-card__face">
+                                       @if($anggota->foto)
+                                           <img src="{{ (str_starts_with($anggota->foto, 'http') || str_contains($anggota->foto, 'storage/')) ? asset($anggota->foto) : Storage::url($anggota->foto) }}" alt="Foto {{ $anggota->nama }}">
+                                       @else
+                                           <div class="proklim-3d-card__fallback">
+                                               <i class="fa-solid fa-user-tie"></i>
+                                           </div>
+                                       @endif
+                                   </div>
+                                   <div class="proklim-3d-card__name-badge">{{ $anggota->nama }}</div>
+                                   <div class="proklim-3d-card__overlay">
+                                       <span class="proklim-3d-card__peran">{{ $anggota->peran }}</span>
+                                   </div>
+                               </div>
+                           @endforeach
+                       </div>
+                   </div>
+               </div>
+           @endif
+        </div>
+    </section>
+
 <!-- Section 8: FAQ Seputar Adopsi Cemara -->
 <div id="faq-adopsi" class="py-20 bg-slate-50 border-t border-slate-200">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -411,6 +470,19 @@
                 </div>
             @endforeach
         </div>
+
+        <div class="max-w-2xl mx-auto mt-8 bg-emerald-50 border border-emerald-200 rounded-xl p-5 text-center space-y-1">
+            <p class="text-sm font-semibold text-emerald-800">Butuh bantuan seputar My Cemara / Adopsi Pohon?</p>
+            <p class="text-sm text-slate-600">Hubungi kontak khusus ProKlim (a.n. M. Ali Mustofa):</p>
+            <p class="text-sm text-emerald-700">
+                <i class="fa-solid fa-envelope"></i>
+                <a href="mailto:proklimpunjulharjo@gmail.com" class="underline">proklimpunjulharjo@gmail.com</a>
+            </p>
+            <p class="text-sm text-emerald-700">
+                <i class="fa-solid fa-phone"></i>
+                <a href="https://wa.me/6281329427041" class="underline">+62 813-2942-7041</a>
+            </p>
+        </div>
     </div>
 </div>
 
@@ -466,6 +538,8 @@
         </div>
     </div>
 @endif
+
+
 @endsection
 
 @push('styles')
@@ -526,6 +600,115 @@
             padding-top: 14px;
             padding-bottom: 16px;
         }
+    }
+    .proklim-3d-fullbleed {
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        width: 100vw;
+    }
+    .proklim-3d-stage {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1200px;
+        margin: 0 auto;
+    }
+    .proklim-3d-ring {
+        position: relative;
+        width: 170px;
+        height: 220px;
+        transform-style: preserve-3d;
+        animation: proklim3dSpin 40s linear infinite;
+    }
+    .proklim-3d-ring:hover,
+    .proklim-3d-ring:focus-within {
+        animation-play-state: paused;
+    }
+    @keyframes proklim3dSpin {
+        from { transform: rotateY(0deg); }
+        to { transform: rotateY(360deg); }
+    }
+    .proklim-3d-card {
+        position: absolute;
+        inset: 0;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        border: 2px solid rgba(255,255,255,0.8);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        cursor: pointer;
+        transform:
+            rotateY(calc(360deg / var(--total) * var(--i)))
+            translateZ(var(--radius));
+        transition: filter 0.3s ease;
+    }
+    .proklim-3d-card__face {
+        width: 100%;
+        height: 100%;
+        background: #d1fae5;
+    }
+    .proklim-3d-card__face img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .proklim-3d-card__fallback {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #065f46;
+        background: rgba(6,95,70,0.08);
+    }
+    .proklim-3d-card__name-badge {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0.4rem 0.35rem;
+        background: rgba(6,78,59,0.85);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.15;
+        z-index: 2;
+    }
+    .proklim-3d-card__overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        text-align: center;
+        padding: 0.5rem;
+        padding-bottom: 2.2rem;
+        background: rgba(6,78,59,0.55);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        z-index: 3;
+    }
+    .proklim-3d-card:hover .proklim-3d-card__overlay,
+    .proklim-3d-card:focus .proklim-3d-card__overlay,
+    .proklim-3d-card.is-active .proklim-3d-card__overlay {
+        opacity: 1;
+    }
+    .proklim-3d-card__peran {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #a7f3d0;
+        font-weight: 700;
+    }
+    @media (max-width: 768px) {
+        .proklim-3d-ring { transform: scale(0.65); }
+        .proklim-3d-ring:hover, .proklim-3d-ring:focus-within { transform: scale(0.65); animation-play-state: paused; }
     }
 </style>
 @endpush
@@ -590,6 +773,19 @@
             group.addTo(map);
             map.fitBounds(group.getBounds(), { padding: [50, 50] });
         }
+
+        // 3D Carousel Tim ProKlim Click/Tap Handler
+        document.querySelectorAll('.proklim-3d-card').forEach(function (card) {
+            card.addEventListener('click', function (e) {
+                const alreadyActive = card.classList.contains('is-active');
+                document.querySelectorAll('.proklim-3d-card.is-active').forEach(function (c) {
+                    c.classList.remove('is-active');
+                });
+                if (!alreadyActive) {
+                    card.classList.add('is-active');
+                }
+            });
+        });
     });
 </script>
 @endpush

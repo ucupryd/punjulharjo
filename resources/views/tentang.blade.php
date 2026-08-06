@@ -180,8 +180,16 @@
     <!-- =========================================================================
          SECTION 5: PEMERINTAHAN DESA (PERANGKAT)
          ========================================================================= -->
-    <section id="pemerintahan" class="scroll-mt-24 py-16 md:py-24 bg-white px-6">
-        <div class="max-w-6xl mx-auto space-y-10">
+    <section id="pemerintahan" class="scroll-mt-24 py-10 md:py-14 bg-white px-6">
+        @if(Auth::check() && Auth::user()->isAdmin())
+            <div class="max-w-6xl mx-auto flex justify-end mb-6">
+                <a href="{{ route('admin.perangkat-desa.index') }}"
+                   class="inline-flex items-center gap-2 bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark transition-colors font-semibold px-4 py-2 rounded-none text-sm shadow">
+                    <i class="fa-solid fa-pen"></i> Edit Perangkat Desa
+                </a>
+            </div>
+        @endif
+        <div class="max-w-6xl mx-auto space-y-6">
             <div class="text-center space-y-3 max-w-2xl mx-auto">
 
                 <h2 class="text-3xl md:text-4xl font-heading text-brand-dark">Pemerintahan Desa</h2>
@@ -189,32 +197,40 @@
             </div>
 
             @php
-                $perangkat = [
-                    ['jabatan' => 'Kepala Desa', 'nama' => 'Moh. Akrom'],
-                    ['jabatan' => 'Sekretaris Desa', 'nama' => 'Ubaidillah'],
-                    ['jabatan' => 'Kasi Pemerintahan', 'nama' => 'Akhsan'],
-                    ['jabatan' => 'Kasi Kesejahteraan', 'nama' => 'Mulyo Santoso, SE'],
-                    ['jabatan' => 'Kasi Pelayanan', 'nama' => 'Sholihul Ma’arif, S.Pd'],
-                    ['jabatan' => 'Kaur Umum & Perencanaan', 'nama' => 'M. Ali Mustofa'],
-                    ['jabatan' => 'Kaur Keuangan', 'nama' => 'Dwi Lestari Indrayani'],
-                    ['jabatan' => 'Kepala Dusun', 'nama' => 'Moh Nasrul Jamil'],
-                    ['jabatan' => 'Kepala Dusun', 'nama' => 'M. Zaenal Roziqin'],
-                    ['jabatan' => 'Kepala Dusun', 'nama' => 'Putri Dini Andani, S.Bns'],
-                ];
+                $perangkat3dTotal = $perangkat->count();
+                $perangkat3dCardWidth = 170;
+                $perangkat3dCardHeight = 220;
+                $perangkat3dRadius = $perangkat3dTotal > 0
+                    ? round(($perangkat3dCardWidth * $perangkat3dTotal) / (2 * M_PI * 0.55))
+                    : 190;
+                $perangkat3dRadius = max(190, $perangkat3dRadius);
+                $perangkat3dStageSize = $perangkat3dCardHeight + 110;
             @endphp
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                @foreach($perangkat as $p)
-                    <div class="p-4 bg-slate-50 rounded-none border border-slate-200 text-center flex flex-col justify-between hover:border-brand-dark transition duration-300">
-                        <div class="space-y-2">
-                            <div class="w-10 h-10 bg-brand-dark/10 text-brand-dark rounded-none flex items-center justify-center mx-auto text-sm font-bold">
-                                <i class="fa-solid fa-user-tie"></i>
+            <div class="perangkat-3d-fullbleed">
+                <div class="perangkat-3d-stage" style="height: {{ $perangkat3dStageSize }}px;">
+                    <div class="perangkat-3d-ring" style="--total: {{ $perangkat3dTotal }}; --radius: {{ $perangkat3dRadius }}px;">
+                        @foreach($perangkat as $index => $p)
+                            <div class="perangkat-3d-card"
+                                 style="--i: {{ $index }};"
+                                 tabindex="0">
+                                <div class="perangkat-3d-card__face">
+                                    @if($p->foto)
+                                        <img src="{{ (str_starts_with($p->foto, 'http') || str_contains($p->foto, 'storage/')) ? asset($p->foto) : Storage::url($p->foto) }}" alt="Foto {{ $p->nama }}">
+                                    @else
+                                        <div class="perangkat-3d-card__fallback">
+                                            <i class="fa-solid fa-user-tie"></i>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="perangkat-3d-card__name-badge">{{ $p->nama }}</div>
+                                <div class="perangkat-3d-card__overlay">
+                                    <span class="perangkat-3d-card__jabatan">{{ $p->jabatan }}</span>
+                                </div>
                             </div>
-                            <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400 block pt-1 min-h-[2.4em] leading-tight">{{ $p['jabatan'] }}</span>
-                        </div>
-                        <h4 class="text-xs sm:text-sm font-bold text-slate-800 leading-snug break-words hyphens-auto mt-2">{{ $p['nama'] }}</h4>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
             </div>
             
             <p class="text-[10px] text-center text-slate-400 italic font-sans">
@@ -671,6 +687,120 @@
         </div>
     </section>
 
+    @push('styles')
+    <style>
+    .perangkat-3d-fullbleed {
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        width: 100vw;
+    }
+    .perangkat-3d-stage {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1200px;
+        margin: 0 auto;
+    }
+    .perangkat-3d-ring {
+        position: relative;
+        width: 170px;
+        height: 220px;
+        transform-style: preserve-3d;
+        animation: perangkat3dSpin 40s linear infinite;
+    }
+    .perangkat-3d-ring:hover,
+    .perangkat-3d-ring:focus-within {
+        animation-play-state: paused;
+    }
+    @keyframes perangkat3dSpin {
+        from { transform: rotateY(0deg); }
+        to { transform: rotateY(360deg); }
+    }
+    .perangkat-3d-card {
+        position: absolute;
+        inset: 0;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        border: 2px solid rgba(255,255,255,0.8);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        cursor: pointer;
+        transform:
+            rotateY(calc(360deg / var(--total) * var(--i)))
+            translateZ(var(--radius));
+        transition: filter 0.3s ease;
+    }
+    .perangkat-3d-card__face {
+        width: 100%;
+        height: 100%;
+        background: #e2e8f0;
+    }
+    .perangkat-3d-card__face img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .perangkat-3d-card__fallback {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: #1e293b;
+        background: rgba(30,41,59,0.08);
+    }
+    .perangkat-3d-card__name-badge {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0.4rem 0.35rem;
+        background: rgba(15,23,42,0.82);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.15;
+        z-index: 2;
+    }
+    .perangkat-3d-card__overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        text-align: center;
+        padding: 0.5rem;
+        padding-bottom: 2.2rem;
+        background: rgba(15,23,42,0.55);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        z-index: 3;
+    }
+    .perangkat-3d-card:hover .perangkat-3d-card__overlay,
+    .perangkat-3d-card:focus .perangkat-3d-card__overlay,
+    .perangkat-3d-card.is-active .perangkat-3d-card__overlay {
+        opacity: 1;
+    }
+    .perangkat-3d-card__jabatan {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #93c5fd;
+        font-weight: 700;
+    }
+    @media (max-width: 768px) {
+        .perangkat-3d-ring { transform: scale(0.65); }
+        .perangkat-3d-ring:hover, .perangkat-3d-ring:focus-within { transform: scale(0.65); animation-play-state: paused; }
+    }
+    </style>
+    @endpush
+
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -722,6 +852,19 @@
             }, options);
 
             sections.forEach(section => observer.observe(section));
+
+            // 3D Carousel Card Click/Tap Handler
+            document.querySelectorAll('.perangkat-3d-card').forEach(function (card) {
+                card.addEventListener('click', function (e) {
+                    const alreadyActive = card.classList.contains('is-active');
+                    document.querySelectorAll('.perangkat-3d-card.is-active').forEach(function (c) {
+                        c.classList.remove('is-active');
+                    });
+                    if (!alreadyActive) {
+                        card.classList.add('is-active');
+                    }
+                });
+            });
         });
     </script>
     @endpush

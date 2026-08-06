@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CemaraPaket;
 use App\Models\CemaraAdopsi;
 use App\Models\CemaraPohon;
+use App\Models\TimProklim;
 use Illuminate\Http\Request;
 
 class AdopsiPublicController extends Controller
@@ -27,7 +28,9 @@ class AdopsiPublicController extends Controller
             ->whereIn('status', ['ditanam', 'tumbuh', 'mati'])
             ->get(['kode_pohon', 'jenis', 'tanggal_tanam', 'status', 'lat', 'lng']);
 
-        return view('adopsi.index', compact('pakets', 'stats', 'pohonMap'));
+        $timProklim = TimProklim::orderBy('urutan')->get();
+
+        return view('adopsi.index', compact('pakets', 'stats', 'pohonMap', 'timProklim'));
     }
 
     /**

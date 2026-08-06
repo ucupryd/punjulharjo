@@ -21,6 +21,8 @@ use App\Http\Controllers\Member\AdopsiController as MemberAdopsiController;
 use App\Http\Controllers\Admin\AdopsiController as AdminAdopsiController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ModerasiController as AdminModerasiController;
+use App\Http\Controllers\Admin\PerangkatDesaController;
+use App\Http\Controllers\Admin\TimProklimController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +40,7 @@ Route::redirect('/video', '/pustaka');
 Route::get('/pustaka/ebook/{ebook}', [PublicEbookController::class, 'show'])->name('ebook.show');
 Route::get('/pustaka/ebook/{ebook}/download', [PublicEbookController::class, 'download'])->name('ebook.download');
 Route::get('/destinasi', function () { return redirect('/tentang#wisata'); })->name('destinasi');
-Route::view('/tentang', 'tentang')->name('tentang');
+Route::get('/tentang', [App\Http\Controllers\TentangController::class, 'index'])->name('tentang');
 Route::redirect('/temukan-kami', '/tentang#kontak')->name('temukan');
 Route::redirect('/lokasi', '/tentang#kontak');
 
@@ -152,6 +154,22 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/pesan', [ContactMessageController::class, 'index'])->name('pesan.index');
     Route::patch('/pesan/{id}/read', [ContactMessageController::class, 'markAsRead'])->name('pesan.read');
     Route::post('/pesan/read-all', [ContactMessageController::class, 'markAllAsRead'])->name('pesan.read-all');
+
+    // CRUD Perangkat Desa
+    Route::get('/perangkat-desa', [PerangkatDesaController::class, 'index'])->name('perangkat-desa.index');
+    Route::get('/perangkat-desa/create', [PerangkatDesaController::class, 'create'])->name('perangkat-desa.create');
+    Route::post('/perangkat-desa', [PerangkatDesaController::class, 'store'])->name('perangkat-desa.store');
+    Route::get('/perangkat-desa/{id}/edit', [PerangkatDesaController::class, 'edit'])->name('perangkat-desa.edit');
+    Route::put('/perangkat-desa/{id}', [PerangkatDesaController::class, 'update'])->name('perangkat-desa.update');
+    Route::delete('/perangkat-desa/{id}', [PerangkatDesaController::class, 'destroy'])->name('perangkat-desa.destroy');
+
+    // CRUD Tim ProKlim
+    Route::get('/tim-proklim', [TimProklimController::class, 'index'])->name('tim-proklim.index');
+    Route::get('/tim-proklim/create', [TimProklimController::class, 'create'])->name('tim-proklim.create');
+    Route::post('/tim-proklim', [TimProklimController::class, 'store'])->name('tim-proklim.store');
+    Route::get('/tim-proklim/{id}/edit', [TimProklimController::class, 'edit'])->name('tim-proklim.edit');
+    Route::put('/tim-proklim/{id}', [TimProklimController::class, 'update'])->name('tim-proklim.update');
+    Route::delete('/tim-proklim/{id}', [TimProklimController::class, 'destroy'])->name('tim-proklim.destroy');
 
     // Ubah Hero Background
     Route::get('/hero', [HeroController::class, 'edit'])->name('hero.edit');

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CemaraPaketSeeder::class,
             CategorySeeder::class,
+            PerangkatDesaSeeder::class,
         ]);
     }
 }
