@@ -12,6 +12,7 @@
     'waveColor' => 'text-white', // Warna gelombang bawah
     'hasWave' => false,      // Gelombang hanya untuk hero halaman utama subpage
     'maxWidth' => 'max-w-4xl', // Lebar kontainer isi hero
+    'padding' => null,       // Custom padding classes
 ])
 
 @php
@@ -57,7 +58,7 @@
     <div class="absolute inset-0 {{ $overlay }} z-10"></div>
 
     <!-- Content Area (Dengan padding top untuk offset navbar fixed) -->
-    <div class="relative z-20 mx-auto {{ $maxWidth }} px-6 pt-12 pb-24 md:pt-14 md:pb-32 text-center">
+    <div class="relative z-20 mx-auto {{ $maxWidth }} px-6 {{ $padding ?? ($hasWave ? 'pt-24 pb-32 md:pt-32 md:pb-48' : 'pt-12 pb-24 md:pt-14 md:pb-32') }} text-center">
 
 
         @if($title)
@@ -80,7 +81,7 @@
 
     @if($hasWave)
         <!-- Multi-layered Aesthetic Wave Divider (Tumpang Tindih seperti Beranda) -->
-        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-30 pointer-events-none translate-y-[2px]">
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-30 pointer-events-none translate-y-[4px] scale-y-[1.05] origin-bottom">
             <svg class="relative block w-full h-[60px] md:h-[145px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <!-- Layer 1: Back Wave (Translucent Light) -->
                 <path d="M0,10 C150,40,350,0,600,25 C850,50,1050,15,1200,20 L1200,120 L0,120 Z" fill="{{ $theme['wave1'] }}"></path>

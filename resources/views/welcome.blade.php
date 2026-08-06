@@ -707,6 +707,24 @@
                             </button>
                         </div>
                     </form>
+                    @php
+                        $backupAboutImage = \App\Models\SiteSetting::getValue('about_image_backup');
+                    @endphp
+                    @if($backupAboutImage)
+                        <div class="p-6 border-t border-slate-100 bg-slate-50">
+                            <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 gambar cadangan sebelumnya:</p>
+                            <div class="flex items-center gap-3">
+                                <img src="{{ (str_starts_with($backupAboutImage, 'http') || str_contains($backupAboutImage, 'storage/')) ? asset($backupAboutImage) : Storage::url($backupAboutImage) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
+                                <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="hero_key" value="about_image">
+                                    <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
+                                        <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke Gambar Ini
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -739,6 +757,24 @@
                             </button>
                         </div>
                     </form>
+                    @php
+                        $backupCultureImage = \App\Models\SiteSetting::getValue('culture_image_backup');
+                    @endphp
+                    @if($backupCultureImage)
+                        <div class="p-6 border-t border-slate-100 bg-slate-50">
+                            <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 gambar cadangan sebelumnya:</p>
+                            <div class="flex items-center gap-3">
+                                <img src="{{ (str_starts_with($backupCultureImage, 'http') || str_contains($backupCultureImage, 'storage/')) ? asset($backupCultureImage) : Storage::url($backupCultureImage) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
+                                <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="hero_key" value="culture_image">
+                                    <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
+                                        <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke Gambar Ini
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
 

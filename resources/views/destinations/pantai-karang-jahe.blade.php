@@ -33,28 +33,7 @@
 
         <!-- Hero Content -->
         <div class="relative z-10 px-4 mt-20 md:mt-24 max-w-5xl mx-auto space-y-4 md:space-y-6">
-            <!-- Breadcrumb Navigation -->
-            <nav class="flex justify-center mb-2" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 text-slate-300 text-[10px] md:text-sm font-medium">
-                    <li class="inline-flex items-center">
-                        <a href="{{ route('home') }}" class="hover:text-white transition-colors duration-200">
-                            <i class="fa-solid fa-house mr-1"></i> Beranda
-                        </a>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <i class="fa-solid fa-chevron-right mx-1 text-[7px] text-slate-400"></i>
-                            <a href="{{ route('tentang') }}#wisata" class="hover:text-white transition-colors duration-200">Destinasi</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <i class="fa-solid fa-chevron-right mx-1 text-[7px] text-slate-400"></i>
-                            <span class="text-white">Pantai Karang Jahe</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
+
 
             <!-- Eyebrow Chip -->
 
