@@ -296,27 +296,66 @@
 
 <!-- Section 5: Galeri Foto Konservasi -->
 <div class="py-20 bg-slate-50 border-t border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        @if(Auth::check() && Auth::user()->isAdmin())
+            <!-- Floating Add Button for Gallery Adopsi -->
+            <div class="absolute top-0 right-4 sm:right-6 lg:right-8 z-30">
+                <button onclick="document.getElementById('add-gallery-adopsi-modal').classList.remove('hidden')" 
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl shadow transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
+                    <i class="fa-solid fa-plus"></i> Tambah Foto
+                </button>
+            </div>
+        @endif
+
         <div class="text-center max-w-2xl mx-auto mb-12">
             <span class="text-emerald-600 font-semibold uppercase text-xs tracking-wider">Dokumentasi</span>
             <h2 class="text-3xl font-bold text-slate-800 font-title mt-1">Galeri Penghijauan Pesisir</h2>
             <p class="text-slate-600 mt-2">Aktivitas penanaman & keindahan cemara laut di Pantai Karangjahe.</p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="rounded-2xl overflow-hidden shadow-sm h-48 border border-slate-200">
-                <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover hover:scale-105 transition duration-500" alt="Galeri 1">
+        @if(empty($galleryAdopsiItems))
+            <p class="text-center text-sm text-slate-400 italic py-10">Belum ada foto galeri.</p>
+        @else
+            @php
+                $galleryAdopsiGridClasses = [
+                    'col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-1',
+                    'col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-3',
+                    'col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-1',
+                    'col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-2',
+                    'col-span-2 row-span-1 md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-1',
+                    'col-span-2 row-span-1 md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-3',
+                ];
+            @endphp
+            <div x-data="{ activeAdopsiPhoto: null }" class="relative">
+                <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] sm:auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black rounded-2xl">
+                    @foreach(array_slice($galleryAdopsiItems, 0, 6) as $index => $item)
+                        @php
+                            $adopsiImageUrl = str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']);
+                        @endphp
+                        <div @click="activeAdopsiPhoto = '{{ $adopsiImageUrl }}'"
+                             class="relative w-full h-full group {{ $galleryAdopsiGridClasses[$index] ?? 'hidden' }} overflow-hidden cursor-pointer">
+                            <img src="{{ $adopsiImageUrl }}"
+                                 alt="{{ $item['title'] }}"
+                                 class="absolute inset-0 w-full h-full object-cover rounded-none">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none z-10">
+                                <span class="text-white font-medium text-lg leading-tight">{{ $item['title'] }}</span>
+                            </div>
+                            @if(Auth::check() && Auth::user()->isAdmin())
+                                <button onclick="openEditGalleryAdopsiModal(event, {{ json_encode($item) }})"
+                                        class="absolute top-2 right-2 z-20 bg-white/90 hover:bg-white text-slate-700 w-8 h-8 rounded-full flex items-center justify-center shadow">
+                                    <i class="fa-solid fa-pen text-xs"></i>
+                                </button>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+                <!-- Lightbox foto full-screen saat diklik -->
+                <div x-show="activeAdopsiPhoto" x-cloak @click="activeAdopsiPhoto = null"
+                     class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 cursor-zoom-out" style="display: none;">
+                    <img :src="activeAdopsiPhoto" class="max-h-full max-w-full object-contain">
+                </div>
             </div>
-            <div class="rounded-2xl overflow-hidden shadow-sm h-48 border border-slate-200">
-                <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover hover:scale-105 transition duration-500" alt="Galeri 2">
-            </div>
-            <div class="rounded-2xl overflow-hidden shadow-sm h-48 border border-slate-200">
-                <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover hover:scale-105 transition duration-500" alt="Galeri 3">
-            </div>
-            <div class="rounded-2xl overflow-hidden shadow-sm h-48 border border-slate-200">
-                <img src="https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover hover:scale-105 transition duration-500" alt="Galeri 4">
-            </div>
-        </div>
+        @endif
     </div>
 </div>
 
@@ -537,6 +576,112 @@
                     </div>
                 </div>
             @endif
+        </div>
+    </div>
+@endif
+
+@if(Auth::check() && Auth::user()->isAdmin())
+    <!-- Add Gallery Adopsi Modal -->
+    <div id="add-gallery-adopsi-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left text-slate-800">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-emerald-50">
+                <h3 class="text-lg font-heading text-slate-800 font-bold">🌱 Tambah Foto Galeri Adopsi</h3>
+                <button type="button" onclick="document.getElementById('add-gallery-adopsi-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <form action="{{ route('admin.gallery-adopsi.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-slate-700 font-sans text-sm font-semibold mb-1.5">File Foto</label>
+                        <input type="file" name="image" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-sans text-sm font-semibold mb-1.5">Judul Foto</label>
+                        <input type="text" name="title" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm" placeholder="Contoh: Penanaman Mangrove" required>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-sans text-sm font-semibold mb-1.5">Ukuran / Layout Grid</label>
+                        <select name="aspect_class" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm" required>
+                            <option value="aspect-square">Square (1:1)</option>
+                            <option value="aspect-[3/4] md:row-span-2">Tall Vertical (Potrait)</option>
+                            <option value="aspect-[4/3] md:col-span-2">Wide Horizontal (Landscape)</option>
+                            <option value="aspect-[16/9] md:col-span-2">Wide Cinema (Panoramik)</option>
+                            <option value="aspect-[4/3]">Medium Rectangle</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                    <button type="button" onclick="document.getElementById('add-gallery-adopsi-modal').classList.add('hidden')" 
+                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-xl text-sm transition">
+                        Batal
+                    </button>
+                    <button type="submit" 
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-xl text-sm shadow transition">
+                        Tambah Foto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Gallery Adopsi Modal -->
+    <div id="edit-gallery-adopsi-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left text-slate-800">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-emerald-50">
+                <h3 class="text-lg font-heading text-slate-800 font-bold">🌱 Edit Foto Galeri Adopsi</h3>
+                <button type="button" onclick="document.getElementById('edit-gallery-adopsi-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="edit-gallery-adopsi-form" action="" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-slate-700 font-sans text-sm font-semibold mb-1.5">Ganti Foto (opsional)</label>
+                        <input type="file" name="image" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-sans text-sm font-semibold mb-1.5">Judul Foto</label>
+                        <input type="text" id="edit-gallery-adopsi-title" name="title" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-sans text-sm font-semibold mb-1.5">Ukuran / Layout Grid</label>
+                        <select id="edit-gallery-adopsi-aspect" name="aspect_class" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm" required>
+                            <option value="aspect-square">Square (1:1)</option>
+                            <option value="aspect-[3/4] md:row-span-2">Tall Vertical (Potrait)</option>
+                            <option value="aspect-[4/3] md:col-span-2">Wide Horizontal (Landscape)</option>
+                            <option value="aspect-[16/9] md:col-span-2">Wide Cinema (Panoramik)</option>
+                            <option value="aspect-[4/3]">Medium Rectangle</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between">
+                    <button type="button" onclick="confirmDeleteGalleryAdopsi()"
+                            class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition">
+                        Hapus Foto
+                    </button>
+                    
+                    <div class="flex gap-2">
+                        <button type="button" onclick="document.getElementById('edit-gallery-adopsi-modal').classList.add('hidden')" 
+                                class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-xl text-sm transition">
+                            Batal
+                        </button>
+                        <button type="submit" 
+                                class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-xl text-sm shadow transition">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <form id="delete-gallery-adopsi-form" action="" method="POST" class="hidden">
+                @csrf
+                @method('DELETE')
+            </form>
         </div>
     </div>
 @endif
@@ -787,6 +932,23 @@
                 }
             });
         });
+
+        // Gallery Adopsi Admin Modals Helper Functions
+        window.openEditGalleryAdopsiModal = function(e, item) {
+            e.stopPropagation();
+            const modal = document.getElementById('edit-gallery-adopsi-modal');
+            modal.querySelector('#edit-gallery-adopsi-form').action = '/admin/gallery-adopsi/' + item.id;
+            modal.querySelector('#edit-gallery-adopsi-title').value = item.title;
+            modal.querySelector('#edit-gallery-adopsi-aspect').value = item.aspect_class;
+            modal.querySelector('#delete-gallery-adopsi-form').action = '/admin/gallery-adopsi/' + item.id;
+            modal.classList.remove('hidden');
+        };
+
+        window.confirmDeleteGalleryAdopsi = function() {
+            if (confirm('Apakah Anda yakin ingin menghapus foto galeri adopsi ini?')) {
+                document.getElementById('delete-gallery-adopsi-form').submit();
+            }
+        };
     });
 </script>
 @endpush

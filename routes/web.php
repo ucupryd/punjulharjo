@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\HeroController;
 use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\GalleryAdopsiController;
 use App\Http\Controllers\Admin\EbookController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TestimonialController;
@@ -188,6 +189,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
     Route::put('/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
     Route::delete('/gallery/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+
+    // CRUD Gallery Adopsi Admin
+    Route::post('/gallery-adopsi', [GalleryAdopsiController::class, 'store'])->name('gallery-adopsi.store');
+    Route::put('/gallery-adopsi/{id}', [GalleryAdopsiController::class, 'update'])->name('gallery-adopsi.update');
+    Route::delete('/gallery-adopsi/{id}', [GalleryAdopsiController::class, 'destroy'])->name('gallery-adopsi.destroy');
 
     // CRUD Ebook Admin
     Route::post('/ebook', [EbookController::class, 'store'])->name('ebook.store');
