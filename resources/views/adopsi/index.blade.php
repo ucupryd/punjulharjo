@@ -373,23 +373,25 @@
                <p class="text-slate-600 text-sm">Program Kampung Iklim (ProKlim) Desa Punjulharjo dijalankan oleh tim berikut.</p>
            </div>
 
-           @php
-               $proklim3dTotal = $timProklim->count();
-               $proklim3dCardWidth = 170;
-               $proklim3dCardHeight = 220;
-               $proklim3dRadius = $proklim3dTotal > 0
-                   ? round(($proklim3dCardWidth * $proklim3dTotal) / (2 * M_PI * 0.55))
-                   : 190;
-               $proklim3dRadius = max(190, $proklim3dRadius);
-               $proklim3dStageSize = $proklim3dCardHeight + 110;
-           @endphp
+            @php
+                $proklim3dTotal = $timProklim->count();
+                $proklim3dCardWidth = 170;
+                $proklim3dCardHeight = 220;
+                $proklim3dRadius = $proklim3dTotal > 0
+                    ? round(($proklim3dCardWidth * $proklim3dTotal) / (2 * M_PI * 0.55))
+                    : 190;
+                $proklim3dRadius = max(190, $proklim3dRadius);
+                $proklim3dStageSize = $proklim3dCardHeight + 110;
+                $proklim3dPerspective = max(1200, $proklim3dRadius * 3);
+                $proklim3dDuration = max(30, round($proklim3dTotal * 5.5));
+            @endphp
 
-           @if($timProklim->isEmpty())
-               <p class="text-center text-sm text-slate-400 italic">Belum ada data anggota Tim ProKlim.</p>
-           @else
-               <div class="proklim-3d-fullbleed">
-                   <div class="proklim-3d-stage" style="height: {{ $proklim3dStageSize }}px;">
-                       <div class="proklim-3d-ring" style="--total: {{ $proklim3dTotal }}; --radius: {{ $proklim3dRadius }}px;">
+            @if($timProklim->isEmpty())
+                <p class="text-center text-sm text-slate-400 italic">Belum ada data anggota Tim ProKlim.</p>
+            @else
+                <div class="proklim-3d-fullbleed">
+                    <div class="proklim-3d-stage" style="height: {{ $proklim3dStageSize }}px; perspective: {{ $proklim3dPerspective }}px;">
+                        <div class="proklim-3d-ring" style="--total: {{ $proklim3dTotal }}; --radius: {{ $proklim3dRadius }}px; --duration: {{ $proklim3dDuration }}s;">
                            @foreach($timProklim as $index => $anggota)
                                <div class="proklim-3d-card" style="--i: {{ $index }};" tabindex="0">
                                    <div class="proklim-3d-card__face">
@@ -615,7 +617,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        perspective: 1200px;
         margin: 0 auto;
     }
     .proklim-3d-ring {
@@ -623,7 +624,7 @@
         width: 170px;
         height: 220px;
         transform-style: preserve-3d;
-        animation: proklim3dSpin 40s linear infinite;
+        animation: proklim3dSpin var(--duration, 40s) linear infinite;
     }
     .proklim-3d-ring:hover,
     .proklim-3d-ring:focus-within {

@@ -205,11 +205,13 @@
                     : 190;
                 $perangkat3dRadius = max(190, $perangkat3dRadius);
                 $perangkat3dStageSize = $perangkat3dCardHeight + 110;
+                $perangkat3dPerspective = max(1200, $perangkat3dRadius * 3);
+                $perangkat3dDuration = max(30, round($perangkat3dTotal * 5.5));
             @endphp
 
             <div class="perangkat-3d-fullbleed">
-                <div class="perangkat-3d-stage" style="height: {{ $perangkat3dStageSize }}px;">
-                    <div class="perangkat-3d-ring" style="--total: {{ $perangkat3dTotal }}; --radius: {{ $perangkat3dRadius }}px;">
+                <div class="perangkat-3d-stage" style="height: {{ $perangkat3dStageSize }}px; perspective: {{ $perangkat3dPerspective }}px;">
+                    <div class="perangkat-3d-ring" style="--total: {{ $perangkat3dTotal }}; --radius: {{ $perangkat3dRadius }}px; --duration: {{ $perangkat3dDuration }}s;">
                         @foreach($perangkat as $index => $p)
                             <div class="perangkat-3d-card"
                                  style="--i: {{ $index }};"
@@ -703,7 +705,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        perspective: 1200px;
         margin: 0 auto;
     }
     .perangkat-3d-ring {
@@ -711,7 +712,7 @@
         width: 170px;
         height: 220px;
         transform-style: preserve-3d;
-        animation: perangkat3dSpin 40s linear infinite;
+        animation: perangkat3dSpin var(--duration, 40s) linear infinite;
     }
     .perangkat-3d-ring:hover,
     .perangkat-3d-ring:focus-within {
