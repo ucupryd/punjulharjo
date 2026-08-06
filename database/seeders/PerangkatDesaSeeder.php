@@ -12,6 +12,8 @@ class PerangkatDesaSeeder extends Seeder
      */
     public function run(): void
     {
+        \App\Models\PerangkatDesa::truncate();
+
         $perangkat = [
             ['jabatan' => 'Kepala Desa', 'nama' => 'Moh. Akrom'],
             ['jabatan' => 'Sekretaris Desa', 'nama' => 'Ubaidillah'],
