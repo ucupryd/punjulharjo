@@ -83,6 +83,20 @@ class BlogController extends Controller
     {
         $blog = Blog::with(['categories', 'author'])->where('slug', $slug)->firstOrFail();
         
+        // Record unique view log
+        $visitorToken = request()->cookie('visitor_token');
+        if ($visitorToken) {
+            try {
+                \App\Models\ViewLog::create([
+                    'viewable_type' => Blog::class,
+                    'viewable_id' => $blog->id,
+                    'visitor_token' => $visitorToken
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                // Silent ignore on duplicate index (already viewed)
+            }
+        }
+
         $beritaLain = Blog::with('categories')
             ->where('id', '!=', $blog->id)
             ->latest()

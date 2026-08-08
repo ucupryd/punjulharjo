@@ -12,6 +12,20 @@ class EbookController extends Controller
     public function show(Ebook $ebook)
     {
         $ebook->load('categories');
+
+        // Record unique view log
+        $visitorToken = request()->cookie('visitor_token');
+        if ($visitorToken) {
+            try {
+                \App\Models\ViewLog::create([
+                    'viewable_type' => Ebook::class,
+                    'viewable_id' => $ebook->id,
+                    'visitor_token' => $visitorToken
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                // Silent ignore on duplicate index (already viewed)
+            }
+        }
         // Ambil e-book lainnya untuk section "more"
         $ebooksLain = Ebook::where('id', '!=', $ebook->id)
             ->latest()

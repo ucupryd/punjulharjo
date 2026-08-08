@@ -27,6 +27,7 @@
     }
 
     $totalComments = $model->comments->count() + $model->comments->sum(fn($c) => $c->replies->count());
+    $viewsCount = $model->viewLogs()->count();
 
     if (!function_exists('getCommentAvatarColor')) {
         function getCommentAvatarColor($name) {
@@ -103,7 +104,7 @@
                     <span class="text-base group-hover:scale-110 transition duration-150">😮</span>
                     <span>Takjub</span>
                     <span :class="userReaction === 'takjub' ? 'bg-sky-100 text-sky-700' : 'bg-slate-200 text-slate-650'"
-                          class="px-1.5 py-0.2 text-xs font-bold rounded-none" x-text="counts.open"></span>
+                          class="px-1.5 py-0.2 text-xs font-bold rounded-none" x-text="counts.takjub"></span>
                 </button>
 
                 <!-- Reaksi 3: Sedih -->
@@ -122,7 +123,7 @@
         </div>
 
         <div class="flex items-center gap-4 text-xs text-slate-500">
-            <span><i class="fa-solid fa-eye"></i> {{ rand(100, 350) }} Kali Dilihat</span>
+            <span><i class="fa-solid fa-eye"></i> {{ $viewsCount }} Kali Dilihat</span>
             <button x-on:click="window.dispatchEvent(new CustomEvent('show-toast', { detail: { message: 'Link halaman telah disalin ke clipboard!', error: false } })); navigator.clipboard.writeText(window.location.href)" 
                     class="hover:text-slate-800 flex items-center gap-1 transition">
                 <i class="fa-solid fa-share-nodes"></i> Bagikan

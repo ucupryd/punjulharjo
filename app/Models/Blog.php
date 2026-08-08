@@ -63,6 +63,11 @@ class Blog extends Model
         return $this->morphMany(\App\Models\Reaction::class, 'reactable');
     }
 
+    public function viewLogs()
+    {
+        return $this->morphMany(\App\Models\ViewLog::class, 'viewable');
+    }
+
     public function getAutoExcerptAttribute(): string
     {
         return Str::limit(strip_tags($this->content ?? ''), 50, '…');

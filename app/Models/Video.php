@@ -60,4 +60,9 @@ class Video extends Model
     {
         return $this->morphMany(\App\Models\Reaction::class, 'reactable');
     }
+
+    public function viewLogs()
+    {
+        return $this->morphMany(\App\Models\ViewLog::class, 'viewable');
+    }
 }

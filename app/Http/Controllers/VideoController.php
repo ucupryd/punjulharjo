@@ -19,6 +19,20 @@ class VideoController extends Controller
     {
         $video = Video::with('categories')->where('slug', $slug)->firstOrFail();
 
+        // Record unique view log
+        $visitorToken = request()->cookie('visitor_token');
+        if ($visitorToken) {
+            try {
+                \App\Models\ViewLog::create([
+                    'viewable_type' => Video::class,
+                    'viewable_id' => $video->id,
+                    'visitor_token' => $visitorToken
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                // Silent ignore on duplicate index (already viewed)
+            }
+        }
+
         $videosLain = Video::where('id', '!=', $video->id)
             ->latest()
             ->take(4)
