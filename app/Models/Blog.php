@@ -31,6 +31,10 @@ class Blog extends Model
         static::deleting(function ($blog) {
             $blog->featured()->delete();
             $blog->categories()->detach();
+            \App\Models\Comment::where('commentable_type', get_class($blog))
+                               ->where('commentable_id', $blog->id)
+                               ->delete();
+            $blog->reactions()->delete();
         });
     }
 
@@ -47,6 +51,16 @@ class Blog extends Model
     public function featured(): \Illuminate\Database\Eloquent\Relations\MorphOne
     {
         return $this->morphOne(\App\Models\FeaturedItem::class, 'featurable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(\App\Models\Comment::class, 'commentable')->whereNull('parent_id')->latest();
+    }
+
+    public function reactions()
+    {
+        return $this->morphMany(\App\Models\Reaction::class, 'reactable');
     }
 
     public function getAutoExcerptAttribute(): string

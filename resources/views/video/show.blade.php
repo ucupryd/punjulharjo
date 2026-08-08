@@ -50,7 +50,7 @@
         </div>
 
         <!-- Area Reaksi & Komentar -->
-        <x-detail.reactions-comments contextType="video" />
+        <x-detail.reactions-comments :model="$video" contextType="video" />
 
         <!-- Video Lainnya -->
         <x-detail.more 

@@ -338,11 +338,11 @@
 
                         <div class="flex items-start gap-3">
                             <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center shrink-0" aria-hidden="true">
-                                <i class="fa-solid fa-compass text-xs md:text-sm"></i>
+                                <i class="fa-solid fa-route text-xs md:text-sm"></i>
                             </div>
                             <div>
-                                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Titik Koordinat & Air</h3>
-                                <p class="text-[10px] text-slate-500 mt-0.5 leading-snug">Sekira 111°24′30.7″ BT, 6°41′35.3″ LS. Sungai Kiringan (pelabuhan Majapahit) & Sungai Babagan/Lasem (pelabuhan Kolonial).</p>
+                                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wide">Rute Dari Balai Desa</h3>
+                                <p class="text-[10px] text-slate-500 mt-0.5 leading-snug">Dari Balai Desa belok kiri arah barat daya, lurus terus ± 500 meter.</p>
                             </div>
                         </div>
                     </div>

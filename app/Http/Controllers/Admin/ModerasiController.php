@@ -21,6 +21,7 @@ class ModerasiController extends Controller
         $messages = ContactMessage::latest()->get();
         $pendingAdopsis = CemaraAdopsi::where('status', 'menunggu_verifikasi')->with('user', 'paket')->latest()->get();
         $categories = Category::withCount(['blogs', 'videos', 'ebooks'])->orderBy('name')->get();
+        $comments = \App\Models\Comment::with('commentable')->latest()->get();
 
         $activeTab = $request->query('tab', 'testimoni');
 
@@ -30,6 +31,7 @@ class ModerasiController extends Controller
             'messages',
             'pendingAdopsis',
             'categories',
+            'comments',
             'activeTab'
         ));
     }

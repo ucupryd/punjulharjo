@@ -113,6 +113,28 @@ class HeroController extends Controller
         return back()->with('success', 'Foto kehidupan budaya berhasil diperbarui!');
     }
 
+    public function updateMottoDesaBackground(Request $request)
+    {
+        $request->validate([
+            'motto_desa_background' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+        $file = $request->file('motto_desa_background');
+
+        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $targetDir = public_path('storage/motto');
+        if (!\Illuminate\Support\Facades\File::exists($targetDir)) {
+            \Illuminate\Support\Facades\File::makeDirectory($targetDir, 0755, true);
+        }
+        $file->move($targetDir, $fileName);
+        $path = 'motto/' . $fileName;
+
+        // Simpan path ke database dengan sistem backup & hapus file 2 langkah ke belakang
+        $this->updateSettingWithBackup('motto_desa_background', $path);
+
+        return back()->with('success', 'Background motto desa berhasil diperbarui!');
+    }
+
     public function restore(Request $request)
     {
         $request->validate([

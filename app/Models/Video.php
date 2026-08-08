@@ -29,6 +29,10 @@ class Video extends Model
         static::deleting(function ($video) {
             $video->featured()->delete();
             $video->categories()->detach();
+            \App\Models\Comment::where('commentable_type', get_class($video))
+                               ->where('commentable_id', $video->id)
+                               ->delete();
+            $video->reactions()->delete();
         });
     }
 
@@ -45,5 +49,15 @@ class Video extends Model
     public function featured(): \Illuminate\Database\Eloquent\Relations\MorphOne
     {
         return $this->morphOne(\App\Models\FeaturedItem::class, 'featurable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(\App\Models\Comment::class, 'commentable')->whereNull('parent_id')->latest();
+    }
+
+    public function reactions()
+    {
+        return $this->morphMany(\App\Models\Reaction::class, 'reactable');
     }
 }

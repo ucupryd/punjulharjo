@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $mottoBg = \App\Models\SiteSetting::getValue('motto_desa_background');
+        $mottoBgUrl = $mottoBg 
+            ? (str_starts_with($mottoBg, 'http') || str_contains($mottoBg, 'storage/') ? asset($mottoBg) : Storage::url($mottoBg)) 
+            : null;
+    @endphp
 
     <div id="hero" class="scroll-mt-24">
         <x-fixed-image-section
@@ -43,16 +49,33 @@
                 </div>
 
                 <div class="lg:col-span-5">
-                    <div class="p-8 bg-gradient-to-br from-brand-dark via-slate-900 to-brand-dark text-white rounded-none border border-brand-dark shadow-xl space-y-4 relative overflow-hidden">
-                        <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-brand-accent/10 rounded-full blur-2xl"></div>
-                        <div class="w-12 h-12 bg-brand-accent text-brand-dark rounded-none flex items-center justify-center text-xl font-bold shadow-md">
+                    <div class="p-8 text-white rounded-none border border-brand-dark shadow-xl space-y-4 relative overflow-hidden group {{ $mottoBgUrl ? '' : 'bg-gradient-to-br from-brand-dark via-slate-900 to-brand-dark' }}"
+                         style="{{ $mottoBgUrl ? "background-image: url('{$mottoBgUrl}'); background-size: cover; background-position: center;" : '' }}">
+                        
+                        @if($mottoBgUrl)
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/80 to-slate-950/70 z-0"></div>
+                        @else
+                            <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-brand-accent/10 rounded-full blur-2xl z-0"></div>
+                        @endif
+
+                        @if(Auth::check() && Auth::user()->isAdmin())
+                            <!-- Floating Edit Button on top of everything -->
+                            <div class="absolute top-4 right-4 z-20 pointer-events-auto">
+                                <button onclick="document.getElementById('edit-motto-bg-modal').classList.remove('hidden')" 
+                                        class="bg-white/95 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                                    <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                </button>
+                            </div>
+                        @endif
+
+                        <div class="relative z-10 w-12 h-12 bg-brand-accent text-brand-dark rounded-none flex items-center justify-center text-xl font-bold shadow-md">
                             <i class="fa-solid fa-quote-left"></i>
                         </div>
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-brand-accent">Motto Desa</h3>
-                        <blockquote class="text-xl md:text-2xl font-heading text-white leading-snug">
+                        <h3 class="relative z-10 text-xs font-bold uppercase tracking-widest text-brand-accent">Motto Desa</h3>
+                        <blockquote class="relative z-10 text-xl md:text-2xl font-heading text-white leading-snug">
                             "Punjulharjo BERKAH"
                         </blockquote>
-                        <p class="text-xs md:text-sm text-slate-300 font-medium leading-relaxed italic border-t border-white/10 pt-3">
+                        <p class="relative z-10 text-xs md:text-sm text-slate-300 font-medium leading-relaxed italic border-t border-white/10 pt-3">
                             Bersih, Elok, Rapi, Kerja keras, Amanah, Harmonis.
                         </p>
                     </div>
@@ -406,6 +429,58 @@
                         </div>
                     </div>
                 @endforeach
+            @endif
+
+            @if(Auth::check() && Auth::user()->isAdmin())
+                <!-- Edit Motto Background Modal -->
+                <div id="edit-motto-bg-modal" class="hidden fixed inset-0 z-[100] overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
+                    <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all text-slate-800">
+                        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                            <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Background Motto Desa</h3>
+                            <button type="button" onclick="document.getElementById('edit-motto-bg-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                                <i class="fa-solid fa-xmark text-xl"></i>
+                            </button>
+                        </div>
+                        <form action="{{ route('admin.motto-desa-background.update') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="p-6 space-y-4">
+                                <div>
+                                    <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih Gambar Baru</label>
+                                    <input type="file" name="motto_desa_background" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                    <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP. Ukuran maks: 5MB.</p>
+                                </div>
+                            </div>
+                            <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                                <button type="button" onclick="document.getElementById('edit-motto-bg-modal').classList.add('hidden')" 
+                                        class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                    Batal
+                                </button>
+                                <button type="submit" 
+                                        class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                    Simpan Perubahan
+                                </button>
+                            </div>
+                        </form>
+                        @php
+                            $backupMottoBg = \App\Models\SiteSetting::getValue('motto_desa_background_backup');
+                        @endphp
+                        @if($backupMottoBg)
+                            <div class="p-6 border-t border-slate-100 bg-slate-50">
+                                <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 gambar cadangan sebelumnya:</p>
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ (str_starts_with($backupMottoBg, 'http') || str_contains($backupMottoBg, 'storage/')) ? asset($backupMottoBg) : Storage::url($backupMottoBg) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
+                                    <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
+                                        @csrf
+                                        <input type="hidden" name="hero_key" value="motto_desa_background">
+                                        <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
+                                            <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke Gambar Ini
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             @endif
         </div>
     </section>

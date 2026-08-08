@@ -54,7 +54,7 @@
         </div>
 
         <!-- Area Reaksi & Komentar -->
-        <x-detail.reactions-comments contextType="berita" />
+        <x-detail.reactions-comments :model="$blog" contextType="blog" />
 
         <!-- Berita Lainnya / Baca Juga -->
         <x-detail.more 

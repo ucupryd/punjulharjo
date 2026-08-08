@@ -332,14 +332,11 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-slate-800 text-xs md:text-base">Rute Umum</h4>
-                                <p class="text-[10px] text-slate-600 mt-0.5 leading-snug">Melalui Jl. Jenderal Sudirman menuju Jl. Raya Semarang–Tuban; di dekat gapura Desa Punjulharjo sudah terpasang arah.</p>
+                                <p class="text-[10px] text-slate-600 mt-0.5 leading-snug">Melalui Jl. Jenderal Sudirman menuju Jl. Raya Semarang–Tuban; di dekat gapura Desa Punjulharjo sudah terpasang arah. Dari Balai Desa Punjulharjo, lurus ke arah barat laut sekitar 500 meter.</p>
                             </div>
                         </div>
 
-                        <div class="p-3 bg-sky-50/50 border border-sky-100 rounded-none text-[10px] text-slate-600 flex gap-2">
-                            <i class="fa-solid fa-circle-exclamation text-sky-600 shrink-0 mt-0.5" aria-hidden="true"></i>
-                            <span>Akses jalan telah diperlebar; lokasi mudah ditemukan via GPS. Koordinat: <strong>-6.685415, 111.413725 (Pantai Karang Jahe)</strong>.</span>
-                        </div>
+
                     </div>
                 </div>
 

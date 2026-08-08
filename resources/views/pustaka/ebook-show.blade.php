@@ -69,7 +69,7 @@
         </div>
 
         <!-- Area Reaksi & Komentar -->
-        <x-detail.reactions-comments contextType="ebook" />
+        <x-detail.reactions-comments :model="$ebook" contextType="ebook" />
 
         <!-- E-book Lainnya -->
         <x-detail.more 

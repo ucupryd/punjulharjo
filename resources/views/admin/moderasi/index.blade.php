@@ -45,6 +45,13 @@
                         <span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $unread }}</span>
                     @endif
                 </button>
+                <button @click="tab = 'komentar'" :class="tab === 'komentar' ? 'bg-sky-700 text-white shadow' : 'text-slate-600 hover:bg-slate-100'" class="px-5 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-comments"></i> Komentar
+                    @php $unreadComments = $comments->filter(fn($c) => !$c->is_read)->count(); @endphp
+                    @if($unreadComments > 0)
+                        <span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $unreadComments }}</span>
+                    @endif
+                </button>
                 <button @click="tab = 'kategori'" :class="tab === 'kategori' ? 'bg-sky-700 text-white shadow' : 'text-slate-600 hover:bg-slate-100'" class="px-5 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap">
                     <i class="fa-solid fa-tags"></i> Kelola Kategori
                 </button>
@@ -184,6 +191,104 @@
                                                     <i class="fa-solid fa-circle-check text-emerald-500"></i> Dibaca
                                                 </span>
                                             @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+
+            <!-- TAB 5: KOMENTAR -->
+            <div x-show="tab === 'komentar'" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <h3 class="font-bold text-slate-800 text-lg font-title">Moderasi Komentar & Balasan Pengunjung</h3>
+                </div>
+
+                @if($comments->isEmpty())
+                    <p class="text-slate-400 text-sm py-6 text-center">Belum ada komentar masuk.</p>
+                @else
+                    <div class="overflow-x-auto">
+                        <table class="min-w-[650px] lg:min-w-full w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
+                                <tr>
+                                    <th class="p-3">Pengirim</th>
+                                    <th class="p-3">Komentar</th>
+                                    <th class="p-3">Asal Konten</th>
+                                    <th class="p-3">Tanggal</th>
+                                    <th class="p-3 text-center">Status</th>
+                                    <th class="p-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @foreach($comments as $comment)
+                                    @php
+                                        $url = '#';
+                                        $typeLabel = 'Konten';
+                                        $badgeColor = 'bg-slate-100 text-slate-800 border-slate-200';
+                                        if ($comment->commentable_type === \App\Models\Blog::class) {
+                                            $url = route('blog.show', $comment->commentable->slug ?? '');
+                                            $typeLabel = 'Blog';
+                                            $badgeColor = 'bg-sky-100 text-sky-800 border-sky-200';
+                                        } elseif ($comment->commentable_type === \App\Models\Video::class) {
+                                            $url = route('video.show', $comment->commentable->slug ?? '');
+                                            $typeLabel = 'Video';
+                                            $badgeColor = 'bg-rose-100 text-rose-800 border-rose-200';
+                                        } elseif ($comment->commentable_type === \App\Models\Ebook::class) {
+                                            $url = route('ebook.show', $comment->commentable->id ?? '');
+                                            $typeLabel = 'E-Book';
+                                            $badgeColor = 'bg-amber-100 text-amber-800 border-amber-200';
+                                        }
+                                    @endphp
+                                    <tr class="hover:bg-slate-50 {{ !$comment->is_read ? 'bg-sky-50/40 font-semibold' : '' }}">
+                                        <td class="p-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-bold text-slate-800">{{ $comment->nama }}</span>
+                                                @if(!is_null($comment->parent_id))
+                                                    <span class="bg-indigo-100 text-indigo-800 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider border border-indigo-200">Balasan</span>
+                                                @else
+                                                    <span class="bg-teal-100 text-teal-800 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider border border-teal-200">Utama</span>
+                                                @endif
+                                            </div>
+                                            <span class="text-xs text-slate-400 font-normal block">{{ $comment->email ?? 'Anonim' }}</span>
+                                        </td>
+                                        <td class="p-3 text-slate-700">
+                                            <p class="text-xs max-w-xs truncate font-normal" title="{{ $comment->komentar }}">
+                                                {{ Str::limit($comment->komentar, 80) }}
+                                            </p>
+                                        </td>
+                                        <td class="p-3">
+                                            <span class="inline-block text-[10px] font-bold px-2 py-0.5 rounded border mb-1 {{ $badgeColor }}">{{ $typeLabel }}</span>
+                                            <a href="{{ $url }}" target="_blank" class="text-xs text-sky-600 font-medium hover:underline block max-w-[200px] truncate" title="{{ $comment->commentable->title ?? 'Buka Konten' }}">
+                                                {{ $comment->commentable->title ?? 'Buka Konten' }} &rarr;
+                                            </a>
+                                        </td>
+                                        <td class="p-3 text-xs text-slate-400 font-normal whitespace-nowrap">{{ $comment->created_at->diffForHumans() }}</td>
+                                        <td class="p-3 text-center whitespace-nowrap">
+                                            @if(!$comment->is_read)
+                                                <form action="{{ route('admin.comment.read', $comment->id) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="px-2.5 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1 mx-auto">
+                                                        <i class="fa-solid fa-check"></i> Tandai Dibaca
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <span class="text-xs text-slate-400 font-normal flex items-center justify-center gap-1">
+                                                    <i class="fa-solid fa-circle-check text-emerald-500"></i> Dibaca
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td class="p-3 text-right whitespace-nowrap">
+                                            <form action="{{ route('admin.comment.destroy', $comment->id) }}" method="POST"
+                                                  onsubmit="return confirm('Hapus komentar ini?{{ is_null($comment->parent_id) ? " Menghapus komentar utama juga akan menghapus semua balasannya." : "" }}')" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="inline-flex items-center justify-center w-7 h-7 bg-red-50 hover:bg-red-100 text-red-600 rounded transition" title="Hapus Komentar">
+                                                    <i class="fa-solid fa-trash text-[10px]"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

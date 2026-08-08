@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\BlogController as PublicBlogController;
@@ -67,6 +69,11 @@ Route::prefix('video')->name('video.')->group(function () {
 });
 
 Route::post('/kirim-pesan', [ContactController::class, 'store'])->name('contact.store');
+
+// Rute Komentar & Reaksi Publik (Generik)
+Route::post('/komentar', [CommentController::class, 'store'])->name('comment.store')->middleware('throttle:6,1');
+Route::post('/reaksi', [ReactionController::class, 'store'])->name('reaction.store')->middleware('throttle:10,1');
+Route::get('/reaksi/{contextType}/{contextId}', [ReactionController::class, 'summary'])->name('reaction.summary');
 
 /*
 |--------------------------------------------------------------------------
@@ -135,6 +142,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Admin Moderasi Gabungan (Testimoni + Pesan + Adopsi)
     Route::get('/moderasi', [AdminModerasiController::class, 'index'])->name('moderasi.index');
 
+    // Moderasi Komentar Admin
+    Route::delete('/komentar/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
+    Route::patch('/komentar/{id}/read', [CommentController::class, 'markAsRead'])->name('comment.read');
+
     // CRUD Blog Admin
     Route::resource('/blog', AdminBlogController::class);
 
@@ -179,6 +190,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/hero/restore', [HeroController::class, 'restore'])->name('hero.restore');
     Route::post('/about-image', [HeroController::class, 'updateAboutImage'])->name('about-image.update');
     Route::post('/culture-image', [HeroController::class, 'updateCultureImage'])->name('culture-image.update');
+    Route::post('/motto-desa-background', [HeroController::class, 'updateMottoDesaBackground'])->name('motto-desa-background.update');
 
     // CRUD Carousel Admin
     Route::post('/carousel', [CarouselController::class, 'store'])->name('carousel.store');

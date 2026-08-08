@@ -14,6 +14,10 @@ class Ebook extends Model
         static::deleting(function ($ebook) {
             $ebook->featured()->delete();
             $ebook->categories()->detach();
+            \App\Models\Comment::where('commentable_type', get_class($ebook))
+                               ->where('commentable_id', $ebook->id)
+                               ->delete();
+            $ebook->reactions()->delete();
         });
     }
 
@@ -25,5 +29,15 @@ class Ebook extends Model
     public function featured(): \Illuminate\Database\Eloquent\Relations\MorphOne
     {
         return $this->morphOne(\App\Models\FeaturedItem::class, 'featurable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(\App\Models\Comment::class, 'commentable')->whereNull('parent_id')->latest();
+    }
+
+    public function reactions()
+    {
+        return $this->morphMany(\App\Models\Reaction::class, 'reactable');
     }
 }
