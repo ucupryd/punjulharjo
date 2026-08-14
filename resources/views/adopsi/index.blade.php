@@ -4,7 +4,7 @@
 <!-- Hanging Ribbon for My Cemara Logo -->
 <div class="adopsi-hanging-ribbon-container">
     <a href="{{ url('/adopsi') }}" class="adopsi-hanging-ribbon" aria-label="My Cemara Pantai Karangjahe">
-        <img src="{{ asset('images/logo-my-cemara.png.png') }}"
+        <img src="{{ asset('images/logo-my-cemara.png.png') }}?v={{ file_exists(public_path('images/logo-my-cemara.png.png')) ? filemtime(public_path('images/logo-my-cemara.png.png')) : time() }}"
              alt="Logo My Cemara Pantai Karangjahe"
              class="adopsi-hanging-ribbon__logo">
     </a>
