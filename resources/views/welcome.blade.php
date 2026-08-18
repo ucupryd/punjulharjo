@@ -118,8 +118,8 @@
                 return (this.activeIndex + 1) % this.total;
             },
             get stageStyle() {
-                const amplitude = this.hoveringStage ? 28 : 6;
-                const scale = this.hoveringStage ? 1.08 : 1;
+                const amplitude = 28;
+                const scale = 1.08;
                 return 'transform: translate3d(' + (this.offsetX * amplitude) + 'px, ' + (this.offsetY * amplitude) + 'px, 0) scale(' + scale + '); transition: transform 0.2s ease-out;';
             },
             init() {
@@ -207,7 +207,7 @@
         }"
         x-on:mousemove="onMouseMove($event)"
         x-on:mouseenter="hoveringStage = true"
-        x-on:mouseleave="hoveringStage = false; resetParallax()"
+        x-on:mouseleave="hoveringStage = false"
     >
         {{-- Frame video (Penuh Layar) --}}
         <div class="absolute inset-0 w-full h-full overflow-hidden">
