@@ -43,6 +43,10 @@
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/video*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     🎥 Video Wisata
                 </a>
+                <a href="{{ route('admin.destination-videos.index') }}"
+                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/destination-videos*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
+                    🗺️ Jelajahi Destinasi
+                </a>
                 <a href="{{ route('admin.pesan.index') }}"
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/pesan*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     💬 Pesan Masuk

@@ -212,8 +212,294 @@
     </section>
     <div id="heroSentinel" aria-hidden="true" class="h-px w-full bg-transparent"></div>
 
+    {{-- ============================================================
+         SECTION A2: Jelajahi Destinasi (Video Carousel Full-Lebar)
+         ============================================================ --}}
+    @if($destinationVideos->count() > 0)
+    <section
+        id="jelajahi-destinasi"
+        class="relative w-full bg-slate-950 overflow-hidden h-screen h-[100dvh]"
+        x-data="{
+            videos: {{ Js::from($destinationVideos) }},
+            activeIndex: 0,
+            hoveredIndex: null,
+            parallaxEnabled: false,
+            offsetX: 0,
+            offsetY: 0,
+            inView: false,
+            direction: 1,
+            hoveringStage: false,
+            get total() {
+                return this.videos.length;
+            },
+            get nextIndex() {
+                if (this.total < 2) return 0;
+                return (this.activeIndex + 1) % this.total;
+            },
+            get leftIndex() {
+                return (this.activeIndex - 1 + this.total) % this.total;
+            },
+            get rightIndex() {
+                return (this.activeIndex + 1) % this.total;
+            },
+            get stageStyle() {
+                const amplitude = this.hoveringStage ? 28 : 6;
+                const scale = this.hoveringStage ? 1.08 : 1;
+                return 'transform: translate3d(' + (this.offsetX * amplitude) + 'px, ' + (this.offsetY * amplitude) + 'px, 0) scale(' + scale + '); transition: transform 0.2s ease-out;';
+            },
+            init() {
+                if (this.total === 0) return;
+                const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+                const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                this.parallaxEnabled = finePointer && !reduceMotion;
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        this.inView = entry.isIntersecting;
+                        if (entry.isIntersecting) {
+                            this.playActive();
+                        } else {
+                            this.pauseAll();
+                        }
+                    });
+                }, { threshold: 0.25 });
+                observer.observe(this.$root);
+            },
+            currentVideoEl() {
+                return this.$root.querySelector('video[data-index=\'' + this.activeIndex + '\']');
+            },
+            playActive() {
+                const el = this.currentVideoEl();
+                if (!el) { console.log('[DV] playActive: elemen video tidak ditemukan untuk index', this.activeIndex); return; }
+                console.log('[DV] playActive index=' + this.activeIndex,
+                    'readyState=' + el.readyState,
+                    'networkState=' + el.networkState,
+                    'paused=' + el.paused,
+                    'muted=' + el.muted,
+                    'src=' + el.currentSrc)
+                el.muted = true;
+                const p = el.play();
+                if (p && typeof p.catch === 'function') {
+                    p.catch((err) => console.error('[DV] PLAY FAILED index=' + this.activeIndex, err.name, err.message));
+                }
+            },
+            pauseAll() {
+                this.$root.querySelectorAll('video').forEach((el) => el.pause());
+            },
+            goTo(i) {
+                console.log('[DV] goTo dipanggil, dari', this.activeIndex, 'ke', i)
+                if (i === this.activeIndex) return;
+                this.pauseAll();
+                this.activeIndex = i;
+                this.$nextTick(() => {
+                    const el = this.currentVideoEl();
+                    if (el) el.currentTime = 0;
+                    if (this.inView) this.playActive();
+                });
+            },
+            next() {
+                this.direction = 1;
+                if (this.total === 1) { this.restartCurrent(); return; }
+                this.goTo((this.activeIndex + 1) % this.total);
+            },
+            prev() {
+                this.direction = -1;
+                if (this.total === 1) { this.restartCurrent(); return; }
+                this.goTo((this.activeIndex - 1 + this.total) % this.total);
+            },
+            restartCurrent() {
+                const el = this.currentVideoEl();
+                if (!el) return;
+                el.currentTime = 0;
+                if (this.inView) this.playActive();
+            },
+            handleEnded() {
+                if (this.total === 1) { this.restartCurrent(); return; }
+                this.next();
+            },
+            onMouseMove(e) {
+                if (!this.parallaxEnabled) return;
+                const rect = this.$root.getBoundingClientRect();
+                const nx = (e.clientX - rect.left) / rect.width - 0.5;
+                const ny = (e.clientY - rect.top) / rect.height - 0.5;
+                const amplitude = 6;
+                this.offsetX = -nx * amplitude;
+                this.offsetY = -ny * amplitude;
+            },
+            resetParallax() {
+                this.offsetX = 0;
+                this.offsetY = 0;
+            }
+        }"
+        x-on:mousemove="onMouseMove($event)"
+        x-on:mouseenter="hoveringStage = true"
+        x-on:mouseleave="hoveringStage = false; resetParallax()"
+    >
+        {{-- Frame video (Penuh Layar) --}}
+        <div class="absolute inset-0 w-full h-full overflow-hidden">
+
+            {{-- Gradient overlay top (gelap di atas) --}}
+            <div class="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/70 via-black/20 to-transparent pointer-events-none z-15"></div>
+
+            {{-- Header section + tombol admin (mengapung di atas video) --}}
+            <div class="absolute top-0 left-0 right-0 z-30 px-6 md:px-12 pt-8 pb-6 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold tracking-widest uppercase text-sky-400 mb-1">Destinasi Unggulan</p>
+                    <h2 class="text-2xl md:text-4xl font-heading font-bold text-white tracking-wide">Jelajahi Destinasi</h2>
+                </div>
+
+                @if(Auth::check() && Auth::user()->isAdmin())
+                    <a href="{{ route('admin.destination-videos.index') }}"
+                       class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-none shadow transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
+                        <i class="fa-solid fa-pen-to-square"></i> Kelola Destinasi
+                    </a>
+                @endif
+            </div>
+
+            {{-- Stage yang digeser parallax. Overscan di .dv-stage sehingga :style hanya handle transform. --}}
+            <div class="dv-stage transition-[filter,transform] duration-300" :class="hoveringStage ? 'brightness-125 saturate-125 contrast-105' : ''" :style="stageStyle" x-ref="stage">
+                <template x-for="(video, idx) in videos" :key="video.id">
+                    <video
+                        :data-index="idx"
+                        :src="video.src"
+                        :class="activeIndex === idx
+                            ? 'opacity-100 z-10 pointer-events-auto'
+                            : 'opacity-0 z-0 pointer-events-none'"
+                        :preload="(activeIndex === idx || nextIndex === idx) ? 'auto' : 'metadata'"
+                        muted
+                        playsinline
+                        class="absolute inset-0 h-full w-full object-cover transition-opacity duration-200"
+                        x-on:ended="handleEnded()"
+                    ></video>
+                </template>
+            </div>
+
+            {{-- Overlay gradasi bawah (untuk teks caption/navigasi) --}}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10 pointer-events-none z-15"></div>
+
+            {{-- Tombol panah kiri --}}
+            <button
+                type="button"
+                x-on:click="prev()"
+                aria-label="Video sebelumnya"
+                class="absolute left-4 md:left-6 bottom-9 md:bottom-11 z-40 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/25 text-white flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/40"
+            >
+                <i class="fa-solid fa-chevron-left text-xs md:text-sm"></i>
+            </button>
+
+            {{-- Tombol panah kanan --}}
+            <button
+                type="button"
+                x-on:click="next()"
+                aria-label="Video berikutnya"
+                class="absolute right-4 md:right-6 bottom-9 md:bottom-11 z-40 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/25 text-white flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/40"
+            >
+                <i class="fa-solid fa-chevron-right text-xs md:text-sm"></i>
+            </button>
+
+            {{-- Navigasi judul destinasi (3 slot tetap) --}}
+            <div class="absolute bottom-0 left-0 right-0 z-30 pb-8 md:pb-10 px-4 pointer-events-none">
+                <div class="relative max-w-3xl md:max-w-4xl mx-auto pointer-events-auto">
+                    {{-- Garis horizontal --}}
+                    <div class="absolute top-0 left-0 right-0 h-px bg-white/25"></div>
+                    {{-- Segitiga penunjuk, selalu di tengah --}}
+                    <div class="absolute -top-[9px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[7px] border-t-white"></div>
+
+                    <div class="pt-4 grid grid-cols-3 items-start gap-4 md:gap-8">
+                        {{-- Slot kiri: video sebelumnya (looping) --}}
+                        <div
+                            class="text-center cursor-pointer select-none min-w-0"
+                            x-show="total > 1"
+                            x-on:click="prev()"
+                        >
+                            <h3
+                                class="truncate text-white/45 font-medium text-sm md:text-base hover:text-white/75 transition-colors duration-300"
+                                x-effect="
+                                    activeIndex;
+                                    $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
+                                    void $el.offsetWidth;
+                                    $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
+                                "
+                                x-text="videos[leftIndex].judul"
+                            ></h3>
+                        </div>
+
+                        {{-- Slot tengah: video aktif, judul selalu penuh --}}
+                        <div
+                            class="text-center min-w-0"
+                            x-on:mouseenter="hoveredIndex = activeIndex"
+                            x-on:mouseleave="hoveredIndex = null"
+                        >
+                            <h3
+                                class="text-white font-bold text-lg md:text-2xl leading-snug"
+                                x-effect="
+                                    activeIndex;
+                                    $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
+                                    void $el.offsetWidth;
+                                    $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
+                                "
+                                x-text="videos[activeIndex].judul"
+                            ></h3>
+                            <div
+                                class="overflow-hidden transition-all duration-500 ease-in-out mx-auto max-w-[280px]"
+                                :style="hoveredIndex === activeIndex ? 'max-height: 100px; opacity: 1; transform: translateY(0);' : 'max-height: 0px; opacity: 0; transform: translateY(-4px);'"
+                            >
+                                <p
+                                    class="text-white/70 text-xs md:text-sm mt-1.5 leading-relaxed"
+                                    x-text="videos[activeIndex].caption"
+                                ></p>
+                            </div>
+                        </div>
+
+                        {{-- Slot kanan: video berikutnya (looping) --}}
+                        <div
+                            class="text-center cursor-pointer select-none min-w-0"
+                            x-show="total > 1"
+                            x-on:click="next()"
+                        >
+                            <h3
+                                class="truncate text-white/45 font-medium text-sm md:text-base hover:text-white/75 transition-colors duration-300"
+                                x-effect="
+                                    activeIndex;
+                                    $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
+                                    void $el.offsetWidth;
+                                    $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
+                                "
+                                x-text="videos[rightIndex].judul"
+                            ></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {{-- Spotlight Overlay kustom yang mengikuti kursor --}}
+            <div
+                class="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300"
+                :class="hoveringStage ? 'opacity-100' : 'opacity-0'"
+                :style="'background: radial-gradient(circle 380px at ' + (50 + offsetX * 40) + '% ' + (50 + offsetY * 40) + '%, rgba(255,255,255,0.18), transparent 70%);'"
+            ></div>
+        </div>
+    </section>
+    @endif
+
+    @if($destinationVideos->count() === 0 && Auth::check() && Auth::user()->isAdmin())
+        <section class="px-6 md:px-12 py-12 bg-slate-50">
+            <div class="max-w-2xl mx-auto rounded-xl border-2 border-dashed border-slate-300 p-10 text-center">
+                <div class="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 text-xl mb-4">
+                    <i class="fa-solid fa-video-slash"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">Belum ada video destinasi</h3>
+                <p class="text-sm text-slate-500 mb-5">Section "Jelajahi Destinasi" akan muncul secara otomatis setelah Anda menambahkan minimal satu video.</p>
+                <a href="{{ route('admin.destination-videos.create') }}"
+                   class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition shadow">
+                    <i class="fa-solid fa-plus"></i> Tambah Video Destinasi Pertama
+                </a>
+            </div>
+        </section>
+    @endif
+
 
     <!-- SECTION B: About Us (Tentang Desa) -->
+
     <section id="tentang" class="bg-transparent py-10 md:py-32 px-4 md:px-12 relative overflow-hidden">
         <div class="max-w-6xl mx-auto">
             <div class="grid lg:grid-cols-12 gap-6 md:gap-8 lg:gap-16 items-center">
@@ -986,7 +1272,81 @@
     <!-- Scripts for Tentang Desa Wisata custom radio tabs & StPageFlip Interactive Book -->
     @push('scripts')
 
+    {{-- CSS overscan stage: dipisah dari :style Alpine agar tidak ditimpa --}}
+    <style>
+    .dv-stage {
+        position: absolute;
+        inset: -8%;
+        width: 116%;
+        height: 116%;
+    }
+    @keyframes dvNavFromRight {
+        from { opacity: 0; transform: translateX(14px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes dvNavFromLeft {
+        from { opacity: 0; transform: translateX(-14px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .dv-nav-anim-next { animation: dvNavFromRight 0.35s ease-out; }
+    .dv-nav-anim-prev { animation: dvNavFromLeft 0.35s ease-out; }
+    </style>
+
+    {{-- Script magnet/snap-scroll kustom untuk section Jelajahi Destinasi --}}
     <script>
+        (function () {
+            const section = document.getElementById('jelajahi-destinasi');
+            if (!section) return;
+
+            let scrollTimer = null;
+            let isAutoScrolling = false;
+            const ZONE = 0.6;           // rentang trigger (persen tinggi layar)
+            const ALIGN_THRESHOLD = 4;  // px, toleransi dianggap "sudah pas"
+
+            function waitForScrollEnd(callback) {
+                let lastY = window.scrollY;
+                let stableCount = 0;
+                const interval = setInterval(() => {
+                    const currentY = window.scrollY;
+                    if (currentY === lastY) {
+                        stableCount++;
+                        if (stableCount >= 2) {
+                            clearInterval(interval);
+                            callback();
+                        }
+                    } else {
+                        stableCount = 0;
+                        lastY = currentY;
+                    }
+                }, 50);
+                // Jaga-jaga supaya interval tidak jalan selamanya.
+                setTimeout(() => clearInterval(interval), 2000);
+            }
+
+            function checkSnap() {
+                if (isAutoScrolling) return;
+                const rect = section.getBoundingClientRect();
+                const vh = window.innerHeight;
+
+                const isInZone = rect.top > -vh * ZONE && rect.top < vh * ZONE;
+                const isAligned = Math.abs(rect.top) <= ALIGN_THRESHOLD;
+
+                if (isInZone && !isAligned) {
+                    isAutoScrolling = true;
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    waitForScrollEnd(() => { isAutoScrolling = false; });
+                }
+            }
+
+            window.addEventListener('scroll', () => {
+                if (isAutoScrolling) return;
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(checkSnap, 150);
+            }, { passive: true });
+        })();
+    </script>
+
+        <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Radio Tabs Content Switching
             const rd1 = document.getElementById('rd-1');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -14,7 +15,22 @@ class BlogController extends Controller
         $promoVideo = $this->promoItems('video', \App\Models\Video::class);
         $promoEbook = $this->promoItems('ebook', \App\Models\Ebook::class);
 
-        return view('welcome', compact('promoBlog', 'promoVideo', 'promoEbook'));
+        $destinationVideos = \App\Models\DestinationVideo::active()
+            ->ordered()
+            ->get()
+            ->map(function ($dv) {
+                return [
+                    'id'      => $dv->id,
+                    'judul'   => $dv->judul,
+                    'caption' => $dv->caption ?? '',
+                    'src'     => str_starts_with($dv->video, 'http')
+                        ? $dv->video
+                        : Storage::disk('public_direct')->url($dv->video),
+                ];
+            })
+            ->values();
+
+        return view('welcome', compact('promoBlog', 'promoVideo', 'promoEbook', 'destinationVideos'));
     }
 
     /**

@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ModerasiController as AdminModerasiController;
 use App\Http\Controllers\Admin\PerangkatDesaController;
 use App\Http\Controllers\Admin\TimProklimController;
+use App\Http\Controllers\Admin\DestinationVideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -182,6 +183,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/tim-proklim/{id}/edit', [TimProklimController::class, 'edit'])->name('tim-proklim.edit');
     Route::put('/tim-proklim/{id}', [TimProklimController::class, 'update'])->name('tim-proklim.update');
     Route::delete('/tim-proklim/{id}', [TimProklimController::class, 'destroy'])->name('tim-proklim.destroy');
+
+    // CRUD Destination Videos (Jelajahi Destinasi)
+    Route::get('/destination-videos', [DestinationVideoController::class, 'index'])->name('destination-videos.index');
+    Route::get('/destination-videos/create', [DestinationVideoController::class, 'create'])->name('destination-videos.create');
+    Route::post('/destination-videos', [DestinationVideoController::class, 'store'])->name('destination-videos.store');
+    Route::get('/destination-videos/{id}/edit', [DestinationVideoController::class, 'edit'])->name('destination-videos.edit');
+    Route::put('/destination-videos/{id}', [DestinationVideoController::class, 'update'])->name('destination-videos.update');
+    Route::delete('/destination-videos/{id}', [DestinationVideoController::class, 'destroy'])->name('destination-videos.destroy');
 
     // Ubah Hero Background
     Route::get('/hero', [HeroController::class, 'edit'])->name('hero.edit');

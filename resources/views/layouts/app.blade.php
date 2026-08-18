@@ -563,11 +563,24 @@
                     const show = () => navSolid.classList.remove('-translate-y-full');
                     const hide = () => navSolid.classList.add('-translate-y-full');
 
+                    const startIdleTimer = () => {
+                        clearTimeout(idleTimer);
+                        idleTimer = setTimeout(() => {
+                            if (pastHero && !mouseNearTop && !mouseOverNav) {
+                                hide();
+                            }
+                        }, 1500);
+                    };
+
                     // Check cursor near top of screen (clientY < 70)
                     window.addEventListener('mousemove', (e) => {
+                        const wasNearTop = mouseNearTop;
                         mouseNearTop = e.clientY < 70;
                         if (mouseNearTop && pastHero) {
                             show();
+                            clearTimeout(idleTimer);
+                        } else if (wasNearTop && !mouseNearTop) {
+                            startIdleTimer();
                         }
                     }, { passive: true });
 
@@ -576,11 +589,15 @@
                         mouseOverNav = true;
                         if (pastHero) {
                             show();
+                            clearTimeout(idleTimer);
                         }
                     });
 
                     navSolid.addEventListener('mouseleave', () => {
                         mouseOverNav = false;
+                        if (pastHero) {
+                            startIdleTimer();
+                        }
                     });
 
                     // intersection observer sentinel check
@@ -606,13 +623,7 @@
 
                     window.addEventListener('scroll', () => {
                         update();
-                        // Hide after 1500ms of inactivity when past hero, unless cursor is near top or hovering
-                        clearTimeout(idleTimer);
-                        idleTimer = setTimeout(() => {
-                            if (pastHero && !mouseNearTop && !mouseOverNav) {
-                                hide();
-                            }
-                        }, 1500);
+                        startIdleTimer();
                     }, { passive: true });
                 } else {
                     // Non-hero page or sentinel not found: solid navbar is always visible
