@@ -74,7 +74,7 @@
                             scrolled: false,
                             hasTransparentHeader: true
                         }"
-                        class="absolute top-0 left-0 w-full z-30 bg-transparent text-white">
+                        class="absolute top-0 left-0 w-full z-50 bg-transparent text-white">
                     <nav class="max-w-7xl mx-auto py-3 md:py-4 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 transition duration-300">
                         <!-- Top Row (Branding & Mobile Buttons) -->
                         <div class="w-full md:w-auto flex justify-between items-center shrink-0">
@@ -122,9 +122,9 @@
                             @else
                                 <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left font-exo">
                                     <button @click="openLoginDrop = !openLoginDrop" @click.away="openLoginDrop = false" type="button"
-                                            class="bg-white/10 text-white hover:bg-white hover:text-slate-800 px-4 py-2 text-xs font-semibold shadow-sm transition-colors duration-300 flex items-center gap-1.5 border border-white/20">
-                                        <i class="fa-solid fa-right-to-bracket"></i> Login <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                                    </button>
+                                             class="text-white hover:text-sky-300 transition-colors duration-300 flex items-center justify-center p-2 text-lg focus:outline-none">
+                                         <i class="fa-solid fa-right-to-bracket"></i>
+                                     </button>
                                     <div x-show="openLoginDrop" x-transition
                                          class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-[1000] text-slate-800 text-xs font-semibold py-1">
                                         <a href="{{ route('login.user') }}" class="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2">
@@ -149,7 +149,7 @@
                         scrolled: true,
                         hasTransparentHeader: {{ $hasTransparentHeader ? 'true' : 'false' }}
                     }"
-                    class="fixed top-0 left-0 w-full z-40 bg-white/95 shadow-md backdrop-blur transition-transform duration-300 ease-out will-change-transform"
+                    class="fixed top-0 left-0 w-full z-50 bg-white/95 shadow-md backdrop-blur transition-transform duration-300 ease-out will-change-transform"
                     :class="hasTransparentHeader ? '-translate-y-full' : 'translate-y-0'">
                 <nav class="max-w-7xl mx-auto py-3 md:py-4 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 transition duration-300">
                     <!-- Top Row (Branding & Mobile Buttons) -->
@@ -198,9 +198,9 @@
                         @else
                             <div x-data="{ openLoginDrop: false }" class="relative inline-block text-left font-exo">
                                 <button @click="openLoginDrop = !openLoginDrop" @click.away="openLoginDrop = false" type="button"
-                                        class="bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark px-4 py-2 text-xs font-semibold shadow-sm transition-colors duration-300 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-right-to-bracket"></i> Login <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                                </button>
+                                         class="text-brand-dark hover:text-sky-600 transition-colors duration-300 flex items-center justify-center p-2 text-lg focus:outline-none">
+                                     <i class="fa-solid fa-right-to-bracket"></i>
+                                 </button>
                                 <div x-show="openLoginDrop" x-transition
                                      class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-[1000] text-slate-800 text-xs font-semibold py-1">
                                     <a href="{{ route('login.user') }}" class="block px-4 py-2 hover:bg-emerald-50 hover:text-emerald-700 flex items-center gap-2">

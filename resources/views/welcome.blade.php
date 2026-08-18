@@ -84,133 +84,7 @@
         ];
     @endphp
 
-    <!-- SECTION A: Hero Section -->
-    <section class="relative w-full h-[115vh] flex flex-col justify-center items-center text-center px-6 overflow-hidden bg-transparent">
-        @if(Auth::check() && Auth::user()->isAdmin())
-            <!-- Floating Edit Button for Hero Background -->
-            <div class="absolute top-28 right-8 z-30">
-                <button onclick="document.getElementById('edit-hero-modal').classList.remove('hidden')" 
-                        class="bg-white/80 hover:bg-white text-slate-800 px-4 py-2.5 rounded-none shadow border border-white/20 transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
-                    <i class="fa-solid fa-pencil text-sky-600"></i> Edit Background Hero
-                </button>
-            </div>
 
-            <!-- Edit Hero Modal -->
-            <div id="edit-hero-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-                <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 text-left transform transition-all">
-                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
-                        <h3 class="text-lg font-heading text-slate-800">Edit Background Hero</h3>
-                        <button type="button" onclick="document.getElementById('edit-hero-modal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
-                            <i class="fa-solid fa-xmark text-xl"></i>
-                        </button>
-                    </div>
-                    <form action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="p-6 space-y-4">
-                            <div>
-                                <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih Foto atau Video Latar Belakang Baru</label>
-                                <input type="file" name="hero_background" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
-                                <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP, MP4, WEBM, MOV, OGG. Ukuran maks: 10MB.</p>
-                            </div>
-                        </div>
-                        <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
-                            <button type="button" onclick="document.getElementById('edit-hero-modal').classList.add('hidden')" 
-                                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
-                                Batal
-                            </button>
-                            <button type="submit" 
-                                    class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
-                                Simpan Perubahan
-                            </button>
-                        </div>
-                    </form>
-                    @php
-                        $welcomeBackup = \App\Models\SiteSetting::getValue('hero_background_backup');
-                    @endphp
-                    @if($welcomeBackup)
-                        <div class="p-6 border-t border-slate-100 bg-slate-50 text-slate-800">
-                            <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 berkas cadangan sebelumnya:</p>
-                            <div class="flex items-center gap-3">
-                                @if(Str::endsWith(Str::lower($welcomeBackup), ['.mp4', '.webm', '.mov', '.ogg']))
-                                    <div class="w-16 h-10 border border-slate-200 bg-slate-200 flex items-center justify-center text-[10px] text-slate-600 font-bold">VIDEO</div>
-                                @else
-                                    <img src="{{ (str_starts_with($welcomeBackup, 'http') || str_contains($welcomeBackup, 'storage/')) ? asset($welcomeBackup) : Storage::url($welcomeBackup) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
-                                @endif
-                                <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
-                                    @csrf
-                                    <input type="hidden" name="hero_key" value="hero_background">
-                                    <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
-                                        <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke File Ini
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        @endif
-        <!-- Edge-to-edge Background Video/Image with darkened overlay -->
-        @php
-            $isVideo = false;
-            $videoType = 'video/mp4';
-            $lowerUrl = Str::lower($heroBgUrl);
-            if (Str::endsWith($lowerUrl, '.mp4')) {
-                $isVideo = true;
-                $videoType = 'video/mp4';
-            } elseif (Str::endsWith($lowerUrl, '.webm')) {
-                $isVideo = true;
-                $videoType = 'video/webm';
-            } elseif (Str::endsWith($lowerUrl, '.mov') || Str::endsWith($lowerUrl, '.qt')) {
-                $isVideo = true;
-                $videoType = 'video/quicktime';
-            } elseif (Str::endsWith($lowerUrl, '.ogg')) {
-                $isVideo = true;
-                $videoType = 'video/ogg';
-            }
-        @endphp
-
-        @if($isVideo)
-            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
-                <source src="{{ $heroBgUrl }}" type="{{ $videoType }}">
-            </video>
-        @else
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10000ms] hover:scale-105"
-                 style="background-image: url('{{ $heroBgUrl }}');">
-            </div>
-        @endif
-
-        <div class="relative z-10 max-w-4xl mx-auto pt-16 pb-16">
-            <!-- Main Title in THE LAST TRUNKS Font -->
-            <h1 id="hero-title" class="text-4xl md:text-6xl lg:text-7xl font-exo font-bold uppercase text-white mb-6 tracking-wide drop-shadow-xl min-h-[2em] md:min-h-[1.2em]"></h1>
-            
-            <!-- Subtitle in Poppins Font -->
-            <p class="text-sm md:text-base lg:text-lg text-slate-100 font-sans max-w-2xl mx-auto leading-relaxed drop-shadow-md mb-10 opacity-90">
-                Memadukan potensi wisata alam, wisata sejarah, dan wisata edukasi dalam satu kawasan yang saling melengkapi.
-            </p>
-            
-            <!-- CTA Button Jelajahi Desa -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#tentang" 
-                   class="inline-flex items-center justify-center bg-brand-dark text-white hover:bg-brand-accent hover:text-brand-dark transition-colors font-semibold px-6 py-3 text-sm rounded-none shadow duration-300 transform hover:-translate-x-1 hover:scale-105">
-                    Jelajahi Desa
-                    <i class="fa-solid fa-arrow-down ml-3 text-xs animate-bounce"></i>
-                </a>
-            </div>
-        </div>
-        
-        <!-- Multi-layered Aesthetic Wave Divider -->
-        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10">
-            <svg class="relative block w-full h-[60px] md:h-[145px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <!-- Layer 1: Back Wave (Translucent Brand-Light) - Tall wave -->
-                <path d="M0,10 C150,40,350,0,600,25 C850,50,1050,15,1200,20 L1200,120 L0,120 Z" fill="rgba(116, 157, 178, 0.45)"></path>
-                <!-- Layer 2: Middle Wave (Translucent Brand-Dark) - Tall wave -->
-                <path d="M0,40 C240,60,380,30,700,50 C1000,70,1080,40,1200,45 L1200,120 L0,120 Z" fill="rgba(13, 53, 94, 0.35)"></path>
-                <!-- Layer 3: Front Wave (Solid White) - Tall wave, blends with content below -->
-                <path d="M0,70 C320,90,420,55,740,70 C1040,85,1120,65,1200,75 L1200,120 L0,120 Z" fill="#ffffff"></path>
-            </svg>
-        </div>
-    </section>
-    <div id="heroSentinel" aria-hidden="true" class="h-px w-full bg-transparent"></div>
 
     {{-- ============================================================
          SECTION A2: Jelajahi Destinasi (Video Carousel Full-Lebar)
@@ -218,7 +92,8 @@
     @if($destinationVideos->count() > 0)
     <section
         id="jelajahi-destinasi"
-        class="relative w-full bg-slate-950 overflow-hidden h-screen h-[100dvh]"
+        class="relative w-full bg-slate-950 overflow-hidden"
+        style="height: 115vh;"
         x-data="{
             videos: {{ Js::from($destinationVideos) }},
             activeIndex: 0,
@@ -341,19 +216,20 @@
             <div class="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/70 via-black/20 to-transparent pointer-events-none z-15"></div>
 
             {{-- Header section + tombol admin (mengapung di atas video) --}}
-            <div class="absolute top-0 left-0 right-0 z-30 px-6 md:px-12 pt-8 pb-6 flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-semibold tracking-widest uppercase text-sky-400 mb-1">Destinasi Unggulan</p>
-                    <h2 class="text-2xl md:text-4xl font-heading font-bold text-white tracking-wide">Jelajahi Destinasi</h2>
+            <div class="absolute left-0 right-0 top-[42%] -translate-y-1/2 z-30 flex justify-center px-6 pointer-events-none">
+                <div class="max-w-4xl text-center">
+                    <h1 id="hero-title" class="text-3xl md:text-5xl lg:text-6xl font-exo font-bold uppercase text-white mb-4 md:mb-6 tracking-wide drop-shadow-xl min-h-[2em] md:min-h-[1.2em]"></h1>
+                    <p class="text-sm md:text-base lg:text-lg text-slate-100 font-sans max-w-2xl mx-auto leading-relaxed drop-shadow-md opacity-90">
+                        Memadukan potensi wisata alam, wisata sejarah, dan wisata edukasi dalam satu kawasan yang saling melengkapi.
+                    </p>
                 </div>
-
-                @if(Auth::check() && Auth::user()->isAdmin())
-                    <a href="{{ route('admin.destination-videos.index') }}"
-                       class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-none shadow transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
-                        <i class="fa-solid fa-pen-to-square"></i> Kelola Destinasi
-                    </a>
-                @endif
             </div>
+            @if(Auth::check() && Auth::user()->isAdmin())
+                <a href="{{ route('admin.destination-videos.index') }}"
+                   class="absolute top-24 md:top-28 right-6 md:right-12 z-30 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-none shadow transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
+                    <i class="fa-solid fa-pen-to-square"></i> Kelola Destinasi
+                </a>
+            @endif
 
             {{-- Stage yang digeser parallax. Overscan di .dv-stage sehingga :style hanya handle transform. --}}
             <div class="dv-stage transition-[filter,transform] duration-300" :class="hoveringStage ? 'brightness-125 saturate-125 contrast-105' : ''" :style="stageStyle" x-ref="stage">
@@ -376,109 +252,125 @@
             {{-- Overlay gradasi bawah (untuk teks caption/navigasi) --}}
             <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10 pointer-events-none z-15"></div>
 
-            {{-- Tombol panah kiri --}}
-            <button
-                type="button"
-                x-on:click="prev()"
-                aria-label="Video sebelumnya"
-                class="absolute left-4 md:left-6 bottom-9 md:bottom-11 z-40 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/25 text-white flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/40"
-            >
-                <i class="fa-solid fa-chevron-left text-xs md:text-sm"></i>
-            </button>
+            {{-- Navigasi & Tombol Panah dalam Satu Baris Flex --}}
+            <div class="absolute inset-x-0 bottom-20 md:bottom-40 z-30 flex items-center justify-center gap-3 md:gap-6 max-w-md md:max-w-2xl mx-auto px-4 pointer-events-none">
+                {{-- Tombol panah kiri (prev) --}}
+                <button
+                    type="button"
+                    x-on:click="prev()"
+                    aria-label="Video sebelumnya"
+                    class="pointer-events-auto text-white/50 hover:text-white transition-colors duration-300 focus:outline-none shrink-0 px-2 py-3"
+                >
+                    <i class="fa-solid fa-chevron-left text-sm md:text-base"></i>
+                </button>
 
-            {{-- Tombol panah kanan --}}
-            <button
-                type="button"
-                x-on:click="next()"
-                aria-label="Video berikutnya"
-                class="absolute right-4 md:right-6 bottom-9 md:bottom-11 z-40 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/25 text-white flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/40"
-            >
-                <i class="fa-solid fa-chevron-right text-xs md:text-sm"></i>
-            </button>
+                {{-- Navigasi judul destinasi (3 slot tetap) --}}
+                <div class="flex-1 pointer-events-auto min-w-0">
+                    <div class="relative w-full">
+                        {{-- Garis horizontal tipis --}}
+                        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"></div>
+                        {{-- Segitiga penunjuk, selalu di tengah --}}
+                        <div class="absolute -top-[8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-white"></div>
 
-            {{-- Navigasi judul destinasi (3 slot tetap) --}}
-            <div class="absolute bottom-0 left-0 right-0 z-30 pb-8 md:pb-10 px-4 pointer-events-none">
-                <div class="relative max-w-3xl md:max-w-4xl mx-auto pointer-events-auto">
-                    {{-- Garis horizontal --}}
-                    <div class="absolute top-0 left-0 right-0 h-px bg-white/25"></div>
-                    {{-- Segitiga penunjuk, selalu di tengah --}}
-                    <div class="absolute -top-[9px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[7px] border-t-white"></div>
-
-                    <div class="pt-4 grid grid-cols-3 items-start gap-4 md:gap-8">
-                        {{-- Slot kiri: video sebelumnya (looping) --}}
-                        <div
-                            class="text-center cursor-pointer select-none min-w-0"
-                            x-show="total > 1"
-                            x-on:click="prev()"
-                        >
-                            <h3
-                                class="truncate text-white/45 font-medium text-sm md:text-base hover:text-white/75 transition-colors duration-300"
-                                x-effect="
-                                    activeIndex;
-                                    $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
-                                    void $el.offsetWidth;
-                                    $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
-                                "
-                                x-text="videos[leftIndex].judul"
-                            ></h3>
-                        </div>
-
-                        {{-- Slot tengah: video aktif, judul selalu penuh --}}
-                        <div
-                            class="text-center min-w-0"
-                            x-on:mouseenter="hoveredIndex = activeIndex"
-                            x-on:mouseleave="hoveredIndex = null"
-                        >
-                            <h3
-                                class="text-white font-bold text-lg md:text-2xl leading-snug"
-                                x-effect="
-                                    activeIndex;
-                                    $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
-                                    void $el.offsetWidth;
-                                    $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
-                                "
-                                x-text="videos[activeIndex].judul"
-                            ></h3>
+                        <div class="pt-3 grid grid-cols-3 items-start gap-2 md:gap-4">
+                            {{-- Slot kiri: video sebelumnya (looping) --}}
                             <div
-                                class="overflow-hidden transition-all duration-500 ease-in-out mx-auto max-w-[280px]"
-                                :style="hoveredIndex === activeIndex ? 'max-height: 100px; opacity: 1; transform: translateY(0);' : 'max-height: 0px; opacity: 0; transform: translateY(-4px);'"
+                                class="text-center cursor-pointer select-none min-w-0"
+                                x-show="total > 1"
+                                x-on:click="prev()"
                             >
-                                <p
-                                    class="text-white/70 text-xs md:text-sm mt-1.5 leading-relaxed"
-                                    x-text="videos[activeIndex].caption"
-                                ></p>
+                                <h3
+                                    class="truncate text-white/45 font-medium text-xs md:text-sm hover:text-white/75 transition-colors duration-300"
+                                    x-effect="
+                                        activeIndex;
+                                        $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
+                                        void $el.offsetWidth;
+                                        $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
+                                    "
+                                    x-text="videos[leftIndex].judul"
+                                ></h3>
                             </div>
-                        </div>
 
-                        {{-- Slot kanan: video berikutnya (looping) --}}
-                        <div
-                            class="text-center cursor-pointer select-none min-w-0"
-                            x-show="total > 1"
-                            x-on:click="next()"
-                        >
-                            <h3
-                                class="truncate text-white/45 font-medium text-sm md:text-base hover:text-white/75 transition-colors duration-300"
-                                x-effect="
-                                    activeIndex;
-                                    $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
-                                    void $el.offsetWidth;
-                                    $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
-                                "
-                                x-text="videos[rightIndex].judul"
-                            ></h3>
+                            {{-- Slot tengah: video aktif, judul selalu penuh --}}
+                            <div
+                                class="text-center min-w-0"
+                                x-on:mouseenter="hoveredIndex = activeIndex"
+                                x-on:mouseleave="hoveredIndex = null"
+                            >
+                                <h3
+                                    class="text-white font-bold text-base md:text-xl leading-snug"
+                                    x-effect="
+                                        activeIndex;
+                                        $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
+                                        void $el.offsetWidth;
+                                        $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
+                                    "
+                                    x-text="videos[activeIndex].judul"
+                                ></h3>
+                                <div
+                                    class="overflow-hidden transition-all duration-500 ease-in-out mx-auto max-w-[200px]"
+                                    :style="hoveredIndex === activeIndex ? 'max-height: 80px; opacity: 1; transform: translateY(0);' : 'max-height: 0px; opacity: 0; transform: translateY(-4px);'"
+                                >
+                                    <p
+                                        class="text-white/70 text-[10px] md:text-xs mt-1 leading-relaxed"
+                                        x-text="videos[activeIndex].caption"
+                                    ></p>
+                                </div>
+                            </div>
+
+                            {{-- Slot kanan: video berikutnya (looping) --}}
+                            <div
+                                class="text-center cursor-pointer select-none min-w-0"
+                                x-show="total > 1"
+                                x-on:click="next()"
+                            >
+                                <h3
+                                    class="truncate text-white/45 font-medium text-xs md:text-sm hover:text-white/75 transition-colors duration-300"
+                                    x-effect="
+                                        activeIndex;
+                                        $el.classList.remove('dv-nav-anim-next', 'dv-nav-anim-prev');
+                                        void $el.offsetWidth;
+                                        $el.classList.add(direction === 1 ? 'dv-nav-anim-next' : 'dv-nav-anim-prev');
+                                    "
+                                    x-text="videos[rightIndex].judul"
+                                ></h3>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                {{-- Tombol panah kanan (next) --}}
+                <button
+                    type="button"
+                    x-on:click="next()"
+                    aria-label="Video berikutnya"
+                    class="pointer-events-auto text-white/50 hover:text-white transition-colors duration-300 focus:outline-none shrink-0 px-2 py-3"
+                >
+                    <i class="fa-solid fa-chevron-right text-sm md:text-base"></i>
+                </button>
             </div>
-            
+
             {{-- Spotlight Overlay kustom yang mengikuti kursor --}}
             <div
                 class="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300"
                 :class="hoveringStage ? 'opacity-100' : 'opacity-0'"
                 :style="'background: radial-gradient(circle 380px at ' + (50 + offsetX * 40) + '% ' + (50 + offsetY * 40) + '%, rgba(255,255,255,0.18), transparent 70%);'"
             ></div>
+
+            <!-- Multi-layered Aesthetic Wave Divider -->
+            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10 pointer-events-none">
+                <svg class="relative block w-full h-20 md:h-44" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <!-- Layer 1: Back Wave (Translucent Brand-Light) - Tall wave -->
+                    <path d="M0,10 C150,40,350,0,600,25 C850,50,1050,15,1200,20 L1200,120 L0,120 Z" fill="rgba(116, 157, 178, 0.45)"></path>
+                    <!-- Layer 2: Middle Wave (Translucent Brand-Dark) - Tall wave -->
+                    <path d="M0,40 C240,60,380,30,700,50 C1000,70,1080,40,1200,45 L1200,120 L0,120 Z" fill="rgba(13, 53, 94, 0.35)"></path>
+                    <!-- Layer 3: Front Wave (Solid White) - Tall wave, blends with content below -->
+                    <path d="M0,70 C320,90,420,55,740,70 C1040,85,1120,65,1200,75 L1200,120 L0,120 Z" fill="#ffffff"></path>
+                </svg>
+            </div>
         </div>
     </section>
+    <div id="heroSentinel" aria-hidden="true" class="h-px w-full bg-transparent"></div>
     @endif
 
     @if($destinationVideos->count() === 0 && Auth::check() && Auth::user()->isAdmin())
@@ -1276,9 +1168,9 @@
     <style>
     .dv-stage {
         position: absolute;
-        inset: -8%;
-        width: 116%;
-        height: 116%;
+        inset: -20%;
+        width: 140%;
+        height: 140%;
     }
     @keyframes dvNavFromRight {
         from { opacity: 0; transform: translateX(14px); }
