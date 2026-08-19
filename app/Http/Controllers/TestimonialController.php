@@ -101,7 +101,7 @@ class TestimonialController extends Controller
             'photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:10240',
         ]);
 
-        $testimonial = new \App\Models\Testimonial($request->except(['photo', 'referral_radio']));
+        $testimonial = new \App\Models\Testimonial($request->except(['photo', 'referral_radio', 'visitor_token']));
         $testimonial->one_word = ''; // Set default empty to avoid non-null checks
         $testimonial->companion = ''; // Set default empty to avoid non-null checks
 
