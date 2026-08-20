@@ -14,7 +14,7 @@
                     @forelse($ebook->categories as $category)
                         <x-blog.category-badge :category="$category" />
                     @empty
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">E-Book</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 ring-1 ring-slate-200">Dokumen</span>
                     @endforelse
                 </div>
                 
@@ -41,9 +41,9 @@
                 <!-- Deskripsi & Aksi -->
                 <div class="flex-grow space-y-6">
                     <div class="prose max-w-none text-slate-700 font-sans leading-relaxed">
-                        <h3 class="text-lg font-semibold text-slate-800 mb-2">Deskripsi Buku</h3>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-2">Deskripsi Dokumen</h3>
                         <p class="text-base text-slate-600">
-                            {{ $ebook->description ?? 'Tidak ada deskripsi untuk e-book ini.' }}
+                            {{ $ebook->description ?? 'Tidak ada deskripsi untuk dokumen ini.' }}
                         </p>
                     </div>
 
@@ -61,7 +61,7 @@
                         <a href="{{ route('ebook.download', $ebook->id) }}" 
                            class="group inline-flex items-center gap-2.5 bg-white hover:bg-slate-50 text-slate-750 hover:text-brand-dark border border-slate-300 hover:border-slate-400 font-semibold px-6 py-3.5 rounded-lg shadow-sm transition-all duration-200 text-sm tracking-wide transform active:scale-95">
                             <i class="fa-solid fa-download text-slate-400 group-hover:text-brand-dark group-hover:translate-y-0.5 transition-all"></i>
-                            <span>Unduh E-Book</span>
+                            <span>Unduh Dokumen</span>
                         </a>
                     </div>
                 </div>
@@ -73,10 +73,10 @@
 
         <!-- E-book Lainnya -->
         <x-detail.more 
-            title="Baca E-Book Lainnya" 
+            title="Baca Dokumen Lainnya" 
             :items="$moreItems" 
             :backUrl="route('pustaka') . '#ebook'" 
-            backLabel="Kembali ke daftar e-book" />
+            backLabel="Kembali ke daftar dokumen" />
     </x-slot:main>
 
     <x-slot:sidebar>

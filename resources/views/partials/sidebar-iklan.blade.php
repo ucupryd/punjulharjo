@@ -51,21 +51,21 @@
         </div>
     </div>
 
-    <!-- Item 3: E-Book Panduan Wisata -->
+    <!-- Item 3: Dokumen Desa -->
     <div class="flex items-start gap-4 pt-4 pb-4">
         <div class="w-24 h-16 bg-slate-100 flex-shrink-0 overflow-hidden rounded-none">
-            <img src="{{ $heroPustakaImg }}" alt="E-Book Panduan Wisata" class="w-full h-full object-cover rounded-none" loading="lazy">
+            <img src="{{ $heroPustakaImg }}" alt="Dokumen Desa" class="w-full h-full object-cover rounded-none" loading="lazy">
         </div>
         <div class="flex-1 space-y-1">
             <h4 class="text-sm font-bold font-heading text-brand-dark leading-snug">
-                E-Book Panduan Wisata
+                Dokumen Desa
             </h4>
             <p class="text-xs text-slate-500 font-sans line-clamp-2">
-                Unduh dan baca panduan lengkap tentang kebudayaan, sejarah, dan keindahan alam Punjulharjo.
+                Unduh dan baca dokumen resmi, regulasi, SK, serta paket wisata Desa Wisata Punjulharjo.
             </p>
             <a href="/pustaka?tab=ebook" 
                class="inline-block text-xs font-bold text-sky-600 hover:text-sky-800 transition duration-150">
-                Buka E-Book &rarr;
+                Buka Dokumen &rarr;
             </a>
         </div>
     </div>

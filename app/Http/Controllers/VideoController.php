@@ -82,10 +82,10 @@ class VideoController extends Controller
             ],
             [
                 'image' => 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
-                'title' => 'E-Book Panduan Wisata',
-                'excerpt' => 'Unduh dan baca panduan lengkap tentang kebudayaan, sejarah, dan keindahan alam Punjulharjo.',
+                'title' => 'Dokumen Desa',
+                'excerpt' => 'Unduh dan baca dokumen resmi, regulasi, SK, serta paket wisata Desa Wisata Punjulharjo.',
                 'url' => '/pustaka?tab=ebook',
-                'ctaLabel' => 'Buka E-Book'
+                'ctaLabel' => 'Buka Dokumen'
             ],
             [
                 'image' => 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80',

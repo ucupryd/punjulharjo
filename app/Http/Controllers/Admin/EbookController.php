@@ -49,7 +49,7 @@ class EbookController extends Controller
         ]);
         $ebook->categories()->sync($request->input('categories', []));
 
-        return back()->with('success', 'Ebook baru berhasil ditambahkan!');
+        return back()->with('success', 'Dokumen baru berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
@@ -103,7 +103,7 @@ class EbookController extends Controller
         ]);
         $ebook->categories()->sync($request->input('categories', []));
 
-        return back()->with('success', 'Ebook berhasil diperbarui!');
+        return back()->with('success', 'Dokumen berhasil diperbarui!');
     }
 
     public function destroy($id)
@@ -118,6 +118,6 @@ class EbookController extends Controller
 
         $ebook->delete();
 
-        return back()->with('success', 'Ebook berhasil dihapus!');
+        return back()->with('success', 'Dokumen berhasil dihapus!');
     }
 }

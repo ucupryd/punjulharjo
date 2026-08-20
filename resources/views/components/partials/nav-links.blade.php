@@ -143,7 +143,7 @@
             <a href="{{ route('pustaka', ['tab' => 'ebook']) }}" 
                class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-book-open text-emerald-600 text-xs"></i>
-                <span>E-Book Panduan</span>
+                <span>Dokumen</span>
             </a>
             <a href="{{ route('pustaka', ['tab' => 'video']) }}" 
                class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition border-t border-slate-100">

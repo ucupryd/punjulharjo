@@ -1060,7 +1060,7 @@
 
 
     {{-- ============================================================
-         SECTION G — PROMO KONTEN PUSTAKA (BERITA, VIDEO, E-BOOK)
+         SECTION G — PROMO KONTEN PUSTAKA (BERITA, VIDEO, DOKUMEN)
          Disisipkan di antara akhir Section F dan @push('scripts').
          JANGAN memindahkan blok ini ke dalam @push('scripts').
          ============================================================ --}}
@@ -1068,7 +1068,7 @@
         $promoSections = [
             ['label' => 'Berita',  'data' => $promoBlog,  'tab' => 'blog',  'type' => 'Berita'],
             ['label' => 'Video',   'data' => $promoVideo, 'tab' => 'video', 'type' => 'Video'],
-            ['label' => 'E-Book',  'data' => $promoEbook, 'tab' => 'ebook', 'type' => 'E-Book'],
+            ['label' => 'Dokumen', 'data' => $promoEbook, 'tab' => 'ebook', 'type' => 'Dokumen'],
         ];
         $adaPromo = collect($promoSections)->contains(fn ($s) => $s['data']['items']->isNotEmpty());
     @endphp

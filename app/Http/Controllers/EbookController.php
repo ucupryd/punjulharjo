@@ -36,7 +36,7 @@ class EbookController extends Controller
         $moreItems = $ebooksLain->map(function ($eb) {
             return [
                 'image' => $eb->cover_path ? Storage::url($eb->cover_path) : asset('images/ebook-placeholder.png'),
-                'label' => 'E-Book',
+                'label' => 'Dokumen',
                 'title' => $eb->title,
                 'date' => $eb->created_at->format('d M Y'),
                 'url' => route('ebook.show', $eb->id)
