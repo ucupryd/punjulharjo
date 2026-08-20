@@ -58,7 +58,10 @@ class GalleryAdopsiController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg,webp|max:4096',
             'title' => 'required|string|max:255',
             'aspect_class' => 'required|string',
+            'gallery_key' => 'nullable|string',
         ]);
+
+        $key = $request->input('gallery_key', 'gallery_adopsi_items');
 
         $file = $request->file('image');
         $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
@@ -69,8 +72,9 @@ class GalleryAdopsiController extends Controller
         $file->move($targetDir, $fileName);
         $path = 'gallery-adopsi/' . $fileName;
 
-        $itemsJson = SiteSetting::getValue('gallery_adopsi_items');
-        $items = $itemsJson ? json_decode($itemsJson, true) : $this->getDefaultItems();
+        $itemsJson = SiteSetting::getValue($key);
+        // Default items fallback only if the key is default gallery_adopsi_items
+        $items = $itemsJson ? json_decode($itemsJson, true) : ($key === 'gallery_adopsi_items' ? $this->getDefaultItems() : []);
 
         // Generate auto-incrementing ID
         $newId = count($items) > 0 ? max(array_column($items, 'id')) + 1 : 1;
@@ -82,9 +86,9 @@ class GalleryAdopsiController extends Controller
             'aspect_class' => $request->aspect_class,
         ];
 
-        SiteSetting::setValue('gallery_adopsi_items', json_encode($items));
+        SiteSetting::setValue($key, json_encode($items));
 
-        return back()->with('success', 'Foto galeri adopsi berhasil ditambahkan!');
+        return back()->with('success', 'Foto galeri berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
@@ -93,10 +97,13 @@ class GalleryAdopsiController extends Controller
             'image' => 'nullable|image|mimes:jpg,png,jpeg,webp|max:4096',
             'title' => 'required|string|max:255',
             'aspect_class' => 'required|string',
+            'gallery_key' => 'nullable|string',
         ]);
 
-        $itemsJson = SiteSetting::getValue('gallery_adopsi_items');
-        $items = $itemsJson ? json_decode($itemsJson, true) : $this->getDefaultItems();
+        $key = $request->input('gallery_key', 'gallery_adopsi_items');
+
+        $itemsJson = SiteSetting::getValue($key);
+        $items = $itemsJson ? json_decode($itemsJson, true) : ($key === 'gallery_adopsi_items' ? $this->getDefaultItems() : []);
 
         $found = false;
         foreach ($items as &$item) {
@@ -125,15 +132,16 @@ class GalleryAdopsiController extends Controller
             return back()->withErrors(['error' => 'Foto tidak ditemukan.']);
         }
 
-        SiteSetting::setValue('gallery_adopsi_items', json_encode($items));
+        SiteSetting::setValue($key, json_encode($items));
 
-        return back()->with('success', 'Foto galeri adopsi berhasil diperbarui!');
+        return back()->with('success', 'Foto galeri berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $itemsJson = SiteSetting::getValue('gallery_adopsi_items');
-        $items = $itemsJson ? json_decode($itemsJson, true) : $this->getDefaultItems();
+        $key = $request->input('gallery_key', 'gallery_adopsi_items');
+        $itemsJson = SiteSetting::getValue($key);
+        $items = $itemsJson ? json_decode($itemsJson, true) : ($key === 'gallery_adopsi_items' ? $this->getDefaultItems() : []);
 
         $filteredItems = [];
         foreach ($items as $item) {
@@ -146,8 +154,8 @@ class GalleryAdopsiController extends Controller
             }
         }
 
-        SiteSetting::setValue('gallery_adopsi_items', json_encode($filteredItems));
+        SiteSetting::setValue($key, json_encode($filteredItems));
 
-        return back()->with('success', 'Foto galeri adopsi berhasil dihapus!');
+        return back()->with('success', 'Foto galeri berhasil dihapus!');
     }
 }

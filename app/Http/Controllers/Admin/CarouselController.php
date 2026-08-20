@@ -15,7 +15,10 @@ class CarouselController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg|max:4096',
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:500',
+            'carousel_key' => 'nullable|string',
         ]);
+
+        $key = $request->input('carousel_key', 'carousel_items');
 
         $file = $request->file('image');
         $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
@@ -26,7 +29,7 @@ class CarouselController extends Controller
         $file->move($targetDir, $fileName);
         $path = 'carousel/' . $fileName;
 
-        $itemsJson = SiteSetting::getValue('carousel_items');
+        $itemsJson = SiteSetting::getValue($key);
         $items = $itemsJson ? json_decode($itemsJson, true) : [];
 
         // Generate auto-incrementing ID
@@ -39,7 +42,7 @@ class CarouselController extends Controller
             'description' => $request->description,
         ];
 
-        SiteSetting::setValue('carousel_items', json_encode($items));
+        SiteSetting::setValue($key, json_encode($items));
 
         return back()->with('success', 'Aktivitas carousel berhasil ditambahkan!');
     }
@@ -50,44 +53,52 @@ class CarouselController extends Controller
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:4096',
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:500',
+            'carousel_key' => 'nullable|string',
         ]);
 
-        $itemsJson = SiteSetting::getValue('carousel_items');
+        $key = $request->input('carousel_key', 'carousel_items');
+
+        $itemsJson = SiteSetting::getValue($key);
         if ($itemsJson) {
             $items = json_decode($itemsJson, true);
         } else {
-            $items = [
-                [
-                    'id' => 1,
-                    'image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Susur Pantai Karang Jahe',
-                    'description' => 'Menikmati segarnya hembusan angin laut di bawah keteduhan ribuan cemara laut yang berjejer rapi.'
-                ],
-                [
-                    'id' => 2,
-                    'image' => 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Eksplorasi Perahu Abad ke-7',
-                    'description' => 'Melihat langsung mahakarya arkeologis kapal kayu tertua di nusantara bukti peradaban bahari.'
-                ],
-                [
-                    'id' => 3,
-                    'image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Wisata Mangrove & Tambak',
-                    'description' => 'Menyusuri jalur trekking hutan bakau hijau dan edukasi budidaya garam lokal masyarakat.'
-                ],
-                [
-                    'id' => 4,
-                    'image' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Festival Budaya Pesisir',
-                    'description' => 'Menyaksikan pagelaran tari tradisional dan sedekah laut tahunan khas warga pesisir.'
-                ],
-                [
-                    'id' => 5,
-                    'image' => 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Kuliner Seafood & Khas Rembang',
-                    'description' => 'Menikmati masakan laut segar bumbu rempah tradisi di warung makan tepi pantai.'
-                ]
-            ];
+            // Default items fallback if the key is default carousel_items
+            if ($key === 'carousel_items') {
+                $items = [
+                    [
+                        'id' => 1,
+                        'image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Susur Pantai Karang Jahe',
+                        'description' => 'Menikmati segarnya hembusan angin laut di bawah keteduhan ribuan cemara laut yang berjejer rapi.'
+                    ],
+                    [
+                        'id' => 2,
+                        'image' => 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Eksplorasi Perahu Abad ke-7',
+                        'description' => 'Melihat langsung mahakarya arkeologis kapal kayu tertua di nusantara bukti peradaban bahari.'
+                    ],
+                    [
+                        'id' => 3,
+                        'image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Wisata Mangrove & Tambak',
+                        'description' => 'Menyusuri jalur trekking hutan bakau hijau dan edukasi budidaya garam lokal masyarakat.'
+                    ],
+                    [
+                        'id' => 4,
+                        'image' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Festival Budaya Pesisir',
+                        'description' => 'Menyaksikan pagelaran tari tradisional dan sedekah laut tahunan khas warga pesisir.'
+                    ],
+                    [
+                        'id' => 5,
+                        'image' => 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Kuliner Seafood & Khas Rembang',
+                        'description' => 'Menikmati masakan laut segar bumbu rempah tradisi di warung makan tepi pantai.'
+                    ]
+                ];
+            } else {
+                $items = [];
+            }
         }
 
         $found = false;
@@ -118,49 +129,54 @@ class CarouselController extends Controller
             return back()->withErrors(['error' => 'Aktivitas tidak ditemukan.']);
         }
 
-        SiteSetting::setValue('carousel_items', json_encode($items));
+        SiteSetting::setValue($key, json_encode($items));
 
         return back()->with('success', 'Aktivitas carousel berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $itemsJson = SiteSetting::getValue('carousel_items');
+        $key = $request->input('carousel_key', 'carousel_items');
+        $itemsJson = SiteSetting::getValue($key);
         if ($itemsJson) {
             $items = json_decode($itemsJson, true);
         } else {
-            $items = [
-                [
-                    'id' => 1,
-                    'image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Susur Pantai Karang Jahe',
-                    'description' => 'Menikmati segarnya hembusan angin laut di bawah keteduhan ribuan cemara laut yang berjejer rapi.'
-                ],
-                [
-                    'id' => 2,
-                    'image' => 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Eksplorasi Perahu Abad ke-7',
-                    'description' => 'Melihat langsung mahakarya arkeologis kapal kayu tertua di nusantara bukti peradaban bahari.'
-                ],
-                [
-                    'id' => 3,
-                    'image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Wisata Mangrove & Tambak',
-                    'description' => 'Menyusuri jalur trekking hutan bakau hijau dan edukasi budidaya garam lokal masyarakat.'
-                ],
-                [
-                    'id' => 4,
-                    'image' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Festival Budaya Pesisir',
-                    'description' => 'Menyaksikan pagelaran tari tradisional dan sedekah laut tahunan khas warga pesisir.'
-                ],
-                [
-                    'id' => 5,
-                    'image' => 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=800&q=80',
-                    'title' => 'Kuliner Seafood & Khas Rembang',
-                    'description' => 'Menikmati masakan laut segar bumbu rempah tradisi di warung makan tepi pantai.'
-                ]
-            ];
+            if ($key === 'carousel_items') {
+                $items = [
+                    [
+                        'id' => 1,
+                        'image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Susur Pantai Karang Jahe',
+                        'description' => 'Menikmati segarnya hembusan angin laut di bawah keteduhan ribuan cemara laut yang berjejer rapi.'
+                    ],
+                    [
+                        'id' => 2,
+                        'image' => 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Eksplorasi Perahu Abad ke-7',
+                        'description' => 'Melihat langsung mahakarya arkeologis kapal kayu tertua di nusantara bukti peradaban bahari.'
+                    ],
+                    [
+                        'id' => 3,
+                        'image' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Wisata Mangrove & Tambak',
+                        'description' => 'Menyusuri jalur trekking hutan bakau hijau dan edukasi budidaya garam lokal masyarakat.'
+                    ],
+                    [
+                        'id' => 4,
+                        'image' => 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Festival Budaya Pesisir',
+                        'description' => 'Menyaksikan pagelaran tari tradisional dan sedekah laut tahunan khas warga pesisir.'
+                    ],
+                    [
+                        'id' => 5,
+                        'image' => 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=800&q=80',
+                        'title' => 'Kuliner Seafood & Khas Rembang',
+                        'description' => 'Menikmati masakan laut segar bumbu rempah tradisi di warung makan tepi pantai.'
+                    ]
+                ];
+            } else {
+                $items = [];
+            }
         }
 
         $filteredItems = [];
@@ -174,7 +190,7 @@ class CarouselController extends Controller
             }
         }
 
-        SiteSetting::setValue('carousel_items', json_encode($filteredItems));
+        SiteSetting::setValue($key, json_encode($filteredItems));
 
         return back()->with('success', 'Aktivitas carousel berhasil dihapus!');
     }

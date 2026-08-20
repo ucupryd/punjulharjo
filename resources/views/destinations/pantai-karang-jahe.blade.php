@@ -18,6 +18,13 @@
             : (file_exists(public_path('images/destinasi/karangjahe-tentang.jpg')) 
                 ? asset('images/destinasi/karangjahe-tentang.jpg') 
                 : 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80');
+
+        // Carousel & Gallery Data for Pantai Karang Jahe
+        $carouselItemsJson = \App\Models\SiteSetting::getValue('carousel_pantai_karang_jahe');
+        $carouselItems = $carouselItemsJson ? json_decode($carouselItemsJson, true) : [];
+
+        $galleryItemsJson = \App\Models\SiteSetting::getValue('gallery_pantai_karang_jahe');
+        $galleryItems = $galleryItemsJson ? json_decode($galleryItemsJson, true) : [];
     @endphp
 
     <!-- =========================================================================
@@ -345,6 +352,111 @@
     </section>
 
     <!-- =========================================================================
+         SECTION 5B: Galeri Foto [galeri]
+         ========================================================================= -->
+    <section id="galeri" class="bg-white py-12 md:py-24 px-4 md:px-6 relative z-10 border-b border-slate-100">
+        <div class="max-w-6xl mx-auto relative">
+            @if(Auth::check() && Auth::user()->isAdmin())
+                <!-- Floating Add Button for Gallery -->
+                <div class="absolute top-0 right-4 sm:right-6 lg:right-8 z-30">
+                    <button onclick="document.getElementById('add-gallery-modal-karang-jahe').classList.remove('hidden')" 
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-none shadow transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
+                        <i class="fa-solid fa-plus"></i> Tambah Foto
+                    </button>
+                </div>
+            @endif
+
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-emerald-600 font-semibold uppercase text-xs tracking-wider">Dokumentasi</span>
+                <h2 class="text-3xl font-bold text-slate-800 font-title mt-1">Galeri Pantai Karang Jahe</h2>
+                <p class="text-slate-600 mt-2">Aktivitas pengunjung & keindahan alam di sekitar Pantai Karang Jahe.</p>
+            </div>
+
+            @if(empty($galleryItems))
+                @php
+                    $galleryGridClassesFb = [
+                        'col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-1',
+                        'col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-3',
+                        'col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-1',
+                        'col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-2',
+                        'col-span-2 row-span-1 md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-1',
+                        'col-span-2 row-span-1 md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-3',
+                    ];
+                    $fallbackGallery = [
+                        ['title' => 'Pantai Karang Jahe', 'image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'],
+                        ['title' => 'Hutan Cemara Laut',  'image' => 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80'],
+                        ['title' => 'Wahana ATV',         'image' => 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80'],
+                        ['title' => 'Ombak Pesisir',      'image' => 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=600&q=80'],
+                        ['title' => 'Sunset Pantai',      'image' => 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=800&q=80'],
+                        ['title' => 'Perahu Wisata',      'image' => 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80'],
+                    ];
+                @endphp
+                <div x-data="{ activePhoto: null }" class="relative">
+                    <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] sm:auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black rounded-2xl">
+                        @foreach($fallbackGallery as $fi => $fbPhoto)
+                            <div @click="activePhoto = '{{ $fbPhoto['image'] }}'"
+                                 class="relative w-full h-full group {{ $galleryGridClassesFb[$fi] ?? 'hidden' }} overflow-hidden cursor-pointer">
+                                <img src="{{ $fbPhoto['image'] }}"
+                                     alt="{{ $fbPhoto['title'] }}"
+                                     class="absolute inset-0 w-full h-full object-cover rounded-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none z-10">
+                                    <span class="text-white font-medium text-lg leading-tight">{{ $fbPhoto['title'] }}</span>
+                                </div>
+                                {{-- Tidak ada tombol edit di foto fallback --}}
+                            </div>
+                        @endforeach
+                    </div>
+                    <!-- Lightbox -->
+                    <div x-show="activePhoto" x-cloak @click="activePhoto = null"
+                         class="fixed inset-0 bg-black/90 z-[150] flex items-center justify-center p-4 cursor-zoom-out" style="display: none;">
+                        <img :src="activePhoto" class="max-h-full max-w-full object-contain">
+                    </div>
+                </div>
+            @else
+                @php
+                    $galleryGridClasses = [
+                        'col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-1',
+                        'col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-3',
+                        'col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-1',
+                        'col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-2',
+                        'col-span-2 row-span-1 md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-1',
+                        'col-span-2 row-span-1 md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-3',
+                    ];
+                @endphp
+                <div x-data="{ activePhoto: null }" class="relative">
+                    <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] sm:auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black rounded-2xl">
+                        @foreach(array_slice($galleryItems, 0, 6) as $index => $item)
+                            @php
+                                $imageUrl = str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']);
+                            @endphp
+                            <div @click="activePhoto = '{{ $imageUrl }}'"
+                                 class="relative w-full h-full group {{ $galleryGridClasses[$index] ?? 'hidden' }} overflow-hidden cursor-pointer">
+                                <img src="{{ $imageUrl }}"
+                                     alt="{{ $item['title'] }}"
+                                     class="absolute inset-0 w-full h-full object-cover rounded-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 pointer-events-none z-10">
+                                    <span class="text-white font-medium text-lg leading-tight">{{ $item['title'] }}</span>
+                                </div>
+                                @if(Auth::check() && Auth::user()->isAdmin())
+                                    <button onclick="openEditGalleryModal_karangJahe(event, {{ json_encode($item) }})"
+                                            class="absolute top-2 right-2 z-20 bg-white/90 hover:bg-white text-slate-700 w-8 h-8 rounded-full flex items-center justify-center shadow">
+                                        <i class="fa-solid fa-pen text-xs"></i>
+                                    </button>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                    <!-- Lightbox -->
+                    <div x-show="activePhoto" x-cloak @click="activePhoto = null"
+                         class="fixed inset-0 bg-black/90 z-[150] flex items-center justify-center p-4 cursor-zoom-out" style="display: none;">
+                        <img :src="activePhoto" class="max-h-full max-w-full object-contain">
+                    </div>
+                </div>
+            @endif
+        </div>
+    </section>
+
+    <!-- =========================================================================
          SECTION 6: Keunikan [keunikan]
          ========================================================================= -->
     <section id="dayatarik" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
@@ -505,145 +617,117 @@
                     </span>
                     <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Outbound & Voli</span>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- =========================================================================
-         SECTION 8: Aktivitas & Wahana [aktivitas]
+            </div    <!-- =========================================================================
+         SECTION 8: 3D Coverflow Experience (Aktivitas Pantai)
          ========================================================================= -->
-    <section id="aktivitas" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
-        <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
-            <div class="text-center space-y-2 md:space-y-4">
-                <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
-                    Aktivitas apa yang kamu lakukan disana?
+    <section id="aktivitas" class="bg-slate-50 py-8 md:py-24 px-4 md:px-12 relative overflow-hidden z-10 border-y border-slate-100">
+        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-sky-200/10 rounded-full blur-3xl z-0"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-200/10 rounded-full blur-3xl z-0"></div>
+
+        <div class="max-w-6xl mx-auto relative z-10 text-center">
+            <!-- Header -->
+            <div class="space-y-2 md:space-y-4 mb-8 md:mb-16 max-w-3xl mx-auto relative">
+                <h2 class="text-xl sm:text-2xl md:text-5xl font-heading text-gray-900 tracking-wide leading-tight">
+                    Jelajahi Aktivitas
                 </h2>
-                <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
-                    Pilihan rekreasi seru yang dapat Anda nikmati selama berkunjung di Pantai Karang Jahe.
+                <p class="text-gray-600 font-sans text-xs sm:text-sm md:text-lg">
+                    Klik kartu di kanan/kiri untuk memutar dan memfokuskan petualangan seru yang dapat Anda nikmati di destinasi kami.
                 </p>
+                @if(Auth::check() && Auth::user()->isAdmin())
+                    <!-- Floating Add Button for Carousel -->
+                    <div class="absolute top-0 right-0">
+                        <button onclick="document.getElementById('add-carousel-modal-karang-jahe').classList.remove('hidden')" 
+                                class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-none shadow transition-all duration-300 flex items-center gap-2 text-xs font-semibold">
+                            <i class="fa-solid fa-plus"></i> Tambah Aktivitas
+                        </button>
+                    </div>
+                @endif
             </div>
 
+            {{-- Tentukan items yang akan ditampilkan: data asli dari DB, atau fallback statis --}}
             @php
-                $pantaiActivities = [
-                    'pantai_act_atv' => [
-                        'title' => 'ATV',
-                        'desc' => 'Menyusuri garis pasir pantai sepanjang 3 km dengan menggunakan armada ATV.',
-                        'default_img' => 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80',
-                    ],
-                    'pantai_act_trail' => [
-                        'title' => 'Motor Trail',
-                        'desc' => 'Petualangan seru memacu adrenalin dengan motor trail di area trek berpasir.',
-                        'default_img' => 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80',
-                    ],
-                    'pantai_act_ban' => [
-                        'title' => 'Wahana Ban',
-                        'desc' => 'Bermain air seru dan santai di tepi pantai yang dangkal menggunakan ban pelampung.',
-                        'default_img' => 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80',
-                    ],
-                    'pantai_act_mandi_bola' => [
-                        'title' => 'Mandi Bola',
-                        'desc' => 'Wahana bermain anak yang seru dan aman penuh keceriaan mandi bola warna-warni.',
-                        'default_img' => 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=600&q=80',
-                    ],
-                    'pantai_act_perahu' => [
-                        'title' => 'Perahu',
-                        'desc' => 'Menyusuri perairan pantai tenang dengan menyewa perahu wisata tradisional bersama keluarga.',
-                        'default_img' => 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=600&q=80',
-                    ],
-                    'pantai_act_gazebo' => [
-                        'title' => 'Gazebo',
-                        'desc' => 'Sewa gazebo kayu yang nyaman untuk bersantai menikmati hembusan angin laut di bawah keteduhan cemara.',
-                        'default_img' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
-                    ],
-                ];
+                if (!empty($carouselItems)) {
+                    $displayItems   = $carouselItems;
+                    $isFallback     = false;
+                } else {
+                    $isFallback     = true;
+                    $displayItems   = [
+                        [
+                            'id'          => 0,
+                            'title'       => 'ATV',
+                            'description' => 'Menyusuri garis pasir pantai sepanjang 3 km dengan menggunakan armada ATV.',
+                            'image'       => \App\Models\SiteSetting::getValue('pantai_act_atv_image',
+                                'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80'),
+                        ],
+                        [
+                            'id'          => 0,
+                            'title'       => 'Motor Trail',
+                            'description' => 'Petualangan seru memacu adrenalin dengan motor trail di area trek berpasir.',
+                            'image'       => \App\Models\SiteSetting::getValue('pantai_act_trail_image',
+                                'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'),
+                        ],
+                        [
+                            'id'          => 0,
+                            'title'       => 'Wahana Ban',
+                            'description' => 'Bermain air seru dan santai di tepi pantai yang dangkal menggunakan ban pelampung.',
+                            'image'       => \App\Models\SiteSetting::getValue('pantai_act_ban_image',
+                                'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80'),
+                        ],
+                        [
+                            'id'          => 0,
+                            'title'       => 'Mandi Bola',
+                            'description' => 'Wahana bermain anak yang seru dan aman penuh keceriaan mandi bola warna-warni.',
+                            'image'       => \App\Models\SiteSetting::getValue('pantai_act_mandi_bola_image',
+                                'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=600&q=80'),
+                        ],
+                        [
+                            'id'          => 0,
+                            'title'       => 'Perahu',
+                            'description' => 'Menyusuri perairan pantai tenang dengan menyewa perahu wisata tradisional bersama keluarga.',
+                            'image'       => \App\Models\SiteSetting::getValue('pantai_act_perahu_image',
+                                'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=600&q=80'),
+                        ],
+                        [
+                            'id'          => 0,
+                            'title'       => 'Gazebo',
+                            'description' => 'Sewa gazebo kayu yang nyaman untuk bersantai menikmati hembusan angin laut di bawah keteduhan cemara.',
+                            'image'       => \App\Models\SiteSetting::getValue('pantai_act_gazebo_image',
+                                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'),
+                        ],
+                    ];
+                }
             @endphp
 
-            <!-- Activity Cards Grid (3 Columns on Desktop with small gap) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
-                @foreach($pantaiActivities as $actKey => $act)
-                    @php
-                        $actVal = \App\Models\SiteSetting::getValue($actKey . '_image', $act['default_img']);
-                        $actImgUrl = (str_starts_with($actVal, 'http') || str_contains($actVal, 'storage/')) ? asset($actVal) : Storage::url($actVal);
-                    @endphp
-                    <div class="bg-white border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
-                        <div class="h-32 md:h-48 overflow-hidden relative">
-                            <img src="{{ $actImgUrl }}" 
-                                 alt="{{ $act['title'] }}" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                                 loading="lazy">
-                            @if(Auth::check() && Auth::user()->isAdmin())
-                                <div class="absolute top-2 right-2 z-20">
-                                    <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.remove('hidden')" 
-                                            class="bg-white/95 hover:bg-white text-slate-800 p-2 rounded-md shadow border border-slate-200/50 flex items-center justify-center transition hover:scale-105 active:scale-95">
-                                        <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
-                                    </button>
-                                </div>
-                            @endif
+            {{-- Viewport for 3D Carousel --}}
+            <div class="coverflow-viewport">
+                @foreach($displayItems as $item)
+                    <div class="coverflow-card rounded-xl overflow-hidden shadow bg-slate-900 border border-white/10 flex flex-col justify-end p-5 md:p-8 select-none relative group/card">
+                        <img src="{{ str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']) }}"
+                             alt="{{ $item['title'] }}"
+                             class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-0 transition-transform duration-700 group-hover/card:scale-105" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent z-10 pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-20 text-left space-y-2 pointer-events-none opacity-0 translate-y-3 group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-500">
+                            <h4 class="text-xl md:text-2xl font-bold text-white font-sans drop-shadow-md">{{ $item['title'] }}</h4>
+                            <p class="text-xs md:text-sm text-slate-200 font-sans leading-relaxed drop-shadow-sm opacity-90">{{ $item['description'] }}</p>
                         </div>
-                        <div class="p-3 md:p-6 flex-grow flex flex-col justify-between bg-white">
-                            <div>
-                                <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1 font-bold">{{ $act['title'] }}</h3>
-                                <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed">{{ $act['desc'] }}</p>
+                        @if(!$isFallback && Auth::check() && Auth::user()->isAdmin())
+                            <div class="absolute top-4 right-4 z-30 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                                <button onclick="openEditCarouselModal_karangJahe(event, {{ json_encode($item) }})" 
+                                        class="bg-white/90 hover:bg-white text-slate-800 p-2.5 rounded-none shadow border border-slate-200/50 flex items-center justify-center">
+                                    <i class="fa-solid fa-pencil text-xs text-sky-600"></i>
+                                </button>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
 
-            <!-- Activity Modals for Admin Editing -->
-            @if(Auth::check() && Auth::user()->isAdmin())
-                @foreach($pantaiActivities as $actKey => $act)
-                    <div id="edit-act-modal-{{ $actKey }}" class="hidden fixed inset-0 z-[100] overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 text-left">
-                        <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 transform transition-all text-slate-800">
-                            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
-                                <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Gambar {{ $act['title'] }}</h3>
-                                <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
-                                    <i class="fa-solid fa-xmark text-xl"></i>
-                                </button>
-                            </div>
-                            <form action="{{ route('admin.hero.update-custom') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="hero_key" value="{{ $actKey }}_image">
-                                <div class="p-6 space-y-4">
-                                    <div>
-                                        <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Pilih Gambar Baru</label>
-                                        <input type="file" name="hero_image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
-                                        <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP. Ukuran maks: 5MB.</p>
-                                    </div>
-                                </div>
-                                <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
-                                    <button type="button" onclick="document.getElementById('edit-act-modal-{{ $actKey }}').classList.add('hidden')" 
-                                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
-                                        Batal
-                                    </button>
-                                    <button type="submit" 
-                                            class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
-                                        Simpan Perubahan
-                                    </button>
-                                </div>
-                            </form>
-                            @php
-                                $backup = \App\Models\SiteSetting::getValue($actKey . '_image_backup');
-                            @endphp
-                            @if($backup)
-                                <div class="p-6 border-t border-slate-100 bg-slate-50">
-                                    <p class="text-xs text-slate-500 mb-2 font-medium">Tersedia 1 gambar cadangan sebelumnya:</p>
-                                    <div class="flex items-center gap-3">
-                                        <img src="{{ (str_starts_with($backup, 'http') || str_contains($backup, 'storage/')) ? asset($backup) : Storage::url($backup) }}" class="w-16 h-10 object-cover border border-slate-200" alt="Preview Backup">
-                                        <form action="{{ route('admin.hero.restore') }}" method="POST" class="inline">
-                                            @csrf
-                                            <input type="hidden" name="hero_key" value="{{ $actKey }}_image">
-                                            <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 transition">
-                                                <i class="fa-solid fa-rotate-left mr-1"></i> Undo ke Gambar Ini
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
+            {{-- Bullet indicators --}}
+            <div class="mt-4 md:mt-8 flex justify-center items-center gap-2" id="coverflow-dots-karang-jahe">
+                @foreach($displayItems as $index => $item)
+                    <button class="h-2 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-sky-500 w-6' : 'bg-slate-300 w-2' }}" aria-label="Slide {{ $index + 1 }}"></button>
                 @endforeach
-            @endif
+            </div>
         </div>
     </section>
 
@@ -1109,5 +1193,304 @@
                 @endif
             </div>
         </div>
+        <!-- =========================================================================
+             MODALS & SCRIPTS FOR CAROUSEL & GALLERY (Pantai Karang Jahe)
+             ========================================================================= -->
+        <!-- Add Carousel Modal -->
+        <div id="add-carousel-modal-karang-jahe" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 text-left transform transition-all text-slate-800">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                    <h3 class="text-lg font-heading text-slate-800 font-bold">Tambah Aktivitas Pantai</h3>
+                    <button type="button" onclick="document.getElementById('add-carousel-modal-karang-jahe').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form action="{{ route('admin.carousel.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="carousel_key" value="carousel_pantai_karang_jahe">
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Gambar Aktivitas</label>
+                            <input type="file" name="image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                            <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP. Maks 4MB.</p>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Aktivitas</label>
+                            <input type="text" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required placeholder="Contoh: Susur Pantai">
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi Singkat</label>
+                            <textarea name="description" rows="3" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required placeholder="Deskripsikan keseruan aktivitas ini..."></textarea>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                        <button type="button" onclick="document.getElementById('add-carousel-modal-karang-jahe').classList.add('hidden')" 
+                                class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                            Batal
+                        </button>
+                        <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                            Tambah Aktivitas
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Carousel Modal -->
+        <div id="edit-carousel-modal-karang-jahe" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 text-left transform transition-all text-slate-800">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                    <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Aktivitas Pantai</h3>
+                    <button type="button" onclick="document.getElementById('edit-carousel-modal-karang-jahe').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="carousel_key" value="carousel_pantai_karang_jahe">
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti Gambar (Opsional)</label>
+                            <input type="file" name="image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm">
+                            <p class="text-xs text-slate-400 mt-1">Biarkan kosong jika tidak ingin mengubah gambar. Maks 4MB.</p>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Judul Aktivitas</label>
+                            <input type="text" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Deskripsi Singkat</label>
+                            <textarea name="description" rows="3" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required></textarea>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between items-center">
+                        <button type="button" onclick="confirmDeleteCarousel_karangJahe()" 
+                                class="bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-4 py-2 rounded-none text-sm transition">
+                            Hapus Aktivitas
+                        </button>
+                        <div class="flex gap-3">
+                            <button type="button" onclick="document.getElementById('edit-carousel-modal-karang-jahe').classList.add('hidden')" 
+                                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                Batal
+                            </button>
+                            <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                Simpan Perubahan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form id="delete-carousel-form-karang-jahe" action="" method="POST" class="hidden">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="carousel_key" value="carousel_pantai_karang_jahe">
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Gallery Modal -->
+        <div id="add-gallery-modal-karang-jahe" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 text-left transform transition-all text-slate-800">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                    <h3 class="text-lg font-heading text-slate-800 font-bold">Tambah Foto Galeri</h3>
+                    <button type="button" onclick="document.getElementById('add-gallery-modal-karang-jahe').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form action="{{ route('admin.gallery-adopsi.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="gallery_key" value="gallery_pantai_karang_jahe">
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">File Foto</label>
+                            <input type="file" name="image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                            <p class="text-xs text-slate-400 mt-1">Format: JPG, JPEG, PNG, WEBP. Maks 4MB.</p>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Label / Judul Foto</label>
+                            <input type="text" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required placeholder="Contoh: Sunset Karang Jahe">
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ukuran / Proporsi Grid (Layout Masonry)</label>
+                            <select name="aspect_class" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                <option value="col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-1">Item 1 (Vertikal Tinggi)</option>
+                                <option value="col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-3">Item 2 (Vertikal Tinggi)</option>
+                                <option value="col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-1">Item 3 (Kotak Standar)</option>
+                                <option value="col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-2">Item 4 (Kotak Standar)</option>
+                                <option value="col-span-2 row-span-1 md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-1">Item 5 (Besar Lebar)</option>
+                                <option value="col-span-2 row-span-1 md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-3">Item 6 (Sangat Lebar Bawah)</option>
+                            </select>
+                            <p class="text-[10px] text-slate-400 mt-1">Sesuaikan dengan posisi grid kosong dari 1 s.d 6.</p>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+                        <button type="button" onclick="document.getElementById('add-gallery-modal-karang-jahe').classList.add('hidden')" 
+                                class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                            Batal
+                        </button>
+                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                            Tambah Foto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Gallery Modal -->
+        <div id="edit-gallery-modal-karang-jahe" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-none shadow max-w-md w-full overflow-hidden border border-slate-100 text-left transform transition-all text-slate-800">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-sky-50">
+                    <h3 class="text-lg font-heading text-slate-800 font-bold">Edit Foto Galeri</h3>
+                    <button type="button" onclick="document.getElementById('edit-gallery-modal-karang-jahe').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="gallery_key" value="gallery_pantai_karang_jahe">
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ganti Foto (Opsional)</label>
+                            <input type="file" name="image" accept="image/*" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm">
+                            <p class="text-xs text-slate-400 mt-1">Biarkan kosong jika tidak ingin mengubah foto. Maks 4MB.</p>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Label / Judul Foto</label>
+                            <input type="text" name="title" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 font-sans text-sm font-medium mb-1.5">Ukuran / Proporsi Grid (Layout Masonry)</label>
+                            <select name="aspect_class" class="w-full border border-slate-300 rounded-none px-3 py-2 text-sm" required>
+                                <option value="col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-1">Item 1 (Vertikal Tinggi)</option>
+                                <option value="col-span-1 row-span-1 md:col-span-1 md:row-span-2 md:col-start-1 md:row-start-3">Item 2 (Vertikal Tinggi)</option>
+                                <option value="col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-1">Item 3 (Kotak Standar)</option>
+                                <option value="col-span-1 row-span-1 md:col-span-1 md:row-span-1 md:col-start-2 md:row-start-2">Item 4 (Kotak Standar)</option>
+                                <option value="col-span-2 row-span-1 md:col-span-2 md:row-span-2 md:col-start-3 md:row-start-1">Item 5 (Besar Lebar)</option>
+                                <option value="col-span-2 row-span-1 md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-3">Item 6 (Sangat Lebar Bawah)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-between items-center">
+                        <button type="button" onclick="confirmDeleteGallery_karangJahe()" 
+                                class="bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-4 py-2 rounded-none text-sm transition">
+                            Hapus Foto
+                        </button>
+                        <div class="flex gap-3">
+                            <button type="button" onclick="document.getElementById('edit-gallery-modal-karang-jahe').classList.add('hidden')" 
+                                    class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-none text-sm transition">
+                                Batal
+                            </button>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-none text-sm shadow transition">
+                                Simpan Perubahan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form id="delete-gallery-form-karang-jahe" action="" method="POST" class="hidden">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="gallery_key" value="gallery_pantai_karang_jahe">
+                </form>
+            </div>
+        </div>
+
+        <script>
+            // Namespaced Carousel & Modal Helpers
+            function openEditCarouselModal_karangJahe(event, item) {
+                event.stopPropagation();
+                const modal = document.getElementById('edit-carousel-modal-karang-jahe');
+                const form = modal.querySelector('form');
+                form.action = '/admin/carousel/' + item.id;
+                modal.querySelector('input[name="title"]').value = item.title;
+                modal.querySelector('textarea[name="description"]').value = item.description;
+                document.getElementById('delete-carousel-form-karang-jahe').action = '/admin/carousel/' + item.id;
+                modal.classList.remove('hidden');
+            }
+
+            function confirmDeleteCarousel_karangJahe() {
+                if (confirm('Apakah Anda yakin ingin menghapus aktivitas ini?')) {
+                    document.getElementById('delete-carousel-form-karang-jahe').submit();
+                }
+            }
+
+            function openEditGalleryModal_karangJahe(event, item) {
+                event.stopPropagation();
+                const modal = document.getElementById('edit-gallery-modal-karang-jahe');
+                const form = modal.querySelector('form');
+                form.action = '/admin/gallery-adopsi/' + item.id;
+                modal.querySelector('input[name="title"]').value = item.title;
+                modal.querySelector('select[name="aspect_class"]').value = item.aspect_class;
+                document.getElementById('delete-gallery-form-karang-jahe').action = '/admin/gallery-adopsi/' + item.id;
+                modal.classList.remove('hidden');
+            }
+
+            function confirmDeleteGallery_karangJahe() {
+                if (confirm('Apakah Anda yakin ingin menghapus foto galeri ini?')) {
+                    document.getElementById('delete-gallery-form-karang-jahe').submit();
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const cfCards_karangJahe = document.querySelectorAll('#aktivitas .coverflow-card');
+                const cfDots_karangJahe = document.querySelectorAll('#coverflow-dots-karang-jahe button');
+                let cfActiveIndex_karangJahe = 0;
+                const cfTotal_karangJahe = cfCards_karangJahe.length;
+
+                function updateCoverflow_karangJahe() {
+                    if (cfTotal_karangJahe === 0) return;
+                    cfCards_karangJahe.forEach((card, index) => {
+                        card.classList.remove('active', 'left', 'right', 'hidden-left', 'hidden-right');
+                        let diff = index - cfActiveIndex_karangJahe;
+                        while (diff < -Math.floor(cfTotal_karangJahe / 2)) diff += cfTotal_karangJahe;
+                        while (diff > Math.floor(cfTotal_karangJahe / 2)) diff -= cfTotal_karangJahe;
+
+                        if (diff === 0) {
+                            card.classList.add('active');
+                        } else if (diff === -1) {
+                            card.classList.add('left');
+                        } else if (diff === 1) {
+                            card.classList.add('right');
+                        } else if (diff < 0) {
+                            card.classList.add('hidden-left');
+                        } else {
+                            card.classList.add('hidden-right');
+                        }
+                    });
+
+                    cfDots_karangJahe.forEach((dot, index) => {
+                        if (index === cfActiveIndex_karangJahe) {
+                            dot.className = "h-2 rounded-full transition-all duration-300 bg-sky-500 w-6";
+                        } else {
+                            dot.className = "h-2 rounded-full transition-all duration-300 bg-slate-300 w-2";
+                        }
+                    });
+                }
+
+                cfCards_karangJahe.forEach((card, index) => {
+                    card.addEventListener('click', () => {
+                        if (cfActiveIndex_karangJahe !== index) {
+                            let diff = index - cfActiveIndex_karangJahe;
+                            while (diff < -Math.floor(cfTotal_karangJahe / 2)) diff += cfTotal_karangJahe;
+                            while (diff > Math.floor(cfTotal_karangJahe / 2)) diff -= cfTotal_karangJahe;
+                            
+                            if (Math.abs(diff) === 1) {
+                                cfActiveIndex_karangJahe = index;
+                                updateCoverflow_karangJahe();
+                            }
+                        }
+                    });
+                });
+
+                cfDots_karangJahe.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        cfActiveIndex_karangJahe = index;
+                        updateCoverflow_karangJahe();
+                    });
+                });
+
+                updateCoverflow_karangJahe();
+            });
+        </script>
     @endif
 @endsection
