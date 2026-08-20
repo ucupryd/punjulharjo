@@ -30,7 +30,7 @@
             </tr>
             <tr>
                 <td style="padding: 10px; border: 1px solid #bbf7d0;"><strong>Tanggal Penanaman</strong></td>
-                <td style="padding: 10px; border: 1px solid #bbf7d0;">{{ optional($pohon->tanggal_tanam)->format('d-m-Y') ?? 'Dalam Pengawasan Tim Desa' }}</td>
+                <td style="padding: 10px; border: 1px solid #bbf7d0;">{{ optional($pohon->tanggal_tanam)->format('d-m-Y') ?? 'Dalam Pengawasan Tim ProKlim' }}</td>
             </tr>
         </table>
 

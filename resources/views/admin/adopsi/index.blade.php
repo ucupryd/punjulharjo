@@ -11,13 +11,16 @@
                 <h1 class="text-2xl font-bold text-slate-800 font-title mt-0.5">🌲 Daftar Adopsi Pohon Cemara</h1>
                 <p class="text-slate-500 text-sm mt-1">Verifikasi pembayaran transfer member & pantau perkembangan pohon cemara pesisir.</p>
             </div>
-            <div class="flex gap-3">
+            <div class="flex flex-wrap items-center gap-3">
                 <span class="px-4 py-2 bg-sky-100 text-sky-800 font-bold rounded-xl text-sm">
                     Terverifikasi: {{ number_format($totalDiverifikasi) }}
                 </span>
                 <span class="px-4 py-2 bg-amber-100 text-amber-800 font-bold rounded-xl text-sm">
                     Perlu Verifikasi: {{ number_format($totalMenungguVerifikasi) }}
                 </span>
+                <a href="{{ route('admin.adopsi.export') }}" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-excel text-sm"></i> Download Data Excel
+                </a>
             </div>
         </div>
 

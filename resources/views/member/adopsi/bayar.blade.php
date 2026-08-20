@@ -24,9 +24,9 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
-                            <span class="text-xs font-bold text-slate-500 uppercase block">Bank BRI (BUMDes Punjulharjo)</span>
-                            <span class="text-lg font-mono font-bold text-slate-800 block mt-1">0123-01-045678-50-9</span>
-                            <span class="text-xs text-slate-500 block mt-1">a.n BUMDes Karangjahe Punjulharjo</span>
+                            <span class="text-xs font-bold text-slate-500 uppercase block">Bank BCA (ProKlim Punjulharjo)</span>
+                            <span class="text-lg font-mono font-bold text-slate-800 block mt-1">7835378641</span>
+                            <span class="text-xs text-slate-500 block mt-1">a.n Putri Dini</span>
                         </div>
                         <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
                             <span class="text-xs font-bold text-slate-500 uppercase block">QRIS Statis Desa Wisata</span>

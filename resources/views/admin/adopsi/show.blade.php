@@ -45,7 +45,14 @@
                         </div>
                         <div>
                             <span class="text-xs text-slate-400 block">Paket & Jumlah</span>
-                            <span class="font-semibold text-slate-800">{{ $adopsi->paket->nama }} ({{ $adopsi->jumlah }}x)</span>
+                            <span class="font-semibold text-slate-800">
+                                {{ $adopsi->paket->nama }}
+                                @if($adopsi->paket->is_donasi && $adopsi->jumlah == 0)
+                                    <span class="text-amber-600">(Menunggu konversi admin)</span>
+                                @else
+                                    ({{ $adopsi->jumlah }}x)
+                                @endif
+                            </span>
                         </div>
                         <div>
                             <span class="text-xs text-slate-400 block">Total Pembayaran</span>
@@ -72,6 +79,17 @@
                         <div class="pt-4 border-t border-slate-100 space-y-3">
                             <form action="{{ route('admin.adopsi.verifikasi', $adopsi) }}" method="POST">
                                 @csrf
+                                @if($adopsi->paket->is_donasi)
+                                    <div class="mb-4">
+                                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Jumlah Pohon Hasil Konversi Donasi</label>
+                                        <input type="number" name="jumlah_konversi" min="1" max="100" required
+                                               class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                               placeholder="Contoh: 3">
+                                        <p class="text-[10px] text-slate-400 mt-1 italic">
+                                            Total donasi: Rp {{ number_format($adopsi->total_harga) }}. Tentukan jumlah pohon cemara yang akan ditanam.
+                                        </p>
+                                    </div>
+                                @endif
                                 <button type="submit" onclick="return confirm('Verifikasi pembayaran dan generate kode pohon otomatis?')" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow transition">
                                     ✓ Verifikasi & Auto-Generate Kode Pohon
                                 </button>
@@ -99,7 +117,26 @@
                                     <div class="flex justify-between items-start">
                                         <div>
                                             <span class="font-mono font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-lg text-sm">{{ $pohon->kode_pohon }}</span>
-                                            <span class="text-xs text-slate-500 block mt-1">Status: {{ ucfirst($pohon->status) }} | Tanam: {{ $pohon->tanggal_tanam ? $pohon->tanggal_tanam->format('d M Y') : '-' }}</span>
+                                            <span class="text-xs text-slate-500 block mt-1">
+                                                Status: 
+                                                @switch($pohon->status)
+                                                    @case('hidup') Hidup @break
+                                                    @case('mati') Mati @break
+                                                    @case('perlu_penyulaman') Perlu Penyulaman @break
+                                                    @default Menunggu Tanam
+                                                @endswitch
+                                                | Tanam: {{ $pohon->tanggal_tanam ? $pohon->tanggal_tanam->format('d M Y') : '-' }}
+                                            </span>
+                                            @if($pohon->status === 'mati')
+                                                <div class="mt-2 text-xs">
+                                                    @if($pohon->tindakan_bibit_mati)
+                                                        <span class="text-emerald-700 font-semibold">Keputusan Adopter: {{ $pohon->tindakan_bibit_mati === 'ganti' ? 'Lokasi tanam ganti' : 'Lokasi tanam sama' }}</span>
+                                                        <span class="text-slate-400">({{ $pohon->tindakan_dikonfirmasi_at->format('d/m/Y') }})</span>
+                                                    @else
+                                                        <span class="text-amber-700 font-semibold"><i class="fa-solid fa-clock"></i> Menunggu keputusan tindak lanjut dari adopter</span>
+                                                    @endif
+                                                </div>
+                                            @endif
                                         </div>
                                         <button onclick="openMonitoringModal({{ $pohon->id }}, '{{ $pohon->lat }}', '{{ $pohon->lng }}')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl shadow">
                                             + Catat Perkembangan
@@ -113,9 +150,18 @@
                                             @foreach($pohon->monitorings as $mon)
                                                 <div class="p-2.5 bg-white rounded-xl border border-slate-200 flex justify-between items-center">
                                                     <div>
-                                                        <span class="font-semibold text-slate-800">{{ $mon->tanggal->format('d/m/Y') }}</span>: 
-                                                        Tinggi {{ $mon->tinggi_cm ?? '-' }} cm, Daun: {{ $mon->jumlah_daun ?? '-' }} helai.
-                                                        <p class="text-slate-500 text-[11px] italic">{{ $mon->catatan }}</p>
+                                                        <span class="font-semibold text-slate-800">{{ $mon->tanggal->format('d/m/Y') }}</span>
+                                                        <span class="text-slate-400">| Petugas: {{ $mon->nama_petugas ?? '-' }}</span>
+                                                        <div class="mt-1 grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px]">
+                                                            <div>Tinggi: <span class="font-medium text-slate-700">{{ $mon->perkiraan_tinggi ?? ($mon->tinggi_cm ? $mon->tinggi_cm . ' cm' : '-') }}</span></div>
+                                                            <div>Daun: <span class="font-medium text-slate-700">{{ $mon->kondisi_daun ?? ($mon->jumlah_daun ? $mon->jumlah_daun . ' helai' : '-') }}</span></div>
+                                                            <div>Cabang Baru: <span class="font-medium text-slate-700">{{ $mon->cabang_baru ?? '-' }}</span></div>
+                                                            <div>Kerusakan: <span class="font-medium text-slate-700">{{ $mon->kerusakan ?? '-' }}</span></div>
+                                                        </div>
+                                                        @if($mon->tindakan_bibit_mati)
+                                                            <div class="mt-1 text-[11px] text-rose-600 font-bold">Tindakan Bibit Mati: Lokasi tanam {{ $mon->tindakan_bibit_mati }}</div>
+                                                        @endif
+                                                        <p class="text-slate-500 text-[11px] mt-1 italic">{{ $mon->catatan }}</p>
                                                     </div>
                                                     @if($mon->foto)
                                                         <a href="{{ asset('storage/' . $mon->foto) }}" target="_blank" class="text-sky-600 font-semibold text-[11px] hover:underline">Foto</a>
@@ -128,37 +174,87 @@
 
                                 <!-- Modal Form Monitoring for this Pohon -->
                                 <div id="monitoring-modal-{{ $pohon->id }}" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-                                    <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 text-left space-y-4">
+                                    <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 text-left space-y-4">
                                         <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                                             <h3 class="font-bold text-slate-800 font-title">Catat Perkembangan - {{ $pohon->kode_pohon }}</h3>
                                             <button type="button" onclick="closeMonitoringModal({{ $pohon->id }})" class="text-slate-400 hover:text-slate-600">&times;</button>
                                         </div>
 
-                                        <form action="{{ route('admin.adopsi.monitoring.store', $pohon) }}" method="POST" enctype="multipart/form-data" class="space-y-3 text-sm">
+                                        <form action="{{ route('admin.adopsi.monitoring.store', $pohon) }}" method="POST" 
+                                              enctype="multipart/form-data" class="space-y-3 text-sm" 
+                                              x-data="{ statusHidup: '', tinggiCustom: '' }">
                                             @csrf
                                             <div>
-                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tanggal Pantau</label>
-                                                <input type="date" name="tanggal" required value="{{ date('Y-m-d') }}" class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Kode/ID Bibit</label>
+                                                <input type="text" value="{{ $pohon->kode_pohon }}" readonly 
+                                                       class="w-full border border-slate-300 rounded-xl px-3 py-2 bg-slate-100 font-mono text-xs">
                                             </div>
-
+                                            <div>
+                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Nama Petugas</label>
+                                                <input type="text" name="nama_petugas" required value="{{ old('nama_petugas') }}" 
+                                                       placeholder="Nama petugas yang memantau" 
+                                                       class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tanggal Update</label>
+                                                <input type="date" name="tanggal" required value="{{ date('Y-m-d') }}" 
+                                                       class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Status Hidup</label>
+                                                <select name="status_pohon" x-model="statusHidup" required 
+                                                        class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                                    <option value="">-- Pilih Status --</option>
+                                                    <option value="hidup">Hidup</option>
+                                                    <option value="mati">Mati</option>
+                                                    <option value="perlu_penyulaman">Perlu Penyulaman</option>
+                                                </select>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div x-data="{ tinggiMode: '' }">
+                                                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Perkiraan Tinggi</label>
+                                                    <select x-model="tinggiMode" class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                                        <option value="">-- Pilih --</option>
+                                                        <option value="<30 cm">&lt;30 cm</option>
+                                                        <option value="30-100 cm">30-100 cm</option>
+                                                        <option value=">100 cm">&gt;100 cm</option>
+                                                        <option value="custom">Lainnya (isi manual)</option>
+                                                    </select>
+                                                    <input x-show="tinggiMode === 'custom'" x-model="tinggiCustom" type="text"
+                                                           placeholder="Isi manual, contoh: 45 cm"
+                                                           class="w-full border border-slate-300 rounded-xl px-3 py-2 mt-2">
+                                                    <input type="hidden" name="perkiraan_tinggi" :value="tinggiMode === 'custom' ? tinggiCustom : tinggiMode">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Kondisi Daun</label>
+                                                    <select name="kondisi_daun" class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                                        <option value="">-- Pilih --</option>
+                                                        <option value="Segar">Segar</option>
+                                                        <option value="Hijau">Hijau</option>
+                                                        <option value="Menguning Sebagian">Menguning Sebagian</option>
+                                                        <option value="Layu">Layu</option>
+                                                        <option value="Rontok">Rontok</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="grid grid-cols-2 gap-3">
                                                 <div>
-                                                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Tinggi (cm)</label>
-                                                    <input type="number" name="tinggi_cm" min="0" placeholder="contoh: 45" class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Cabang Baru</label>
+                                                    <select name="cabang_baru" class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                                        <option value="">-- Pilih --</option>
+                                                        <option value="Ada">Ada</option>
+                                                        <option value="Tidak Ada">Tidak Ada</option>
+                                                    </select>
                                                 </div>
                                                 <div>
-                                                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Jumlah Daun</label>
-                                                    <input type="number" name="jumlah_daun" min="0" placeholder="contoh: 120" class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Kerusakan</label>
+                                                    <select name="kerusakan" class="w-full border border-slate-300 rounded-xl px-3 py-2">
+                                                        <option value="">-- Pilih --</option>
+                                                        <option value="Tidak Ada">Tidak Ada</option>
+                                                        <option value="Rusak Ringan">Rusak Ringan</option>
+                                                        <option value="Rusak Berat">Rusak Berat</option>
+                                                    </select>
                                                 </div>
-                                            </div>
-
-                                            <div>
-                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Status Pohon</label>
-                                                <select name="status_pohon" class="w-full border border-slate-300 rounded-xl px-3 py-2">
-                                                    <option value="ditanam" {{ $pohon->status == 'ditanam' ? 'selected' : '' }}>Ditanam</option>
-                                                    <option value="tumbuh" {{ $pohon->status == 'tumbuh' ? 'selected' : '' }}>Tumbuh Subur</option>
-                                                    <option value="mati" {{ $pohon->status == 'mati' ? 'selected' : '' }}>Mati / Perlu Sulam</option>
-                                                </select>
                                             </div>
 
                                             <div class="grid grid-cols-2 gap-3">
@@ -194,18 +290,21 @@
                                             </div>
 
                                             <div>
-                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Foto Perkembangan</label>
+                                                <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Foto Perkembangan (Dokumentasi)</label>
                                                 <input type="file" name="foto" accept="image/*" class="w-full text-xs">
                                             </div>
-
                                             <div>
                                                 <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Catatan Perkembangan</label>
-                                                <textarea name="catatan" rows="2" placeholder="Catatan kondisi pohon..." class="w-full border border-slate-300 rounded-xl px-3 py-2"></textarea>
+                                                <textarea name="catatan" rows="2" placeholder="Catatan kondisi pohon..." 
+                                                          class="w-full border border-slate-300 rounded-xl px-3 py-2"></textarea>
                                             </div>
 
                                             <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
-                                                <button type="button" onclick="closeMonitoringModal({{ $pohon->id }})" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl">Batal</button>
-                                                <button type="submit" class="px-4 py-2 bg-sky-600 text-white font-bold rounded-xl shadow">Simpan</button>
+                                                <button type="button" onclick="closeMonitoringModal({{ $pohon->id }})" 
+                                                        class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl">Batal</button>
+                                                <button type="submit" class="px-4 py-2 bg-sky-600 text-white font-bold rounded-xl shadow">
+                                                    Simpan & Konfirmasi
+                                                </button>
                                             </div>
                                         </form>
                                     </div>

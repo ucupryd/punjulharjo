@@ -52,25 +52,46 @@ class AdopsiController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'paket_id' => 'required|exists:cemara_pakets,id',
             'nama_pemesan' => 'required|string|max:255',
             'nama_sertifikat' => 'required|string|max:255',
-            'telepon' => 'nullable|string|max:30',
-            'jumlah' => 'required|integer|min:1|max:50',
+            'telepon' => 'required|string|max:30',
+            'email_aktif' => 'required|email|max:255',
+            'status_pemesan' => 'required|in:Perorangan,Sekolah,Perguruan Tinggi,Perusahaan Swasta,Perusahaan Daerah,Perusahaan Negara,Lembaga Organisasi,Instansi Pemerintah',
+            'nama_institusi' => 'required_unless:status_pemesan,Perorangan|nullable|string|max:255',
+            'alamat_domisili' => 'required|string|max:255',
         ]);
 
-        $paket = CemaraPaket::findOrFail($data['paket_id']);
+        $paket = CemaraPaket::findOrFail($request->input('paket_id'));
+
+        if ($paket->is_donasi) {
+            $request->validate([
+                'nominal_donasi' => 'required|numeric|min:10000',
+            ]);
+            $jumlah = 0; // belum ditentukan, menunggu konversi admin saat verifikasi
+            $totalHarga = $request->input('nominal_donasi');
+        } else {
+            $request->validate([
+                'jumlah' => 'required|integer|min:1|max:50',
+            ]);
+            $jumlah = $request->input('jumlah');
+            $totalHarga = $paket->harga * $jumlah;
+        }
 
         $adopsi = CemaraAdopsi::create([
             'kode_transaksi' => 'MYC-' . strtoupper(Str::random(8)),
             'user_id' => auth()->id(),
             'paket_id' => $paket->id,
-            'nama_pemesan' => $data['nama_pemesan'],
-            'nama_sertifikat' => $data['nama_sertifikat'],
-            'telepon' => $data['telepon'] ?? null,
-            'jumlah' => $data['jumlah'],
-            'total_harga' => $paket->harga * $data['jumlah'],
+            'nama_pemesan' => $request->input('nama_pemesan'),
+            'nama_sertifikat' => $request->input('nama_sertifikat'),
+            'telepon' => $request->input('telepon'),
+            'email_aktif' => $request->input('email_aktif'),
+            'status_pemesan' => $request->input('status_pemesan'),
+            'nama_institusi' => $request->input('status_pemesan') === 'Perorangan' ? null : $request->input('nama_institusi'),
+            'alamat_domisili' => $request->input('alamat_domisili'),
+            'jumlah' => $jumlah,
+            'total_harga' => $totalHarga,
             'metode_bayar' => 'transfer_manual',
             'status' => 'menunggu_pembayaran',
         ]);
@@ -152,5 +173,21 @@ class AdopsiController extends Controller
         return response()->view('member.adopsi.sertifikat_word', compact('pohon'))
             ->header('Content-Type', 'application/vnd.ms-word;charset=utf-8')
             ->header('Content-Disposition', 'attachment; filename="Sertifikat-' . $pohon->kode_pohon . '.doc"');
+    }
+
+    public function tindakanBibitMati(Request $request, CemaraPohon $pohon)
+    {
+        abort_unless($pohon->adopsi && $pohon->adopsi->user_id === auth()->id(), 403);
+
+        $request->validate([
+            'tindakan_bibit_mati' => 'required|in:ganti,sama',
+        ]);
+
+        $pohon->update([
+            'tindakan_bibit_mati' => $request->tindakan_bibit_mati,
+            'tindakan_dikonfirmasi_at' => now(),
+        ]);
+
+        return back()->with('success', 'Terima kasih, keputusan tindak lanjut Anda sudah kami terima dan akan segera diproses oleh petugas.');
     }
 }

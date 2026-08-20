@@ -170,7 +170,7 @@
                 <div class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center text-center p-6 z-[1000]">
                     <i class="fa-solid fa-map-location-dot text-4xl text-slate-300 mb-3"></i>
                     <p class="text-slate-600 font-semibold">Belum ada titik pohon yang tercatat</p>
-                    <p class="text-xs text-slate-400 mt-1">Tim desa akan segera memperbarui titik lokasi setelah proses penanaman.</p>
+                    <p class="text-xs text-slate-400 mt-1">Tim ProKlim akan segera memperbarui titik lokasi setelah proses penanaman.</p>
                 </div>
             @endif
         </div>
@@ -267,7 +267,7 @@
             <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div class="w-10 h-10 bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center text-base font-title">3</div>
                 <h4 class="font-bold text-slate-800 text-base">Transfer Pembayaran</h4>
-                <p class="text-slate-500 text-xs">Transfer ke rekening Bank BRI / QRIS resmi BUMDes Punjulharjo.</p>
+                <p class="text-slate-500 text-xs">Transfer ke rekening Bank BCA / QRIS resmi ProKlim Punjulharjo.</p>
             </div>
             <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div class="w-10 h-10 bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center text-base font-title">4</div>
@@ -276,7 +276,7 @@
             </div>
             <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3">
                 <div class="w-10 h-10 bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center text-base font-title">5</div>
-                <h4 class="font-bold text-slate-800 text-base">Verifikasi Tim Desa</h4>
+                <h4 class="font-bold text-slate-800 text-base">Verifikasi Tim ProKlim</h4>
                 <p class="text-slate-500 text-xs">Tim ProKlim Desa Punjulharjo melakukan verifikasi dan menerbitkan kode pohon unik.</p>
             </div>
             <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3">
@@ -372,21 +372,23 @@
             <p class="text-slate-600 mt-2">Pilih & pesan paket adopsi secara lengkap melalui Dashboard Member Anda.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto py-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto py-2">
             @foreach($pakets as $paket)
                 @php
                     $targetAction = auth()->check() 
                         ? (auth()->user()->isMember() ? route('member.adopsi.create', $paket) : route('admin.moderasi.index'))
                         : route('login.user');
                     $fiturs = [
-                        '<strong>' . $paket->jumlah_bibit . ' Bibit Cemara Laut</strong> (ditanam tim desa)',
+                        $paket->is_donasi 
+                            ? '<strong>Jumlah Bibit Disesuaikan</strong> sesuai nominal donasi diterima' 
+                            : '<strong>' . $paket->jumlah_bibit . ' Bibit Cemara Laut</strong> (ditanam tim ProKlim)',
                         'Kode Pohon Unik & Sertifikat Digital (Word .docx)',
                     ];
                 @endphp
                 <x-adopsi-ticket
                     :kode="$paket->kode"
                     :nama="'Paket ' . $paket->kode"
-                    :judul="$paket->jumlah_bibit . ' Bibit Cemara'"
+                    :judul="$paket->is_donasi ? 'Donasi Bebas' : $paket->jumlah_bibit . ' Bibit Cemara'"
                     :harga="$paket->harga"
                     :deskripsi="$paket->deskripsi"
                     :fitur="$fiturs"
@@ -903,15 +905,18 @@
                         }
                     }
                     
-                    const rawStatus = tree.status || 'ditanam';
-                    const statusFormatted = rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1);
+                    const statusLabels = { hidup: 'Hidup', mati: 'Mati', perlu_penyulaman: 'Perlu Penyulaman', menunggu_tanam: 'Menunggu Tanam' };
+                    const statusColors = { hidup: 'bg-emerald-50 text-emerald-800 border-emerald-100', mati: 'bg-rose-50 text-rose-800 border-rose-100', perlu_penyulaman: 'bg-amber-50 text-amber-800 border-amber-100', menunggu_tanam: 'bg-slate-50 text-slate-600 border-slate-100' };
+                    const rawStatus = tree.status || 'hidup';
+                    const statusFormatted = statusLabels[rawStatus] || rawStatus;
+                    const statusColorClass = statusColors[rawStatus] || statusColors.hidup;
                     
                     const popupContent = `
                         <div class="font-sans text-xs space-y-1.5 p-1">
                             <div class="font-bold text-slate-800 border-b border-slate-100 pb-1 text-sm">${tree.kode_pohon}</div>
                             <div><span class="text-slate-400 font-medium">Jenis:</span> <span class="text-slate-700">${tree.jenis}</span></div>
                             <div><span class="text-slate-400 font-medium">Tgl Tanam:</span> <span class="text-slate-700">${tglTanam}</span></div>
-                            <div><span class="text-slate-400 font-medium">Status:</span> <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-100">${statusFormatted}</span></div>
+                            <div><span class="text-slate-400 font-medium">Status:</span> <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold ${statusColorClass}">${statusFormatted}</span></div>
                         </div>
                     `;
                     

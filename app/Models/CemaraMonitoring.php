@@ -11,6 +11,12 @@ class CemaraMonitoring extends Model
         'tanggal',
         'tinggi_cm',
         'jumlah_daun',
+        'perkiraan_tinggi',
+        'kondisi_daun',
+        'cabang_baru',
+        'kerusakan',
+        'nama_petugas',
+        'tindakan_bibit_mati',
         'foto',
         'catatan',
     ];

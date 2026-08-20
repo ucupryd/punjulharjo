@@ -43,7 +43,13 @@
         </div>
         <div class="t-price">
           <div class="t-price-label">Harga</div>
-          <div class="t-price-num">Rp {{ number_format($harga, 0, ',', '.') }}</div>
+          <div class="t-price-num text-sm md:text-base">
+              @if($harga == 0)
+                  Bebas
+              @else
+                  Rp {{ number_format($harga, 0, ',', '.') }}
+              @endif
+          </div>
           <div class="text-[10px] text-emerald-300 font-semibold mt-1 flex items-center justify-end gap-1 group-hover:translate-x-0.5 transition duration-300">
             <span>Klik untuk Adopsi</span> <i class="fa-solid fa-arrow-right text-[9px]"></i>
           </div>
@@ -87,7 +93,13 @@
           </div>
           <div class="t-price">
             <div class="t-price-label">Harga</div>
-            <div class="t-price-num">Rp {{ number_format($harga, 0, ',', '.') }}</div>
+            <div class="t-price-num text-sm md:text-base">
+                @if($harga == 0)
+                    Bebas
+                @else
+                    Rp {{ number_format($harga, 0, ',', '.') }}
+                @endif
+            </div>
             <div class="text-[10px] text-emerald-300 font-semibold mt-1 flex items-center justify-end gap-1 group-hover:translate-x-0.5 transition duration-300">
               <span>Klik untuk Adopsi</span> <i class="fa-solid fa-arrow-right text-[9px]"></i>
             </div>

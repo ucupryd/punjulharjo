@@ -15,10 +15,12 @@ class CemaraPaket extends Model
         'harga',
         'bonus',
         'aktif',
+        'is_donasi',
     ];
 
     protected $casts = [
         'aktif' => 'boolean',
+        'is_donasi' => 'boolean',
     ];
 
     public function adopsis()

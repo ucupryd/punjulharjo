@@ -20,13 +20,13 @@ class AdopsiPublicController extends Controller
 
         $stats = [
             'total_dana'     => CemaraAdopsi::whereIn('status', ['diverifikasi', 'ditanam', 'selesai'])->sum('total_harga'),
-            'pohon_tertanam' => CemaraPohon::whereIn('status', ['ditanam', 'tumbuh'])->count(),
+            'pohon_tertanam' => CemaraPohon::whereIn('status', ['hidup', 'perlu_penyulaman'])->count(),
             'total_adopter'  => CemaraAdopsi::whereIn('status', ['diverifikasi', 'ditanam', 'selesai'])->distinct('user_id')->count('user_id'),
         ];
 
         $pohonMap = CemaraPohon::whereNotNull('lat')
             ->whereNotNull('lng')
-            ->whereIn('status', ['ditanam', 'tumbuh', 'mati'])
+            ->whereIn('status', ['hidup', 'perlu_penyulaman', 'mati'])
             ->get(['kode_pohon', 'jenis', 'tanggal_tanam', 'status', 'lat', 'lng']);
 
         $timProklim = TimProklim::orderBy('urutan')->get();

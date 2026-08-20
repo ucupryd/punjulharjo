@@ -17,10 +17,13 @@ class CemaraPohon extends Model
         'lng',
         'lokasi_teks',
         'status',
+        'tindakan_bibit_mati',
+        'tindakan_dikonfirmasi_at',
     ];
 
     protected $casts = [
         'tanggal_tanam' => 'date',
+        'tindakan_dikonfirmasi_at' => 'datetime',
     ];
 
     public function adopsi()

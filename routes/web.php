@@ -126,6 +126,7 @@ Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->g
     Route::post('/adopsi/{adopsi}/bayar', [MemberAdopsiController::class, 'uploadBukti'])->name('adopsi.bayar.upload');
     Route::get('/pohon/{pohon}/sertifikat', [MemberAdopsiController::class, 'sertifikat'])->name('pohon.sertifikat');
     Route::get('/pohon/{pohon}/sertifikat/download', [MemberAdopsiController::class, 'sertifikatWord'])->name('pohon.sertifikat.download');
+    Route::post('/adopsi/pohon/{pohon}/tindakan', [MemberAdopsiController::class, 'tindakanBibitMati'])->name('adopsi.tindakan');
 });
 
 /*
@@ -231,6 +232,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Admin Adopsi Cemara
     Route::prefix('adopsi')->name('adopsi.')->group(function () {
+        Route::get('/export', [AdminAdopsiController::class, 'export'])->name('export');
         Route::get('/', [AdminAdopsiController::class, 'index'])->name('index');
         Route::get('/{adopsi}', [AdminAdopsiController::class, 'show'])->name('show');
         Route::post('/{adopsi}/verifikasi', [AdminAdopsiController::class, 'verifikasi'])->name('verifikasi');

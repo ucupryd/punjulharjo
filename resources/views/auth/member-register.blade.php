@@ -43,6 +43,20 @@
                 </div>
 
                 <div>
+                    <label for="telepon" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">No HP/WA Aktif</label>
+                    <input id="telepon" name="telepon" type="text" required value="{{ old('telepon') }}"
+                           class="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
+                           placeholder="08123456789">
+                </div>
+
+                <div>
+                    <label for="alamat_domisili" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Alamat Domisili</label>
+                    <input id="alamat_domisili" name="alamat_domisili" type="text" required value="{{ old('alamat_domisili') }}"
+                           class="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
+                           placeholder="Contoh: Ds. Punjulharjo, Kec. Rembang">
+                </div>
+
+                <div>
                     <label for="password" class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Password</label>
                     <input id="password" name="password" type="password" required
                            class="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"

@@ -25,11 +25,13 @@
                 <p class="text-slate-500 text-sm mt-1">Pilih paket adopsi di bawah ini untuk memulai kontribusi penghijauan pesisir Pantai Karangjahe.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto py-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto py-4">
                 @foreach($pakets as $paket)
                     @php
                         $fiturs = [
-                            '<strong>' . $paket->jumlah_bibit . ' Bibit Cemara Laut</strong> (ditanam tim pengelola desa)',
+                            $paket->is_donasi 
+                                ? '<strong>Jumlah Bibit Disesuaikan</strong> sesuai nominal donasi diterima' 
+                                : '<strong>' . $paket->jumlah_bibit . ' Bibit Cemara Laut</strong> (ditanam tim ProKlim)',
                             'Kode Pohon Unik & Sertifikat Digital (Word .docx)',
                             'Pemantauan Foto & Grafik Tinggi Pohon Berkala'
                         ];
@@ -37,7 +39,7 @@
                     <x-adopsi-ticket
                         :kode="$paket->kode"
                         :nama="'Paket ' . $paket->kode"
-                        :judul="$paket->jumlah_bibit . ' Bibit Cemara'"
+                        :judul="$paket->is_donasi ? 'Donasi Bebas' : $paket->jumlah_bibit . ' Bibit Cemara'"
                         :harga="$paket->harga"
                         :deskripsi="$paket->deskripsi"
                         :fitur="$fiturs"
@@ -73,14 +75,47 @@
                                     <span class="text-xs text-slate-500">
                                         <i class="fa-solid fa-calendar-day mr-1"></i> Tanam: {{ $pohon->tanggal_tanam ? $pohon->tanggal_tanam->format('d M Y') : 'Menunggu Jadwal' }}
                                     </span>
-                                    <span class="px-3 py-1 text-xs font-semibold rounded-full 
-                                        @if($pohon->status == 'ditanam' || $pohon->status == 'tumbuh') bg-emerald-100 text-emerald-800 
-                                        @elseif($pohon->status == 'mati') bg-rose-100 text-rose-800 
-                                        @else bg-amber-100 text-amber-800 @endif">
-                                        {{ ucfirst($pohon->status) }}
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full
+                                        @if($pohon->status == 'hidup') bg-emerald-100 text-emerald-800
+                                        @elseif($pohon->status == 'perlu_penyulaman') bg-amber-100 text-amber-800
+                                        @elseif($pohon->status == 'mati') bg-rose-100 text-rose-800
+                                        @else bg-slate-100 text-slate-600 @endif">
+                                        @switch($pohon->status)
+                                            @case('hidup') Hidup @break
+                                            @case('mati') Mati @break
+                                            @case('perlu_penyulaman') Perlu Penyulaman @break
+                                            @default Menunggu Tanam
+                                        @endswitch
                                     </span>
                                 </div>
                             </div>
+
+                            @if($pohon->status === 'mati' && !$pohon->tindakan_bibit_mati)
+                                <div class="mt-3 p-4 rounded-xl bg-rose-50 border border-rose-200">
+                                    <p class="text-sm font-bold text-rose-700 mb-1">
+                                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Pohon Anda Dinyatakan Mati
+                                    </p>
+                                    <p class="text-xs text-rose-600 mb-3">Petugas kami melaporkan pohon ini mati. Silakan pilih tindakan lanjutan:</p>
+                                    <form action="{{ route('member.adopsi.tindakan', $pohon) }}" method="POST" class="space-y-2">
+                                        @csrf
+                                        <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                                            <input type="radio" name="tindakan_bibit_mati" value="ganti" required> Lokasi tanam ganti
+                                        </label>
+                                        <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                                            <input type="radio" name="tindakan_bibit_mati" value="sama" required> Lokasi tanam sama
+                                        </label>
+                                        <button type="submit" class="mt-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow transition">
+                                            Konfirmasi Tindakan
+                                        </button>
+                                    </form>
+                                </div>
+                            @elseif($pohon->status === 'mati' && $pohon->tindakan_bibit_mati)
+                                <div class="mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>
+                                    Anda telah memilih: <strong>{{ $pohon->tindakan_bibit_mati === 'ganti' ? 'Lokasi tanam ganti' : 'Lokasi tanam sama' }}</strong>
+                                    pada {{ $pohon->tindakan_dikonfirmasi_at->format('d/m/Y H:i') }}. Tim kami akan segera menindaklanjuti.
+                                </div>
+                            @endif
 
                             <!-- Riwayat Perkembangan Pohon sebagai Tabel Menyamping -->
                             <div class="space-y-2">
@@ -89,22 +124,37 @@
                                 </h4>
                                 @if($pohon->monitorings->isNotEmpty())
                                     <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-                                        <table class="min-w-[600px] lg:min-w-full w-full text-left text-xs text-slate-600">
+                                        <table class="min-w-[900px] w-full text-left text-xs text-slate-600">
                                             <thead class="bg-slate-100 text-slate-500 uppercase text-[11px] font-semibold border-b border-slate-200">
                                                 <tr>
-                                                    <th class="p-3">Tanggal Pantau</th>
-                                                    <th class="p-3">Tinggi Pohon</th>
-                                                    <th class="p-3">Jumlah Daun</th>
-                                                    <th class="p-3">Catatan Pengelola</th>
-                                                    <th class="p-3 text-center">Foto Perkembangan</th>
+                                                    <th class="p-3">Tanggal Update</th>
+                                                    <th class="p-3">Petugas</th>
+                                                    <th class="p-3">Status</th>
+                                                    <th class="p-3">Perkiraan Tinggi</th>
+                                                    <th class="p-3">Kondisi Daun</th>
+                                                    <th class="p-3">Cabang Baru</th>
+                                                    <th class="p-3">Kerusakan</th>
+                                                    <th class="p-3">Catatan</th>
+                                                    <th class="p-3 text-center">Foto</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-slate-100">
                                                 @foreach($pohon->monitorings as $mon)
                                                     <tr class="hover:bg-slate-50">
                                                         <td class="p-3 font-semibold text-slate-800 whitespace-nowrap">{{ $mon->tanggal->format('d/m/Y') }}</td>
-                                                        <td class="p-3 font-bold text-emerald-700 whitespace-nowrap">{{ $mon->tinggi_cm ?? '-' }} cm</td>
-                                                        <td class="p-3 whitespace-nowrap">{{ $mon->jumlah_daun ?? '-' }} helai</td>
+                                                        <td class="p-3 whitespace-nowrap">{{ $mon->nama_petugas ?? '-' }}</td>
+                                                        <td class="p-3 whitespace-nowrap">
+                                                            @switch($mon->pohon->status ?? null)
+                                                                @case('hidup') <span class="text-emerald-700 font-semibold">Hidup</span> @break
+                                                                @case('mati') <span class="text-rose-700 font-semibold">Mati</span> @break
+                                                                @case('perlu_penyulaman') <span class="text-amber-700 font-semibold">Perlu Penyulaman</span> @break
+                                                                @default <span class="text-slate-400">-</span>
+                                                            @endswitch
+                                                        </td>
+                                                        <td class="p-3 whitespace-nowrap">{{ $mon->perkiraan_tinggi ?? '-' }}</td>
+                                                        <td class="p-3 whitespace-nowrap">{{ $mon->kondisi_daun ?? '-' }}</td>
+                                                        <td class="p-3 whitespace-nowrap">{{ $mon->cabang_baru ?? '-' }}</td>
+                                                        <td class="p-3 whitespace-nowrap">{{ $mon->kerusakan ?? '-' }}</td>
                                                         <td class="p-3 text-slate-600 italic">{{ $mon->catatan ?? '-' }}</td>
                                                         <td class="p-3 text-center whitespace-nowrap">
                                                             @if($mon->foto)
@@ -266,8 +316,11 @@
                             }
                         }
                         
-                        const rawStatus = tree.status || 'ditanam';
-                        const statusFormatted = rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1);
+                        const statusLabels = { hidup: 'Hidup', mati: 'Mati', perlu_penyulaman: 'Perlu Penyulaman', menunggu_tanam: 'Menunggu Tanam' };
+                        const statusColors = { hidup: 'bg-emerald-50 text-emerald-800 border-emerald-100', mati: 'bg-rose-50 text-rose-800 border-rose-100', perlu_penyulaman: 'bg-amber-50 text-amber-800 border-amber-100', menunggu_tanam: 'bg-slate-50 text-slate-600 border-slate-100' };
+                        const rawStatus = tree.status || 'hidup';
+                        const statusFormatted = statusLabels[rawStatus] || rawStatus;
+                        const statusColorClass = statusColors[rawStatus] || statusColors.hidup;
                         const lokasiDesc = tree.lokasi_teks || '-';
                         
                         const popupContent = `
@@ -276,7 +329,7 @@
                                 <div><span class="text-slate-400 font-medium">Jenis:</span> <span class="text-slate-700">${tree.jenis}</span></div>
                                 <div><span class="text-slate-400 font-medium">Tgl Tanam:</span> <span class="text-slate-700">${tglTanam}</span></div>
                                 <div><span class="text-slate-400 font-medium">Lokasi:</span> <span class="text-slate-700">${lokasiDesc}</span></div>
-                                <div><span class="text-slate-400 font-medium">Status:</span> <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-100">${statusFormatted}</span></div>
+                                <div><span class="text-slate-400 font-medium">Status:</span> <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold ${statusColorClass}">${statusFormatted}</span></div>
                             </div>
                         `;
                         
