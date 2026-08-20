@@ -19,7 +19,7 @@ class CemaraPaketSeeder extends Seeder
                 'jumlah_bibit' => 2,
                 'harga' => 150000,
                 'jenis_pohon' => 'Cemara Laut (Casuarina equisetifolia)',
-                'deskripsi' => 'Program adopsi 2 bibit cemara laut yang akan ditanam di pesisir Pantai Karangjahe oleh tim pengelola desa.',
+                'deskripsi' => 'Program adopsi 2 bibit cemara laut yang akan ditanam di pesisir Pantai Karangjahe oleh tim ProKlim.',
                 'bonus' => 'Kode pohon unik + Sertifikat Digital & Unduh Word',
                 'aktif' => true,
             ]
@@ -32,9 +32,23 @@ class CemaraPaketSeeder extends Seeder
                 'jumlah_bibit' => 1,
                 'harga' => 100000,
                 'jenis_pohon' => 'Cemara Laut (Casuarina equisetifolia)',
-                'deskripsi' => 'Program adopsi 1 bibit cemara laut yang akan ditanam di pesisir Pantai Karangjahe oleh tim pengelola desa.',
+                'deskripsi' => 'Program adopsi 1 bibit cemara laut yang akan ditanam di pesisir Pantai Karangjahe oleh tim ProKlim.',
                 'bonus' => 'Kode pohon unik + Sertifikat Digital & Unduh Word',
                 'aktif' => true,
+            ]
+        );
+
+        CemaraPaket::updateOrCreate(
+            ['kode' => 'C'],
+            [
+                'nama' => 'Paket C - Donasi Bebas Nominal',
+                'deskripsi' => 'Donasi Bebas',
+                'jenis_pohon' => 'Cemara Laut (Casuarina equisetifolia)',
+                'jumlah_bibit' => 1,
+                'harga' => 0,
+                'bonus' => 'Jumlah Bibit Disesuaikan sesuai nominal donasi diterima',
+                'aktif' => true,
+                'is_donasi' => true,
             ]
         );
     }

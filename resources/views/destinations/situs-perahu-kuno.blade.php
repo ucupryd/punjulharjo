@@ -744,7 +744,12 @@ $_breadcrumbSchema = [
                     </div>
                     <span class="text-[10px] md:text-sm font-bold text-slate-800">Rempah-Rempah</span>
                     <p class="text-[9px] md:text-xs text-slate-500 leading-relaxed">Muatan rempah-rempah penunjuk jalur dagang bahari.</p>
-                </div    <!-- =========================================================================
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
          SECTION 8: 3D Coverflow Experience (Aktivitas Situs)
          ========================================================================= -->
     <section id="aktivitas" class="bg-slate-50 py-8 md:py-24 px-4 md:px-12 relative overflow-hidden z-10 border-y border-slate-100">
