@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'My Cemara — Adopsi Pohon Cemara Laut untuk Kelestarian Pantai Rembang')
+@section('meta_description', 'Program My Cemara mengajak Anda mengadopsi pohon cemara laut di Pantai Karang Jahe, Punjulharjo, Rembang. Berkontribusi nyata untuk konservasi pesisir dan dapatkan sertifikat adopsi pohon resmi.')
+@section('og_image', asset('images/logo-my-cemara.png.png'))
+
 @section('content')
 <!-- Hanging Ribbon for My Cemara Logo -->
 <div class="adopsi-hanging-ribbon-container">

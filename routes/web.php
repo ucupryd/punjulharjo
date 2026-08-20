@@ -48,6 +48,9 @@ Route::get('/tentang', [App\Http\Controllers\TentangController::class, 'index'])
 Route::redirect('/temukan-kami', '/tentang#kontak')->name('temukan');
 Route::redirect('/lokasi', '/tentang#kontak');
 
+// Sitemap XML dinamis
+Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+
 // Testimonial / Kesan Pengunjung Publik
 Route::get('/testimoni', [TestimonialController::class, 'index'])->name('testimoni.index');
 Route::get('/testimoni/isi', [TestimonialController::class, 'create'])->name('testimoni.create');

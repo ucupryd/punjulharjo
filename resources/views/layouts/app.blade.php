@@ -5,7 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Desa Wisata Punjulharjo</title>
+
+    {{-- SEO: Title dinamis per halaman, fallback ke nama desa --}}
+    <title>@yield('title', 'Desa Wisata Punjulharjo')</title>
+
+    {{-- SEO: Meta Description --}}
+    <meta name="description" content="@yield('meta_description', 'Desa Wisata Punjulharjo adalah destinasi wisata pesisir di Kabupaten Rembang, Jawa Tengah, menawarkan keindahan Pantai Karang Jahe, Situs Perahu Kuno, hutan cemara laut, serta program edukasi lingkungan My Cemara.')">
+
+    {{-- SEO: Open Graph (Facebook, WhatsApp, Telegram) --}}
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="{{ url()->current() }}">
+    <meta property="og:site_name"   content="Desa Wisata Punjulharjo">
+    <meta property="og:title"       content="@yield('title', 'Desa Wisata Punjulharjo')">
+    <meta property="og:description" content="@yield('meta_description', 'Desa Wisata Punjulharjo adalah destinasi wisata pesisir di Kabupaten Rembang, Jawa Tengah, menawarkan keindahan Pantai Karang Jahe, Situs Perahu Kuno, hutan cemara laut, serta program edukasi lingkungan My Cemara.')">
+    <meta property="og:image"       content="@yield('og_image', asset('images/beach-bg.png'))">
+    <meta property="og:image:alt"   content="@yield('title', 'Desa Wisata Punjulharjo')">
+    <meta property="og:locale"      content="id_ID">
+
+    {{-- SEO: Twitter Card --}}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="@yield('title', 'Desa Wisata Punjulharjo')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Desa Wisata Punjulharjo adalah destinasi wisata pesisir di Kabupaten Rembang, Jawa Tengah.')">
+    <meta name="twitter:image"       content="@yield('og_image', asset('images/beach-bg.png'))">
+
+    {{-- SEO: Canonical URL --}}
+    <link rel="canonical" href="{{ url()->current() }}">
     
     <!-- Dynamic Favicon Override Logic:
          Checks if custom-favicon.png exists in public directory. 
@@ -17,6 +41,12 @@
         $faviconType = $customFaviconExists ? 'image/png' : 'image/svg+xml';
     @endphp
     <link rel="icon" href="{{ $faviconUrl }}" type="{{ $faviconType }}">
+    {{-- Apple Touch Icon untuk iOS --}}
+    @if($customFaviconExists)
+        <link rel="apple-touch-icon" href="{{ asset('custom-favicon.png') }}">
+    @else
+        <link rel="apple-touch-icon" href="data:image/svg+xml;base64,{{ base64_encode($defaultSvg) }}">
+    @endif
 
     <!-- Google Fonts Poppins & Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

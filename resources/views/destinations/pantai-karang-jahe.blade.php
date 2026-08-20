@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Pantai Karang Jahe — Desa Wisata Punjulharjo')
+@section('title', 'Pantai Karang Jahe — Wisata Pesisir dengan Hutan Cemara Laut, Rembang')
+@section('meta_description', 'Pantai Karang Jahe di Desa Punjulharjo, Rembang, terkenal dengan hutan cemara laut hasil konservasi abrasi. Tersedia wahana ATV, motor trail, perahu wisata, gazebo, dan wahana air keluarga di tepi pantai berpasir putih.')
+@php
+    $_pantaiOgRaw = \App\Models\SiteSetting::getValue('karang_jahe_tentang_image');
+    $_pantaiOg = $_pantaiOgRaw
+        ? (str_starts_with($_pantaiOgRaw, 'http') ? $_pantaiOgRaw : asset('storage/' . ltrim($_pantaiOgRaw, '/')))
+        : asset('images/beach-bg.png');
+@endphp
+@section('og_image', $_pantaiOg)
 
 @section('content')
     @php

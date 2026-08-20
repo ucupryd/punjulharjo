@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'Tentang Desa Punjulharjo — Sejarah, Visi, dan Profil Desa Wisata')
+@section('meta_description', 'Kenali lebih dalam Desa Punjulharjo, Kecamatan Rembang, Kabupaten Rembang: sejarah desa, visi dan misi, struktur perangkat desa, potensi wisata alam dan sejarah, serta daftar destinasi unggulan.')
+@section('og_image', asset('images/beach-bg.png'))
+
 @section('content')
     @php
         $mottoBg = \App\Models\SiteSetting::getValue('motto_desa_background');

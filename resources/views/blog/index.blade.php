@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'Berita & Artikel — Desa Wisata Punjulharjo')
+@section('meta_description', 'Baca berita terbaru, artikel wisata, dan informasi kegiatan Desa Punjulharjo, Rembang. Temukan liputan tentang konservasi cemara laut, event budaya, dan perkembangan destinasi wisata desa.')
+@section('og_image', asset('images/beach-bg.png'))
+
 @section('content')
 <section class="bg-transparent pt-32 pb-20 px-6">
     <div class="max-w-6xl mx-auto">

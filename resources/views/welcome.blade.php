@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('title', 'Beranda — Desa Wisata Punjulharjo')
+@section('meta_description', 'Selamat datang di Desa Wisata Punjulharjo, Kabupaten Rembang. Nikmati pesona Pantai Karang Jahe, Situs Perahu Kuno abad ke-7, hutan cemara laut, serta program adopsi pohon cemara (My Cemara) untuk kelestarian pesisir.')
+@php
+    $_ogHeroRaw = \App\Models\SiteSetting::getValue('hero_background');
+    $_ogHero = $_ogHeroRaw
+        ? (str_starts_with($_ogHeroRaw, 'http') ? $_ogHeroRaw : asset('storage/' . ltrim($_ogHeroRaw, '/')))
+        : asset('images/beach-bg.png');
+@endphp
+@section('og_image', $_ogHero)
+
 @section('content')
     @php
         $heroBg = \App\Models\SiteSetting::getValue('hero_background');

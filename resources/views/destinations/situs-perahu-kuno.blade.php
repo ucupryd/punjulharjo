@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Situs Perahu Kuno Punjulharjo — Desa Wisata Punjulharjo')
+@section('title', 'Situs Perahu Kuno Punjulharjo — Cagar Budaya Perahu Kayu Tertua di Indonesia')
+@section('meta_description', 'Situs Perahu Kuno Punjulharjo adalah cagar budaya nasional di Rembang yang menyimpan perahu kayu abad ke-7 Masehi. Kunjungi museum mini, pameran artefak, dan program edukasi sejarah bahari Nusantara.')
+@php
+    $_situsOgRaw = \App\Models\SiteSetting::getValue('destinasi_perahu_kuno_image');
+    $_situsOg = $_situsOgRaw
+        ? (str_starts_with($_situsOgRaw, 'http') ? $_situsOgRaw : asset('storage/' . ltrim($_situsOgRaw, '/')))
+        : asset('images/beach-bg.png');
+@endphp
+@section('og_image', $_situsOg)
 
 @section('content')
     @php

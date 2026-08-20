@@ -1,5 +1,20 @@
 @extends('layouts.app')
 
+{{-- SEO Dinamis: diambil dari data artikel $blog --}}
+@section('title', $blog->title . ' — Desa Wisata Punjulharjo')
+@php
+    // Gunakan excerpt jika ada, jika tidak ambil 160 karakter pertama dari konten (strip HTML)
+    $_blogDesc = !empty($blog->excerpt)
+        ? $blog->excerpt
+        : Str::limit(strip_tags($blog->content ?? ''), 160, '...');
+    // og:image: pakai gambar artikel jika ada, fallback ke default
+    $_blogOgImage = $blog->image
+        ? asset('storage/' . ltrim($blog->image, '/'))
+        : asset('images/beach-bg.png');
+@endphp
+@section('meta_description', $_blogDesc)
+@section('og_image', $_blogOgImage)
+
 @section('content')
 <x-detail.layout>
     <x-slot:main>
