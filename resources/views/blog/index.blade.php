@@ -30,6 +30,7 @@
                                      class="w-full h-32 md:h-52 object-cover">
                             @else
                                 <img src="https://via.placeholder.com/400x250?text=Desa+Punjulharjo" 
+                                     alt="{{ $blog->title }}" 
                                      class="w-full h-32 md:h-52 object-cover">
                             @endif
                             <div class="p-3 md:p-6 text-left">

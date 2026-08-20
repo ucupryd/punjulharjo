@@ -15,6 +15,59 @@
 @section('meta_description', $_blogDesc)
 @section('og_image', $_blogOgImage)
 
+@push('structured_data')
+@php
+$_articleSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Article',
+    'headline' => $blog->title,
+    'image' => $_blogOgImage,
+    'datePublished' => \Carbon\Carbon::parse($blog->published_at ?? $blog->created_at)->toIso8601String(),
+    'dateModified' => \Carbon\Carbon::parse($blog->updated_at ?? $blog->created_at)->toIso8601String(),
+    'author' => [
+        '@type' => 'Organization',
+        'name' => 'Desa Wisata Punjulharjo',
+    ],
+    'publisher' => [
+        '@type' => 'Organization',
+        'name' => 'Desa Wisata Punjulharjo',
+        'logo' => [
+            '@type' => 'ImageObject',
+            'url' => asset('images/logo-my-cemara.png.png'),
+        ],
+    ],
+];
+
+$_breadcrumbSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Beranda',
+            'item' => url('/'),
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => 'Berita & Artikel',
+            'item' => route('pustaka'),
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 3,
+            'name' => $blog->title,
+            'item' => route('blog.show', $blog->slug),
+        ],
+    ],
+];
+@endphp
+<script type="application/ld+json">{!! json_encode($_articleSchema, JSON_UNESCAPED_SLASHES) !!}</script>
+<script type="application/ld+json">{!! json_encode($_breadcrumbSchema, JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
+
+
 @section('content')
 <x-detail.layout>
     <x-slot:main>

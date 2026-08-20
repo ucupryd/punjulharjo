@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="robots" content="@yield('robots', 'index, follow')">
 
     {{-- SEO: Title dinamis per halaman, fallback ke nama desa --}}
     <title>@yield('title', 'Desa Wisata Punjulharjo')</title>
@@ -33,19 +34,15 @@
     
     <!-- Dynamic Favicon Override Logic:
          Checks if custom-favicon.png exists in public directory. 
-         If yes, resolves to that. If no, defaults to the beautiful 2D vector-style blue coconut tree SVG inlined  as Base64. -->
+         If yes, resolves to that. If no, defaults to public/favicon.svg. -->
     @php
         $customFaviconExists = file_exists(public_path('custom-favicon.png'));
-        $defaultSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 90 C 52 70, 48 40, 52 35 C 53 30, 55 25, 50 25 C 45 25, 47 30, 48 35 C 52 40, 48 70, 50 90 Z" fill="#0284c7" /><path d="M50 25 C 40 20, 25 22, 15 30 C 25 35, 40 30, 50 25 Z" fill="#0369a1" /><path d="M50 25 C 60 20, 75 22, 85 30 C 75 35, 60 30, 50 25 Z" fill="#0369a1" /><path d="M50 25 C 38 28, 28 38, 22 50 C 30 50, 40 40, 50 25 Z" fill="#0284c7" /><path d="M50 25 C 62 28, 72 38, 78 50 C 70 50, 60 40, 50 25 Z" fill="#0284c7" /><path d="M50 25 C 45 15, 35 8, 25 5 C 32 12, 42 18, 50 25 Z" fill="#075985" /><path d="M50 25 C 55 15, 65 8, 75 5 C 68 12, 58 18, 50 25 Z" fill="#075985" /><circle cx="46" cy="27" r="4" fill="#0c4a6e" /><circle cx="54" cy="27" r="4" fill="#0c4a6e" /><circle cx="50" cy="31" r="4.5" fill="#0c4a6e" /></svg>';
-        $faviconUrl = $customFaviconExists ? asset('custom-favicon.png') : 'data:image/svg+xml;base64,' . base64_encode($defaultSvg);
-        $faviconType = $customFaviconExists ? 'image/png' : 'image/svg+xml';
     @endphp
-    <link rel="icon" href="{{ $faviconUrl }}" type="{{ $faviconType }}">
-    {{-- Apple Touch Icon untuk iOS --}}
     @if($customFaviconExists)
+        <link rel="icon" href="{{ asset('custom-favicon.png') }}" type="image/png">
         <link rel="apple-touch-icon" href="{{ asset('custom-favicon.png') }}">
     @else
-        <link rel="apple-touch-icon" href="data:image/svg+xml;base64,{{ base64_encode($defaultSvg) }}">
+        <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml" sizes="any">
     @endif
 
     <!-- Google Fonts Poppins & Playfair Display -->
@@ -68,6 +65,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     @stack('styles')
+    @stack('structured_data')
 </head>
 
 <body class="bg-white min-h-screen flex flex-col antialiased">

@@ -10,6 +10,47 @@
 @endphp
 @section('og_image', $_situsOg)
 
+@push('structured_data')
+@php
+$_touristSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'TouristAttraction',
+    'name' => 'Situs Perahu Kuno Punjulharjo',
+    'description' => 'Situs Perahu Kuno Punjulharjo adalah cagar budaya nasional di Rembang yang menyimpan perahu kayu abad ke-7 Masehi. Kunjungi museum mini, pameran artefak, dan program edukasi sejarah bahari Nusantara.',
+    'image' => $_situsOg,
+    'url' => route('destinasi.situs-perahu-kuno'),
+];
+
+$_breadcrumbSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Beranda',
+            'item' => url('/'),
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => 'Destinasi',
+            'item' => url('/') . '#jelajahi-destinasi',
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 3,
+            'name' => 'Situs Perahu Kuno Punjulharjo',
+            'item' => route('destinasi.situs-perahu-kuno'),
+        ],
+    ],
+];
+@endphp
+<script type="application/ld+json">{!! json_encode($_touristSchema, JSON_UNESCAPED_SLASHES) !!}</script>
+<script type="application/ld+json">{!! json_encode($_breadcrumbSchema, JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
+
+
 @section('content')
     @php
         // Dynamic Hero Background image check
@@ -416,10 +457,10 @@
                         ['title' => 'Edukasi Sejarah',      'image' => 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80'],
                     ];
                 @endphp
-                <div x-data="{ activePhoto: null }" class="relative">
+                <div x-data="{ activePhoto: null, activePhotoAlt: '' }" class="relative">
                     <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] sm:auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black rounded-2xl">
                         @foreach($fallbackGallery as $fi => $fbPhoto)
-                            <div @click="activePhoto = '{{ $fbPhoto['image'] }}'"
+                            <div @click="activePhoto = '{{ $fbPhoto['image'] }}'; activePhotoAlt = '{{ $fbPhoto['title'] }}'"
                                  class="relative w-full h-full group {{ $galleryGridClassesFb[$fi] ?? 'hidden' }} overflow-hidden cursor-pointer">
                                 <img src="{{ $fbPhoto['image'] }}"
                                      alt="{{ $fbPhoto['title'] }}"
@@ -434,7 +475,7 @@
                     <!-- Lightbox -->
                     <div x-show="activePhoto" x-cloak @click="activePhoto = null"
                          class="fixed inset-0 bg-black/90 z-[150] flex items-center justify-center p-4 cursor-zoom-out" style="display: none;">
-                        <img :src="activePhoto" class="max-h-full max-w-full object-contain">
+                        <img :src="activePhoto" :alt="activePhotoAlt" class="max-h-full max-w-full object-contain">
                     </div>
                 </div>
             @else
@@ -448,13 +489,13 @@
                         'col-span-2 row-span-1 md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-3',
                     ];
                 @endphp
-                <div x-data="{ activePhoto: null }" class="relative">
+                <div x-data="{ activePhoto: null, activePhotoAlt: '' }" class="relative">
                     <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] sm:auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black rounded-2xl">
                         @foreach(array_slice($galleryItems, 0, 6) as $index => $item)
                             @php
                                 $imageUrl = str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']);
                             @endphp
-                            <div @click="activePhoto = '{{ $imageUrl }}'"
+                            <div @click="activePhoto = '{{ $imageUrl }}'; activePhotoAlt = '{{ $item['title'] }}'"
                                  class="relative w-full h-full group {{ $galleryGridClasses[$index] ?? 'hidden' }} overflow-hidden cursor-pointer">
                                 <img src="{{ $imageUrl }}"
                                      alt="{{ $item['title'] }}"
@@ -474,7 +515,7 @@
                     <!-- Lightbox -->
                     <div x-show="activePhoto" x-cloak @click="activePhoto = null"
                          class="fixed inset-0 bg-black/90 z-[150] flex items-center justify-center p-4 cursor-zoom-out" style="display: none;">
-                        <img :src="activePhoto" class="max-h-full max-w-full object-contain">
+                        <img :src="activePhoto" :alt="activePhotoAlt" class="max-h-full max-w-full object-contain">
                     </div>
                 </div>
             @endif

@@ -10,6 +10,26 @@
 @endphp
 @section('og_image', $_ogHero)
 
+@push('structured_data')
+@php
+$_organizationSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Organization',
+    'name' => 'Desa Wisata Punjulharjo',
+    'url' => url('/'),
+    'logo' => asset('images/logo-my-cemara.png.png'),
+    'description' => 'Selamat datang di Desa Wisata Punjulharjo, Kabupaten Rembang. Nikmati pesona Pantai Karang Jahe, Situs Perahu Kuno abad ke-7, hutan cemara laut, serta program adopsi pohon cemara (My Cemara) untuk kelestarian pesisir.',
+    'sameAs' => [
+        'https://www.instagram.com/desawisatapunjulharjo/',
+        'https://www.youtube.com/@desawisatapunjulharjo9639',
+        'https://www.tiktok.com/@desawisata.punjul',
+    ],
+];
+@endphp
+<script type="application/ld+json">{!! json_encode($_organizationSchema, JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
+
+
 @section('content')
     @php
         $heroBg = \App\Models\SiteSetting::getValue('hero_background');
@@ -522,13 +542,13 @@
         ];
     @endphp
 
-    <section x-data="{ activePhoto: null }" class="relative">
+    <section x-data="{ activePhoto: null, activePhotoAlt: '' }" class="relative">
         <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] sm:auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black">
             @foreach(array_slice($galleryItems, 0, 6) as $index => $item)
                 @php
                     $imageUrl = str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']);
                 @endphp
-                <div @click="activePhoto = '{{ $imageUrl }}'" 
+                <div @click="activePhoto = '{{ $imageUrl }}'; activePhotoAlt = '{{ $item['title'] }}'" 
                      class="relative w-full h-full group {{ $gridClasses[$index] ?? 'hidden' }} overflow-hidden cursor-pointer">
                     <img src="{{ $imageUrl }}" 
                          alt="{{ $item['title'] }}" 
@@ -567,7 +587,7 @@
             <button class="absolute top-6 right-6 text-white/70 hover:text-white transition text-3xl focus:outline-none" @click="activePhoto = null">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <img :src="activePhoto" class="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-none border border-white/10" @click.stop>
+            <img :src="activePhoto" :alt="activePhotoAlt" class="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-none border border-white/10" @click.stop>
         </div>
     </section>
 

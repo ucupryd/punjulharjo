@@ -9,7 +9,7 @@
 <div class="adopsi-hanging-ribbon-container">
     <a href="{{ url('/adopsi') }}" class="adopsi-hanging-ribbon" aria-label="My Cemara Pantai Karangjahe">
         <img src="{{ asset('images/logo-my-cemara.png.png') }}?v={{ file_exists(public_path('images/logo-my-cemara.png.png')) ? filemtime(public_path('images/logo-my-cemara.png.png')) : time() }}"
-             alt="Logo My Cemara Pantai Karangjahe"
+             alt="Logo My Cemara"
              class="adopsi-hanging-ribbon__logo">
     </a>
 </div>
@@ -330,13 +330,13 @@
                     'col-span-2 row-span-1 md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-3',
                 ];
             @endphp
-            <div x-data="{ activeAdopsiPhoto: null }" class="relative">
+            <div x-data="{ activeAdopsiPhoto: null, activeAdopsiPhotoAlt: '' }" class="relative">
                 <div class="w-full h-auto md:h-[100vh] grid grid-cols-2 md:grid-cols-4 auto-rows-[120px] sm:auto-rows-[180px] md:auto-rows-auto md:grid-rows-4 gap-0 overflow-hidden bg-black rounded-2xl">
                     @foreach(array_slice($galleryAdopsiItems, 0, 6) as $index => $item)
                         @php
                             $adopsiImageUrl = str_starts_with($item['image'], 'http') ? $item['image'] : Storage::url($item['image']);
                         @endphp
-                        <div @click="activeAdopsiPhoto = '{{ $adopsiImageUrl }}'"
+                        <div @click="activeAdopsiPhoto = '{{ $adopsiImageUrl }}'; activeAdopsiPhotoAlt = '{{ $item['title'] }}'"
                              class="relative w-full h-full group {{ $galleryAdopsiGridClasses[$index] ?? 'hidden' }} overflow-hidden cursor-pointer">
                             <img src="{{ $adopsiImageUrl }}"
                                  alt="{{ $item['title'] }}"
@@ -356,7 +356,7 @@
                 <!-- Lightbox foto full-screen saat diklik -->
                 <div x-show="activeAdopsiPhoto" x-cloak @click="activeAdopsiPhoto = null"
                      class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 cursor-zoom-out" style="display: none;">
-                    <img :src="activeAdopsiPhoto" class="max-h-full max-w-full object-contain">
+                    <img :src="activeAdopsiPhoto" :alt="activeAdopsiPhotoAlt" class="max-h-full max-w-full object-contain">
                 </div>
             </div>
         @endif
