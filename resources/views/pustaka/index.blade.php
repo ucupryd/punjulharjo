@@ -95,16 +95,16 @@
                 @csrf
                 <input type="hidden" name="featured_order" id="featured-order-ebook" value="">
             @endif
-            <div class="eb-grid" id="featured-grid-ebook"
+            <div class="eb-grid grid grid-cols-2 md:grid-cols-3" id="featured-grid-ebook"
                  data-featured-order="{{ implode(',', $featuredIds['ebook']) }}">
 
 
                 @if($ebooks->isNotEmpty())
                     @foreach($ebooks as $ebook)
                         @php
-                            $likesVal = (int)($ebook->id * 7 + 15) % 89 + 12;
-                            $commentsVal = (int)($ebook->id * 3 + 8) % 43 + 4;
-                            $viewsVal = (int)($ebook->id * 43 + 124) % 890 + 112;
+                            $likesVal = $ebook->likes_count;
+                            $commentsVal = $ebook->comments_count;
+                            $viewsVal = $ebook->views_count;
                         @endphp
                         <div class="eb-main relative">
                             @if(Auth::check() && Auth::user()->isAdmin())
@@ -394,7 +394,7 @@
                 @csrf
                 <input type="hidden" name="featured_order" id="featured-order-video" value="">
             @endif
-            <div class="eb-grid" id="featured-grid-video"
+            <div class="eb-grid grid grid-cols-2 md:grid-cols-3" id="featured-grid-video"
                  data-featured-order="{{ implode(',', $featuredIds['video']) }}">
                 @foreach($videos as $video)
                     @php
@@ -402,9 +402,9 @@
                         $thumbnailUrl = $videoId 
                             ? "https://img.youtube.com/vi/{$videoId}/hqdefault.jpg"
                             : ($video->thumbnail ? Storage::disk('public_direct')->url($video->thumbnail) : asset('images/default-video.jpg'));
-                        $likesVal = (int)($video->id * 7 + 15) % 89 + 12;
-                        $commentsVal = (int)($video->id * 3 + 8) % 43 + 4;
-                        $viewsVal = (int)($video->id * 43 + 124) % 890 + 112;
+                        $likesVal = $video->likes_count;
+                        $commentsVal = $video->comments_count;
+                        $viewsVal = $video->views_count;
                     @endphp
                     <div class="eb-main relative group">
                         @if(Auth::check() && Auth::user()->isAdmin())
@@ -550,14 +550,14 @@
                 @csrf
                 <input type="hidden" name="featured_order" id="featured-order-blog" value="">
             @endif
-            <div class="eb-grid" id="featured-grid-blog"
+            <div class="eb-grid grid grid-cols-2 md:grid-cols-3" id="featured-grid-blog"
                  data-featured-order="{{ implode(',', $featuredIds['blog']) }}">
                 @foreach ($blogs as $blog)
                     @php
                         $blogImgUrl = $blog->image ? Storage::url($blog->image) : 'https://via.placeholder.com/400x250?text=Desa+Punjulharjo';
-                        $likesVal = (int)($blog->id * 7 + 15) % 89 + 12;
-                        $commentsVal = (int)($blog->id * 3 + 8) % 43 + 4;
-                        $viewsVal = (int)($blog->id * 43 + 124) % 890 + 112;
+                        $likesVal = $blog->likes_count;
+                        $commentsVal = $blog->comments_count;
+                        $viewsVal = $blog->views_count;
                     @endphp
                     <div class="eb-main relative group">
                         @if(Auth::check() && Auth::user()->isAdmin())

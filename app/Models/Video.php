@@ -56,6 +56,11 @@ class Video extends Model
         return $this->morphMany(\App\Models\Comment::class, 'commentable')->whereNull('parent_id')->latest();
     }
 
+    public function allComments()
+    {
+        return $this->morphMany(\App\Models\Comment::class, 'commentable');
+    }
+
     public function reactions()
     {
         return $this->morphMany(\App\Models\Reaction::class, 'reactable');

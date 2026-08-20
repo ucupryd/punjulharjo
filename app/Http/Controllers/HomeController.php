@@ -67,9 +67,24 @@ class HomeController extends Controller
             $featuredSelecting[$key] = $featuredModes[$key] === 'unggulan' && $isAdmin;
         }
 
-        $blogsQuery  = Blog::with('categories')->latest();
-        $videosQuery = Video::with('categories')->latest();
-        $ebooksQuery = Ebook::with('categories')->latest();
+        $blogsQuery  = Blog::with('categories')
+            ->withCount([
+                'reactions as likes_count',
+                'allComments as comments_count',
+                'viewLogs as views_count'
+            ])->latest();
+        $videosQuery = Video::with('categories')
+            ->withCount([
+                'reactions as likes_count',
+                'allComments as comments_count',
+                'viewLogs as views_count'
+            ])->latest();
+        $ebooksQuery = Ebook::with('categories')
+            ->withCount([
+                'reactions as likes_count',
+                'allComments as comments_count',
+                'viewLogs as views_count'
+            ])->latest();
 
         // Filter kategori dimatikan PER JENIS KONTEN yang sedang dalam mode
         // memilih unggulan. Pengunjung biasa ($isAdmin = false) selalu lolos
