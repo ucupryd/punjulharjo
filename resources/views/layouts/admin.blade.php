@@ -47,6 +47,18 @@
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/destination-videos*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     🗺️ Jelajahi Destinasi
                 </a>
+                <a href="{{ route('admin.karang-jahe-sorotan.index') }}"
+                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/karang-jahe-sorotan*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
+                    ✨ Sorotan Karang Jahe
+                </a>
+                <a href="{{ route('admin.tim-proklim.index') }}"
+                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/tim-proklim*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
+                    👥 Tim ProKlim
+                </a>
+                <a href="{{ route('admin.perangkat-desa.index') }}"
+                    class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/perangkat-desa*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
+                    💼 Perangkat Desa
+                </a>
                 <a href="{{ route('admin.pesan.index') }}"
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/pesan*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     💬 Pesan Masuk

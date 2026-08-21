@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             PerangkatDesaSeeder::class,
             TimProklimSeeder::class,
+            PantaiKarangJaheSorotanSeeder::class,
         ]);
     }
 }

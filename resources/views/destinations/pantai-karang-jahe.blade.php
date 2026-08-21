@@ -506,167 +506,50 @@ $_breadcrumbSchema = [
     </section>
 
     <!-- =========================================================================
-         SECTION 6: Keunikan [keunikan]
+         SECTION 6: Sorotan & Fasilitas [sorotan]
          ========================================================================= -->
-    <section id="dayatarik" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
+    <section id="sorotan" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
-            <div class="text-center space-y-2 md:space-y-4">
-                <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
-                    Apa yang Membuatnya Istimewa
-                </h2>
-                <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
-                    Daya tarik geologis, alam, dan nilai budaya pesisir utara Punjulharjo yang tiada duanya.
-                </p>
+            <div class="relative">
+                @if(Auth::check() && Auth::user()->isAdmin())
+                    <div class="absolute top-0 right-0 z-30">
+                        <a href="{{ route('admin.karang-jahe-sorotan.index') }}" 
+                           class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold px-4 py-2 text-xs transition shadow-sm">
+                            <i class="fa-solid fa-pen"></i> Edit Sorotan & Fasilitas
+                        </a>
+                    </div>
+                @endif
+                <div class="text-center space-y-2 md:space-y-4">
+                    <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
+                        Sorotan & Fasilitas Pantai
+                    </h2>
+                    <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
+                        Daya tarik dan fasilitas unggulan yang membuat kunjungan Anda semakin nyaman dan berkesan.
+                    </p>
+                </div>
             </div>
-
-            <!-- Features Grid (2 Columns on Mobile) -->
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-sky-100/60 text-sky-600 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
-                            <i class="fa-solid fa-tree text-sm md:text-lg"></i>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+                @foreach($sorotanKarangJahe as $item)
+                    <div class="bg-white border border-slate-200 shadow-sm hover:shadow-md transition duration-300 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            @if($item->gambar)
+                                <img src="{{ (str_starts_with($item->gambar, 'http') || str_contains($item->gambar, 'storage/')) ? asset($item->gambar) : Storage::url($item->gambar) }}" alt="{{ $item->judul }}" class="w-full h-28 md:h-36 object-cover">
+                            @else
+                                <div class="w-full h-28 md:h-36 bg-sky-50 flex items-center justify-center text-sky-600">
+                                    <i class="{{ $item->icon ?? 'fa-solid fa-star' }} text-2xl"></i>
+                                </div>
+                            @endif
+                            <div class="p-3 md:p-4">
+                                <h3 class="text-xs md:text-base font-heading text-slate-900 mb-1">{{ $item->judul }}</h3>
+                                <p class="text-[10px] md:text-xs text-slate-600 leading-relaxed text-justify">{{ $item->deskripsi }}</p>
+                            </div>
                         </div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Hutan Cemara Laut</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
-                            Pohon cemara laut rindang sepanjang pantai; suasana teduh hasil konservasi abrasi.
-                        </p>
                     </div>
-                </div>
-
-                <!-- Feature 2 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-sky-100/60 text-sky-600 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
-                            <i class="fa-solid fa-water text-sm md:text-lg"></i>
-                        </div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Pasir Putih 3 KM</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
-                            Garis pantai berpasir putih terpanjang dan terbersih di Kabupaten Rembang.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-sky-100/60 text-sky-600 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
-                            <i class="fa-solid fa-child-reaching text-sm md:text-lg"></i>
-                        </div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Ombak Tenang</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
-                            Karakteristik ombak yang tenang dan landai; aman bagi keluarga dan anak-anak.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Feature 4 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-sky-100/60 text-sky-600 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
-                            <i class="fa-solid fa-camera text-sm md:text-lg"></i>
-                        </div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Sunset Estetik</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
-                            Lanskap laut, pasir, dan cemara yang sangat elok; favorit prewedding.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Feature 5 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-sky-100/60 text-sky-600 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
-                            <i class="fa-solid fa-gem text-sm md:text-lg"></i>
-                        </div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Karang Jahe</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
-                            Bentuk karang pesisir menyerupai jahe yang menjadi asal nama pantai ini.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Feature 6 -->
-                <div class="bg-white p-3 md:p-6 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-9 h-9 md:w-12 md:h-12 rounded-full bg-sky-100/60 text-sky-600 flex items-center justify-center mb-3 md:mb-4" aria-hidden="true">
-                            <i class="fa-solid fa-book-open text-sm md:text-lg"></i>
-                        </div>
-                        <h3 class="text-xs md:text-lg font-heading text-slate-900 mb-1">Wisata Sejarah</h3>
-                        <p class="text-[10px] md:text-sm text-slate-600 leading-relaxed text-justify">
-                            Berdekatan langsung dengan Situs Perahu Kuno cagar budaya abad ke-7 (± 500 m).
-                        </p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
-    </section>
-
-    <!-- =========================================================================
-         SECTION 7: Fasilitas [fasilitas]
-         ========================================================================= -->
-    <section id="fasilitas" class="bg-white py-8 md:py-24 px-4 md:px-6 relative z-10">
-        <div class="max-w-6xl mx-auto space-y-8 md:space-y-12">
-            <div class="text-center space-y-2 md:space-y-4">
-                <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
-                    Fasilitas & Sarana Lengkap
-                </h2>
-                <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
-                    Dukungan fasilitas memadai untuk menjamin kenyamanan liburan Anda selama berada di area pantai.
-                </p>
-            </div>
-
-            <!-- Facilities Grid (2 Columns on Mobile) -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-100 bg-slate-50/50">
-                    <span class="text-sky-600 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-house-flag"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Loket & Sekretariat</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-100 bg-slate-50/50">
-                    <span class="text-sky-600 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-square-parking"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Area Parkir Luas</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-100 bg-slate-50/50">
-                    <span class="text-sky-600 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-restroom"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Toilet / MCK Umum</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-100 bg-slate-50/50">
-                    <span class="text-sky-600 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-mosque"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Musala Nurul Jannah</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-100 bg-slate-50/50">
-                    <span class="text-sky-600 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-utensils"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Warung Kuliner</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-100 bg-slate-50/50">
-                    <span class="text-sky-600 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-umbrella"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Gazebo & Kursi</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-100 bg-slate-50/50">
-                    <span class="text-sky-600 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-campground"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Homestay & Camping</span>
-                </div>
-                <div class="flex items-center gap-2.5 p-2.5 md:p-4 border border-slate-100 bg-slate-50/50">
-                    <span class="text-sky-600 text-sm w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center shrink-0" aria-hidden="true">
-                        <i class="fa-solid fa-volleyball"></i>
-                    </span>
-                    <span class="text-[10px] md:text-sm font-semibold text-slate-700 leading-tight">Outbound & Voli</span>
-                </div>
-            </div    <!-- =========================================================================
+    </section>    <!-- =========================================================================
          SECTION 8: 3D Coverflow Experience (Aktivitas Pantai)
          ========================================================================= -->
     <section id="aktivitas" class="bg-slate-50 py-8 md:py-24 px-4 md:px-12 relative overflow-hidden z-10 border-y border-slate-100">

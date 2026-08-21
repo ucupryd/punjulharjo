@@ -57,7 +57,10 @@ Route::get('/testimoni/isi', [TestimonialController::class, 'create'])->name('te
 Route::post('/testimoni/store', [TestimonialController::class, 'store'])->name('testimoni.store');
 
 // Destinasi Detail Pages
-Route::view('/destinasi/pantai-karang-jahe', 'destinations.pantai-karang-jahe')->name('destinasi.pantai-karang-jahe');
+Route::get('/destinasi/pantai-karang-jahe', function () {
+    $sorotanKarangJahe = \App\Models\PantaiKarangJaheSorotan::orderBy('urutan')->get();
+    return view('destinations.pantai-karang-jahe', compact('sorotanKarangJahe'));
+})->name('destinasi.pantai-karang-jahe');
 Route::view('/destinasi/situs-perahu-kuno', 'destinations.situs-perahu-kuno')->name('destinasi.situs-perahu-kuno');
 
 // Blog Publik
@@ -187,6 +190,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/tim-proklim/{id}/edit', [TimProklimController::class, 'edit'])->name('tim-proklim.edit');
     Route::put('/tim-proklim/{id}', [TimProklimController::class, 'update'])->name('tim-proklim.update');
     Route::delete('/tim-proklim/{id}', [TimProklimController::class, 'destroy'])->name('tim-proklim.destroy');
+
+    // CRUD Pantai Karang Jahe Sorotan
+    Route::get('/karang-jahe-sorotan', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'index'])->name('karang-jahe-sorotan.index');
+    Route::get('/karang-jahe-sorotan/create', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'create'])->name('karang-jahe-sorotan.create');
+    Route::post('/karang-jahe-sorotan', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'store'])->name('karang-jahe-sorotan.store');
+    Route::get('/karang-jahe-sorotan/{id}/edit', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'edit'])->name('karang-jahe-sorotan.edit');
+    Route::put('/karang-jahe-sorotan/{id}', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'update'])->name('karang-jahe-sorotan.update');
+    Route::delete('/karang-jahe-sorotan/{id}', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'destroy'])->name('karang-jahe-sorotan.destroy');
 
     // CRUD Destination Videos (Jelajahi Destinasi)
     Route::get('/destination-videos', [DestinationVideoController::class, 'index'])->name('destination-videos.index');
