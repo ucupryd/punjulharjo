@@ -430,6 +430,19 @@
                                 <i class="fa-brands fa-tiktok text-xs sm:text-base"></i>
                             </a>
                         </div>
+
+                        <!-- Kredit Tim KKN -->
+                        <div class="pt-3 mt-3 border-t border-slate-100">
+                            <p class="text-[10px] sm:text-xs text-slate-400 font-sans mb-2 leading-relaxed">
+                                Website ini dikembangkan oleh Tim KKN-T Universitas Diponegoro (UNDIP) x Unisvet
+                            </p>
+                            <div class="flex items-center gap-3 flex-wrap">
+                                <img src="{{ asset('images/logo-undip.png') }}" alt="Logo Universitas Diponegoro" class="h-9 sm:h-11 w-auto object-contain" loading="lazy">
+                                <img src="{{ asset('images/logo-unisvet.png') }}" alt="Logo Unisvet" class="h-9 sm:h-11 w-auto object-contain" loading="lazy">
+                                <img src="{{ asset('images/logo-kemendiktisaintek.png') }}" alt="Logo Kementerian Pendidikan Tinggi, Sains, dan Teknologi" class="h-9 sm:h-11 w-auto object-contain" loading="lazy">
+                                <img src="{{ asset('images/logo-kknt.png') }}" alt="Logo KKN-T" class="h-9 sm:h-11 w-auto object-contain" loading="lazy">
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Column 2: Navigasi Halaman (Proportion 3/12) -->
