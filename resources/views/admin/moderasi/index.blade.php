@@ -52,10 +52,13 @@
                         <span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{{ $unreadComments }}</span>
                     @endif
                 </button>
-                <button @click="tab = 'kategori'" :class="tab === 'kategori' ? 'bg-sky-700 text-white shadow' : 'text-slate-600 hover:bg-slate-100'" class="px-5 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-tags"></i> Kelola Kategori
-                </button>
-            </div>
+                 <button @click="tab = 'kategori'" :class="tab === 'kategori' ? 'bg-sky-700 text-white shadow' : 'text-slate-600 hover:bg-slate-100'" class="px-5 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap">
+                     <i class="fa-solid fa-tags"></i> Kelola Kategori
+                 </button>
+                 <button @click="tab = 'tiket'" :class="tab === 'tiket' ? 'bg-sky-700 text-white shadow' : 'text-slate-600 hover:bg-slate-100'" class="px-5 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap">
+                     <i class="fa-solid fa-ticket"></i> Tiket Karang Jahe
+                 </button>
+             </div>
 
             <!-- TAB 1: VERIFIKASI ADOPSI -->
             <div x-show="tab === 'adopsi'" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
@@ -363,6 +366,115 @@
                         </table>
                     </div>
                 @endif
+            </div>
+
+            <!-- TAB 6: TIKET KARANG JAHE -->
+            <div x-show="tab === 'tiket'" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+                <!-- Form Tambah -->
+                <div class="border-b border-slate-100 pb-6">
+                    <h3 class="font-bold text-slate-800 text-lg font-title mb-4">Tambah Tarif Tiket Baru</h3>
+                    <form action="{{ route('admin.karang-jahe-tiket.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        @csrf
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Komponen Tiket / Wahana *</label>
+                            <input type="text" name="komponen" required value="{{ old('komponen') }}" 
+                                   class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none placeholder-slate-400" 
+                                   placeholder="Tiket & Parkir Motor">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Tarif (Kisaran) *</label>
+                            <input type="text" name="tarif" required value="{{ old('tarif') }}" 
+                                   class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none placeholder-slate-400" 
+                                   placeholder="Rp 5.000">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Catatan (Opsional)</label>
+                            <input type="text" name="catatan" value="{{ old('catatan') }}" 
+                                   class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none placeholder-slate-400" 
+                                   placeholder="weekend/libur">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Ikon (Opsional)</label>
+                                <input type="text" name="ikon" value="{{ old('ikon', 'fa-solid fa-ticket') }}" 
+                                       class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none placeholder-slate-400 font-mono" 
+                                       placeholder="fa-solid fa-car">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Urutan</label>
+                                <input type="number" name="urutan" value="{{ old('urutan') }}" min="1"
+                                       class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-sky-500 focus:outline-none placeholder-slate-400" 
+                                       placeholder="Auto">
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-lg transition shadow-sm flex items-center justify-center gap-1 min-h-[38px]">
+                                <i class="fa-solid fa-plus"></i> Tambah Tarif
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Daftar Tiket -->
+                <div>
+                    <h3 class="font-bold text-slate-800 text-lg font-title mb-3">Kelola Harga Tiket & Tarif Masuk</h3>
+                    @if($tiket->isEmpty())
+                        <p class="text-slate-400 text-sm py-6 text-center">Belum ada data tarif tiket.</p>
+                    @else
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-600">
+                                <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
+                                    <tr>
+                                        <th class="p-3 w-16">Ikon</th>
+                                        <th class="p-3">Komponen</th>
+                                        <th class="p-3">Tarif</th>
+                                        <th class="p-3">Catatan</th>
+                                        <th class="p-3 text-center w-20">Urutan</th>
+                                        <th class="p-3 text-right w-28">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    @foreach($tiket as $item)
+                                        <tr class="hover:bg-slate-50 transition">
+                                            <td class="p-3">
+                                                <div class="w-8 h-8 bg-sky-50 text-sky-600 rounded-lg flex items-center justify-center border border-slate-200">
+                                                    <i class="{{ $item->ikon ?? 'fa-solid fa-ticket' }} text-sm"></i>
+                                                </div>
+                                            </td>
+                                            <td class="p-3 font-semibold text-slate-800">{{ $item->komponen }}</td>
+                                            <td class="p-3 font-bold text-brand-dark">{{ $item->tarif }}</td>
+                                            <td class="p-3 text-xs text-slate-500">{{ $item->catatan ?? '-' }}</td>
+                                            <td class="p-3 text-center">
+                                                <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
+                                                    {{ $item->urutan }}
+                                                </span>
+                                            </td>
+                                            <td class="p-3 text-right">
+                                                <div class="flex justify-end gap-1.5">
+                                                    <a href="{{ route('admin.karang-jahe-tiket.edit', $item->id) }}"
+                                                       class="inline-flex items-center justify-center w-7 h-7 bg-slate-100 hover:bg-sky-50 text-sky-700 rounded transition"
+                                                       title="Edit {{ $item->komponen }}">
+                                                        <i class="fa-solid fa-pencil text-[10px]"></i>
+                                                    </a>
+                                                    <form action="{{ route('admin.karang-jahe-tiket.destroy', $item->id) }}" method="POST"
+                                                          onsubmit="return confirm('Hapus baris tarif ini?')" class="inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                                class="inline-flex items-center justify-center w-7 h-7 bg-red-50 hover:bg-red-100 text-red-600 rounded transition"
+                                                                title="Hapus {{ $item->komponen }}">
+                                                            <i class="fa-solid fa-trash text-[10px]"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
 

@@ -13,8 +13,7 @@ class VideoController extends Controller
 {
     public function index()
     {
-        $videos = Video::latest()->paginate(8);
-        return view('admin.video.index', compact('videos'));
+        return redirect()->route('pustaka', ['tab' => 'video']);
     }
 
     public function create()

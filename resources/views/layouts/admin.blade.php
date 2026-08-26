@@ -51,6 +51,7 @@
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/karang-jahe-sorotan*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     ✨ Sorotan Karang Jahe
                 </a>
+
                 <a href="{{ route('admin.tim-proklim.index') }}"
                     class="block px-4 py-2 rounded-md hover:bg-sky-100 text-gray-700 font-medium {{ request()->is('admin/tim-proklim*') ? 'bg-sky-200 text-sky-800 font-semibold' : '' }}">
                     👥 Tim ProKlim

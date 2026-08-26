@@ -434,13 +434,14 @@
                         <!-- Kredit Tim KKN -->
                         <div class="pt-3 mt-3 border-t border-slate-100">
                             <p class="text-[10px] sm:text-xs text-slate-400 font-sans mb-2 leading-relaxed">
-                                Website ini dikembangkan oleh Tim KKN-T Universitas Diponegoro (UNDIP) x Unisvet
+                                Website ini dihasilkan dari Program Desa Binaan Kemendiktisaintek, Undip, dan Unisvet
                             </p>
                             <div class="flex items-center gap-3 flex-wrap">
-                                <img src="{{ asset('images/logo-undip.png') }}" alt="Logo Universitas Diponegoro" class="h-9 sm:h-11 w-auto object-contain" loading="lazy">
-                                <img src="{{ asset('images/logo-unisvet.png') }}" alt="Logo Unisvet" class="h-9 sm:h-11 w-auto object-contain" loading="lazy">
-                                <img src="{{ asset('images/logo-kemendiktisaintek.png') }}" alt="Logo Kementerian Pendidikan Tinggi, Sains, dan Teknologi" class="h-9 sm:h-11 w-auto object-contain" loading="lazy">
-                                <img src="{{ asset('images/logo-kknt.png') }}" alt="Logo KKN-T" class="h-9 sm:h-11 w-auto object-contain" loading="lazy">
+                                <img src="{{ asset('images/logo-kemendiktisaintek.png') }}" alt="Logo Kementerian Pendidikan Tinggi, Sains, dan Teknologi" class="h-9 sm:h-11 w-auto object-contain" loading="lazy" decoding="async">
+                                <img src="{{ asset('images/logo-diktisaintek-berdampak.png') }}" alt="Logo Diktisaintek Berdampak" class="h-9 sm:h-11 w-auto object-contain" loading="lazy" decoding="async">
+                                <img src="{{ asset('images/logo-undip.png') }}" alt="Logo Universitas Diponegoro" class="h-9 sm:h-11 w-auto object-contain" loading="lazy" decoding="async">
+                                <img src="{{ asset('images/logo-unisvet.png') }}" alt="Logo Universitas Ivet (Unisvet)" class="h-9 sm:h-11 w-auto object-contain" loading="lazy" decoding="async">
+                                <img src="{{ asset('images/logo-kknt.png') }}" alt="Logo KKN-Tematik Desa Punjulharjo" class="h-9 sm:h-11 w-auto object-contain" loading="lazy" decoding="async">
                             </div>
                         </div>
                     </div>
@@ -490,8 +491,8 @@
                         <ul class="space-y-2.5 text-slate-600 font-sans text-xs sm:text-sm">
                             <li class="flex items-start gap-2">
                                 <i class="fa-solid fa-phone text-brand-light mt-0.5 shrink-0"></i>
-                                <a href="https://wa.me/6289673988491" target="_blank" class="hover:text-brand-dark transition font-mono leading-tight">
-                                    0896 7398 8491
+                                <a href="https://wa.me/6281329427041" target="_blank" class="hover:text-brand-dark transition font-mono leading-tight">
+                                    0813-2942-7041
                                 </a>
                             </li>
                             <li class="flex items-start gap-2">

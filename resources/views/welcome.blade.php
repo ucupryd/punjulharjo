@@ -497,7 +497,7 @@ $_organizationSchema = [
         key="hero_welcome_nature"
         image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
 
-        title="Keindahan Alam Punjulahrjo"
+        title="Keindahan Alam Punjulharjo"
         subtitle="Dari keteduhan ribuan pohon cemara hingga pesona pantai pasir putih yang membentang luas di pesisir utara Jawa."
         height="h-[65vh]"
         align="center">

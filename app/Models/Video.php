@@ -33,6 +33,7 @@ class Video extends Model
                                ->where('commentable_id', $video->id)
                                ->delete();
             $video->reactions()->delete();
+            $video->viewLogs()->delete();
         });
     }
 

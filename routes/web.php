@@ -59,7 +59,8 @@ Route::post('/testimoni/store', [TestimonialController::class, 'store'])->name('
 // Destinasi Detail Pages
 Route::get('/destinasi/pantai-karang-jahe', function () {
     $sorotanKarangJahe = \App\Models\PantaiKarangJaheSorotan::orderBy('urutan')->get();
-    return view('destinations.pantai-karang-jahe', compact('sorotanKarangJahe'));
+    $karangJaheTikets = \App\Models\KarangJaheTiket::orderBy('urutan')->get();
+    return view('destinations.pantai-karang-jahe', compact('sorotanKarangJahe', 'karangJaheTikets'));
 })->name('destinasi.pantai-karang-jahe');
 Route::view('/destinasi/situs-perahu-kuno', 'destinations.situs-perahu-kuno')->name('destinasi.situs-perahu-kuno');
 
@@ -198,6 +199,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/karang-jahe-sorotan/{id}/edit', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'edit'])->name('karang-jahe-sorotan.edit');
     Route::put('/karang-jahe-sorotan/{id}', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'update'])->name('karang-jahe-sorotan.update');
     Route::delete('/karang-jahe-sorotan/{id}', [\App\Http\Controllers\Admin\PantaiKarangJaheSorotanController::class, 'destroy'])->name('karang-jahe-sorotan.destroy');
+
+    // CRUD Pantai Karang Jahe Tiket
+    Route::get('/karang-jahe-tiket', [\App\Http\Controllers\Admin\KarangJaheTiketController::class, 'index'])->name('karang-jahe-tiket.index');
+    Route::get('/karang-jahe-tiket/create', [\App\Http\Controllers\Admin\KarangJaheTiketController::class, 'create'])->name('karang-jahe-tiket.create');
+    Route::post('/karang-jahe-tiket', [\App\Http\Controllers\Admin\KarangJaheTiketController::class, 'store'])->name('karang-jahe-tiket.store');
+    Route::get('/karang-jahe-tiket/{id}/edit', [\App\Http\Controllers\Admin\KarangJaheTiketController::class, 'edit'])->name('karang-jahe-tiket.edit');
+    Route::put('/karang-jahe-tiket/{id}', [\App\Http\Controllers\Admin\KarangJaheTiketController::class, 'update'])->name('karang-jahe-tiket.update');
+    Route::delete('/karang-jahe-tiket/{id}', [\App\Http\Controllers\Admin\KarangJaheTiketController::class, 'destroy'])->name('karang-jahe-tiket.destroy');
 
     // CRUD Destination Videos (Jelajahi Destinasi)
     Route::get('/destination-videos', [DestinationVideoController::class, 'index'])->name('destination-videos.index');

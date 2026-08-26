@@ -35,6 +35,7 @@ class Blog extends Model
                                ->where('commentable_id', $blog->id)
                                ->delete();
             $blog->reactions()->delete();
+            $blog->viewLogs()->delete();
         });
     }
 

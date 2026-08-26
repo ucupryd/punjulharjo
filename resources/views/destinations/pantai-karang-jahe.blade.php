@@ -729,13 +729,24 @@ $_breadcrumbSchema = [
          ========================================================================= -->
     <section id="tarif" class="bg-slate-50 py-8 md:py-24 px-4 md:px-6 border-y border-slate-100 relative z-10">
         <div class="max-w-4xl mx-auto space-y-8 md:space-y-12">
-            <div class="text-center space-y-2 md:space-y-4">
-                <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
-                    Harga Tiket & Tarif Masuk
-                </h2>
-                <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
-                    Rincian perkiraan biaya masuk, retribusi parkir kendaraan, dan sewa wahana penyeberangan di Pantai Karang Jahe.
-                </p>
+            <div class="relative">
+                @if(Auth::check() && Auth::user()->isAdmin())
+                    <div class="absolute top-0 right-0 z-30">
+                        <a href="{{ route('admin.moderasi.index', ['tab' => 'tiket']) }}" 
+                           class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold px-4 py-2 text-xs transition shadow-sm"
+                           title="Kelola Harga Tiket" aria-label="Kelola Harga Tiket">
+                            <i class="fa-solid fa-pen"></i> Kelola Harga Tiket
+                        </a>
+                    </div>
+                @endif
+                <div class="text-center space-y-2 md:space-y-4">
+                    <h2 class="text-lg md:text-4xl font-heading text-brand-dark tracking-wide">
+                        Harga Tiket & Tarif Masuk
+                    </h2>
+                    <p class="text-slate-500 font-sans max-w-xl mx-auto text-[11px] md:text-base">
+                        Rincian perkiraan biaya masuk, retribusi parkir kendaraan, dan sewa wahana penyeberangan di Pantai Karang Jahe.
+                    </p>
+                </div>
             </div>
 
             <!-- Responsive Table Wrapper -->
@@ -749,66 +760,28 @@ $_breadcrumbSchema = [
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-200 text-[10px] md:text-sm font-medium text-slate-700">
-                            <!-- Row 1 -->
-                            <tr class="hover:bg-slate-50/50 transition">
-                                <td class="p-3 md:p-4 pl-4 md:pl-6">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-solid fa-motorcycle text-slate-400 text-xs shrink-0" aria-hidden="true"></i>
-                                        <span>Tiket & Parkir Motor</span>
-                                    </div>
-                                </td>
-                                <td class="p-3 md:p-4 pr-4 md:pr-6 text-right text-brand-dark font-bold">Rp 5.000</td>
-                            </tr>
-                            <!-- Row 2 -->
-                            <tr class="hover:bg-slate-50/50 transition">
-                                <td class="p-3 md:p-4 pl-4 md:pl-6">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-solid fa-car text-slate-400 text-xs shrink-0" aria-hidden="true"></i>
-                                        <span>Tiket & Parkir Mobil</span>
-                                    </div>
-                                </td>
-                                <td class="p-3 md:p-4 pr-4 md:pr-6 text-right text-brand-dark font-bold">Rp 15.000 – Rp 25.000 <span class="text-[8px] text-slate-400 font-normal block mt-0.5">(lebih tinggi saat weekend/libur)</span></td>
-                            </tr>
-                            <!-- Row 3 -->
-                            <tr class="hover:bg-slate-50/50 transition">
-                                <td class="p-3 md:p-4 pl-4 md:pl-6">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-solid fa-bus text-slate-400 text-xs shrink-0" aria-hidden="true"></i>
-                                        <span>Bus / Rombongan Besar</span>
-                                    </div>
-                                </td>
-                                <td class="p-3 md:p-4 pr-4 md:pr-6 text-right text-brand-dark font-bold">Rp 25.000 – Rp 130.000 <span class="text-[8px] text-slate-400 font-normal block mt-0.5">(tergantung dimensi bus)</span></td>
-                            </tr>
-                            <!-- Row 4 -->
-                            <tr class="hover:bg-slate-50/50 transition">
-                                <td class="p-3 md:p-4 pl-4 md:pl-6">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-solid fa-person text-slate-400 text-xs shrink-0" aria-hidden="true"></i>
-                                        <span>Estimasi Per Orang</span>
-                                    </div>
-                                </td>
-                                <td class="p-3 md:p-4 pr-4 md:pr-6 text-right text-brand-dark font-bold">± Rp 10.000 – Rp 15.000</td>
-                            </tr>
-                            <!-- Row 5 -->
-                            <tr class="hover:bg-slate-50/50 transition">
-                                <td class="p-3 md:p-4 pl-4 md:pl-6">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-solid fa-ship text-slate-400 text-xs shrink-0" aria-hidden="true"></i>
-                                        <span>Perahu ke Pulau Gede</span>
-                                    </div>
-                                </td>
-                                <td class="p-3 md:p-4 pr-4 md:pr-6 text-right text-brand-dark font-bold">± Rp 300.000 / Perahu <span class="text-[8px] text-slate-400 font-normal block mt-0.5">(maksimal 10 orang)</span></td>
-                            </tr>
-                            <!-- Row 6 -->
-                            <tr class="hover:bg-slate-50/50 transition">
-                                <td class="p-3 md:p-4 pl-4 md:pl-6">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-solid fa-monument text-slate-400 text-xs shrink-0" aria-hidden="true"></i>
-                                        <span>Situs Perahu Kuno Tiket</span>
-                                    </div>
-                                </td>
-                                <td class="p-3 md:p-4 pr-4 md:pr-6 text-right text-brand-dark font-bold">Mulai ± Rp 2.000 – Rp 5.000</td>
-                            </tr>
+                            @forelse($karangJaheTikets as $tiket)
+                                <tr class="hover:bg-slate-50/50 transition">
+                                    <td class="p-3 md:p-4 pl-4 md:pl-6">
+                                        <div class="flex items-center gap-2">
+                                            <i class="{{ $tiket->ikon ?? 'fa-solid fa-ticket' }} text-slate-400 text-xs shrink-0" aria-hidden="true"></i>
+                                            <span>{{ $tiket->komponen }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-3 md:p-4 pr-4 md:pr-6 text-right text-brand-dark font-bold">
+                                        {{ $tiket->tarif }}
+                                        @if($tiket->catatan)
+                                            <span class="text-[8px] text-slate-400 font-normal block mt-0.5">({{ $tiket->catatan }})</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="2" class="p-6 text-center text-slate-500 italic">
+                                        Data tarif belum tersedia
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

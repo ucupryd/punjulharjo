@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PerangkatDesaSeeder::class,
             TimProklimSeeder::class,
             PantaiKarangJaheSorotanSeeder::class,
+            KarangJaheTiketSeeder::class,
         ]);
     }
 }

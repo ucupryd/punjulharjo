@@ -279,11 +279,18 @@
                     @endphp
                     <div class="eb-main relative group">
                         @if(Auth::check() && Auth::user()->isAdmin())
-                            <div class="absolute top-4 left-4 z-30" onclick="event.stopPropagation();">
+                            <div class="absolute top-4 left-4 z-30 flex gap-1.5" onclick="event.stopPropagation();">
                                 <button type="button" onclick="openEditVideoModal(event, {{ json_encode($video) }})" 
                                         class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Video">
                                     <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
                                 </button>
+                                <form action="{{ route('admin.video.destroy', $video) }}" method="POST" class="inline" onsubmit="return confirm('Hapus konten ini? Tindakan ini tidak bisa dibatalkan.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Hapus Video">
+                                        <i class="fa-solid fa-trash text-[10px] text-rose-600"></i>
+                                    </button>
+                                </form>
                             </div>
                             @if($featuredSelecting['video'])
                                 <label class="absolute top-4 right-4 z-30 cursor-pointer" onclick="event.stopPropagation();">
@@ -438,11 +445,18 @@
                     @endphp
                     <div class="eb-main relative group">
                         @if(Auth::check() && Auth::user()->isAdmin())
-                            <div class="absolute top-4 left-4 z-30" onclick="event.stopPropagation();">
+                            <div class="absolute top-4 left-4 z-30 flex gap-1.5" onclick="event.stopPropagation();">
                                 <a href="{{ route('admin.blog.edit', $blog) }}" 
                                    class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Edit Artikel">
                                     <i class="fa-solid fa-pencil text-[10px] text-sky-600"></i>
                                 </a>
+                                <form action="{{ route('admin.blog.destroy', $blog) }}" method="POST" class="inline" onsubmit="return confirm('Hapus konten ini? Tindakan ini tidak bisa dibatalkan.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-white/95 hover:bg-white text-slate-700 w-7 h-7 rounded shadow flex items-center justify-center border border-slate-100 transition duration-200" title="Hapus Artikel">
+                                        <i class="fa-solid fa-trash text-[10px] text-rose-600"></i>
+                                    </button>
+                                </form>
                             </div>
                             @if($featuredSelecting['blog'])
                                 <label class="absolute top-4 right-4 z-30 cursor-pointer" onclick="event.stopPropagation();">
