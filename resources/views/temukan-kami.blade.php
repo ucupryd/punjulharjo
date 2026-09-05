@@ -20,7 +20,7 @@
                 Lokasi Kami
             </h1>
             <p class="text-base md:text-xl text-gray-100 max-w-2xl mx-auto drop-shadow opacity-90">
-                Kunjungi Desa Wisata Punjulharjo dan rasakan langsung keindahan budaya serta pesonanya.
+                Kunjungi Desa Wisata Punjulharjo dan rasakan langsung keindahan budaya serta pesonanya. 
             </p>
         </div>
 
