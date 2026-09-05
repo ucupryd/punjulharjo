@@ -122,7 +122,16 @@ class AdopsiController extends Controller
 
         $fotoPath = null;
         if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('monitorings', 'public');
+            $file = $request->file('foto');
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $targetDir = public_path('storage/monitorings');
+
+            if (!File::exists($targetDir)) {
+                File::makeDirectory($targetDir, 0755, true);
+            }
+
+            $file->move($targetDir, $fileName);
+            $fotoPath = 'monitorings/' . $fileName;
         }
 
         CemaraMonitoring::create([
@@ -162,6 +171,11 @@ class AdopsiController extends Controller
 
     public function export()
     {
+        $tempPath = storage_path('framework/cache');
+        if (!File::exists($tempPath)) {
+            File::makeDirectory($tempPath, 0755, true, true);
+        }
+
         $namaFile = 'Data-Adopsi-Cemara-' . now()->format('Y-m-d') . '.xlsx';
         return Excel::download(new AdopsiMultiSheetExport(), $namaFile);
     }
